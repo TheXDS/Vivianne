@@ -8,6 +8,7 @@
 
 Vivianne is a modern Need For Speed 3/4 All-in-one VIV/FSH/QFS editor that aims to provide you with tools to edit textures, car performance and fedata files inside VIVs, as well as serial number scan, FSH<->QFS conversion and Car re-classificator. Mod installer/manager planned as well.
 
+> **WARNING: This is a very early, work in progress app. A lot of things will not work correctly.**
 
 ## Building
 Vivianne can be built on any platform or CI environment supported by dotnet. although building on Windows is recommended.
