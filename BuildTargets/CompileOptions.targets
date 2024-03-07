@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup Condition="'$(MSBuildProjectExtension)'=='.csproj'">
+		<Configurations>Debug;Release</Configurations>
+		<RootNamespace>TheXDS.Vivianne</RootNamespace>
+		<Deterministic>true</Deterministic>
+		<DocumentationFile>$(OutDir)$(AssemblyName).xml</DocumentationFile>
+		<Title>$(AssemblyTitle)</Title>
+		<Nullable>enable</Nullable>
+		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+		<PackageId>TheXDS.$(AssemblyName)</PackageId>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)'=='Debug'">
+		<DebugType>full</DebugType>
+		<DefineDebug>true</DefineDebug>
+		<DefineTrace>true</DefineTrace>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)'=='Release'">
+		<DebugSymbols>false</DebugSymbols>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All"/>
+	</ItemGroup>
+</Project>

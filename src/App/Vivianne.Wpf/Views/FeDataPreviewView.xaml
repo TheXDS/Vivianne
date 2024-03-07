@@ -1,0 +1,170 @@
+﻿<UserControl
+    x:Class="TheXDS.Vivianne.Views.FeDataPreviewView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:gn="http://schemas.thexds.local/ganymede"
+    xmlns:mdl="clr-namespace:TheXDS.Vivianne.Models;assembly=VivLib"
+    xmlns:viewmodels="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne"
+    xmlns:controls="clr-namespace:TheXDS.Vivianne.Controls"
+    d:DataContext="{d:DesignInstance Type=viewmodels:FeDataPreviewViewModel}"
+    mc:Ignorable="d" 
+    d:DesignHeight="450" d:DesignWidth="600">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+    <TabControl Background="Transparent" BorderThickness="0">
+        <TabControl.Resources>
+            <Style TargetType="ScrollViewer">
+                <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+            </Style>
+            <Style TargetType="gn:TextBoxEx">
+                <Setter Property="Margin" Value="5"/>
+                <Setter Property="Background" Value="Black"/>
+                <Setter Property="Foreground" Value="White"/>
+            </Style>
+            <Style TargetType="UniformGrid">
+                <Setter Property="Margin" Value="5"/>
+                <Setter Property="VerticalAlignment" Value="Top"/>
+            </Style>
+            <Style TargetType="TextBlock">
+                <Setter Property="Foreground" Value="LightGray"/>
+            </Style>
+        </TabControl.Resources>
+        <TabItem Header="Basic FeData">
+            <ScrollViewer>
+                <StackPanel Margin="5">
+                    <GroupBox Margin="5">
+                        <GroupBox.Header>
+                            <TextBlock>Basic properties</TextBlock>
+                        </GroupBox.Header>
+                        <StackPanel Margin="5">
+                            <gn:TextBoxEx Label="Car name" Text="{Binding Data.CarName}"/>
+                            <UniformGrid Margin="0" Columns="2">
+                                <gn:TextBoxEx Icon="🗝️" VerticalAlignment="Top" Label="Car ID" MaxLength="4" Text="{Binding Data.CarId}"/>
+                                <gn:Int32TextBox Icon=" # " Label="Serial number" Minimum="1" Maximum="65535" Value="{Binding Data.SerialNumber}"/>
+                                <UniformGrid Margin="5" Rows="1">
+                                    <TextBlock VerticalAlignment="Center" TextAlignment="Right" Margin="5,0">Car class</TextBlock>
+                                    <ComboBox IsEditable="False" SelectedItem="{Binding Data.VehicleClass}" ItemsSource="{controls:EnumValProvider EnumType={x:Type mdl:Nfs3CarClass}}"/>
+                                </UniformGrid>
+                                <UniformGrid Margin="5" Rows="1">
+                                    <TextBlock VerticalAlignment="Center" TextAlignment="Right" Margin="5,0">Driver seat</TextBlock>
+                                    <ComboBox IsEditable="False" SelectedItem="{Binding Data.Seat}" ItemsSource="{controls:EnumValProvider EnumType={x:Type mdl:DriverSeatPosition}}"/>
+                                </UniformGrid>
+                                <CheckBox Margin="5" IsChecked="{Binding Data.IsPolice}">
+                                    <TextBlock>Is police car</TextBlock>
+                                </CheckBox>
+                                <CheckBox Margin="5" IsChecked="{Binding Data.IsBonus}">
+                                    <TextBlock>Is bonus car</TextBlock>
+                                </CheckBox>
+                                <CheckBox Margin="5" IsChecked="{Binding Data.AvailableToAi}">
+                                    <TextBlock>Is available to AI</TextBlock>
+                                </CheckBox>
+                            </UniformGrid>
+                        </StackPanel>
+                    </GroupBox>
+                    <GroupBox Margin="5">
+                        <GroupBox.Header>
+                            <TextBlock>Compare</TextBlock>
+                        </GroupBox.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <TextBlock TextAlignment="Right" Margin="5">Acceleration</TextBlock>
+                            <Slider VerticalAlignment="Center" Grid.Column="1" Maximum="20" Value="{Binding Data.CarAccel}"/>
+                            <TextBlock TextAlignment="Center" Margin="5" Grid.Column="2" Text="{Binding Data.CarAccel, Mode=OneWay}"/>
+                            <TextBlock TextAlignment="Right" Margin="5" Grid.Row="1">Top Speed</TextBlock>
+                            <Slider VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" Maximum="20" Value="{Binding Data.CarTopSpeed}"/>
+                            <TextBlock TextAlignment="Center" Margin="5" Grid.Row="1" Grid.Column="2" Text="{Binding Data.CarTopSpeed, Mode=OneWay}"/>
+                            <TextBlock TextAlignment="Right" Margin="5" Grid.Row="2">Handling</TextBlock>
+                            <Slider VerticalAlignment="Center" Grid.Row="2" Grid.Column="1" Maximum="20" Value="{Binding Data.CarHandling}"/>
+                            <TextBlock TextAlignment="Center" Margin="5" Grid.Row="2" Grid.Column="2" Text="{Binding Data.CarHandling, Mode=OneWay}"/>
+                            <TextBlock TextAlignment="Right" Margin="5" Grid.Row="3">Braking</TextBlock>
+                            <Slider VerticalAlignment="Center" Grid.Row="3" Grid.Column="1" Maximum="20" Value="{Binding Data.CarBraking}"/>
+                            <TextBlock TextAlignment="Center" Margin="5" Grid.Row="3" Grid.Column="2" Text="{Binding Data.CarBraking, Mode=OneWay}"/>
+                        </Grid>
+                    </GroupBox>
+                </StackPanel>
+            </ScrollViewer>
+        </TabItem>
+        <TabItem Header="General">
+            <ScrollViewer>
+                <UniformGrid Columns="2">
+                    <gn:TextBoxEx Label="Manufacturer" Text="{Binding Data.Manufacturer}"/>
+                    <gn:TextBoxEx Label="Model" Text="{Binding Data.Model}"/>
+                    <gn:TextBoxEx Label="Price" Text="{Binding Data.Price}"/>
+                    <gn:TextBoxEx Label="Status" Text="{Binding Data.Status}"/>
+                    <gn:TextBoxEx Label="Weight" Text="{Binding Data.Weight}"/>
+                    <gn:TextBoxEx Label="Weight distribution" Text="{Binding Data.WeightDistribution}"/>
+                    <gn:TextBoxEx Label="Width" Text="{Binding Data.Width}"/>
+                    <gn:TextBoxEx Label="Height" Text="{Binding Data.Height}"/>
+                    <gn:TextBoxEx Label="Length" Text="{Binding Data.Length}"/>
+                </UniformGrid>
+            </ScrollViewer>
+        </TabItem>
+        <TabItem Header="Performance">
+            <ScrollViewer>
+                <UniformGrid Columns="2">
+                    <gn:TextBoxEx Label="Engine" Text="{Binding Data.Engine}"/>
+                    <gn:TextBoxEx Label="Displacement" Text="{Binding Data.Displacement}"/>
+                    <gn:TextBoxEx Label="Power" Text="{Binding Data.Hp}"/>
+                    <gn:TextBoxEx Label="Torque" Text="{Binding Data.Torque}"/>
+                    <gn:TextBoxEx Label="Maximum RPM" Text="{Binding Data.MaxEngineSpeed}"/>
+                    <gn:TextBoxEx Label="Brakes" Text="{Binding Data.Brakes}"/>
+                    <gn:TextBoxEx Label="Tires" Text="{Binding Data.Tires}"/>
+                    <gn:TextBoxEx Label="Top speed" Text="{Binding Data.TopSpeed}"/>
+                    <gn:TextBoxEx Label="0 to 60 MPH" Text="{Binding Data.Accel0To60}"/>
+                    <gn:TextBoxEx Label="0 to 100 MPH" Text="{Binding Data.Accel0To100}"/>
+                    <gn:TextBoxEx Label="Transmission" Text="{Binding Data.Transmission}"/>
+                    <gn:TextBoxEx Label="Gearbox" Text="{Binding Data.Gearbox}"/>
+                </UniformGrid>
+            </ScrollViewer>
+        </TabItem>
+        <TabItem Header="History">
+            <ScrollViewer>
+                <UniformGrid Columns="2">
+                    <gn:TextBoxEx Label="History 1" Text="{Binding Data.History1}"/>
+                    <gn:TextBoxEx Label="History 2" Text="{Binding Data.History2}"/>
+                    <gn:TextBoxEx Label="History 3" Text="{Binding Data.History3}"/>
+                    <gn:TextBoxEx Label="History 4" Text="{Binding Data.History4}"/>
+                    <gn:TextBoxEx Label="History 5" Text="{Binding Data.History5}"/>
+                    <gn:TextBoxEx Label="History 6" Text="{Binding Data.History6}"/>
+                    <gn:TextBoxEx Label="History 7" Text="{Binding Data.History7}"/>
+                    <gn:TextBoxEx Label="History 8" Text="{Binding Data.History8}"/>
+                </UniformGrid>
+            </ScrollViewer>
+        </TabItem>
+        <TabItem Header="Colors">
+            <ScrollViewer>
+                <UniformGrid Columns="2">
+                    <gn:TextBoxEx Label="Color 1" Text="{Binding Data.Color1}"/>
+                    <gn:TextBoxEx Label="Color 2" Text="{Binding Data.Color2}"/>
+                    <gn:TextBoxEx Label="Color 3" Text="{Binding Data.Color3}"/>
+                    <gn:TextBoxEx Label="Color 4" Text="{Binding Data.Color4}"/>
+                    <gn:TextBoxEx Label="Color 5" Text="{Binding Data.Color5}"/>
+                    <gn:TextBoxEx Label="Color 6" Text="{Binding Data.Color6}"/>
+                    <gn:TextBoxEx Label="Color 7" Text="{Binding Data.Color7}"/>
+                    <gn:TextBoxEx Label="Color 8" Text="{Binding Data.Color8}"/>
+                    <gn:TextBoxEx Label="Color 9" Text="{Binding Data.Color9}"/>
+                    <gn:TextBoxEx Label="Color 10" Text="{Binding Data.Color10}"/>
+                </UniformGrid>
+            </ScrollViewer>
+        </TabItem>
+    </TabControl>
+        <UniformGrid Rows="1" Grid.Row="1" Margin="10" HorizontalAlignment="Center">
+            <Button Padding="10,2" Command="{Binding SaveCommand, Mode=OneWay}">Save</Button>
+        </UniformGrid>
+    </Grid>
+</UserControl>

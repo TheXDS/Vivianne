@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition="'$(Root)'==''">
+    <Root>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\'))</Root>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(SolutionDir)'==''">
+    <SolutionDir>$(Root)src\</SolutionDir>
+  </PropertyGroup>
+  <Import Project="$(Root)BuildTargets\PackageVersion.props"/>
+  <Import Project="$(Root)BuildTargets\PackageInfo.props"/>
+  <Import Project="$(Root)BuildTargets\BuildPaths.props"/>
+</Project>

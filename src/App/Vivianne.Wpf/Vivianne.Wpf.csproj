@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net8.0-windows10.0.19041</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UseWPF>true</UseWPF>
+	</PropertyGroup>
+	<ItemGroup>
+	  <None Remove="Resources\Fonts\Muli-Light.ttf" />
+	  <None Remove="Resources\Fonts\NFS_by_JLTV.ttf" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="FreeImage.Standard" Version="4.3.8" />
+		<PackageReference Include="TheXDS.Ganymede.Wpf" Version="0.3.1-alpha.26" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Vivianne\Vivianne.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Resource Include="Resources\Fonts\Muli-Light.ttf" />
+	  <Resource Include="Resources\Fonts\NFS_by_JLTV.ttf" />
+	  <Resource Include="Resources\Images\bg.jpg" />
+	</ItemGroup>
+</Project>

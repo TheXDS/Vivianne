@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition="'$(MSBuildProjectExtension)'=='.csproj'">
+    <Company>TheXDS! non-Corp.</Company>
+    <Product>Vivianne</Product>
+    <AssemblyTitle>$(Description)</AssemblyTitle>
+    <Authors>César Andrés Morgan</Authors>
+    <Copyright>Copyright © $([System.DateTime]::Today.Year) $(Authors)</Copyright>
+    <RepositoryUrl>https://github.com/TheXDS/$(Product)</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <Description>$(Product)</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageDescription>$(Description)</PackageDescription>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(VersionSuffix)'=='' OR '$(Configuration)'=='Release'">
+    <ActualPkgVersion>$(VersionPrefix)</ActualPkgVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(VersionSuffix)'!='' AND '$(Configuration)'!='Release'">
+    <ActualPkgVersion>$(VersionPrefix)-$(VersionSuffix)</ActualPkgVersion>
+    <PackageReleaseNotes>This is a pre-release version of $(Product).</PackageReleaseNotes>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,36 @@
+﻿<UserControl
+    x:Class="TheXDS.Vivianne.Views.CarpEditorView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mcart="http://schemas.thexds.local/mcart"
+    xmlns:gn="http://schemas.thexds.local/ganymede"
+    xmlns:controls="clr-namespace:TheXDS.Vivianne.Controls"
+    mc:Ignorable="d" 
+    d:DesignHeight="350" d:DesignWidth="400">
+    <DockPanel>
+        <Expander Header="Options" DockPanel.Dock="Top">
+            <mcart:StretchyWrapPanel>
+                <CheckBox>Coerce values</CheckBox>
+                <CheckBox>Mirror Manual to Auto trans</CheckBox>
+                
+            </mcart:StretchyWrapPanel>
+        </Expander>
+        <TabControl Background="Transparent">
+            <TabItem Header="Basic Car data">
+                <StackPanel>
+                    <gn:Int16TextBox Label="Serial number" Minimum="1" Icon=" #  "/>
+                    <gn:Int16TextBox Label="Car classification" Icon="🏅"/>
+                    <gn:DoubleTextBox Label="Mass (KG)" Icon="⚖️" Minimum="0.001"/>
+                </StackPanel>                
+            </TabItem>
+        </TabControl>
+        <controls:CurveEditor>
+            <controls:DoubleValue Value="100"/>
+            <controls:DoubleValue Value="150"/>
+            <controls:DoubleValue Value="90"/>
+            <controls:DoubleValue Value="120"/>
+        </controls:CurveEditor>
+    </DockPanel>
+</UserControl>

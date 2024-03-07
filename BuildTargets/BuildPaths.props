@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup Condition="'$(MSBuildProjectExtension)'=='.csproj'">
+		<BaseOutputPath>$(Root)Build\bin\$(MSBuildProjectName)</BaseOutputPath>
+		<BaseIntermediateOutputPath>$(Root)Build\obj\$(MSBuildProjectName)</BaseIntermediateOutputPath>
+	</PropertyGroup>
+	<ItemGroup>
+		<SourceRoot Include="$(SolutionDir)"/>
+	</ItemGroup>
+</Project>

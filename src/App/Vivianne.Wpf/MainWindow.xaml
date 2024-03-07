@@ -1,0 +1,44 @@
+﻿<gn:ModernWindow
+    x:Class="Vivianne.Wpf.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:gn="http://schemas.thexds.local/ganymede"
+    xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne"
+    mc:Ignorable="d"
+    Height="450" Width="800">
+    <gn:ModernWindow.Background>
+        #404040
+        <!--<ImageBrush Stretch="UniformToFill" ImageSource="{StaticResource AppBg}"/>-->
+    </gn:ModernWindow.Background>
+    <gn:ModernWindow.TitleBarContent>
+        <DockPanel>
+            <Button
+                IsTabStop="False"
+                Focusable="False"
+                Margin="0 0 5 0"
+                Style="{StaticResource TitleBarButton}"
+                Command="{Binding Navigator.NavigateBackCommand, Mode=OneWay, ElementName=vmHost}"
+                WindowChrome.IsHitTestVisibleInChrome="True">
+                <TextBlock Foreground="White">
+                    <TextBlock.Effect>
+                        <DropShadowEffect Color="Black" ShadowDepth="0"/>
+                    </TextBlock.Effect>
+                    ◀
+                </TextBlock>
+            </Button>
+            <TextBlock Margin="5" VerticalAlignment="Center">
+                <TextBlock.Effect>
+                    <DropShadowEffect Color="Black" ShadowDepth="0"/>
+                </TextBlock.Effect>
+                <Run Text="{Binding Navigator.CurrentViewModel.Title, Mode=OneWay, ElementName=vmHost}"/> - Vivianne
+            </TextBlock>
+        </DockPanel>
+    </gn:ModernWindow.TitleBarContent>
+    <gn:NavigationHost
+        x:Name="vmHost"
+        DialogService="{gn:WpfNavDialogService}"
+        Navigator="{gn:NavService Home={x:Type vm:StartupViewModel}}"
+        VisualResolver="{gn:ConventionResolver}"/>
+</gn:ModernWindow>
