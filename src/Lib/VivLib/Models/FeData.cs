@@ -15,47 +15,6 @@ public class FeData
     /// </summary>
     public static readonly string[] KnownExtensions = [".bri", ".eng", ".fre", ".ger", ".ita", ".spa", ".swe"];
 
-    [StructLayout(LayoutKind.Sequential)]
-    private struct FeDataHeader
-    {
-        public static FeDataHeader Empty = new()
-        {
-            Unk1 = 0x0009,
-            Unk2 = 0x0003,
-            Unk5 = 0x0080,
-            Unk13 = 0x05,
-            Unk14 = 0x28
-        };
-
-        public ushort Unk1;// = 0x0009
-        public ushort IsBonus;
-        public ushort AvailableToAi;
-        public ushort CarClass;
-        public ushort Unk2;// = 0x0003
-        public ushort Unk3;// = 0x0000
-
-        public ushort IsPolice;
-        public ushort Seat;
-        public ushort Unk4; // = 0x0000
-        public ushort Unk5; // = 0x????
-        public ushort SerialNumber;
-        public ushort Unk6; // = 0x0000;
-        public ushort Unk7; // = 0x0000;
-        public ushort Unk8; // = 0x0000;
-
-        public ushort Unk9; // = 0x0000;
-        public ushort Unk10; // = 0x0000;
-        public ushort Unk11; // = 0x0000;
-        public ushort Unk12; // = 0x0000;
-        public byte Accel;
-        public byte TopSpeed;
-        public byte Handling;
-        public byte Braking;
-        public byte Unk13; // = 0x05;
-        public byte Unk14; // = 0x28;
-        public byte Unk15; // = 0x00;
-    }
-
     public string CarId { get; set; }
     public ushort SerialNumber { get; set; }
     public Nfs3CarClass VehicleClass { get; set; }
@@ -67,7 +26,6 @@ public class FeData
     public byte CarTopSpeed { get; set; }
     public byte CarHandling { get; set; }
     public byte CarBraking { get; set; }
-
     [OffsetTableIndex(0)]
     public string Manufacturer { get; set; }
     [OffsetTableIndex(1)]
@@ -148,83 +106,4 @@ public class FeData
     public string Color9 { get; set; }
     [OffsetTableIndex(39)]
     public string Color10 { get; set; }
-
-    public static FeData LoadFrom(byte[] contents)
-    {
-        using var ms = new MemoryStream(contents);
-        using var reader = new BinaryReader(ms);
-        string SeekAndRead(uint offset)
-        {
-            ms.Seek(offset, SeekOrigin.Begin);
-            return reader.ReadNullTerminatedString(Encoding.Latin1);
-        }
-        var carId = Encoding.ASCII.GetString(reader.ReadBytes(4));
-        var fedataHeader = reader.ReadStruct<FeDataHeader>();
-        var data = new FeData
-        {
-            CarId = carId,
-            IsBonus = fedataHeader.IsBonus == 1,
-            AvailableToAi = fedataHeader.AvailableToAi == 1,
-            VehicleClass = (Nfs3CarClass)fedataHeader.CarClass,
-            IsPolice = fedataHeader.IsPolice == 1,
-            Seat = (DriverSeatPosition)fedataHeader.Seat,
-            SerialNumber = fedataHeader.SerialNumber,
-            CarAccel = fedataHeader.Accel,
-            CarTopSpeed = fedataHeader.TopSpeed,
-            CarHandling = fedataHeader.Handling,
-            CarBraking = fedataHeader.Braking,
-        };
-        uint[] offsets = new uint[40];
-        for (int i = 0; i < 40; i++)
-        {
-            offsets[i] = reader.ReadUInt32();
-        }
-        foreach (var j in typeof(FeData).GetProperties())
-        {
-            if (j.GetAttribute<OffsetTableIndexAttribute>() is { Value: int offset })
-            {
-                j.SetValue(data, SeekAndRead(offsets[offset]));
-            }
-        }
-        return data;
-    }
-
-    public byte[] Serialize()
-    {
-        using var ms = new MemoryStream();
-        using var writer = new BinaryWriter(ms);
-        writer.Write(Encoding.ASCII.GetBytes(CarId));
-        writer.WriteStruct(FeDataHeader.Empty with
-        {
-            IsBonus = IsBonus ? (ushort)1 : (ushort)0,
-            AvailableToAi = AvailableToAi ? (ushort)1 : (ushort)0,
-            CarClass = (ushort)VehicleClass,
-            IsPolice = IsPolice ? (ushort)1 : (ushort)0,
-            Seat = (ushort)Seat,
-            SerialNumber = SerialNumber,
-            Accel = CarAccel,
-            TopSpeed = CarTopSpeed,
-            Handling = CarHandling,
-            Braking = CarBraking,
-        });
-        uint lastOffset = 0xcf;
-        using (var ms2 = new MemoryStream())
-        {
-            using (var writer2 = new BinaryWriter(ms2))
-            {
-                foreach (var j in typeof(FeData).GetProperties())
-                {
-                    if (j.GetAttribute<OffsetTableIndexAttribute>() is { Value: int offset })
-                    {
-                        string value = j.GetValue(this)?.ToString() ?? string.Empty;
-                        writer.Write(lastOffset);
-                        writer2.WriteNullTerminatedString(value);
-                        lastOffset += (uint)value.Length + 1;
-                    }
-                }
-            }
-            writer.Write(ms2.ToArray());
-        }
-        return ms.ToArray();
-    }
 }

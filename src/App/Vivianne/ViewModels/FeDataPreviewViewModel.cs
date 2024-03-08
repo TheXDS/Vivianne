@@ -3,6 +3,7 @@ using System.Windows.Input;
 using TheXDS.Ganymede.Types.Base;
 using TheXDS.MCART.Component;
 using TheXDS.Vivianne.Models;
+using TheXDS.Vivianne.Serializers;
 
 namespace TheXDS.Vivianne.ViewModels;
 
@@ -12,6 +13,7 @@ namespace TheXDS.Vivianne.ViewModels;
 /// </summary>
 public class FeDataPreviewViewModel : ViewModel
 {
+    private static readonly ISerializer<FeData> serializer = new FeDataSerializer();
     private readonly Action<byte[]> saveCallback;
 
     /// <summary>
@@ -25,7 +27,7 @@ public class FeDataPreviewViewModel : ViewModel
     public FeDataPreviewViewModel(byte[] data, Action<byte[]> saveCallback)
     {
         this.saveCallback = saveCallback;
-        Data = FeData.LoadFrom(data);
+        Data = serializer.Deserialize(data);
         SaveCommand = new SimpleCommand(OnSave);
     }
 
@@ -41,6 +43,6 @@ public class FeDataPreviewViewModel : ViewModel
 
     private void OnSave()
     {
-        saveCallback?.Invoke(Data.Serialize());
+        saveCallback?.Invoke(serializer.Serialize(Data));
     }
 }
