@@ -12,7 +12,7 @@ public class FeDataSerializerTests
         return new([
             // Car attributes
             .."TEST"u8.ToArray(),   // Car ID
-            0x09, 0x00,             // Flag count
+            0x09, 0x00,             // Flag count ?
             0x01, 0x00,             // Is Bonus
             0x01, 0x00,             // Available to AI
             0x02, 0x00,             // "C" Car Class
@@ -26,7 +26,8 @@ public class FeDataSerializerTests
             0x00, 0x00, 0x00, 0x00, //  /
             0x00, 0x00,             // /
             0x14, 0x13, 0x12, 0x11, // "20, 19, 18, 17" Car compare table
-            0x05, 0x28, 0x00,       // ---- Unknown data ----
+            0x05,                   // ---- Unknown data ----
+            0x28, 0x00,             // String table entries
 
             // String offset table
             0xCF, 0x00, 0x00, 0x00, // Manufacturer
