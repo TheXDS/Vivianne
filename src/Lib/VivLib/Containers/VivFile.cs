@@ -49,7 +49,7 @@ public class VivFile
         }
         if (stream.CanSeek && stream.Position != blobPool)
         {
-            throw new InvalidDataException("Blob pool location mismatch");
+            // TODO: Define actual course of action - Extra bytes after reading the header, but before the data pool (probably for alignment reasons?)
         }
         foreach (var j in fileOffsets.OrderBy(p => p.Value.offset))
         {
