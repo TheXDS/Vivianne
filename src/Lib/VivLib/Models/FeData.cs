@@ -228,22 +228,3 @@ public class FeData
         return ms.ToArray();
     }
 }
-
-public enum Nfs3CarClass : ushort
-{
-    A,
-    B,
-    C
-}
-
-public enum DriverSeatPosition : ushort
-{
-    Left,
-    Right
-}
-public enum EngineLocation : ushort
-{
-    Front,
-    Mid,
-    Rear,
-}

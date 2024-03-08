@@ -1,11 +1,15 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Markup;
+using System.Windows.Media;
 using TheXDS.MCART.Types.Base;
 using static TheXDS.Ganymede.Helpers.DependencyObjectHelpers;
 
+
 namespace TheXDS.Vivianne.Controls;
+
 public partial class EnumValProvider : MarkupExtension
 {
     public Type EnumType { get; set; }
@@ -16,6 +20,8 @@ public partial class EnumValProvider : MarkupExtension
         return Enum.GetValues(EnumType);
     }
 }
+
+
 
 [ContentProperty(nameof(Curve))]
 public class CurveEditor : Control

@@ -37,22 +37,9 @@
                 MouseLeftButtonDown="Sv_MouseLeftButtonDown"
                 PreviewMouseMove="Sv_PreviewMouseMove"
                 PreviewMouseLeftButtonUp="Sv_PreviewMouseLeftButtonUp"
+                Background="{StaticResource CheckerboardBrush}"
                 Width="{Binding CurrentImage.Width}"
                 Height="{Binding CurrentImage.Height}">
-                <Border.Background>
-                    <DrawingBrush Stretch="None" TileMode="Tile" Viewport="0,0,20,20" ViewportUnits="Absolute">
-                        <DrawingBrush.Drawing>
-                            <GeometryDrawing Brush="#404040">
-                                <GeometryDrawing.Geometry>
-                                    <GeometryGroup>
-                                        <RectangleGeometry Rect="0,0,50,50" />
-                                        <RectangleGeometry Rect="50,50,50,50" />
-                                    </GeometryGroup>
-                                </GeometryDrawing.Geometry>
-                            </GeometryDrawing>
-                        </DrawingBrush.Drawing>
-                    </DrawingBrush>
-                </Border.Background>
                 <Image Source="{Binding CurrentImage, Mode=OneWay, Converter={StaticResource fsh2img}}"/>
             </Border>
         </ScrollViewer>
