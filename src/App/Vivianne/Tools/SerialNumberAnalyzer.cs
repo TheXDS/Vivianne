@@ -7,6 +7,7 @@ using TheXDS.Ganymede.Services;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Containers;
 using TheXDS.Vivianne.Models;
+using TheXDS.Vivianne.Serializers;
 
 namespace TheXDS.Vivianne.Tools;
 
@@ -22,6 +23,7 @@ public static class SerialNumberAnalyzer
     }
 
     private static readonly EnumerationOptions EnumOpts = new() { MatchCasing = MatchCasing.CaseInsensitive };
+    private static readonly ISerializer<FeData> serializer = new FeDataSerializer();
 
     private static SnEntry? Load(FileInfo file)
     {
@@ -57,7 +59,7 @@ public static class SerialNumberAnalyzer
         {
             if (viv.Directory.TryGetValue(feName, out var feContents))
             {
-                return FeData.LoadFrom(feContents);
+                return serializer.Deserialize(feContents);
             }
         }
         catch (Exception ex)
@@ -116,7 +118,7 @@ public static class SerialNumberAnalyzer
                 foreach (var fe in entry.FeDatas)
                 {
                     fe.Value.SerialNumber = newSerial;
-                    entry.VivFile.Directory[fe.Key] = fe.Value.Serialize();
+                    entry.VivFile.Directory[fe.Key] = serializer.Serialize(fe.Value);
                 }
                 File.Delete(entry.FilePath);
                 using var vivF = File.OpenWrite(entry.FilePath);
