@@ -7,9 +7,9 @@ using TheXDS.Ganymede.Helpers;
 using TheXDS.Ganymede.Models;
 using TheXDS.Ganymede.Types.Base;
 using TheXDS.Ganymede.ViewModels;
-using TheXDS.Vivianne.Containers;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Resources;
+using TheXDS.Vivianne.Serializers;
 
 namespace TheXDS.Vivianne.ViewModels;
 
@@ -67,14 +67,14 @@ public class VivMainViewModel : HostViewModelBase, IStatefulViewModel<VivMainSta
     private static IViewModel CreateFshPreviewViewModel(byte[] data, Action<byte[]> _)
     {
         using var ms = new MemoryStream(data);
-        return new FshPreviewViewModel(FshFile.ReadFrom(ms)) { Title = ""};
+        return new FshPreviewViewModel(new FshSerializer().Deserialize(ms)) { Title = ""};
     }
 
     private static IViewModel CreateQfsPreviewViewModel(byte[] data, Action<byte[]> _)
     {
         var uncompressed = QfsCodec.Decompress(data);
         using var ms = new MemoryStream(uncompressed);
-        return new FshPreviewViewModel(FshFile.ReadFrom(ms));
+        return new FshPreviewViewModel(new FshSerializer().Deserialize(ms));
     }
 
     private VivMainState state = null!;

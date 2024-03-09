@@ -7,10 +7,10 @@ using System.Windows.Input;
 using TheXDS.Ganymede.Helpers;
 using TheXDS.Ganymede.Types;
 using TheXDS.Ganymede.Types.Base;
-using TheXDS.Vivianne.Containers;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Properties;
 using TheXDS.Vivianne.Resources;
+using TheXDS.Vivianne.Serializers;
 using TheXDS.Vivianne.Tools;
 using St = TheXDS.Vivianne.Resources.Strings.Views.StartupView;
 
@@ -127,7 +127,7 @@ public class StartupViewModel : ViewModel
         {
             var data = QfsCodec.Decompress(await File.ReadAllBytesAsync(fin.Result));
             using var ms = new MemoryStream(data);
-            NavigationService!.Navigate(new FshPreviewViewModel(FshFile.ReadFrom(ms)));
+            NavigationService!.Navigate(new FshPreviewViewModel(new FshSerializer().Deserialize(ms)));
         }
     }
 

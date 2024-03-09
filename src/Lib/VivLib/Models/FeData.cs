@@ -1,7 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using System.Text;
-using TheXDS.MCART.Types.Extensions;
-using TheXDS.Vivianne.Attributes;
+﻿using TheXDS.Vivianne.Attributes;
 
 namespace TheXDS.Vivianne.Models;
 

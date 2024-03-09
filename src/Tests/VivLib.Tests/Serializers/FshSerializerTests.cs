@@ -1,12 +1,13 @@
 ﻿#pragma warning disable CS1591
+#pragma warning disable CA1859
 
-using TheXDS.Vivianne.Containers;
+using TheXDS.Vivianne.Models;
 
-namespace TheXDS.Vivianne.Tests;
+namespace TheXDS.Vivianne.Serializers;
 
-public class FshFileTests
+public class FshSerializerTests
 {
-    private static MemoryStream CreateTestFsh()
+    private static MemoryStream CreateTestFshStream()
     {
         return new([
            0x53, 0x48, 0x50, 0x49, // "SHPI"
@@ -21,7 +22,7 @@ public class FshFileTests
     private static byte[] CreateTestFshItem()
     {
         return [
-            0x78,               // Magic
+            0x7B,               // Magic
             0x00, 0x00, 0x00,   // 24-bit blob size
             0x03, 0x00,         // 3px width
             0x03, 0x00,         // 3px height
@@ -29,17 +30,36 @@ public class FshFileTests
             0x02, 0x00,         // y rotation
             0x40, 0x00,         // x position
             0x40, 0x00,         // y position
-            0x80,0x80,0x80,     // \
-            0x80,0x80,0x80,     //  > Pixel data
-            0x80,0x80,0x80      // /
+            0x80, 0x80, 0x80,   // \
+            0x80, 0x80, 0x80,   //  > Pixel data
+            0x80, 0x80, 0x80    // /
         ];
     }
 
-    [Test]
-    public void Class_can_read_fsh()
+    private static FshTexture CreateTestFsh()
     {
-        using var ms = CreateTestFsh();
-        var fsh = FshFile.ReadFrom(ms);
+        return new FshTexture() { Images = { {"TEST", new Gimx()
+        {
+            Magic = 0x7B,
+            Width = 3,
+            Height = 3,
+            XRotation = 2,
+            YRotation = 2,
+            XPosition = 0x40,
+            YPosition = 0x40,
+            PixelData = [0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80],
+            Footer = []
+        }}}};
+    }
+
+    [Test]
+    public void Serializer_can_read_fsh()
+    {
+        FshTexture expected = CreateTestFsh();
+        using var ms = CreateTestFshStream();
+        ISerializer<FshTexture> serializer = new FshSerializer();
+
+        FshTexture fsh = serializer.Deserialize(ms);
 
         Assert.Multiple(() =>
         {
@@ -55,4 +75,18 @@ public class FshFileTests
             Assert.That(img.PixelData, Is.EquivalentTo(new byte[] { 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80 }));
         });
     }
+
+
+    [Test]
+    public void Serializer_can_write_Fsh()
+    {
+        var expected = CreateTestFshStream().ToArray();
+        using var ms = new MemoryStream();
+        ISerializer<FshTexture> s = new FshSerializer();
+
+        s.SerializeTo(CreateTestFsh(), ms);
+
+        Assert.That(ms.ToArray(), Is.EquivalentTo(expected));
+    }
+
 }
