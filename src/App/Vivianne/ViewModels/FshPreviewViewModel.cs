@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using TheXDS.Ganymede.Types.Base;
-using TheXDS.Vivianne.Containers;
 using TheXDS.Vivianne.Models;
 
 namespace TheXDS.Vivianne.ViewModels;
@@ -13,11 +11,9 @@ namespace TheXDS.Vivianne.ViewModels;
 /// <remarks>
 /// QFS files can be decompressed and shown as FSH files with this ViewModel.
 /// </remarks>
-/// <seealso cref="QfsCodec.Decompress(byte[])"/>
-/// <seealso cref="FshFile.ReadFrom(Stream)"/>
 public class FshPreviewViewModel : ViewModel
 {
-    private readonly FshFile _fsh;
+    private readonly FshTexture _fsh;
     private Gimx _CurrentImage;
 
     /// <summary>
@@ -25,7 +21,7 @@ public class FshPreviewViewModel : ViewModel
     /// class.
     /// </summary>
     /// <param name="fsh">FSH file to preview.</param>
-    public FshPreviewViewModel(FshFile fsh)
+    public FshPreviewViewModel(FshTexture fsh)
     {
         _fsh = fsh;
         CurrentImage = _fsh.Images.Values.FirstOrDefault();
