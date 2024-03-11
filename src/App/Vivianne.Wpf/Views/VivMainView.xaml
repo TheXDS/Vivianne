@@ -39,7 +39,7 @@
                 <Button Command="{Binding ImportFileCommand}">➕</Button>
             </mcart:StretchyWrapPanel>
             <ScrollViewer VerticalScrollBarVisibility="Auto">
-                <ItemsControl Margin="0,0,0,0" MinWidth="150" ItemsSource="{Binding State.Viv.Directory}">
+                <ItemsControl Margin="0,0,0,0" MinWidth="150" ItemsSource="{Binding State.Directory}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <RadioButton

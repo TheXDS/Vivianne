@@ -117,7 +117,7 @@ public class FeDataSerializer : ISerializer<FeData>
                 if (j.GetAttribute<OffsetTableIndexAttribute>() is not { Value: int offset }) continue;                
                 string value = j.GetValue(entity)?.ToString() ?? string.Empty;
                 writer.Write(lastOffset);
-                writer2.WriteNullTerminatedString(value);
+                writer2.WriteNullTerminatedString(value, Encoding.Latin1);
                 lastOffset += (uint)value.Length + 1;
             }
         }

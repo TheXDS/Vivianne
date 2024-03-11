@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
+using TheXDS.MCART.Types;
 using TheXDS.MCART.Types.Base;
 using TheXDS.Vivianne.Containers;
 
@@ -20,8 +21,16 @@ public class VivMainState : VivInfo
     public VivFile Viv
     {
         get => _Viv;
-        set => Change(ref _Viv, value);
+        set
+        {
+            if (Change(ref _Viv, value))
+            {
+                Directory = new(_Viv.Directory);
+            };
+        }
     }
+
+    public ObservableDictionaryWrap<string, byte[]> Directory { get; private set; }
 
     /// <summary>
     /// Gets or sets a value that indicates if the loaded VIV file contains
