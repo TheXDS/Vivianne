@@ -14,12 +14,12 @@ public class FshSerializer : ISerializer<FshTexture>
     private static readonly byte[] DirId = "GIMX"u8.ToArray();
 
     // Magic pixel format length. Used to calculate blob size if = 0
-    private static readonly Dictionary<byte, byte> MagicFormat = new()
+    private static readonly Dictionary<GimxFormat, byte> MagicFormat = new()
     {
-        {0x2A, 4}, // 32-bit 256 Color palette
-        {0x7B, 1}, // 1 byte per pixel (256 colors)
-        {0x78, 2}, // 2 bytes per pixel (16 bit color).
-        {0x7D, 4}, // 4 bytes per pixel (RGBA32)
+        {GimxFormat.Palette,    4}, // 32-bit 256 Color palette
+        {GimxFormat.Indexed8,   1}, // 1 byte per pixel (256 colors)
+        {GimxFormat.Bgr565,     2}, // 2 bytes per pixel (16 bit color).
+        {GimxFormat.Bgra32,     4}, // 4 bytes per pixel (RGBA32)
     };
 
     /// <inheritdoc/>
@@ -72,7 +72,7 @@ public class FshSerializer : ISerializer<FshTexture>
         }
         foreach (var j in entity.Images.Values)
         {
-            writer.Write(j.Magic);
+            writer.Write((byte)j.Magic);
             writer.Write(BitConverter.GetBytes(j.Footer.Length != 0 ? j.PixelData.Length + 16 : 0)[0..3]);
             writer.Write(j.Width);
             writer.Write(j.Height);
@@ -118,7 +118,7 @@ public class FshSerializer : ISerializer<FshTexture>
     private static Gimx? ReadGimx(BinaryReader reader, int dataEndOffset)
     {
         int currentOffset = (int)reader.BaseStream.Position;
-        var magic = reader.ReadByte();
+        var magic = (GimxFormat)reader.ReadByte();
         if (!MagicFormat.TryGetValue(magic, out byte value)) return null;
         var footerOffset = BitConverter.ToInt32([.. reader.ReadBytes(3), (byte)0]);
         var width = reader.ReadUInt16();

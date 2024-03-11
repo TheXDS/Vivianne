@@ -37,7 +37,7 @@
                 </Image>
             </Border>
         </ScrollViewer>
-        <DockPanel VerticalAlignment="Bottom">
+        <UniformGrid VerticalAlignment="Bottom" Rows="1">
             <Expander ExpandDirection="Up">
                 <Expander.Header>
                     <TextBlock Foreground="White">View options</TextBlock>
@@ -45,7 +45,7 @@
                 <Border
                     Margin="10"
                     Background="#B0000000"
-                    HorizontalAlignment="Right"
+                    HorizontalAlignment="Left"
                     VerticalAlignment="Bottom">
                     <StackPanel Margin="5" TextBlock.Foreground="White">
                         <Slider Minimum="1.0" Maximum="10.0" Value="{Binding ZoomLevel}" Margin="5" Width="100"/>
@@ -56,6 +56,6 @@
                     </StackPanel>
                 </Border>
             </Expander>
-        </DockPanel>
+        </UniformGrid>
     </Grid>
 </UserControl>

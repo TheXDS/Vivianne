@@ -5,7 +5,7 @@ using System.Windows.Input;
 namespace TheXDS.Vivianne.Views
 {
     /// <summary>
-    /// Lógica de interacción para TexturePreviewView.xaml
+    /// View that allows the user to preview a TGA texture.
     /// </summary>
     public partial class TexturePreviewView : UserControl
     {
@@ -13,6 +13,10 @@ namespace TheXDS.Vivianne.Views
         private double _hOff = 1;
         private double _vOff = 1;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TexturePreviewView"/>
+        /// class.
+        /// </summary>
         public TexturePreviewView()
         {
             InitializeComponent();

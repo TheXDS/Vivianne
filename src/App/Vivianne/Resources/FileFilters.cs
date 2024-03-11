@@ -26,6 +26,11 @@ public static class FileFilters
     /// saving FSH files.
     /// </summary>
     public static IEnumerable<FileFilterItem> QfsFileFilter { get; } = [new FileFilterItem(St.QfsFile, "*.qfs"), FileFilterItem.AllFiles];
+
+    /// <summary>
+    /// Gets a set of file filters to be used on file dialogs for opening and
+    /// saving either FSH or QFS files.
+    /// </summary>
     public static IEnumerable<FileFilterItem> FshQfsFileFilter { get; } = [new FileFilterItem(St.FshFile, "*.fsh"), new FileFilterItem(St.QfsFile, "*.qfs"), FileFilterItem.AllFiles];
 
     /// <summary>
@@ -33,4 +38,17 @@ public static class FileFilters
     /// kind of file commonly hosted inside a VIV.
     /// </summary>
     public static IEnumerable<FileFilterItem> AnyVivContentFilter { get; } = [new FileFilterItem("Common VIV content files", ["car*.fce", "car*.fsh", "dash*.qfs", "carp.txt", "fedata.*"]), FileFilterItem.AllFiles];
+
+    /// <summary>
+    /// Gets a set of file filter to be used on file dialogs for opening or
+    /// saving files with common bitmap file formats.
+    /// </summary>
+    public static IEnumerable<FileFilterItem> CommonBitmapFormats { get; } = [
+        new FileFilterItem("Portable Network Graphics", "*.png"),
+        new FileFilterItem("GIF image", "*.gif"),
+        new FileFilterItem("JPEG picture", ["*.jpg", "*.jpeg"]),
+        new FileFilterItem("BMP bitmap image", "*.bmp"),
+        //new FileFilterItem("Common bitmap image formats", ["*.png", "*.gif", "*.jpg", "*.jpeg", "*.bmp"]),
+        FileFilterItem.AllFiles
+        ];
 }

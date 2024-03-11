@@ -3,49 +3,49 @@
 /// <summary>
 /// Represents a single Gimx image inside a FSH file.
 /// </summary>
-public readonly struct Gimx
+public class Gimx
 {
     /// <summary>
     /// Gets the magic signature of this Gimx blob, which determines its pixel
     /// format.
     /// </summary>
-    public required byte Magic { get; init; }
+    public GimxFormat Magic { get; set; }
 
     /// <summary>
     /// Gets the Gimx blob width, in pixels.
     /// </summary>
-    public required ushort Width { get; init; }
+    public ushort Width { get; set; }
 
     /// <summary>
     /// Gets the Gimx blob height, in pixels.
     /// </summary>
-    public required ushort Height { get; init; }
+    public ushort Height { get; set; }
 
     /// <summary>
     /// Gets the Gimx rotation axis X coordinate.
     /// </summary>
-    public required ushort XRotation { get; init; }
+    public ushort XRotation { get; set; }
 
     /// <summary>
     /// Gets the Gimx rotation axis Y coordinate.
     /// </summary>
-    public required ushort YRotation { get; init; }
+    public ushort YRotation { get; set; }
 
     /// <summary>
     /// Gets the Gimx X position coordinate.
     /// </summary>
-    public required ushort XPosition { get; init; }
+    public ushort XPosition { get; set; }
 
     /// <summary>
     /// Gets the Gimx Y position coordinate.
     /// </summary>
-    public required ushort YPosition { get; init; }
+    public ushort YPosition { get; set; }
 
     /// <summary>
     /// Gets the raw pixel data for this Gimx. Renderers should use a pixel
     /// format according to the <see cref="Magic"/> signature.
     /// </summary>
-    public required byte[] PixelData { get; init; }
+    public byte[] PixelData { get; set; }
 
     /// <summary>
     /// Gets the extra raw data that may exist after the pixel data.
@@ -60,5 +60,5 @@ public readonly struct Gimx
     /// Dashboard data in this space. Other GIMX files may include padding for
     /// alignment and/or buffering reasons.
     /// </remarks>
-    public required byte[] Footer { get; init; }
+    public byte[] Footer { get; set; }
 }

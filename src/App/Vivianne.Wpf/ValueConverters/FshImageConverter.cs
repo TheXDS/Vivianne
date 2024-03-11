@@ -15,11 +15,11 @@ public class FshImageConverter : IOneWayValueConverter<Gimx?, BitmapSource?>
 {
     private readonly record struct FshFormat(PixelFormat Format, BitmapPalette? Palette);
 
-    private static readonly Dictionary<byte, PixelFormat> Formats = new()
+    private static readonly Dictionary<GimxFormat, PixelFormat> Formats = new()
     {
-        {0x7B, PixelFormats.Indexed8},
-        {0x78, PixelFormats.Bgr565},
-        {0X7D, PixelFormats.Bgra32},
+        {GimxFormat.Indexed8, PixelFormats.Indexed8},
+        {GimxFormat.Bgr565, PixelFormats.Bgr565},
+        {GimxFormat.Bgra32, PixelFormats.Bgra32},
     };
 
     /// <inheritdoc/>
@@ -27,7 +27,7 @@ public class FshImageConverter : IOneWayValueConverter<Gimx?, BitmapSource?>
     {
         if (value is not Gimx gimx || !Formats.TryGetValue(gimx.Magic, out var fshFormat)) return null;
         GC.Collect();        
-        var pal = gimx.Magic == 0x7B ? (Create(parameter) ?? BitmapPalettes.Halftone256) : null;
+        var pal = gimx.Magic == GimxFormat.Indexed8 ? (Create(parameter) ?? BitmapPalettes.Halftone256) : null;
         var surface = new WriteableBitmap(gimx.Width, gimx.Height, 96, 96, fshFormat, pal);
         var stride = (gimx.Width * fshFormat.BitsPerPixel + 7) / 8;
         surface.WritePixels(new Int32Rect(0, 0, gimx.Width, gimx.Height), gimx.PixelData, stride, 0);
