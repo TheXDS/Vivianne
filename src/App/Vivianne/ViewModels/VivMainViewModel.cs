@@ -153,7 +153,11 @@ public class VivMainViewModel : HostViewModelBase, IStatefulViewModel<VivMainSta
     {
         if (parameter is KeyValuePair<string, byte[]> { Key: { } file, Value: { } rawData })
         {
-            void Save(byte[] data) => State.Viv.Directory[file] = data;
+            void Save(byte[] data)
+            {
+                State.Directory[file] = data;
+                State.UnsavedChanges = true;
+            }
 
             var ext = Path.GetExtension(file);
             IViewModel vm = ContentVisualizers.TryGetValue(ext, out var factory)
