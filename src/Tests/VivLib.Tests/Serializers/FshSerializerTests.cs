@@ -40,7 +40,7 @@ public class FshSerializerTests
     {
         return new FshTexture() { Images = { {"TEST", new Gimx()
         {
-            Magic = 0x7B,
+            Magic = (GimxFormat)0x7B,
             Width = 3,
             Height = 3,
             XRotation = 2,
@@ -88,5 +88,4 @@ public class FshSerializerTests
 
         Assert.That(ms.ToArray(), Is.EquivalentTo(expected));
     }
-
 }

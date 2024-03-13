@@ -1,0 +1,83 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style x:Key="LedIndicator" TargetType="{x:Type CheckBox}">
+        <Setter Property="IsEnabled" Value="False"/>
+        <Setter Property="IsHitTestVisible" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="CheckBox">
+                    <DockPanel 
+                        Background="Transparent"
+                        x:Name="templateRoot"
+                        SnapsToDevicePixels="True">
+                        <DockPanel.Resources>
+                            <Color x:Key="ledOnColor">#00ff00</Color>
+                            <Color x:Key="ledOffColor">#004000</Color>
+                            <Color x:Key="shadowColor">#404040</Color>
+                        </DockPanel.Resources>
+                        <Grid
+                            Margin="4"
+                            DockPanel.Dock="Right"
+                            Height="8" 
+                            Width="8"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                            <Ellipse x:Name="redLed">
+                                <Ellipse.Stroke>
+                                    <LinearGradientBrush EndPoint="0,1">
+                                        <GradientStop Color="{DynamicResource ledOffColor}"/>
+                                        <GradientStop Color="{DynamicResource shadowColor}" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Ellipse.Stroke>
+                                <Ellipse.Fill>
+                                    <LinearGradientBrush EndPoint="0,1">
+                                        <GradientStop Color="White"/>
+                                        <GradientStop Color="{DynamicResource ledOffColor}" Offset="0.5"/>
+                                    </LinearGradientBrush>
+                                </Ellipse.Fill>
+                            </Ellipse>
+                            <Ellipse
+                                Visibility="Collapsed"
+                                x:Name="greenLed">
+                                <Ellipse.Stroke>
+                                    <LinearGradientBrush EndPoint="0,1">
+                                        <GradientStop Color="{DynamicResource ledOnColor}"/>
+                                        <GradientStop Color="{DynamicResource shadowColor}" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Ellipse.Stroke>
+                                <Ellipse.Fill>
+                                    <LinearGradientBrush EndPoint="0,1">
+                                        <GradientStop Color="White"/>
+                                        <GradientStop Color="{DynamicResource ledOnColor}" Offset="0.5"/>
+                                    </LinearGradientBrush>
+                                </Ellipse.Fill>
+                                <Ellipse.Effect>
+                                    <DropShadowEffect
+                                        ShadowDepth="0"
+                                        BlurRadius="10"
+                                        Color="{DynamicResource ledOnColor}">
+                                    </DropShadowEffect>
+                                </Ellipse.Effect>
+                            </Ellipse>
+                        </Grid>
+                        <ContentPresenter
+                            x:Name="contentPresenter"
+                            Focusable="False"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            Margin="{TemplateBinding Padding}"
+                            RecognizesAccessKey="True"
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </DockPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Visibility" TargetName="redLed" Value="Collapsed"/>
+                            <Setter Property="Visibility" TargetName="greenLed" Value="Visible"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using TheXDS.Vivianne.Models;
+using TheXDS.Vivianne.Resources;
 using static System.Text.Encoding;
 
 namespace TheXDS.Vivianne.Serializers;
@@ -12,15 +13,6 @@ public class FshSerializer : ISerializer<FshTexture>
 {
     private static readonly byte[] Header = "SHPI"u8.ToArray();
     private static readonly byte[] DirId = "GIMX"u8.ToArray();
-
-    // Magic pixel format length. Used to calculate blob size if = 0
-    private static readonly Dictionary<GimxFormat, byte> MagicFormat = new()
-    {
-        {GimxFormat.Palette,    4}, // 32-bit 256 Color palette
-        {GimxFormat.Indexed8,   1}, // 1 byte per pixel (256 colors)
-        {GimxFormat.Bgr565,     2}, // 2 bytes per pixel (16 bit color).
-        {GimxFormat.Bgra32,     4}, // 4 bytes per pixel (RGBA32)
-    };
 
     /// <inheritdoc/>
     public FshTexture Deserialize(Stream stream)
@@ -119,7 +111,7 @@ public class FshSerializer : ISerializer<FshTexture>
     {
         int currentOffset = (int)reader.BaseStream.Position;
         var magic = (GimxFormat)reader.ReadByte();
-        if (!MagicFormat.TryGetValue(magic, out byte value)) return null;
+        if (!Mappings.GimxBytesPerPixel.TryGetValue(magic, out byte value)) return null;
         var footerOffset = BitConverter.ToInt32([.. reader.ReadBytes(3), (byte)0]);
         var width = reader.ReadUInt16();
         var height = reader.ReadUInt16();

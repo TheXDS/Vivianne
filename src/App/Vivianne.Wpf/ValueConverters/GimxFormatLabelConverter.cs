@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using TheXDS.MCART.ValueConverters.Base;
+using TheXDS.Vivianne.Models;
 
 namespace TheXDS.Vivianne.ValueConverters;
 
@@ -7,12 +8,12 @@ namespace TheXDS.Vivianne.ValueConverters;
 /// Returns a description for the pixel format used in a GIMX file based on its
 /// magic header.
 /// </summary>
-public class GimxFormatLabelConverter : IOneWayValueConverter<byte, string>
+public class GimxFormatLabelConverter : IOneWayValueConverter<GimxFormat, string>
 {
     /// <inheritdoc/>
-    public string Convert(byte value, object? parameter, CultureInfo? culture)
+    public string Convert(GimxFormat value, object? parameter, CultureInfo? culture)
     {
-        return value switch
+        return (byte)value switch
         {
             0x00 => "No image loaded",
             0x2a => "32-bit 256 color palette",

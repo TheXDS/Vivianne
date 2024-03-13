@@ -26,7 +26,7 @@ public class FshImageConverter : IOneWayValueConverter<Gimx?, BitmapSource?>
     public BitmapSource? Convert(Gimx? value, object? parameter, CultureInfo? culture)
     {
         if (value is not Gimx gimx || !Formats.TryGetValue(gimx.Magic, out var fshFormat)) return null;
-        GC.Collect();        
+        GC.Collect();
         var pal = gimx.Magic == GimxFormat.Indexed8 ? (Create(parameter) ?? BitmapPalettes.Halftone256) : null;
         var surface = new WriteableBitmap(gimx.Width, gimx.Height, 96, 96, fshFormat, pal);
         var stride = (gimx.Width * fshFormat.BitsPerPixel + 7) / 8;

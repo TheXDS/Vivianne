@@ -48,7 +48,6 @@ public static class FileFilters
         new FileFilterItem("GIF image", "*.gif"),
         new FileFilterItem("JPEG picture", ["*.jpg", "*.jpeg"]),
         new FileFilterItem("BMP bitmap image", "*.bmp"),
-        //new FileFilterItem("Common bitmap image formats", ["*.png", "*.gif", "*.jpg", "*.jpeg", "*.bmp"]),
         FileFilterItem.AllFiles
         ];
 }
