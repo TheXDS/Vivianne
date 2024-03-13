@@ -178,11 +178,11 @@ public class VivMainViewModel : HostViewModelBase, IStatefulViewModel<VivMainSta
         if (r.Success)
         {
             var keyName = Path.GetFileName(r.Result).ToLower();
-            if (State.Viv.Directory.ContainsKey(keyName) && !await DialogService.Ask("Replace file", $"The file '{keyName}' already exist. Do you want to replace it?"))
+            if (State.Directory.ContainsKey(keyName) && !await DialogService.Ask("Replace file", $"The file '{keyName}' already exist. Do you want to replace it?"))
             {
                 return;
             }
-            State.Viv.Directory[keyName] = await DialogService.RunOperation(p => File.ReadAllBytesAsync(r.Result));
+            State.Directory[keyName] = await DialogService.RunOperation(p => File.ReadAllBytesAsync(r.Result));
         }
     }
 
@@ -205,10 +205,10 @@ public class VivMainViewModel : HostViewModelBase, IStatefulViewModel<VivMainSta
         {
             var ext = Path.GetExtension(file)[1..];
 
-            var r = await DialogService!.GetFileOpenPath("Replace file", $"Select a file to repace '{file}' with", [FileFilterItem.Simple(ext), FileFilterItem.AllFiles]);
+            var r = await DialogService!.GetFileOpenPath($"Replace '{file}'", $"Select a file to repace '{file}' with", [FileFilterItem.Simple(ext), FileFilterItem.AllFiles]);
             if (r.Success)
             {
-                State.Viv.Directory[Path.GetFileName(r.Result).ToLower()] = await DialogService.RunOperation(p => File.ReadAllBytesAsync(r.Result));
+                State.Directory[Path.GetFileName(r.Result).ToLower()] = await DialogService.RunOperation(p => File.ReadAllBytesAsync(r.Result));
             }
         }
     }
@@ -217,10 +217,9 @@ public class VivMainViewModel : HostViewModelBase, IStatefulViewModel<VivMainSta
     {
         if (parameter is KeyValuePair<string, byte[]> { Key: { } file })
         {
-            if (await DialogService!.Ask($"Are you sure you want to remove '{file}'?"))
+            if (await DialogService!.Ask($"Remove '{file}'", $"Are you sure you want to remove '{file}'?"))
             {
-                State.Viv.Directory.Remove(file);
-                Notify(nameof(State));
+                State.Directory.Remove(file);
             }
         }
     }
@@ -232,7 +231,7 @@ public class VivMainViewModel : HostViewModelBase, IStatefulViewModel<VivMainSta
             bool ask = false;
             do
             {
-                switch (await DialogService!.AskYnc($"Do you want to save {State.FriendlyName}?"))
+                switch (await DialogService!.AskYnc("Unsaved changes", $"Do you want to save {State.FriendlyName}?"))
                 {
                     case true: ask = await DialogService.RunOperation(SaveVivAsync); break;
                     case null: navigation.Cancel(); break;

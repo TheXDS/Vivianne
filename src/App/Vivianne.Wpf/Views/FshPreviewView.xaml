@@ -78,9 +78,10 @@
                             <Slider x:Name="sldZoom" Minimum="1.0" Maximum="10.0" Value="{Binding ZoomLevel}" Margin="5" Width="100"/>
                             <TextBlock>Background:</TextBlock>
                             <ComboBox
-                            IsEditable="False"
-                            SelectedItem="{Binding Background, FallbackValue={x:Static vm:BackgroundType.Checkerboard}}"
-                            ItemsSource="{controls:EnumValProvider EnumType={x:Type vm:BackgroundType}}"/>
+                                TextBlock.Foreground="Black"
+                                IsEditable="False"
+                                SelectedItem="{Binding Background, FallbackValue={x:Static vm:BackgroundType.Checkerboard}}"
+                                ItemsSource="{controls:EnumValProvider EnumType={x:Type vm:BackgroundType}}"/>
                         </StackPanel>
                     </Border>
                 </Expander>

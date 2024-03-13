@@ -45,7 +45,7 @@ public class Gimx
     /// Gets the raw pixel data for this Gimx. Renderers should use a pixel
     /// format according to the <see cref="Magic"/> signature.
     /// </summary>
-    public byte[] PixelData { get; set; }
+    public byte[] PixelData { get; set; } = [];
 
     /// <summary>
     /// Gets the extra raw data that may exist after the pixel data.
@@ -60,5 +60,5 @@ public class Gimx
     /// Dashboard data in this space. Other GIMX files may include padding for
     /// alignment and/or buffering reasons.
     /// </remarks>
-    public byte[] Footer { get; set; }
+    public byte[] Footer { get; set; } = [];
 }

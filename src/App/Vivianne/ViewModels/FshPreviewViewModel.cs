@@ -133,7 +133,7 @@ public class FshPreviewViewModel : ViewModel
         var key = CurrentGimxId;
         if (key is not null)
         {
-            if (!await DialogService!.Ask($"Are you sure you want to remove '{key}' from the FSH?")) return;
+            if (!await DialogService!.Ask($"Remove '{CurrentGimxId}'", $"Are you sure you want to remove '{key}' from the FSH?")) return;
             Images.Remove(key);
             CurrentImage = Images.First().Value;
         }
@@ -151,6 +151,7 @@ public class FshPreviewViewModel : ViewModel
         var gimx = CurrentImage!;
         Images.Remove(CurrentGimxId);
         Images.Add(id.Result, gimx);
+        CurrentImage = gimx;
     }
 
     private async Task OnAddNew()
@@ -164,7 +165,7 @@ public class FshPreviewViewModel : ViewModel
         }
         var formatIndex = await DialogService.SelectOption("GIMX pixel formatIndex", "Select a pixel formatIndex for the new GIMX texture", Mappings.GimxToLabel.Values.ToArray());
         if (formatIndex < 0) return;
-        var r = await DialogService!.GetFileOpenPath($"Select a file to add as '{id.Result}'", FileFilters.CommonBitmapFormats);
+        var r = await DialogService!.GetFileOpenPath($"Add '{id.Result}'", $"Select a file to add as '{id.Result}'", FileFilters.CommonBitmapFormats);
         if (r.Success)
         {
             try
@@ -183,12 +184,13 @@ public class FshPreviewViewModel : ViewModel
 
     private async Task OnReplaceImage()
     {
-        var r = await DialogService!.GetFileOpenPath($"Select a file to replace the texture with", FileFilters.CommonBitmapFormats);
+        var r = await DialogService!.GetFileOpenPath($"Replace '{CurrentGimxId}'", $"Select a file to replace '{CurrentGimxId}' with", FileFilters.CommonBitmapFormats);
         if (r.Success)
         {
             try
             {
                 CurrentImage!.ReplaceWith(Image.FromFile(r.Result), _Fsh);
+                Notify(nameof(CurrentImage));
             }
             catch (Exception ex)
             {
