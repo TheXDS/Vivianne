@@ -36,11 +36,11 @@ public class FshSerializerTests
         ];
     }
 
-    private static FshTexture CreateTestFsh()
+    private static FshFile CreateTestFsh()
     {
-        return new FshTexture() { Images = { {"TEST", new Gimx()
+        return new FshFile() { Entries = { {"TEST", new FshBlob()
         {
-            Magic = (GimxFormat)0x7B,
+            Magic = (FshBlobFormat)0x7B,
             Width = 3,
             Height = 3,
             XRotation = 2,
@@ -55,17 +55,17 @@ public class FshSerializerTests
     [Test]
     public void Serializer_can_read_fsh()
     {
-        FshTexture expected = CreateTestFsh();
+        FshFile expected = CreateTestFsh();
         using var ms = CreateTestFshStream();
-        ISerializer<FshTexture> serializer = new FshSerializer();
+        ISerializer<FshFile> serializer = new FshSerializer();
 
-        FshTexture fsh = serializer.Deserialize(ms);
+        FshFile fsh = serializer.Deserialize(ms);
 
         Assert.Multiple(() =>
         {
-            Assert.That(fsh.Images, Has.Count.EqualTo(1));
-            Assert.That(fsh.Images.ContainsKey("TEST"));
-            var img = fsh.Images["TEST"];
+            Assert.That(fsh.Entries, Has.Count.EqualTo(1));
+            Assert.That(fsh.Entries.ContainsKey("TEST"));
+            var img = fsh.Entries["TEST"];
             Assert.That(img.Width, Is.EqualTo(3));
             Assert.That(img.Height, Is.EqualTo(3));
             Assert.That(img.XRotation, Is.EqualTo(2));
@@ -82,7 +82,7 @@ public class FshSerializerTests
     {
         var expected = CreateTestFshStream().ToArray();
         using var ms = new MemoryStream();
-        ISerializer<FshTexture> s = new FshSerializer();
+        ISerializer<FshFile> s = new FshSerializer();
 
         s.SerializeTo(CreateTestFsh(), ms);
 

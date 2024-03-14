@@ -6,7 +6,7 @@ using MC = TheXDS.MCART.Types.Color;
 namespace TheXDS.Vivianne.Extensions;
 
 /// <summary>
-/// Contains a series of extension methods for the <see cref="FshTexture"/>
+/// Contains a series of extension methods for the <see cref="FshFile"/>
 /// class.
 /// </summary>
 public static class FshExtensions
@@ -24,9 +24,9 @@ public static class FshExtensions
     /// <returns>
     /// An array of colors that represent the loaded color palette.
     /// </returns>
-    public static MC[]? GetPalette(this FshTexture fsh)
+    public static MC[]? GetPalette(this FshFile fsh)
     {
-        return fsh.Images.Values.FirstOrDefault(p => p.Magic == GimxFormat.Palette) is { } palette
+        return fsh.Entries.Values.FirstOrDefault(p => p.Magic == FshBlobFormat.Palette32) is { } palette
             ? ReadColors(palette.PixelData, palette.Width).ToArray()
             : null;
     }
@@ -73,10 +73,10 @@ public static class FshExtensions
     /// to identify a new GIMX texture inside the FSH file,
     /// <see langword="false"/> otherwise.
     /// </returns>
-    public static bool IsNewGimxIdInvalid(string? newId, FshTexture fsh, [NotNullWhen(true)] out string? errorMessage)
+    public static bool IsNewGimxIdInvalid(string? newId, FshFile fsh, [NotNullWhen(true)] out string? errorMessage)
     {
         if (IsGimxIdInvalid(newId, out errorMessage)) return true;
-        if (fsh.Images.ContainsKey(newId))
+        if (fsh.Entries.ContainsKey(newId))
         {
             errorMessage = "The specified ID is already in use.";
         }
@@ -89,7 +89,11 @@ public static class FshExtensions
         using var reader = new BinaryReader(ms);
         while (paletteSize-- > 0)
         {
-            yield return new MC(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+            var b = reader.ReadByte();
+            var g = reader.ReadByte();
+            var r = reader.ReadByte();
+            var a = reader.ReadByte();
+            yield return new MC(r, g, b, a);
         }
     }
 }

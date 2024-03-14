@@ -17,6 +17,35 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VivLib.Tests", "Tests\VivLi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vivianne", "App\Vivianne\Vivianne.csproj", "{EF91947E-F2BD-4C0A-80A5-9B1E8BEEEBDE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution items", "Solution items", "{AAF57B47-04C2-436C-91CF-CA1611C72A56}"
+	ProjectSection(SolutionItems) = preProject
+		..\LICENSE = ..\LICENSE
+		..\README.md = ..\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{C65EEDF9-0906-4C86-B4B6-CD54467C281A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{09298981-A223-4DB9-8B65-DAE30C4FA28B}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+		Directory.Build.targets = Directory.Build.targets
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Targets", "Targets", "{AC3B9F83-5BE3-4EF8-B881-99E8B2F47881}"
+	ProjectSection(SolutionItems) = preProject
+		..\BuildTargets\BuildPaths.props = ..\BuildTargets\BuildPaths.props
+		..\BuildTargets\Cleanup.targets = ..\BuildTargets\Cleanup.targets
+		..\BuildTargets\CompileOptions.targets = ..\BuildTargets\CompileOptions.targets
+		..\BuildTargets\PackageInfo.props = ..\BuildTargets\PackageInfo.props
+		..\BuildTargets\GlobalDirectives.props = ..\BuildTargets\GlobalDirectives.props
+		..\BuildTargets\PackageVersion.props = ..\BuildTargets\PackageVersion.props
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{7FDC379A-68DE-46ED-821E-9BB814F241F8}"
+	ProjectSection(SolutionItems) = preProject
+		..\docs\BUILDING.md = ..\docs\BUILDING.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,6 +77,10 @@ Global
 		{3F6EDE6B-5E18-47C9-9DCF-1EBB97EBCEB1} = {52FE2C49-C3CB-4395-8971-7173C28DF3D3}
 		{E620382E-1CA6-4F30-99AA-1D7B51843663} = {ABB69252-650F-44C2-84BA-FA9F0434CABB}
 		{EF91947E-F2BD-4C0A-80A5-9B1E8BEEEBDE} = {220AF92D-9C3B-4F85-83B7-737A97310A70}
+		{C65EEDF9-0906-4C86-B4B6-CD54467C281A} = {AAF57B47-04C2-436C-91CF-CA1611C72A56}
+		{09298981-A223-4DB9-8B65-DAE30C4FA28B} = {C65EEDF9-0906-4C86-B4B6-CD54467C281A}
+		{AC3B9F83-5BE3-4EF8-B881-99E8B2F47881} = {C65EEDF9-0906-4C86-B4B6-CD54467C281A}
+		{7FDC379A-68DE-46ED-821E-9BB814F241F8} = {AAF57B47-04C2-436C-91CF-CA1611C72A56}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {15D53ED9-24BB-437A-BDCA-C1DAAED01CCD}

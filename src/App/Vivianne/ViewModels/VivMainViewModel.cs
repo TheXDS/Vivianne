@@ -66,8 +66,8 @@ public class VivMainViewModel : HostViewModelBase, IStatefulViewModel<VivMainSta
 
     private static IViewModel CreateFshEditorViewModel(byte[] data, Action<byte[]> saveCallback)
     {
-        ISerializer<FshTexture> serializer = new FshSerializer();
-        void SaveFsh(FshTexture fsh) => saveCallback.Invoke(serializer.Serialize(fsh));
+        ISerializer<FshFile> serializer = new FshSerializer();
+        void SaveFsh(FshFile fsh) => saveCallback.Invoke(serializer.Serialize(fsh));
         return new FshEditorViewModel(serializer.Deserialize(data), SaveFsh);
     }
 

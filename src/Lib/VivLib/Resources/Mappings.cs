@@ -12,49 +12,84 @@ namespace TheXDS.Vivianne.Resources;
 public static class Mappings
 {
     private static readonly Rgb565ColorParser Rgb565 = new();
+#if EnableFullFshFormat
+    private static readonly Rgba16ColorParser Rgba1555 = new();
+#endif
 
     /// <summary>
-    /// Maps a <see cref="GimxFormat"/> value to a corresponding
+    /// Maps a <see cref="FshBlobFormat"/> value to a corresponding
     /// <see cref="PixelFormat"/> to use on drawing functions.
     /// </summary>
-    public static IReadOnlyDictionary<GimxFormat, PixelFormat> GimxToPixelFormat { get; } = new Dictionary<GimxFormat, PixelFormat>()
+    public static IReadOnlyDictionary<FshBlobFormat, PixelFormat> FshBlobToPixelFormat { get; } = new Dictionary<FshBlobFormat, PixelFormat>()
     {
-        { GimxFormat.Indexed8,  PixelFormat.Format8bppIndexed },
-        { GimxFormat.Rgb565,    PixelFormat.Format16bppRgb565 },
-        { GimxFormat.Argb32,    PixelFormat.Format32bppArgb },
+        { FshBlobFormat.Indexed8,   PixelFormat.Format8bppIndexed },
+        { FshBlobFormat.Rgb565,     PixelFormat.Format16bppRgb565 },
+        { FshBlobFormat.Argb32,     PixelFormat.Format32bppArgb },
+#if EnableFullFshFormat
+        { FshBlobFormat.Rgb24,      PixelFormat.Format24bppRgb },
+        { FshBlobFormat.Argb1555,   PixelFormat.Format16bppArgb1555 },
+#endif
     }.AsReadOnly();
 
     /// <summary>
-    /// Maps a <see cref="GimxFormat"/> value to a corresponding label that
+    /// Maps a <see cref="FshBlobFormat"/> value to a corresponding label that
     /// describes the GIMX pixel format.
     /// </summary>
-    public static IReadOnlyDictionary<GimxFormat, string> GimxToLabel { get; } = new Dictionary<GimxFormat, string>()
+    public static IReadOnlyDictionary<FshBlobFormat, string> FshBlobToLabel { get; } = new Dictionary<FshBlobFormat, string>()
     {
-        { GimxFormat.Indexed8,  "8-bit color (256 colors) with palette" },
-        { GimxFormat.Rgb565,    "16-bit color (RGB565), no alpha" },
-        { GimxFormat.Argb32,    "24-bit color with 8-bit alpha channel (ARGB32)" },
+        { FshBlobFormat.Palette32,      "32-bit color palette" },
+        { FshBlobFormat.Indexed8,       "8-bit color (256 colors) with palette" },
+        { FshBlobFormat.Rgb565,         "16-bit color (RGB565), no alpha" },
+        { FshBlobFormat.Argb32,         "24-bit color with 8-bit alpha channel (ARGB32)" },
+#if EnableFullFshFormat
+        { FshBlobFormat.Palette24Dos,   "24-bit color palette, DOS variant" },
+        { FshBlobFormat.Palette24,      "24-bit color palette" },
+        { FshBlobFormat.Palette16Nfs5,  "16-bit color palette, NFS5 variant" },
+        { FshBlobFormat.Palette16,      "16-bit color palette" },
+        { FshBlobFormat.Rgb24,          "24-bit color without alpha (RGB24)" },
+        { FshBlobFormat.Argb1555,       "16-bit Color with 1 bit alpha channel (ARGB1555)" },
+        { FshBlobFormat.Dxt3,           "DXT3 compressed texture" },
+        { FshBlobFormat.Dxt4,           "DXT4 compressed texture" },
+#endif
     }.AsReadOnly();
 
     /// <summary>
-    /// Maps a <see cref="GimxFormat"/> value to a corresponding integer value
+    /// Maps a <see cref="FshBlobFormat"/> value to a corresponding integer value
     /// that indicates the number of bytes that conform a single pixel.
     /// </summary>
-    public static IReadOnlyDictionary<GimxFormat, byte> GimxBytesPerPixel { get; } = new Dictionary<GimxFormat, byte>()
+    public static IReadOnlyDictionary<FshBlobFormat, byte> FshBlobBytesPerPixel { get; } = new Dictionary<FshBlobFormat, byte>()
     {
-        {GimxFormat.Palette,    4}, // 32-bit 256 Color palette
-        {GimxFormat.Indexed8,   1}, // 1 byte per pixel (256 colors)
-        {GimxFormat.Rgb565,     2}, // 2 bytes per pixel (16 bit color).
-        {GimxFormat.Argb32,     4}, // 4 bytes per pixel (RGBA32)
+        { FshBlobFormat.Palette32,     4 },
+        { FshBlobFormat.Indexed8,      1 },
+        { FshBlobFormat.Rgb565,        2 },
+        { FshBlobFormat.Argb32,        4 },
+#if EnableFullFshFormat
+        { FshBlobFormat.Palette24Dos,  3 },
+        { FshBlobFormat.Palette24,     3 },
+        { FshBlobFormat.Palette16Nfs5, 2 },
+        { FshBlobFormat.Palette16,     2 },
+        { FshBlobFormat.Rgb24,         3 },
+        { FshBlobFormat.Argb1555,      2 },
+#endif
     }.AsReadOnly();
 
     /// <summary>
-    /// Maps a <see cref="GimxFormat"/> value to a corresponding delegate that
+    /// Maps a <see cref="FshBlobFormat"/> value to a corresponding delegate that
     /// can be used to convert a pixel into a byte array.
     /// </summary>
-    public static IReadOnlyDictionary<GimxFormat, Func<DC, byte[]>> GimxToPixelWriter { get; } = new Dictionary<GimxFormat, Func<DC, byte[]>>()
+    /// <remarks>
+    /// This dictionary intentionally ommits <see cref="FshBlobFormat.Indexed8"/>
+    /// because pixel values for this format will depend on a color palette
+    /// which is not be available on the same data stream.
+    /// </remarks>
+    public static IReadOnlyDictionary<FshBlobFormat, Func<DC, byte[]>> FshBlobToPixelWriter { get; } = new Dictionary<FshBlobFormat, Func<DC, byte[]>>()
     {
-        { GimxFormat.Palette,   c => [c.B, c.G, c.R, c.A] },
-        { GimxFormat.Rgb565,    c => BitConverter.GetBytes(Rgb565.To(c)) },
-        { GimxFormat.Argb32,    c => [c.B, c.G, c.R, c.A] },
+        { FshBlobFormat.Palette32, c => [c.B, c.G, c.R, c.A] },
+        { FshBlobFormat.Rgb565,    c => BitConverter.GetBytes(Rgb565.To(c)) },
+        { FshBlobFormat.Argb32,    c => [c.B, c.G, c.R, c.A] },
+#if EnableFullFshFormat
+        { FshBlobFormat.Rgb24,     c => [c.B, c.G, c.R] },
+        { FshBlobFormat.Argb1555,  c => BitConverter.GetBytes(Rgba1555.To(c)) },
+#endif
     }.AsReadOnly();
 }

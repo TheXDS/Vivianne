@@ -6,7 +6,7 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="System.Drawing.Common" Version="8.0.2" />
-		<PackageReference Include="TheXDS.MCART" Version="0.17.2-alpha.15" />
-		<PackageReference Include="TheXDS.MCART.Coloring" Version="0.17.2-alpha.15" />
+		<PackageReference Include="TheXDS.MCART" Version="0.17.2-alpha.16" />
+		<PackageReference Include="TheXDS.MCART.Coloring" Version="0.17.2-alpha.16" />
 	</ItemGroup>
 </Project>

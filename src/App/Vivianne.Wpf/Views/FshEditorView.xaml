@@ -6,28 +6,80 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="clr-namespace:TheXDS.Vivianne.Controls"
     xmlns:vc="clr-namespace:TheXDS.Vivianne.ValueConverters"
-    xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne" xmlns:gn="http://schemas.thexds.local/ganymede"
+    xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne"
+    xmlns:mcart="http://schemas.thexds.local/mcart"
     d:DataContext="{d:DesignInstance Type=vm:FshEditorViewModel}"
     mc:Ignorable="d"
     d:DesignWidth="400" d:DesignHeight="300">
     <UserControl.Resources>
-        <vc:FshImageConverter x:Key="fsh2img"/>
         <vc:ByteCountConverter x:Key="bc2str"/>
-        <vc:GimxFormatLabelConverter x:Key="gimx2str"/>
+        <vc:FshBlobFormatLabelConverter x:Key="gimx2str"/>
         <vc:GimxFooterIdentifierConverter x:Key="gimxf2str"/>
         <vc:BackgroundToBrushConverter x:Key="bg2b"/>
+        <mcart:BooleanToInvVisibilityConverter x:Key="b2invV"/>
+        <BooleanToVisibilityConverter x:Key="b2v"/>
+        <mcart:BooleanInverter x:Key="binv"/>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <ComboBox
-            IsEditable="False"
-            ItemsSource="{Binding Images, Mode=OneWay}"
-            DisplayMemberPath="Key"
-            SelectedValuePath="Value"
-            SelectedValue="{Binding CurrentImage}"/>
+        <Border Background="#404040">
+            <DockPanel Margin="10">
+                <DockPanel.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="Margin" Value="10,0"/>
+                    </Style>
+                    <Style TargetType="Separator">
+                        <Setter Property="LayoutTransform">
+                            <Setter.Value>
+                                <RotateTransform Angle="90"/>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Margin" Value="10,0"/>
+                    </Style>
+                </DockPanel.Resources>
+                <CheckBox x:Name="chkEdit" Style="{StaticResource ToggleSwitch}" IsEnabled="{Binding UnsavedChanges, Converter={StaticResource binv}}" VerticalContentAlignment="Center">
+                    <CheckBox.Content>
+                        <TextBlock Text="Show edit controls"/>
+                    </CheckBox.Content>
+                </CheckBox>
+                <Separator/>
+                <ComboBox
+                    VerticalAlignment="Center"
+                    IsEditable="False"
+                    ItemsSource="{Binding Images, Mode=OneWay}"
+                    DisplayMemberPath="Key"
+                    SelectedValuePath="Value"
+                    SelectedValue="{Binding CurrentImage}"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <UniformGrid Visibility="{Binding UnsavedChanges, Converter={StaticResource b2v}}" Rows="1">
+                        <Button
+                            Command="{Binding SaveChangesCommand}"                           
+                            VerticalAlignment="Center"
+                            Padding="10,2"
+                            Content="Save"/>
+                        <Button
+                            Command="{Binding SaveChangesCommand}"
+                            VerticalAlignment="Center"
+                            Padding="10,2"
+                            Content="Discard"/>
+                    </UniformGrid>
+                    <Separator Visibility="{Binding UnsavedChanges, Converter={StaticResource b2v}}"/>
+                    <TextBlock>Zoom: <Run Text="{Binding ZoomLevel, Mode=OneWay}"/></TextBlock>
+                    <Slider x:Name="sldZoom" Minimum="1.0" Maximum="10.0" Value="{Binding ZoomLevel}" Margin="5" Width="100"/>
+                    <TextBlock>Background:</TextBlock>
+                    <ComboBox
+                        VerticalAlignment="Center"
+                        IsEditable="False"
+                        SelectedItem="{Binding Background, FallbackValue={x:Static vm:BackgroundType.Checkerboard}}"
+                        ItemsSource="{controls:EnumValProvider EnumType={x:Type vm:BackgroundType}}"/>
+                </StackPanel>
+            </DockPanel>
+        </Border>
         <ScrollViewer
             x:Name="scvContent"
             VerticalScrollBarVisibility="Auto"
@@ -38,23 +90,33 @@
                 Cursor="ScrollAll"
                 HorizontalAlignment="Center" VerticalAlignment="Center"
                 Background="{Binding Background, Converter={StaticResource bg2b}, Mode=OneWay}">
-                <Image Stretch="None" Source="{Binding CurrentImage, Mode=OneWay, Converter={StaticResource fsh2img}}">
+                <Image Stretch="None">
                     <Image.LayoutTransform>
                         <ScaleTransform ScaleX="{Binding ZoomLevel}" ScaleY="{Binding ZoomLevel}"/>
                     </Image.LayoutTransform>
+                    <Image.Source>
+                        <MultiBinding>
+                            <MultiBinding.Converter>
+                                <vc:FshImageConverter/>
+                            </MultiBinding.Converter>
+                            <Binding Path="CurrentImage" Mode="OneWay"/>
+                            <Binding Path="Palette" Mode="OneWay"/>
+                        </MultiBinding>
+                    </Image.Source>
                 </Image>
             </Border>
         </ScrollViewer>
-        <StackPanel HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top">
+        <StackPanel Visibility="{Binding IsChecked, ElementName=chkEdit, Converter={StaticResource b2v}}" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="1" Margin="5">
             <StackPanel.Resources>
                 <Style TargetType="Expander">
                     <Setter Property="ExpandDirection" Value="Down"/>
                     <Setter Property="TextBlock.Foreground" Value="White"/>
                     <Setter Property="HorizontalAlignment" Value="Left"/>
                     <Setter Property="VerticalAlignment" Value="Top"/>
+                    <Setter Property="IsExpanded" Value="True"/>
                 </Style>
                 <Style TargetType="Border">
-                    <Setter Property="Background" Value="#B0000000"/>
+                    <Setter Property="Background" Value="#E0000000"/>
                     <Setter Property="HorizontalAlignment" Value="Left"/>
                     <Setter Property="Margin" Value="10"/>
                 </Style>
@@ -71,28 +133,7 @@
                     <Setter Property="Margin" Value="5"/>
                 </Style>
             </StackPanel.Resources>
-            <Expander>
-                <Expander.Header>
-                    <TextBlock Text="View options">
-                        <TextBlock.Effect>
-                            <DropShadowEffect/>
-                        </TextBlock.Effect>
-                    </TextBlock>
-                </Expander.Header>
-                <Border>
-                    <StackPanel Margin="5">
-                        <TextBlock>Zoom: <Run Text="{Binding ZoomLevel, Mode=OneWay}"/></TextBlock>
-                        <Slider x:Name="sldZoom" Minimum="1.0" Maximum="10.0" Value="{Binding ZoomLevel}" Margin="5" Width="100"/>
-                        <TextBlock>Background:</TextBlock>
-                        <ComboBox
-                                TextBlock.Foreground="Black"
-                                IsEditable="False"
-                                SelectedItem="{Binding Background, FallbackValue={x:Static vm:BackgroundType.Checkerboard}}"
-                                ItemsSource="{controls:EnumValProvider EnumType={x:Type vm:BackgroundType}}"/>
-                    </StackPanel>
-                </Border>
-            </Expander>
-            <Expander>
+            <Expander Visibility="{Binding IsReadOnly, Converter={StaticResource b2invV}}">
                 <Expander.Header>
                     <TextBlock Text="FSH options">
                         <TextBlock.Effect>
@@ -102,14 +143,19 @@
                 </Expander.Header>
                 <Border>
                     <StackPanel>
-                        <Button Command="{Binding AddNewCommand, Mode=OneWay}">Add GIMX...</Button>
-                        <Button Command="{Binding AddNewCommand, Mode=OneWay}">Dash editor...</Button>
+                        <Button
+                            IsEnabled="{Binding IsReadOnly, Converter={StaticResource binv}}" 
+                            Command="{Binding AddNewCommand, Mode=OneWay}">Add GIMX...</Button>
+                        <Button
+                            IsEnabled="{Binding IsReadOnly, Converter={StaticResource binv}}"
+                            Visibility="{Binding IsDash, Converter={StaticResource b2v}}"
+                            Command="{Binding AddNewCommand, Mode=OneWay}">Dash editor...</Button>
                     </StackPanel>
                 </Border>
             </Expander>
             <Expander>
                 <Expander.Header>
-                    <TextBlock Text="GIMX Details">
+                    <TextBlock Text="FSH blob details">
                         <TextBlock.Effect>
                             <DropShadowEffect/>
                         </TextBlock.Effect>
@@ -128,7 +174,7 @@
             </Expander>
             <Expander>
                 <Expander.Header>
-                    <TextBlock Text="GIMX Options">
+                    <TextBlock Text="FSH blob options">
                         <TextBlock.Effect>
                             <DropShadowEffect/>
                         </TextBlock.Effect>
@@ -137,23 +183,35 @@
                 <Border>
                     <StackPanel>
                         <Button Command="{Binding ExportCommand, Mode=OneWay}">Export...</Button>
-                        <Button Command="{Binding ReplaceImageCommand, Mode=OneWay}">Replace...</Button>
-                        <Button Command="{Binding RemoveCurrentCommand, Mode=OneWay}">Remove</Button>
-                        <Button Command="{Binding RenameCurrentCommand, Mode=OneWay}">Rename</Button>
+                        <Button
+                                Visibility="{Binding IsReadOnly, Converter={StaticResource b2invV}}"
+                                Command="{Binding ReplaceImageCommand, Mode=OneWay}">Replace...</Button>
+                        <Button
+                                Visibility="{Binding IsReadOnly, Converter={StaticResource b2invV}}"
+                                Command="{Binding RemoveCurrentCommand, Mode=OneWay}">Remove</Button>
+                        <Button
+                                Visibility="{Binding IsReadOnly, Converter={StaticResource b2invV}}"
+                                Command="{Binding RenameCurrentCommand, Mode=OneWay}">Rename</Button>
                     </StackPanel>
                 </Border>
             </Expander>
+            <!--<Expander>
+                <Expander.Header>
+                    <TextBlock Text="FSH blob footer">
+                        <TextBlock.Effect>
+                            <DropShadowEffect/>
+                        </TextBlock.Effect>
+                    </TextBlock>
+                </Expander.Header>
+                <Border>
+                    <StackPanel>
+                        <Button Command="{Binding RenameCurrentCommand, Mode=OneWay}">Add..</Button>
+                        <Button Command="{Binding ExportCommand, Mode=OneWay}">Export...</Button>
+                        <Button Command="{Binding ReplaceImageCommand, Mode=OneWay}">Replace...</Button>
+                        <Button Command="{Binding RemoveCurrentCommand, Mode=OneWay}">Remove</Button>
+                    </StackPanel>
+                </Border>
+            </Expander>-->
         </StackPanel>
-
-        <!--<Expander Header="GIMX Footer">
-            <Border>
-                <StackPanel>
-                    <Button Command="{Binding RenameCurrentCommand, Mode=OneWay}">Add..</Button>
-                    <Button Command="{Binding ExportCommand, Mode=OneWay}">Export...</Button>
-                    <Button Command="{Binding ReplaceImageCommand, Mode=OneWay}">Replace...</Button>
-                    <Button Command="{Binding RemoveCurrentCommand, Mode=OneWay}">Remove</Button>
-                </StackPanel>
-            </Border>
-        </Expander>-->
     </Grid>
 </UserControl>

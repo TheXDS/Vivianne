@@ -1,48 +1,48 @@
 ﻿namespace TheXDS.Vivianne.Models;
 
 /// <summary>
-/// Represents a single Gimx image inside a FSH file.
+/// Represents a single FshBlob image inside a FSH file.
 /// </summary>
-public class Gimx
+public class FshBlob
 {
     /// <summary>
-    /// Gets the magic signature of this Gimx blob, which determines its pixel
+    /// Gets the magic signature of this FshBlob blob, which determines its pixel
     /// format.
     /// </summary>
-    public GimxFormat Magic { get; set; }
+    public FshBlobFormat Magic { get; set; }
 
     /// <summary>
-    /// Gets the Gimx blob width, in pixels.
+    /// Gets the FshBlob blob width, in pixels.
     /// </summary>
     public ushort Width { get; set; }
 
     /// <summary>
-    /// Gets the Gimx blob height, in pixels.
+    /// Gets the FshBlob blob height, in pixels.
     /// </summary>
     public ushort Height { get; set; }
 
     /// <summary>
-    /// Gets the Gimx rotation axis X coordinate.
+    /// Gets the FshBlob rotation axis X coordinate.
     /// </summary>
     public ushort XRotation { get; set; }
 
     /// <summary>
-    /// Gets the Gimx rotation axis Y coordinate.
+    /// Gets the FshBlob rotation axis Y coordinate.
     /// </summary>
     public ushort YRotation { get; set; }
 
     /// <summary>
-    /// Gets the Gimx X position coordinate.
+    /// Gets the FshBlob X position coordinate.
     /// </summary>
     public ushort XPosition { get; set; }
 
     /// <summary>
-    /// Gets the Gimx Y position coordinate.
+    /// Gets the FshBlob Y position coordinate.
     /// </summary>
     public ushort YPosition { get; set; }
 
     /// <summary>
-    /// Gets the raw pixel data for this Gimx. Renderers should use a pixel
+    /// Gets the raw pixel data for this FshBlob. Renderers should use a pixel
     /// format according to the <see cref="Magic"/> signature.
     /// </summary>
     public byte[] PixelData { get; set; } = [];

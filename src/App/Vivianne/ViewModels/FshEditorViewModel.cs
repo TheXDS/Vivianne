@@ -7,13 +7,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TheXDS.Ganymede.Helpers;
+using TheXDS.Ganymede.Models;
 using TheXDS.Ganymede.Types.Base;
 using TheXDS.MCART.Types;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Extensions;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Resources;
-using TheXDS.Vivianne.Serializers;
+using MC = TheXDS.MCART.Types.Color;
 
 namespace TheXDS.Vivianne.ViewModels;
 
@@ -23,14 +24,15 @@ namespace TheXDS.Vivianne.ViewModels;
 /// <remarks>
 /// QFS files can be decompressed and shown as FSH files with this ViewModel.
 /// </remarks>
-public class FshEditorViewModel : ViewModel
+public class FshEditorViewModel : ViewModel, IViewModel
 {
-    private readonly FshTexture _Fsh;
-    private readonly Action<FshTexture>? saveCallback;
+    private readonly FshFile _Fsh;
+    private readonly Action<FshFile>? saveCallback;
     private BackgroundType _Background;
-    private Gimx? _CurrentImage;
-    private double _ZoomLevel = 1.0;
+    private FshBlob? _CurrentImage;
     private bool _UnsavedChanges;
+    private double _ZoomLevel = 1.0;
+    private MC[]? _palette;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="FshEditorViewModel"/>
@@ -38,7 +40,7 @@ public class FshEditorViewModel : ViewModel
     /// </summary>
     /// <param name="fsh">FSH file to preview.</param>
     /// <param name="saveCallback">Save callback to invoke when persisting changes. If set to <see langword="null"/>, this ViewModel will function in read-only mode.</param>
-    public FshEditorViewModel(FshTexture fsh, Action<FshTexture>? saveCallback = null)
+    public FshEditorViewModel(FshFile fsh, Action<FshFile>? saveCallback = null)
     {
         var cb = CommandBuilder.For(this);
         AddNewCommand = cb.BuildSimple(OnAddNew);
@@ -49,8 +51,8 @@ public class FshEditorViewModel : ViewModel
         SaveChangesCommand = cb.BuildObserving(OnSaveChanges).ListensToCanExecute(vm => vm.UnsavedChanges).Build();
         _Fsh = fsh;
         this.saveCallback = saveCallback;
-        Images = new ObservableDictionaryWrap<string, Gimx>(_Fsh.Images);
-        CurrentImage = _Fsh.Images.Values.FirstOrDefault();
+        Images = new ObservableDictionaryWrap<string, FshBlob>(_Fsh.Entries);
+        CurrentImage = _Fsh.Entries.Values.FirstOrDefault();
     }
 
     /// <summary>
@@ -65,7 +67,7 @@ public class FshEditorViewModel : ViewModel
     /// <summary>
     /// Gets or sets a reference to the GIMX blob currently on display.
     /// </summary>
-    public Gimx? CurrentImage
+    public FshBlob? CurrentImage
     {
         get => _CurrentImage;
         set => Change(ref _CurrentImage, value);
@@ -92,7 +94,24 @@ public class FshEditorViewModel : ViewModel
     /// <summary>
     /// Gets a value that indicates if this FSH file contains a car dashboard.
     /// </summary>
-    public bool IsDash => Images.Count > 2 && Images.TryGetValue("0000", out Gimx? dashGimx) && dashGimx.Footer.Length == 104;
+    public bool IsDash => Images.Count > 2 && Images.TryGetValue("0000", out FshBlob? dashGimx) && dashGimx.Footer.Length == 104;
+
+    /// <summary>
+    /// Gets a color palette from the FSH file if one exists, or sets a global
+    /// palette to use when previewing GIMX textures with a
+    /// <see cref="FshBlobFormat.Indexed8"/> pixel format.
+    /// </summary>
+    /// <remarks>
+    /// Changing this value will not write to the FSH file. The palette will be
+    /// used only for previewing textures. If you want to write a palette
+    /// locally, add a new GIMX with a pixel format that corresponds to a valid
+    /// palette.
+    /// </remarks>
+    public MC[]? Palette
+    { 
+        get => _palette ?? _Fsh.GetPalette();
+        set => Change(ref _palette, value);
+    }
 
     /// <summary>
     /// Gets a value that indicates if this ViewModel was created in read-only mode.
@@ -107,7 +126,7 @@ public class FshEditorViewModel : ViewModel
     /// <summary>
     /// Gets a dictionary with the contents of the FSH file.
     /// </summary>
-    public IDictionary<string, Gimx> Images { get; }
+    public IDictionary<string, FshBlob> Images { get; }
 
     /// <summary>
     /// Gets a reference to the command used to add a new GIMX to the FSH file.
@@ -148,8 +167,8 @@ public class FshEditorViewModel : ViewModel
         if (data is null) return;
         try
         {
-            var newGimx = new Gimx() { Magic = Mappings.GimxToLabel.Keys.ToArray()[data.Value.formatIndex] };
-            newGimx.ReplaceWith(Image.FromFile(data.Value.file), _Fsh);
+            var newGimx = new FshBlob() { Magic = Mappings.FshBlobToLabel.Keys.ToArray()[data.Value.formatIndex] };
+            newGimx.ReplaceWith(Image.FromFile(data.Value.file), Palette ?? new MC[256]);
             Images.Add(data.Value.id, newGimx);
             CurrentImage = newGimx;
             UnsavedChanges = true;
@@ -207,7 +226,7 @@ public class FshEditorViewModel : ViewModel
         {
             try
             {
-                CurrentImage!.ReplaceWith(Image.FromFile(r.Result), _Fsh);
+                CurrentImage!.ReplaceWith(Image.FromFile(r.Result), Palette ?? new MC[256]);
                 UnsavedChanges = true;
                 Notify(nameof(CurrentImage));
             }
@@ -229,9 +248,9 @@ public class FshEditorViewModel : ViewModel
         bool IsGimxInvalid(string? id, [NotNullWhen(true)]out string? errorMessage) => FshExtensions.IsNewGimxIdInvalid(id, _Fsh, out errorMessage);
         IInputItemDescriptor[] inputs =
         [
-            new InputItemDescriptor<string>(d => d.GetFileOpenPath("Add GIMX", "Select a file to add as a new GIMX texture")!),
-            new InputItemDescriptor<string>(d => d.GetInputText("GIMX ID", "Enter the ID to use for the new GIMX texture", InferNewGimxName()), IsGimxInvalid),
-            new InputItemDescriptor<int>(d => d.SelectOption("GIMX pixel formatIndex", "Select a pixel formatIndex for the new GIMX texture", Mappings.GimxToLabel.Values.ToArray()))
+            new InputItemDescriptor<string>(d => d.GetFileOpenPath("Add texture", "Select a file to add as a new texture")!),
+            new InputItemDescriptor<string>(d => d.GetInputText("Blob ID", "Enter the ID to use for the new texture", InferNewGimxName()), IsGimxInvalid),
+            new InputItemDescriptor<int>(d => d.SelectOption("Blob pixel format", "Select a pixel format for the new texture", Mappings.FshBlobToLabel.Values.ToArray()))
         ];
         return await DialogService!.AskSequentially(inputs) is { } data ? ((string)data[0], (string)data[1], (int)data[2]) : null;
     }
@@ -241,8 +260,20 @@ public class FshEditorViewModel : ViewModel
         foreach (var i in Enumerable.Range(0, 10000))
         {
             var n = i.ToString("0000");
-            if (!_Fsh.Images.ContainsKey(n)) return n;
+            if (!_Fsh.Entries.ContainsKey(n)) return n;
         }
         return string.Empty;
+    }
+
+    async Task IViewModel.OnNavigateBack(CancelFlag navigation)
+    {
+        if (UnsavedChanges)
+        {
+            switch (await DialogService!.AskYnc("Unsaved changes", $"Do you want to save {Title}?"))
+            {
+                case true: OnSaveChanges(); break;
+                case null: navigation.Cancel(); break;
+            }
+        }
     }
 }
