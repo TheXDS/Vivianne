@@ -20,8 +20,8 @@ public static class Mappings
     public static IReadOnlyDictionary<GimxFormat, PixelFormat> GimxToPixelFormat { get; } = new Dictionary<GimxFormat, PixelFormat>()
     {
         { GimxFormat.Indexed8,  PixelFormat.Format8bppIndexed },
-        { GimxFormat.Bgr565,    PixelFormat.Format16bppRgb565 },
-        { GimxFormat.Bgra32,    PixelFormat.Format32bppArgb },
+        { GimxFormat.Rgb565,    PixelFormat.Format16bppRgb565 },
+        { GimxFormat.Argb32,    PixelFormat.Format32bppArgb },
     }.AsReadOnly();
 
     /// <summary>
@@ -30,9 +30,9 @@ public static class Mappings
     /// </summary>
     public static IReadOnlyDictionary<GimxFormat, string> GimxToLabel { get; } = new Dictionary<GimxFormat, string>()
     {
-        { GimxFormat.Indexed8,  "8-bit color (256 colors)" },
-        { GimxFormat.Bgr565,    "16-bit color (BGR565)" },
-        { GimxFormat.Bgra32,    "24-bit color with 8-bit alpha channel (RGBA32)" },
+        { GimxFormat.Indexed8,  "8-bit color (256 colors) with palette" },
+        { GimxFormat.Rgb565,    "16-bit color (RGB565), no alpha" },
+        { GimxFormat.Argb32,    "24-bit color with 8-bit alpha channel (ARGB32)" },
     }.AsReadOnly();
 
     /// <summary>
@@ -43,8 +43,8 @@ public static class Mappings
     {
         {GimxFormat.Palette,    4}, // 32-bit 256 Color palette
         {GimxFormat.Indexed8,   1}, // 1 byte per pixel (256 colors)
-        {GimxFormat.Bgr565,     2}, // 2 bytes per pixel (16 bit color).
-        {GimxFormat.Bgra32,     4}, // 4 bytes per pixel (RGBA32)
+        {GimxFormat.Rgb565,     2}, // 2 bytes per pixel (16 bit color).
+        {GimxFormat.Argb32,     4}, // 4 bytes per pixel (RGBA32)
     }.AsReadOnly();
 
     /// <summary>
@@ -54,7 +54,7 @@ public static class Mappings
     public static IReadOnlyDictionary<GimxFormat, Func<DC, byte[]>> GimxToPixelWriter { get; } = new Dictionary<GimxFormat, Func<DC, byte[]>>()
     {
         { GimxFormat.Palette,   c => [c.B, c.G, c.R, c.A] },
-        { GimxFormat.Bgr565,    c => BitConverter.GetBytes(Rgb565.To(c)) },
-        { GimxFormat.Bgra32,    c => [c.B, c.G, c.R, c.A] },
+        { GimxFormat.Rgb565,    c => BitConverter.GetBytes(Rgb565.To(c)) },
+        { GimxFormat.Argb32,    c => [c.B, c.G, c.R, c.A] },
     }.AsReadOnly();
 }

@@ -42,8 +42,8 @@ public class VivMainViewModel : HostViewModelBase, IStatefulViewModel<VivMainSta
         { ".gif", CreateTexturePreviewViewModel },
 
         // FSH/QFS need to be properly decoded before displaying - do not use TexturePreviewViewModel.
-        { ".fsh", CreateFshPreviewViewModel },
-        { ".qfs", CreateQfsPreviewViewModel },
+        { ".fsh", CreateFshEditorViewModel },
+        { ".qfs", CreateQfsEditorViewModel },
 
         { ".bri", CreateFeDataPreviewViewModel },
         { ".eng", CreateFeDataPreviewViewModel },
@@ -64,17 +64,17 @@ public class VivMainViewModel : HostViewModelBase, IStatefulViewModel<VivMainSta
         return new TexturePreviewViewModel(data);
     }
 
-    private static IViewModel CreateFshPreviewViewModel(byte[] data, Action<byte[]> _)
+    private static IViewModel CreateFshEditorViewModel(byte[] data, Action<byte[]> saveCallback)
     {
-        using var ms = new MemoryStream(data);
-        return new FshPreviewViewModel(new FshSerializer().Deserialize(ms)) { Title = ""};
+        ISerializer<FshTexture> serializer = new FshSerializer();
+        void SaveFsh(FshTexture fsh) => saveCallback.Invoke(serializer.Serialize(fsh));
+        return new FshEditorViewModel(serializer.Deserialize(data), SaveFsh);
     }
 
-    private static IViewModel CreateQfsPreviewViewModel(byte[] data, Action<byte[]> _)
+    private static IViewModel CreateQfsEditorViewModel(byte[] data, Action<byte[]> saveCallback)
     {
-        var uncompressed = QfsCodec.Decompress(data);
-        using var ms = new MemoryStream(uncompressed);
-        return new FshPreviewViewModel(new FshSerializer().Deserialize(ms));
+        void CompressBack(byte[] data) => saveCallback.Invoke(QfsCodec.Compress(data));
+        return CreateFshEditorViewModel(QfsCodec.Decompress(data), CompressBack);
     }
 
     private VivMainState state = null!;

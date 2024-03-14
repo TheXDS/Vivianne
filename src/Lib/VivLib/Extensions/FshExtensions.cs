@@ -11,10 +11,10 @@ namespace TheXDS.Vivianne.Extensions;
 /// </summary>
 public static class FshExtensions
 {
-    private static readonly IEnumerable<(Func<string, bool> FailsValidation, string ErrorMessage)> GimxIdValidationRules = [
+    private static readonly IEnumerable<(Func<string?, bool> FailsValidation, string ErrorMessage)> GimxIdValidationRules = [
         (p => p.IsEmpty(), "FSH requires GIMX textures to include a 4 character ID."),
-        (p => !p.ToLowerInvariant().All("abcdefghijklmnopqrstuvwxyz1234567890".Contains), "GIMX ID must include letters and/or digits only."),
-        (p => p.Length != 4, "GIMX ID length mismatch. Please specify a 4 character long ID."),
+        (p => !p!.ToLowerInvariant().All("abcdefghijklmnopqrstuvwxyz1234567890".Contains), "GIMX ID must include letters and/or digits only."),
+        (p => p!.Length != 4, "GIMX ID length mismatch. Please specify a 4 character long ID."),
     ];
 
     /// <summary>
@@ -43,7 +43,7 @@ public static class FshExtensions
     /// <see langword="true"/> if the string is a valid GIMX ID,
     /// <see langword="false"/> otherwise.
     /// </returns>
-    public static bool IsGimxIdInvalid(string id, [NotNullWhen(true)] out string? errorMessage)
+    public static bool IsGimxIdInvalid(string? id, [NotNullWhen(true)] out string? errorMessage)
     {
         foreach (var (FailsValidation, ErrorMessage) in GimxIdValidationRules)
         {
@@ -73,7 +73,7 @@ public static class FshExtensions
     /// to identify a new GIMX texture inside the FSH file,
     /// <see langword="false"/> otherwise.
     /// </returns>
-    public static bool IsNewGimxIdInvalid(string newId, FshTexture fsh, [NotNullWhen(true)] out string? errorMessage)
+    public static bool IsNewGimxIdInvalid(string? newId, FshTexture fsh, [NotNullWhen(true)] out string? errorMessage)
     {
         if (IsGimxIdInvalid(newId, out errorMessage)) return true;
         if (fsh.Images.ContainsKey(newId))

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
@@ -12,6 +13,7 @@ using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Extensions;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Resources;
+using TheXDS.Vivianne.Serializers;
 
 namespace TheXDS.Vivianne.ViewModels;
 
@@ -21,28 +23,32 @@ namespace TheXDS.Vivianne.ViewModels;
 /// <remarks>
 /// QFS files can be decompressed and shown as FSH files with this ViewModel.
 /// </remarks>
-public class FshPreviewViewModel : ViewModel
+public class FshEditorViewModel : ViewModel
 {
     private readonly FshTexture _Fsh;
+    private readonly Action<FshTexture>? saveCallback;
     private BackgroundType _Background;
     private Gimx? _CurrentImage;
     private double _ZoomLevel = 1.0;
+    private bool _UnsavedChanges;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="FshPreviewViewModel"/>
+    /// Initializes a new instance of the <see cref="FshEditorViewModel"/>
     /// class.
     /// </summary>
     /// <param name="fsh">FSH file to preview.</param>
-    public FshPreviewViewModel(FshTexture fsh)
+    /// <param name="saveCallback">Save callback to invoke when persisting changes. If set to <see langword="null"/>, this ViewModel will function in read-only mode.</param>
+    public FshEditorViewModel(FshTexture fsh, Action<FshTexture>? saveCallback = null)
     {
         var cb = CommandBuilder.For(this);
-
         AddNewCommand = cb.BuildSimple(OnAddNew);
         ExportCommand = cb.BuildObserving(OnExport).CanExecuteIfNotNull(p => p.CurrentImage).Build();
         ReplaceImageCommand = cb.BuildObserving(OnReplaceImage).CanExecuteIfNotNull(p => p.CurrentImage).Build();
         RemoveCurrentCommand = cb.BuildObserving(OnRemoveCurrent).CanExecuteIfNotNull(p => p.CurrentImage).Build();
         RenameCurrentCommand = cb.BuildObserving(OnRenameCurrent).CanExecuteIfNotNull(p => p.CurrentImage).Build();
+        SaveChangesCommand = cb.BuildObserving(OnSaveChanges).ListensToCanExecute(vm => vm.UnsavedChanges).Build();
         _Fsh = fsh;
+        this.saveCallback = saveCallback;
         Images = new ObservableDictionaryWrap<string, Gimx>(_Fsh.Images);
         CurrentImage = _Fsh.Images.Values.FirstOrDefault();
     }
@@ -66,6 +72,15 @@ public class FshPreviewViewModel : ViewModel
     }
 
     /// <summary>
+    /// Gets a value that indicates if there's unsaved changes on the unferlying FSH file.
+    /// </summary>
+    public bool UnsavedChanges
+    {
+        get => _UnsavedChanges;
+        private set => Change(ref _UnsavedChanges, value);
+    }
+
+    /// <summary>
     /// Gets or sets the desired zoom level.
     /// </summary>
     public double ZoomLevel
@@ -78,7 +93,12 @@ public class FshPreviewViewModel : ViewModel
     /// Gets a value that indicates if this FSH file contains a car dashboard.
     /// </summary>
     public bool IsDash => Images.Count > 2 && Images.TryGetValue("0000", out Gimx? dashGimx) && dashGimx.Footer.Length == 104;
-    
+
+    /// <summary>
+    /// Gets a value that indicates if this ViewModel was created in read-only mode.
+    /// </summary>
+    public bool IsReadOnly => saveCallback is null;
+
     /// <summary>
     /// Gets the ID of the GIMX texture being displayed.
     /// </summary>
@@ -90,19 +110,14 @@ public class FshPreviewViewModel : ViewModel
     public IDictionary<string, Gimx> Images { get; }
 
     /// <summary>
-    /// Gets a reference to the command used to replace the current image.
+    /// Gets a reference to the command used to add a new GIMX to the FSH file.
     /// </summary>
-    public ICommand ReplaceImageCommand { get; }
+    public ICommand AddNewCommand { get; }
 
     /// <summary>
     /// Gets a reference to the command used to export the current image.
     /// </summary>
     public ICommand ExportCommand { get; }
-
-    /// <summary>
-    /// Gets a reference to the command used to add a new GIMX to the FSH file.
-    /// </summary>
-    public ICommand AddNewCommand { get; }
 
     /// <summary>
     /// Gets a reference to the command used to remove the current GIMX texture
@@ -115,6 +130,35 @@ public class FshPreviewViewModel : ViewModel
     /// from the FSH file.
     /// </summary>
     public ICommand RenameCurrentCommand { get; }
+
+    /// <summary>
+    /// Gets a reference to the command used to replace the current image.
+    /// </summary>
+    public ICommand ReplaceImageCommand { get; }
+
+    /// <summary>
+    /// Gets a reference to the command used to save all pending changes on the
+    /// FSH file.
+    /// </summary>
+    public ICommand SaveChangesCommand { get; }
+
+    private async Task OnAddNew()
+    {
+        var data = await GetNewGimxData();
+        if (data is null) return;
+        try
+        {
+            var newGimx = new Gimx() { Magic = Mappings.GimxToLabel.Keys.ToArray()[data.Value.formatIndex] };
+            newGimx.ReplaceWith(Image.FromFile(data.Value.file), _Fsh);
+            Images.Add(data.Value.id, newGimx);
+            CurrentImage = newGimx;
+            UnsavedChanges = true;
+        }
+        catch (Exception ex)
+        {
+            await DialogService!.Error(ex);
+        }
+    }
 
     private async Task OnExport()
     {
@@ -136,12 +180,13 @@ public class FshPreviewViewModel : ViewModel
             if (!await DialogService!.Ask($"Remove '{CurrentGimxId}'", $"Are you sure you want to remove '{key}' from the FSH?")) return;
             Images.Remove(key);
             CurrentImage = Images.First().Value;
+            UnsavedChanges = true;
         }
     }
 
     private async Task OnRenameCurrent()
     {
-        var id = await DialogService!.GetInputText("GIMX ID", $"Enter the new ID to use for the '{CurrentGimxId}' GIMX texture");
+        var id = await DialogService!.GetInputText("GIMX ID", $"Enter the new ID to use for the '{CurrentGimxId}' GIMX texture", CurrentGimxId);
         if (!id.Success || id.Result.IsEmpty()) return;
         if (FshExtensions.IsNewGimxIdInvalid(id.Result, _Fsh, out var errorMsg))
         {
@@ -152,34 +197,7 @@ public class FshPreviewViewModel : ViewModel
         Images.Remove(CurrentGimxId);
         Images.Add(id.Result, gimx);
         CurrentImage = gimx;
-    }
-
-    private async Task OnAddNew()
-    {
-        var id = await DialogService!.GetInputText("GIMX ID", "Enter the ID to use for the new GIMX texture");        
-        if (!id.Success || id.Result.IsEmpty()) return;
-        if (FshExtensions.IsNewGimxIdInvalid(id.Result, _Fsh, out var errorMsg))
-        {
-            await DialogService.Error("Invalid GIMX ID", errorMsg);
-            return;
-        }
-        var formatIndex = await DialogService.SelectOption("GIMX pixel formatIndex", "Select a pixel formatIndex for the new GIMX texture", Mappings.GimxToLabel.Values.ToArray());
-        if (formatIndex < 0) return;
-        var r = await DialogService!.GetFileOpenPath($"Add '{id.Result}'", $"Select a file to add as '{id.Result}'", FileFilters.CommonBitmapFormats);
-        if (r.Success)
-        {
-            try
-            {
-                var newGimx = new Gimx() { Magic = Mappings.GimxToLabel.Keys.ToArray()[formatIndex] };
-                newGimx.ReplaceWith(Image.FromFile(r.Result), _Fsh);
-                Images.Add(id.Result, newGimx);
-                CurrentImage = newGimx;
-            }
-            catch (Exception ex)
-            {
-                await DialogService!.Error(ex);
-            }
-        }
+        UnsavedChanges = true;
     }
 
     private async Task OnReplaceImage()
@@ -190,6 +208,7 @@ public class FshPreviewViewModel : ViewModel
             try
             {
                 CurrentImage!.ReplaceWith(Image.FromFile(r.Result), _Fsh);
+                UnsavedChanges = true;
                 Notify(nameof(CurrentImage));
             }
             catch (Exception ex)
@@ -197,5 +216,33 @@ public class FshPreviewViewModel : ViewModel
                 await DialogService!.Error(ex);
             }
         }
+    }
+
+    private void OnSaveChanges()
+    {
+        saveCallback?.Invoke(_Fsh);
+        UnsavedChanges = false;
+    }
+
+    private async Task<(string file, string id, int formatIndex)?> GetNewGimxData()
+    {
+        bool IsGimxInvalid(string? id, [NotNullWhen(true)]out string? errorMessage) => FshExtensions.IsNewGimxIdInvalid(id, _Fsh, out errorMessage);
+        IInputItemDescriptor[] inputs =
+        [
+            new InputItemDescriptor<string>(d => d.GetFileOpenPath("Add GIMX", "Select a file to add as a new GIMX texture")!),
+            new InputItemDescriptor<string>(d => d.GetInputText("GIMX ID", "Enter the ID to use for the new GIMX texture", InferNewGimxName()), IsGimxInvalid),
+            new InputItemDescriptor<int>(d => d.SelectOption("GIMX pixel formatIndex", "Select a pixel formatIndex for the new GIMX texture", Mappings.GimxToLabel.Values.ToArray()))
+        ];
+        return await DialogService!.AskSequentially(inputs) is { } data ? ((string)data[0], (string)data[1], (int)data[2]) : null;
+    }
+
+    private string InferNewGimxName()
+    {
+        foreach (var i in Enumerable.Range(0, 10000))
+        {
+            var n = i.ToString("0000");
+            if (!_Fsh.Images.ContainsKey(n)) return n;
+        }
+        return string.Empty;
     }
 }

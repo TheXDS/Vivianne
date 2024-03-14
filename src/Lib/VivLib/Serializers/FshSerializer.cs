@@ -54,7 +54,7 @@ public class FshSerializer : ISerializer<FshTexture>
         writer.Write(GetFileSize(entity.Images));
         writer.Write(entity.Images.Count);
         writer.Write(DirId);
-        int o = entity.Images.Count * 8 + 16;
+        int o = (entity.Images.Count * 8) + 16;
         foreach (var j in entity.Images)
         {
             writer.Write(ASCII.GetBytes(j.Key));

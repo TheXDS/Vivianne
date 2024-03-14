@@ -19,10 +19,10 @@ public enum GimxFormat : byte
     /// Indicates that the GIMX blob includes a 16-bit color image in BGR565
     /// format.
     /// </summary>
-    Bgr565 = 0x78,
+    Rgb565 = 0x78,
     /// <summary>
     /// Indicates that the GIMX blob includes a 32-bit color image in RGBA32
     /// format.
     /// </summary>
-    Bgra32 = 0x7D,
+    Argb32 = 0x7D,
 }

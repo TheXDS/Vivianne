@@ -13,14 +13,14 @@ public class GimxFormatLabelConverter : IOneWayValueConverter<GimxFormat, string
     /// <inheritdoc/>
     public string Convert(GimxFormat value, object? parameter, CultureInfo? culture)
     {
-        return (byte)value switch
+        return value switch
         {
             0x00 => "No image loaded",
-            0x2a => "32-bit 256 color palette",
-            0x7B => "8-bit color (256 colors)",
-            0x78 => "16-bit color (BGR565)",
-            0x7D => "24-bit color with 8-bit alpha channel (RGBA32)",
-            _ => $"Unknown (MAGIC 0x{value:X}"
+            GimxFormat.Palette => "32-bit 256 color palette",
+            GimxFormat.Indexed8 => "8-bit color (256 colors) with palette",
+            GimxFormat.Rgb565 => "16-bit color (RGB565), no alpha",
+            GimxFormat.Argb32 => "24-bit color with 8-bit alpha channel (ARGB32)",
+            _ => $"Unknown (0x{(byte)value:X}"
         };
     }
 }

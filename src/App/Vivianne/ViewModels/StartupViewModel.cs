@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -92,8 +91,6 @@ public class StartupViewModel : ViewModel
             }
         }
         if (filePath is null) return;
-        
-
         var s = await DialogService!.RunOperation(_ => VivMainState.From(filePath));
         l = new VivInfo[] { s }.Concat(l).Take(10).ToList();
         Settings.Current.RecentFiles = [.. l];
@@ -123,48 +120,25 @@ public class StartupViewModel : ViewModel
     private async Task OnFshPreviewCommand()
     {
         var fin = await DialogService!.GetFileOpenPath(St.Open, St.OpenMessage, FileFilters.FshQfsFileFilter);
-        if (fin.Success)
-        {
-            var data = QfsCodec.Decompress(await File.ReadAllBytesAsync(fin.Result));
-            using var ms = new MemoryStream(data);
-            NavigationService!.Navigate(new FshPreviewViewModel(new FshSerializer().Deserialize(ms)));
-        }
+        if (!fin.Success) return;
+        
+        var data = QfsCodec.Decompress(await File.ReadAllBytesAsync(fin.Result));
+        using var ms = new MemoryStream(data);
+        NavigationService!.Navigate(new FshEditorViewModel(new FshSerializer().Deserialize(ms)));
     }
 
     private async Task OnFshCompressCommand()
     {
         var fin = await DialogService!.GetFileOpenPath(St.Open, St.OpenMessage, FileFilters.FshFileFilter);
-        if (fin.Success)
+        if (!fin.Success) return;
+        var fout = await DialogService!.GetFileSavePath(St.Open, St.OpenMessage, FileFilters.QfsFileFilter);
+        if (!fout.Success) return;
+        await DialogService.RunOperation(async p =>
         {
-            var fout = await DialogService!.GetFileSavePath(St.Open, St.OpenMessage, FileFilters.QfsFileFilter);
-            if (fout.Success)
-            {
-                await DialogService.RunOperation(async p =>
-                {
-                    p.Report("Converting FSH to QFS...");
-                    var fsh = await File.ReadAllBytesAsync(fin.Result);
-                    var qfs = await Task.Run(() => QfsCodec.Compress(fsh));
-                    await File.WriteAllBytesAsync(fout.Result, fsh);
-                });
-            }
-        }
+            p.Report("Converting FSH to QFS...");
+            var fsh = await File.ReadAllBytesAsync(fin.Result);
+            var qfs = await Task.Run(() => QfsCodec.Compress(fsh));
+            await File.WriteAllBytesAsync(fout.Result, fsh);
+        });
     }
-}
-
-/// <summary>
-/// ViewModel that instructs the operating system to open a file, waits for the
-/// process to end and optionally modifies the file inside the VIV.
-/// </summary>
-/// <param name="rawFile">Raw file contents.</param>
-/// <param name="saveCallback">
-/// Save callback to execute in case the file was changed externally.
-/// </param>
-public class ExternalFileViewModel(byte[] rawFile, Action<byte[]> saveCallback) : RawContentViewModel(rawFile)
-{
-    protected readonly Action<byte[]> _saveCallback = saveCallback;
-}
-
-public class CarpGeneratorViewModel : ViewModel
-{
-
 }

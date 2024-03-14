@@ -1,7 +1,6 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
 using TheXDS.MCART.Types;
-using TheXDS.MCART.Types.Base;
 using TheXDS.Vivianne.Containers;
 
 namespace TheXDS.Vivianne.Models;
@@ -30,6 +29,9 @@ public class VivMainState : VivInfo
         }
     }
 
+    /// <summary>
+    /// Gets a reference to an observable collection with the VIV directory.
+    /// </summary>
     public ObservableDictionaryWrap<string, byte[]> Directory { get; private set; }
 
     /// <summary>
@@ -45,9 +47,18 @@ public class VivMainState : VivInfo
     /// <summary>
     /// Initializes a new instance of the <see cref="VivMainState"/> class.
     /// </summary>
-    public VivMainState()
+    public VivMainState() : this(new())
     {
-        _Viv = new();
+    }
+    
+    /// <summary>
+    /// Initializes a new instance of the <see cref="VivMainState"/> class.
+    /// </summary>
+    /// <param name="viv">Viv file to represent in this state.</param>
+    public VivMainState(VivFile viv)
+    {
+        _Viv = viv;
+        Directory = new(_Viv.Directory);
         _unsavedChanges = false;
     }
 
@@ -62,45 +73,11 @@ public class VivMainState : VivInfo
     public static async Task<VivMainState> From(string path)
     {
         await using var fs = File.OpenRead(path);
-        return new()
+        return new(await Task.Run(() => VivFile.ReadFrom(fs)))
         {
-            Viv = await Task.Run(() => VivFile.ReadFrom(fs)),
             UnsavedChanges = false,
             FilePath = path,
             FriendlyName = Path.GetFileName(Path.GetDirectoryName(path)) ?? Path.GetFileName(path)
         };
     }
-}
-
-public class CarpGeneratorState : NotifyPropertyChanged
-{
-    private double _Mass;
-    private double _TopSpeed;
-    private int _MinRpm;
-    private int _MaxRpm;
-
-    public double Mass
-    {
-        get => _Mass;
-        set => Change(ref _Mass, value);
-    }
-
-    public double TopSpeed
-    {
-        get => _TopSpeed;
-        set => Change(ref _TopSpeed, value);
-    }
-
-    public int MinRpm
-    {
-        get => _MinRpm;
-        set => Change(ref _MinRpm, value);
-    }
-
-    public int MaxRpm
-    {
-        get => _MaxRpm;
-        set => Change(ref _MaxRpm, value);
-    }
-
 }
