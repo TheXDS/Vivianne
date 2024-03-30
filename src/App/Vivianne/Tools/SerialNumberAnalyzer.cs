@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using TheXDS.Ganymede.Services;
 using TheXDS.MCART.Types.Extensions;
-using TheXDS.Vivianne.Containers;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Serializers;
 
@@ -29,11 +28,13 @@ public static class SerialNumberAnalyzer
     {
         try
         {
+            var parser = new VivSerializer();
             using var f = file.OpenRead();
             return new SnEntry()
             {
                 FilePath = file.FullName,
-                VivFile = VivFile.ReadFrom(f),
+                
+                VivFile = parser.Deserialize(f),
             };
         }
         catch (Exception ex)
@@ -122,7 +123,8 @@ public static class SerialNumberAnalyzer
                 }
                 File.Delete(entry.FilePath);
                 using var vivF = File.OpenWrite(entry.FilePath);
-                entry.VivFile.WriteTo(vivF);
+                var parser = new VivSerializer();
+                parser.SerializeTo(entry.VivFile, vivF);
             }
             if (entries.Count == 0)
             {

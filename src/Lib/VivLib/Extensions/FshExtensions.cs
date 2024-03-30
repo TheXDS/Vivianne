@@ -1,7 +1,7 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using SixLabors.ImageSharp;
+using System.Diagnostics.CodeAnalysis;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models;
-using MC = TheXDS.MCART.Types.Color;
 
 namespace TheXDS.Vivianne.Extensions;
 
@@ -12,9 +12,9 @@ namespace TheXDS.Vivianne.Extensions;
 public static class FshExtensions
 {
     private static readonly IEnumerable<(Func<string?, bool> FailsValidation, string ErrorMessage)> GimxIdValidationRules = [
-        (p => p.IsEmpty(), "FSH requires GIMX textures to include a 4 character ID."),
-        (p => !p!.ToLowerInvariant().All("abcdefghijklmnopqrstuvwxyz1234567890".Contains), "GIMX ID must include letters and/or digits only."),
-        (p => p!.Length != 4, "GIMX ID length mismatch. Please specify a 4 character long ID."),
+        (p => p.IsEmpty(), "FSH requires blobs to include a 4 character ID."),
+        (p => !p!.ToLowerInvariant().All("abcdefghijklmnopqrstuvwxyz1234567890".Contains), "FSH blob ID must include letters and/or digits only."),
+        (p => p!.Length != 4, "FSH blob ID length mismatch. Please specify a 4 character long ID."),
     ];
 
     /// <summary>
@@ -24,7 +24,7 @@ public static class FshExtensions
     /// <returns>
     /// An array of colors that represent the loaded color palette.
     /// </returns>
-    public static MC[]? GetPalette(this FshFile fsh)
+    public static Color[]? GetPalette(this FshFile fsh)
     {
         return fsh.Entries.Values.FirstOrDefault(p => p.Magic == FshBlobFormat.Palette32) is { } palette
             ? ReadColors(palette.PixelData, palette.Width).ToArray()
@@ -83,7 +83,7 @@ public static class FshExtensions
         return !errorMessage.IsEmpty();
     }
 
-    private static IEnumerable<MC> ReadColors(byte[] data, int paletteSize)
+    public static IEnumerable<Color> ReadColors(byte[] data, int paletteSize)
     {
         using var ms = new MemoryStream(data);
         using var reader = new BinaryReader(ms);
@@ -93,7 +93,7 @@ public static class FshExtensions
             var g = reader.ReadByte();
             var r = reader.ReadByte();
             var a = reader.ReadByte();
-            yield return new MC(r, g, b, a);
+            yield return Color.FromRgba(r, g, b, a);
         }
     }
 }

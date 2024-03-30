@@ -13,5 +13,9 @@ public class FshFile
     /// <summary>
     /// Gets or sets this FSH file Directory Id.
     /// </summary>
+    /// <remarks>
+    /// By default, this value is set to '<c>GIMX</c>', which is the default
+    /// directory ID for Need For Speed 3/4.
+    /// </remarks>
     public string DirectoryId { get; set; } = "GIMX";
 }

@@ -36,8 +36,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Targets", "Targets", "{AC3B
 		..\BuildTargets\BuildPaths.props = ..\BuildTargets\BuildPaths.props
 		..\BuildTargets\Cleanup.targets = ..\BuildTargets\Cleanup.targets
 		..\BuildTargets\CompileOptions.targets = ..\BuildTargets\CompileOptions.targets
-		..\BuildTargets\PackageInfo.props = ..\BuildTargets\PackageInfo.props
 		..\BuildTargets\GlobalDirectives.props = ..\BuildTargets\GlobalDirectives.props
+		..\BuildTargets\PackageInfo.props = ..\BuildTargets\PackageInfo.props
 		..\BuildTargets\PackageVersion.props = ..\BuildTargets\PackageVersion.props
 	EndProjectSection
 EndProject

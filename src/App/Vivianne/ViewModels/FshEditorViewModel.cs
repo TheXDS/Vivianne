@@ -1,8 +1,10 @@
-﻿using System;
+﻿using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats;
+using SixLabors.ImageSharp.Formats.Png;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Drawing;
-using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -14,7 +16,6 @@ using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Extensions;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Resources;
-using MC = TheXDS.MCART.Types.Color;
 
 namespace TheXDS.Vivianne.ViewModels;
 
@@ -32,7 +33,7 @@ public class FshEditorViewModel : ViewModel, IViewModel
     private FshBlob? _CurrentImage;
     private bool _UnsavedChanges;
     private double _ZoomLevel = 1.0;
-    private MC[]? _palette;
+    private Color[]? _palette;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="FshEditorViewModel"/>
@@ -49,10 +50,14 @@ public class FshEditorViewModel : ViewModel, IViewModel
         RemoveCurrentCommand = cb.BuildObserving(OnRemoveCurrent).CanExecuteIfNotNull(p => p.CurrentImage).Build();
         RenameCurrentCommand = cb.BuildObserving(OnRenameCurrent).CanExecuteIfNotNull(p => p.CurrentImage).Build();
         SaveChangesCommand = cb.BuildObserving(OnSaveChanges).ListensToCanExecute(vm => vm.UnsavedChanges).Build();
+        ExportBlobFooterCommand = cb.BuildObserving(OnExportBlobFooter).CanExecuteIfNotNull(p => p.CurrentImage).Build();
+        ImportBlobFooterCommand = cb.BuildObserving(OnImportBlobFooter).CanExecuteIfNotNull(p => p.CurrentImage).Build();
+        RemoveCurrentFooterCommand = cb.BuildObserving(OnRemoveBlobFooter).CanExecuteIfNotNull(p => p.CurrentImage).Build();
         _Fsh = fsh;
         this.saveCallback = saveCallback;
         Images = new ObservableDictionaryWrap<string, FshBlob>(_Fsh.Entries);
         CurrentImage = _Fsh.Entries.Values.FirstOrDefault();
+        RegisterPropertyChangeBroadcast(nameof(CurrentImage), nameof(Palette), nameof(CurrentFshBlobId));
     }
 
     /// <summary>
@@ -107,9 +112,9 @@ public class FshEditorViewModel : ViewModel, IViewModel
     /// locally, add a new GIMX with a pixel format that corresponds to a valid
     /// palette.
     /// </remarks>
-    public MC[]? Palette
+    public Color[]? Palette
     { 
-        get => _palette ?? _Fsh.GetPalette();
+        get => _palette ?? CurrentImage?.LocalPalette ?? _Fsh.GetPalette();
         set => Change(ref _palette, value);
     }
 
@@ -121,7 +126,7 @@ public class FshEditorViewModel : ViewModel, IViewModel
     /// <summary>
     /// Gets the ID of the GIMX texture being displayed.
     /// </summary>
-    public string CurrentGimxId => Images.FirstOrDefault(p => ReferenceEquals(p.Value, CurrentImage)).Key;
+    public string CurrentFshBlobId => Images.FirstOrDefault(p => ReferenceEquals(p.Value, CurrentImage)).Key;
 
     /// <summary>
     /// Gets a dictionary with the contents of the FSH file.
@@ -137,6 +142,24 @@ public class FshEditorViewModel : ViewModel, IViewModel
     /// Gets a reference to the command used to export the current image.
     /// </summary>
     public ICommand ExportCommand { get; }
+
+    /// <summary>
+    /// Gets a reference to the command used to export the current image's
+    /// footer data.
+    /// </summary>
+    public ICommand ExportBlobFooterCommand { get; }
+
+    /// <summary>
+    /// Gets a reference to the command used to import the current image's
+    /// footer data.
+    /// </summary>
+    public ICommand ImportBlobFooterCommand { get; }
+
+    /// <summary>
+    /// Gets a reference to the command used to remove the current image's
+    /// footer data.
+    /// </summary>
+    public ICommand RemoveCurrentFooterCommand { get; }
 
     /// <summary>
     /// Gets a reference to the command used to remove the current GIMX texture
@@ -163,14 +186,15 @@ public class FshEditorViewModel : ViewModel, IViewModel
 
     private async Task OnAddNew()
     {
-        var data = await GetNewGimxData();
+        var data = await GetNewFshBlobData();
         if (data is null) return;
         try
         {
-            var newGimx = new FshBlob() { Magic = Mappings.FshBlobToLabel.Keys.ToArray()[data.Value.formatIndex] };
-            newGimx.ReplaceWith(Image.FromFile(data.Value.file), Palette ?? new MC[256]);
-            Images.Add(data.Value.id, newGimx);
-            CurrentImage = newGimx;
+            var newBlob = new FshBlob() { Magic = Mappings.FshBlobToLabel.Keys.ToArray()[data.Value.formatIndex] };
+            var img = Image.Load(data.Value.file);
+            newBlob.ReplaceWith(img, Palette ?? new Color[256]);
+            Images.Add(data.Value.id, newBlob);
+            CurrentImage = newBlob;
             UnsavedChanges = true;
         }
         catch (Exception ex)
@@ -181,9 +205,46 @@ public class FshEditorViewModel : ViewModel, IViewModel
 
     private async Task OnExport()
     {
-        var r = await DialogService!.GetFileSavePath($"Save texture as", FileFilters.CommonBitmapFormats);
+        var r = await DialogService!.GetFileSavePath($"Save texture as", FileFilters.CommonBitmapSaveFormats);
         if (!r.Success) return;
-        CurrentImage!.ToImage().Save(r.Result, ImageFormat.Png);
+        CurrentImage!.ToImage(Palette)!.Save(r.Result, Mappings.ExportEnconder[Path.GetExtension(r.Result)]);
+    }
+
+    private async Task OnExportBlobFooter()
+    {
+        var r = await DialogService!.GetFileSavePath($"Save blob footer as");
+        if (!r.Success) return;
+        System.IO.File.WriteAllBytes(r.Result, CurrentImage!.Footer);
+    }
+
+    private async Task OnImportBlobFooter()
+    {
+        if (CurrentImage?.Footer is not null && CurrentImage?.Footer.Length > 0)
+        {
+            switch(await DialogService!.AskYnc("Do you want to export the previous footer data for this FSH blob?"))
+            {
+                case true: await OnExportBlobFooter(); break;
+                case null: return;
+            }
+        }
+        var r = await DialogService!.GetFileOpenPath($"Import blob footer");
+        if (!r.Success) return;
+        CurrentImage!.Footer = System.IO.File.ReadAllBytes(r.Result);
+        UnsavedChanges = true;
+    }
+
+    private async Task OnRemoveBlobFooter()
+    {
+        if (CurrentImage?.Footer is not null && CurrentImage?.Footer.Length > 0)
+        {
+            switch (await DialogService!.AskYnc("Do you want to export the previous footer data for this FSH blob?"))
+            {
+                case true: await OnExportBlobFooter(); break;
+                case null: return;
+            }
+        }
+        CurrentImage!.Footer = [];
+        UnsavedChanges = true;
     }
 
     private async Task OnRemoveCurrent()
@@ -193,10 +254,10 @@ public class FshEditorViewModel : ViewModel, IViewModel
             await DialogService!.Error("Cannot remove GIMX", "A FSH file must contain at least one GIMX texture.");
             return;
         }
-        var key = CurrentGimxId;
+        var key = CurrentFshBlobId;
         if (key is not null)
         {
-            if (!await DialogService!.Ask($"Remove '{CurrentGimxId}'", $"Are you sure you want to remove '{key}' from the FSH?")) return;
+            if (!await DialogService!.Ask($"Remove '{CurrentFshBlobId}'", $"Are you sure you want to remove '{key}' from the FSH?")) return;
             Images.Remove(key);
             CurrentImage = Images.First().Value;
             UnsavedChanges = true;
@@ -205,15 +266,15 @@ public class FshEditorViewModel : ViewModel, IViewModel
 
     private async Task OnRenameCurrent()
     {
-        var id = await DialogService!.GetInputText("GIMX ID", $"Enter the new ID to use for the '{CurrentGimxId}' GIMX texture", CurrentGimxId);
+        var id = await DialogService!.GetInputText("FSH blob ID", $"Enter the new ID to use for the '{CurrentFshBlobId}' GIMX texture", CurrentFshBlobId);
         if (!id.Success || id.Result.IsEmpty()) return;
         if (FshExtensions.IsNewGimxIdInvalid(id.Result, _Fsh, out var errorMsg))
         {
-            await DialogService.Error("Invalid GIMX ID", errorMsg);
+            await DialogService.Error("Invalid FSH blob ID", errorMsg);
             return;
         }
         var gimx = CurrentImage!;
-        Images.Remove(CurrentGimxId);
+        Images.Remove(CurrentFshBlobId);
         Images.Add(id.Result, gimx);
         CurrentImage = gimx;
         UnsavedChanges = true;
@@ -221,12 +282,13 @@ public class FshEditorViewModel : ViewModel, IViewModel
 
     private async Task OnReplaceImage()
     {
-        var r = await DialogService!.GetFileOpenPath($"Replace '{CurrentGimxId}'", $"Select a file to replace '{CurrentGimxId}' with", FileFilters.CommonBitmapFormats);
+        var r = await DialogService!.GetFileOpenPath($"Replace '{CurrentFshBlobId}'", $"Select a file to replace '{CurrentFshBlobId}' with", FileFilters.CommonBitmapOpenFormats);
         if (r.Success)
         {
             try
             {
-                CurrentImage!.ReplaceWith(Image.FromFile(r.Result), Palette ?? new MC[256]);
+                var img = Image.Load(File.OpenRead(r.Result));
+                CurrentImage!.ReplaceWith(img, _Fsh.GetPalette());
                 UnsavedChanges = true;
                 Notify(nameof(CurrentImage));
             }
@@ -243,19 +305,19 @@ public class FshEditorViewModel : ViewModel, IViewModel
         UnsavedChanges = false;
     }
 
-    private async Task<(string file, string id, int formatIndex)?> GetNewGimxData()
+    private async Task<(string file, string id, int formatIndex)?> GetNewFshBlobData()
     {
         bool IsGimxInvalid(string? id, [NotNullWhen(true)]out string? errorMessage) => FshExtensions.IsNewGimxIdInvalid(id, _Fsh, out errorMessage);
         IInputItemDescriptor[] inputs =
         [
             new InputItemDescriptor<string>(d => d.GetFileOpenPath("Add texture", "Select a file to add as a new texture")!),
-            new InputItemDescriptor<string>(d => d.GetInputText("Blob ID", "Enter the ID to use for the new texture", InferNewGimxName()), IsGimxInvalid),
+            new InputItemDescriptor<string>(d => d.GetInputText("Blob ID", "Enter the ID to use for the new texture", InferNewFshBlobName()), IsGimxInvalid),
             new InputItemDescriptor<int>(d => d.SelectOption("Blob pixel format", "Select a pixel format for the new texture", Mappings.FshBlobToLabel.Values.ToArray()))
         ];
         return await DialogService!.AskSequentially(inputs) is { } data ? ((string)data[0], (string)data[1], (int)data[2]) : null;
     }
 
-    private string InferNewGimxName()
+    private string InferNewFshBlobName()
     {
         foreach (var i in Enumerable.Range(0, 10000))
         {

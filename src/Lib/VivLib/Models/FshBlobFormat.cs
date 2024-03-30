@@ -26,7 +26,6 @@ public enum FshBlobFormat : byte
     /// format.
     /// </summary>
     Argb32 = 0x7D,
-#if EnableFullFshFormat
     /// <summary>
     /// Indicates that the FSH blob represents a 24-bit color palette with
     /// 8-bit red, green and blue channels.
@@ -55,6 +54,7 @@ public enum FshBlobFormat : byte
     /// format, that is, with a 1 bit alpha channel.
     /// </summary>
     Argb1555 = 0x7E,
+#if EnableFullFshFormat
     /// <summary>
     /// Indicates that the FSH blob includes a DXT3 compressed texture.
     /// </summary>

@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using TheXDS.Vivianne.Models;
-using TheXDS.Vivianne.Resources;
 using static System.Text.Encoding;
 
 namespace TheXDS.Vivianne.Serializers;
@@ -15,14 +14,12 @@ public class FshSerializer : ISerializer<FshFile>
     private static readonly byte[][] DirIds =
     [
         "GIMX"u8.ToArray(),
-#if EnableFullFshFormat
         "G354"u8.ToArray(),
         "G264"u8.ToArray(),
         "G266"u8.ToArray(),
         "G290"u8.ToArray(),
         "G315"u8.ToArray(),
         "G344"u8.ToArray(),
-#endif
     ];
 
     /// <inheritdoc/>
@@ -41,17 +38,23 @@ public class FshSerializer : ISerializer<FshFile>
         {
             var name = Latin1.GetString(reader.ReadBytes(4));
             var offset = reader.ReadInt32();
-            fileOffsets.Add(name, offset);
+            
+            if (!fileOffsets.TryAdd(name, offset))
+            {
+                Debug.Print($"duplicated FSH entity entry: {name} at offset 0x{offset:X8}. skipping...");
+            }
         }
 
         var fsh = new FshFile() { DirectoryId = Latin1.GetString(dirId) };
+        var fshBlobSerializer = new FshBlobSerializer();
         foreach (var j in fileOffsets)
         {
             reader.BaseStream.Seek(j.Value, SeekOrigin.Begin);
             var endOffset = fileOffsets.Values.Cast<int?>().Order().FirstOrDefault(p => p > j.Value) ?? (int)stream.Length;
-            if (ReadFshBlob(reader, endOffset) is { } gimx)
+            using var ms = new MemoryStream(reader.ReadBytes(endOffset - j.Value));
+            if (fshBlobSerializer.Deserialize(ms) is { } blob)
             {
-                fsh.Entries.Add(j.Key, gimx);
+                fsh.Entries.Add(j.Key, blob);
             }
 #if DEBUG
             else
@@ -76,21 +79,14 @@ public class FshSerializer : ISerializer<FshFile>
         {
             writer.Write(Latin1.GetBytes(j.Key));
             writer.Write(o);
-            // 16 = GIMX header (16 bytes)
+            // 16 = blob header (16 bytes)
             o += 16 + j.Value.PixelData.Length + j.Value.Footer.Length;
         }
+        ISerializer<FshBlob?> fshBlobSerializer = new FshBlobSerializer();
+
         foreach (var j in entity.Entries.Values)
         {
-            writer.Write((byte)j.Magic);
-            writer.Write(BitConverter.GetBytes(j.Footer.Length != 0 ? j.PixelData.Length + 16 : 0)[0..3]);
-            writer.Write(j.Width);
-            writer.Write(j.Height);
-            writer.Write(j.XRotation);
-            writer.Write(j.YRotation);
-            writer.Write(j.XPosition);
-            writer.Write(j.YPosition);
-            writer.Write(j.PixelData);
-            if (j.Footer.Length != 0) writer.Write(j.Footer);
+            writer.Write(fshBlobSerializer.Serialize(j));
         }
     }
 
@@ -116,39 +112,5 @@ public class FshSerializer : ISerializer<FshFile>
             sum += 24 + j.Value.PixelData.Length + j.Value.Footer.Length;
         }
         return sum;
-    }
-
-    private static FshBlob? ReadFshBlob(BinaryReader reader, int dataEndOffset)
-    {
-        int currentOffset = (int)reader.BaseStream.Position;
-        var magic = (FshBlobFormat)reader.ReadByte();
-        if (!Mappings.FshBlobBytesPerPixel.TryGetValue(magic, out byte value)) return null;
-        var footerOffset = BitConverter.ToInt32([.. reader.ReadBytes(3), (byte)0]);
-        var width = reader.ReadUInt16();
-        var height = reader.ReadUInt16();
-        var xrot = reader.ReadUInt16();
-        var yrot = reader.ReadUInt16();
-        var xpos = reader.ReadUInt16();
-        var ypos = reader.ReadUInt16();
-        var pixelDataSize = width * height * value;
-        var pixelData = reader.ReadBytes(pixelDataSize);
-        byte[] footer = [];
-        if (footerOffset != 0)
-        {
-            var footerSize = dataEndOffset - (currentOffset + footerOffset);
-            footer = reader.ReadBytes(footerSize);
-        }
-        return new FshBlob
-        {
-            Magic = magic,
-            Width = width,
-            Height = height,
-            XRotation = xrot,
-            YRotation = yrot,
-            XPosition = xpos,
-            YPosition = ypos,
-            PixelData = pixelData,
-            Footer = footer
-        };
     }
 }

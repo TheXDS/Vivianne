@@ -40,14 +40,23 @@ public static class FileFilters
     public static IEnumerable<FileFilterItem> AnyVivContentFilter { get; } = [new FileFilterItem("Common VIV content files", ["car*.fce", "car*.fsh", "dash*.qfs", "carp.txt", "fedata.*"]), FileFilterItem.AllFiles];
 
     /// <summary>
-    /// Gets a set of file filter to be used on file dialogs for opening or
-    /// saving files with common bitmap file formats.
+    /// Gets a set of file filter to be used on file dialogs for saving files
+    /// with common bitmap file formats.
     /// </summary>
-    public static IEnumerable<FileFilterItem> CommonBitmapFormats { get; } = [
+    public static IEnumerable<FileFilterItem> CommonBitmapSaveFormats { get; } = [
         new FileFilterItem("Portable Network Graphics", "*.png"),
         new FileFilterItem("GIF image", "*.gif"),
         new FileFilterItem("JPEG picture", ["*.jpg", "*.jpeg"]),
         new FileFilterItem("BMP bitmap image", "*.bmp"),
         FileFilterItem.AllFiles
         ];
+
+    /// <summary>
+    /// Gets a set of file filter to be used on file dialogs for opening files
+    /// with common bitmap file formats.
+    /// </summary>
+    public static IEnumerable<FileFilterItem> CommonBitmapOpenFormats { get; } = [
+        new FileFilterItem("Common image files", ["*.png", "*.gif", "*.jpg", "*.jpeg", "*.bmp"]),
+        FileFilterItem.AllFiles
+    ];
 }

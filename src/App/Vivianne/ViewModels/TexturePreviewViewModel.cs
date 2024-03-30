@@ -57,7 +57,7 @@ public class TexturePreviewViewModel(byte[] rawFile) : RawContentViewModel(rawFi
 
     //private async Task OnExport()
     //{
-    //    var r = await DialogService!.GetFileSavePath($"Save texture as", FileFilters.CommonBitmapFormats);
+    //    var r = await DialogService!.GetFileSavePath($"Save texture as", FileFilters.CommonBitmapSaveFormats);
     //    if (!r.Success) return;
 
     //    using var ms = new MemoryStream(value);

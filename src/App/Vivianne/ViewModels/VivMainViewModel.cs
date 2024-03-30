@@ -144,8 +144,10 @@ public class VivMainViewModel : HostViewModelBase, IStatefulViewModel<VivMainSta
             }
         }
         progress.Report("Saving...");
+        var parser = new VivSerializer();
+
         await using var fs = File.Create(State.FilePath);
-        await Task.Run(() => State.Viv.WriteTo(fs));
+        await Task.Run(() => parser.SerializeTo(State.Viv, fs));
         return false;
     }
 

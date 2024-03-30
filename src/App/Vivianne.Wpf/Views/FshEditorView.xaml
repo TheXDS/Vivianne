@@ -9,12 +9,11 @@
     xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne"
     xmlns:mcart="http://schemas.thexds.local/mcart"
     d:DataContext="{d:DesignInstance Type=vm:FshEditorViewModel}"
-    mc:Ignorable="d"
-    d:DesignWidth="400" d:DesignHeight="300">
+    mc:Ignorable="d" d:DesignHeight="300">
     <UserControl.Resources>
         <vc:ByteCountConverter x:Key="bc2str"/>
         <vc:FshBlobFormatLabelConverter x:Key="gimx2str"/>
-        <vc:GimxFooterIdentifierConverter x:Key="gimxf2str"/>
+        <vc:FshBlobFooterIdentifierConverter x:Key="gimxf2str"/>
         <vc:BackgroundToBrushConverter x:Key="bg2b"/>
         <mcart:BooleanToInvVisibilityConverter x:Key="b2invV"/>
         <BooleanToVisibilityConverter x:Key="b2v"/>
@@ -195,7 +194,7 @@
                     </StackPanel>
                 </Border>
             </Expander>
-            <!--<Expander>
+            <Expander>
                 <Expander.Header>
                     <TextBlock Text="FSH blob footer">
                         <TextBlock.Effect>
@@ -205,13 +204,12 @@
                 </Expander.Header>
                 <Border>
                     <StackPanel>
-                        <Button Command="{Binding RenameCurrentCommand, Mode=OneWay}">Add..</Button>
-                        <Button Command="{Binding ExportCommand, Mode=OneWay}">Export...</Button>
-                        <Button Command="{Binding ReplaceImageCommand, Mode=OneWay}">Replace...</Button>
-                        <Button Command="{Binding RemoveCurrentCommand, Mode=OneWay}">Remove</Button>
+                        <Button Command="{Binding ImportBlobFooterCommand, Mode=OneWay}">Import..</Button>
+                        <Button Command="{Binding ExportBlobFooterCommand, Mode=OneWay}">Export...</Button>
+                        <Button Command="{Binding RemoveCurrentFooterCommand, Mode=OneWay}">Remove</Button>
                     </StackPanel>
                 </Border>
-            </Expander>-->
+            </Expander>
         </StackPanel>
     </Grid>
 </UserControl>

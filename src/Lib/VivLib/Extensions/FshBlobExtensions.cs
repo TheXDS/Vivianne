@@ -1,11 +1,10 @@
-﻿using System.Drawing;
-using System.Drawing.Imaging;
-using System.Runtime.InteropServices;
-using TheXDS.MCART.Types;
+﻿using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing.Processors.Quantization;
+using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models;
-using TheXDS.Vivianne.Resources;
-using DC = System.Drawing.Color;
-using MC = TheXDS.MCART.Types.Color;
+using TheXDS.Vivianne.Serializers;
+using static TheXDS.Vivianne.Resources.Mappings;
 
 namespace TheXDS.Vivianne.Extensions;
 
@@ -21,20 +20,26 @@ public static class FshBlobExtensions
     /// <returns>
     /// A new <see cref="Image"/> instance.
     /// </returns>
-    public static Image ToImage(this FshBlob blob)
+    public static Image? ToImage(this FshBlob blob, Color[]? palette = null)
     {
-        var output = new Bitmap(blob.Width, blob.Height, Mappings.FshBlobToPixelFormat[blob.Magic]);
-        var rect = new Rectangle(0, 0, blob.Width, blob.Height);
-        var bmpData = output.LockBits(rect, ImageLockMode.ReadWrite, output.PixelFormat);
-        var arrRowLength = blob.Width * Image.GetPixelFormatSize(output.PixelFormat) / 8;
-        var ptr = bmpData.Scan0;
-        for (var i = 0; i < blob.Height; i++)
+        if (FshBlobPixelReader.TryGetValue(blob.Magic, out var callback))
         {
-            Marshal.Copy(blob.PixelData, i * arrRowLength, ptr, arrRowLength);
-            ptr += bmpData.Stride;
+            return callback.Invoke(blob.PixelData, blob.Width, blob.Height);
         }
-        output.UnlockBits(bmpData);
-        return output;
+        else if (blob.Magic == FshBlobFormat.Indexed8)
+        {
+            palette ??= LoadPalette(blob.Footer) ?? CreatePalette();
+            return LoadFromIndexedBlob(blob, palette, p => p.ToPixel<Rgba32>());
+        }
+        else return null;
+    }
+
+    private static Color[]? LoadPalette(byte[] footer)
+    {
+        var s = new FshBlobSerializer();
+        using var ms = new MemoryStream(footer);
+        var blob = s.Deserialize(ms);
+        return FshBlobToPalette[blob.Magic].Invoke(blob);
     }
 
     /// <summary>
@@ -50,24 +55,36 @@ public static class FshBlobExtensions
     /// Thrown if no data encoding for the specified FSH blob format has been
     /// implemented.
     /// </exception>
-    public static void ReplaceWith(this FshBlob blob, Image image, MC[] palette)
+    public static void ReplaceWith(this FshBlob blob, Image image, Color[]? palette)
     {
-        if (image is not Bitmap bmp)
+        if (blob.Magic == FshBlobFormat.Indexed8)
         {
-            throw new NotImplementedException("The selected file is not a bitmap image (Vector rendering not supported).");
+
+            var quantizerFactory = new OctreeQuantizer(new QuantizerOptions() { MaxColors = 256 });
+            var quantizer = quantizerFactory.CreatePixelSpecificQuantizer<Rgba32>(Configuration.Default);
+
+            quantizer.BuildPalette(new ExtensivePixelSamplingStrategy(), (Image<Rgba32>)image);
+            blob.LocalPalette = quantizer.Palette.ToArray().Select(p => new Color(p)).ToArray();
+
+            using var q = quantizer.QuantizeFrame((ImageFrame<Rgba32>)image.Frames[0], new Rectangle(0, 0, image.Width, image.Height));
+            var p = new List<byte>();
+            for (int y = 0; y < image.Height; y++)
+            {
+                p.AddRange(q.DangerousGetRowSpan(y));
+            }
+            blob.PixelData = [.. p];
+            blob.Footer = FshFooterWriter[FshBlobFooterType.ColorPalette].Invoke(blob);
         }
-        Indexed8ColorParser indexed8 = new(palette);
-        var g2pw = new Dictionary<FshBlobFormat, Func<DC, byte[]>>(Mappings.FshBlobToPixelWriter.Append(new(FshBlobFormat.Indexed8, c => [indexed8.To(c)]))).AsReadOnly();
-        if (!g2pw.TryGetValue(blob.Magic, out var pixelWriter))
+        else
         {
-            throw new InvalidOperationException($"'0x{blob.Magic:X2}' FSH blob pixel format not implemented.");
+            blob.PixelData = ConvertToRaw(image);
+            blob.Magic = ImageToFshBlobMagic(image);
         }
         blob.Width = (ushort)image.Width;
         blob.Height = (ushort)image.Height;
-        blob.PixelData = ConvertToRaw(bmp, pixelWriter);
     }
 
-    private static byte[] ConvertToRaw(Bitmap img, Func<DC, byte[]> pixelDataWriter)
+    private static byte[] ConvertToRaw(Image img)
     {
         using var ms = new MemoryStream();
         using var bw = new BinaryWriter(ms);
@@ -75,9 +92,31 @@ public static class FshBlobExtensions
         {
             for (int x = 0; x < img.Width; x++)
             {
-                bw.Write(pixelDataWriter.Invoke(img.GetPixel(x, y)));
+                bw.Write(GetPixelBytes(img, x, y));
             }
         }
         return ms.ToArray();
+    }
+
+    private static Color[] CreatePalette()
+    {
+        static IEnumerable<Color> GetColors()
+        {
+            foreach (var b in (byte[])[0x00, 0x40, 0x80, 0xbf, 0xff])
+                foreach (var g in (byte[])[0x00, 0x24, 0x49, 0x6d, 0x92, 0xb6, 0xdb, 0xff])
+                    foreach (var r in (byte[])[0x00, 0x33, 0x66, 0x99, 0xcc, 0xff])
+                    {
+                        yield return Color.FromRgb(r, g, b);
+                    }
+        }
+        static IEnumerable<Color> GetGrayscale()
+        {
+            return Enumerable
+                .Range(0, 16)
+                .Select(p => (byte)(p * 16))
+                .Select(p => Color.FromRgb(p, p, p));
+        }
+
+        return [.. GetColors().ToArray(), .. GetGrayscale()];
     }
 }

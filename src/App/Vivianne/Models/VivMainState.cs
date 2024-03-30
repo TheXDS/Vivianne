@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
 using TheXDS.MCART.Types;
-using TheXDS.Vivianne.Containers;
+using TheXDS.Vivianne.Serializers;
 
 namespace TheXDS.Vivianne.Models;
 
@@ -73,7 +73,9 @@ public class VivMainState : VivInfo
     public static async Task<VivMainState> From(string path)
     {
         await using var fs = File.OpenRead(path);
-        return new(await Task.Run(() => VivFile.ReadFrom(fs)))
+        var parser = new VivSerializer();
+
+        return new(await Task.Run(() => parser.Deserialize(fs)))
         {
             UnsavedChanges = false,
             FilePath = path,
