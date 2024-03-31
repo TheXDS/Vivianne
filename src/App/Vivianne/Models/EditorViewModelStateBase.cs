@@ -1,4 +1,5 @@
-﻿using TheXDS.Ganymede.Types.Base;
+﻿using System.Runtime.CompilerServices;
+using TheXDS.Ganymede.Types.Base;
 using TheXDS.MCART.Types.Base;
 
 namespace TheXDS.Vivianne.Models;
@@ -19,6 +20,18 @@ public abstract class EditorViewModelStateBase : NotifyPropertyChanged
     public bool UnsavedChanges
     {
         get => _unsavedChanges;
-        set => Change(ref _unsavedChanges, value);
+        set => base.Change(ref _unsavedChanges, value);
     }
+
+    /// <inheritdoc/>
+    protected override bool Change<T>(ref T field, T value, [CallerMemberName] string propertyName = null!)
+    {
+        var result = base.Change(ref field, value, propertyName);
+        if (result)
+        {
+            UnsavedChanges = true;
+        }
+        return result;
+    }
+
 }

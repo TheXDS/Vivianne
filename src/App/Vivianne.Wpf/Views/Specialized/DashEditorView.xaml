@@ -10,15 +10,6 @@
     xmlns:gn="http://schemas.thexds.local/ganymede"
     d:DataContext="{d:DesignInstance Type=vm:DashEditorViewModel}"
     mc:Ignorable="d">
-    <UserControl.Resources>
-        <vc:ByteCountConverter x:Key="bc2str"/>
-        <vc:FshBlobFormatLabelConverter x:Key="gimx2str"/>
-        <vc:FshBlobFooterIdentifierConverter x:Key="gimxf2str"/>
-        <vc:BackgroundToBrushConverter x:Key="bg2b"/>
-        <mcart:BooleanToInvVisibilityConverter x:Key="b2invV"/>
-        <BooleanToVisibilityConverter x:Key="b2v"/>
-        <mcart:BooleanInverter x:Key="binv"/>
-    </UserControl.Resources>
     <StackPanel>
         <StackPanel.Resources>
             <Style TargetType="gn:Int32TextBox">

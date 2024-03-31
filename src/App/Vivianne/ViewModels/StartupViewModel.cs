@@ -90,7 +90,7 @@ public class StartupViewModel : ViewModel
             }
         }
         if (filePath is null) return;
-        var s = await DialogService!.RunOperation(_ => VivMainState.From(filePath));
+        VivMainState s = await DialogService!.RunOperation(_ => VivMainState.From(filePath));
         l = new VivInfo[] { s }.Concat(l).Take(10).ToList();
         Settings.Current.RecentFiles = [.. l];
         await Settings.Save();

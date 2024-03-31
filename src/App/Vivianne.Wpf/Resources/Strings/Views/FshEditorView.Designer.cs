@@ -88,6 +88,15 @@ namespace TheXDS.Vivianne.Resources.Strings.Views {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Edit coordinates.
+        /// </summary>
+        public static string EditCoords {
+            get {
+                return ResourceManager.GetString("EditCoords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Export....
         /// </summary>
         public static string Export {

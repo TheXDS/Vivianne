@@ -1,6 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-
-namespace TheXDS.Vivianne.Models;
+﻿namespace TheXDS.Vivianne.Models;
 
 public class GaugeDataState : EditorViewModelStateBase
 {
@@ -158,16 +156,5 @@ public class GaugeDataState : EditorViewModelStateBase
     {
         get => _data.TachometerMaxY;
         set => Change(ref _data.TachometerMaxY, value);
-    }
-
-    /// <inheritdoc/>
-    protected override bool Change<T>(ref T field, T value, [CallerMemberName] string propertyName = null!)
-    {
-        var result = base.Change(ref field, value, propertyName);
-        if (result)
-        {
-            UnsavedChanges = true;
-        }
-        return result;
     }
 }

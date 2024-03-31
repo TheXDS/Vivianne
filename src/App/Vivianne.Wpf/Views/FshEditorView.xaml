@@ -201,6 +201,10 @@
                 <Border>
                     <StackPanel>
                         <Button
+                            Visibility="{Binding IsReadOnly, Converter={StaticResource b2invV}}"
+                            Command="{Binding CoordsEditorCommand, Mode=OneWay}"
+                            Content="{x:Static st:FshEditorView.EditCoords}"/>
+                        <Button
                             Command="{Binding ExportCommand, Mode=OneWay}"
                             Content="{x:Static st:FshEditorView.Export}"/>
                         <Button

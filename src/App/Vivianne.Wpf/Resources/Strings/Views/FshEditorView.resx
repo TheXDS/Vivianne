@@ -126,6 +126,9 @@
   <data name="DashEditor" xml:space="preserve">
     <value>Dash editor...</value>
   </data>
+  <data name="EditCoords" xml:space="preserve">
+    <value>Edit coordinates</value>
+  </data>
   <data name="Export" xml:space="preserve">
     <value>Export...</value>
   </data>

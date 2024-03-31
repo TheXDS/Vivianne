@@ -55,6 +55,7 @@ public class FshEditorViewModel : ViewModel, IViewModel
         ImportBlobFooterCommand = cb.BuildObserving(OnImportBlobFooter).CanExecuteIfNotNull(p => p.CurrentImage).Build();
         RemoveCurrentFooterCommand = cb.BuildObserving(OnRemoveBlobFooter).CanExecuteIfNotNull(p => p.CurrentImage).Build();
         DashEditorCommand = cb.BuildObserving(OnDashEditor).ListensToCanExecute(p => p.IsDash).Build();
+        CoordsEditorCommand = cb.BuildObserving(OnCoordsEditor).CanExecuteIfNotNull(p => p.CurrentImage).Build();
         _Fsh = fsh;
         this.saveCallback = saveCallback;
         Images = new ObservableDictionaryWrap<string, FshBlob>(_Fsh.Entries);
@@ -200,6 +201,8 @@ public class FshEditorViewModel : ViewModel, IViewModel
 
     public ICommand DashEditorCommand { get; }
 
+    public ICommand CoordsEditorCommand { get; }
+
     private async Task OnAddNew()
     {
         var data = await GetNewFshBlobData();
@@ -326,6 +329,13 @@ public class FshEditorViewModel : ViewModel, IViewModel
     {
         var state = new GaugeDataState(CurrentImage!);
         await DialogService!.CustomDialog(new DashEditorViewModel(state) { Title = "Dashboard editor" });
+        UnsavedChanges |= state.UnsavedChanges;
+    }
+
+    private async Task OnCoordsEditor()
+    {
+        var state = new FshBlobCoordsState(CurrentImage!);
+        await DialogService!.CustomDialog(new FshBlobCoordsEditorViewModel(state) { Title = "Coords editor" });
         UnsavedChanges |= state.UnsavedChanges;
     }
 

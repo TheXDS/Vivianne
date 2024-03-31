@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
+using TheXDS.Ganymede.Helpers;
 using TheXDS.MCART.Types;
 using TheXDS.Vivianne.Serializers;
 
@@ -50,7 +51,7 @@ public class VivMainState : VivInfo
     public VivMainState() : this(new())
     {
     }
-    
+
     /// <summary>
     /// Initializes a new instance of the <see cref="VivMainState"/> class.
     /// </summary>
@@ -58,7 +59,7 @@ public class VivMainState : VivInfo
     public VivMainState(VivFile viv)
     {
         _Viv = viv;
-        Directory = new(_Viv.Directory);
+        UiThread.Invoke(() => Directory = new(_Viv.Directory));
         _unsavedChanges = false;
     }
 
@@ -73,9 +74,8 @@ public class VivMainState : VivInfo
     public static async Task<VivMainState> From(string path)
     {
         await using var fs = File.OpenRead(path);
-        var parser = new VivSerializer();
-
-        return new(await Task.Run(() => parser.Deserialize(fs)))
+        ISerializer<VivFile> parser = new VivSerializer();
+        return new(await parser.DeserializeAsync(fs))
         {
             UnsavedChanges = false,
             FilePath = path,

@@ -157,7 +157,7 @@ public class VivMainViewModel : HostViewModelBase, IStatefulViewModel<VivMainSta
         {
             void Save(byte[] data)
             {
-                State.Directory[file] = data;
+                UiThread.Invoke((Action)(() => State.Directory[file] = data));
                 State.UnsavedChanges = true;
             }
 
