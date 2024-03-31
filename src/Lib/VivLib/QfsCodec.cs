@@ -54,7 +54,12 @@ public class QfsCodec
 {
     private const ushort QFS_Signature = 0xFB10;
 
-    private static bool IsCompressed(byte[] entryData)
+    /// <summary>
+    /// Gets a value that indicates if the raw file contents are compressed.
+    /// </summary>
+    /// <param name="entryData"></param>
+    /// <returns></returns>
+    public static bool IsCompressed(byte[] entryData)
     {
         return entryData.Length > 2 && BitConverter.ToUInt16(entryData, 0) == QFS_Signature;
     }

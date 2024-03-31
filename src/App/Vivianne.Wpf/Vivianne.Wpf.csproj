@@ -22,4 +22,17 @@
 	  <Resource Include="Resources\Fonts\NFS_by_JLTV.ttf" />
 	  <Resource Include="Resources\Images\bg.jpg" />
 	</ItemGroup>
+	<ItemGroup>
+	  <Compile Update="Resources\Strings\Views\FshEditorView.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>FshEditorView.resx</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+	<ItemGroup>
+	  <EmbeddedResource Update="Resources\Strings\Views\FshEditorView.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <LastGenOutput>FshEditorView.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	</ItemGroup>
 </Project>

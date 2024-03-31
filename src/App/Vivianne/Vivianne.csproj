@@ -9,6 +9,26 @@
 		<ProjectReference Include="..\..\Lib\VivLib\VivLib.csproj" />
 	</ItemGroup>
 	<ItemGroup>
+		<Compile Update="Resources\Strings\Common.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>Common.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\Strings\Tools\FshCompressTool.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>FshCompressTool.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\Strings\Tools\FshEditorTool.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>FshEditorTool.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\Strings\Tools\QfsDecompressTool.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>QfsDecompressTool.resx</DependentUpon>
+		</Compile>
 		<Compile Update="Resources\Strings\Views\StartupView.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
@@ -16,6 +36,22 @@
 		</Compile>
 	</ItemGroup>
 	<ItemGroup>
+		<EmbeddedResource Update="Resources\Strings\Common.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>Common.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Strings\Tools\FshCompressTool.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>FshCompressTool.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Strings\Tools\FshEditorTool.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>FshEditorTool.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Strings\Tools\QfsDecompressTool.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>QfsDecompressTool.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Strings\Views\StartupView.resx">
 			<Generator>ResXFileCodeGenerator</Generator>
 			<LastGenOutput>StartupView.Designer.cs</LastGenOutput>

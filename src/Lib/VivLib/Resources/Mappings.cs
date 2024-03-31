@@ -6,7 +6,6 @@ using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.Formats.Tga;
 using SixLabors.ImageSharp.PixelFormats;
-using System.Reflection.Metadata;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Serializers;
@@ -107,8 +106,8 @@ public static class Mappings
         { FshBlobFormat.Palette32,      ReadPalette<Rgba32>(4) },
         { FshBlobFormat.Palette24,      ReadPalette<Rgb24>(3) },
         { FshBlobFormat.Palette24Dos,   ReadPalette<Rgb24>(3) },
-        //{ FshBlobFormat.Palette16,       },
-        //{ FshBlobFormat.Palette16Nfs5,   },
+        //{ FshBlobFormat.Palette16, },
+        //{ FshBlobFormat.Palette16Nfs5, },
     };
 
     public static IReadOnlyDictionary<string, ImageEncoder> ExportEnconder { get; } = new Dictionary<string, ImageEncoder>()
@@ -138,20 +137,6 @@ public static class Mappings
         { FshBlobFormat.Rgb24,         3 },
         { FshBlobFormat.Argb1555,      2 },
     }.AsReadOnly();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     /// <summary>
     /// Maps a <see cref="FshBlobFormat"/> value to a corresponding delegate that
@@ -199,10 +184,15 @@ public static class Mappings
 
     private static void ReadColorPalette(FshBlob blob, byte[] data)
     {
-        //using var ms = new MemoryStream(data);
-        //using var br = new BinaryReader(ms);
-        //FshBlob fsh = FshSerializer.ReadFshBlob(br, data.Length)!;
-        //blob.LocalPalette = FshExtensions.ReadColors(fsh.PixelData, fsh.Width).ToArray();
+        blob.LocalPalette = LoadPalette(data);
+    }
+
+    public static Color[]? LoadPalette(byte[] footer)
+    {
+        var s = new FshBlobSerializer();
+        using var ms = new MemoryStream(footer);
+        var blob = s.Deserialize(ms)!;
+        return FshBlobToPalette[blob.Magic].Invoke(blob);
     }
 
     private static void ReadGaugeData(FshBlob blob, byte[] data)

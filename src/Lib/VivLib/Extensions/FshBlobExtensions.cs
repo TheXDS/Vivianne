@@ -3,7 +3,6 @@ using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing.Processors.Quantization;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models;
-using TheXDS.Vivianne.Serializers;
 using static TheXDS.Vivianne.Resources.Mappings;
 
 namespace TheXDS.Vivianne.Extensions;
@@ -17,6 +16,10 @@ public static class FshBlobExtensions
     /// Converts a <see cref="FshBlob"/> into an <see cref="Image"/>.
     /// </summary>
     /// <param name="blob">GIMX to export.</param>
+    /// <param name="palette">
+    /// Specifies the Color palette to use in case the FSH blob uses the
+    /// <see cref="FshBlobFormat.Indexed8"/> pixel format.
+    /// </param>
     /// <returns>
     /// A new <see cref="Image"/> instance.
     /// </returns>
@@ -34,14 +37,6 @@ public static class FshBlobExtensions
         else return null;
     }
 
-    private static Color[]? LoadPalette(byte[] footer)
-    {
-        var s = new FshBlobSerializer();
-        using var ms = new MemoryStream(footer);
-        var blob = s.Deserialize(ms);
-        return FshBlobToPalette[blob.Magic].Invoke(blob);
-    }
-
     /// <summary>
     /// Replaces the GIMX data from an image.
     /// </summary>
@@ -55,11 +50,10 @@ public static class FshBlobExtensions
     /// Thrown if no data encoding for the specified FSH blob format has been
     /// implemented.
     /// </exception>
-    public static void ReplaceWith(this FshBlob blob, Image image, Color[]? palette)
+    public static void ReplaceWith(this FshBlob blob, Image image, Color[]? palette = null)
     {
         if (blob.Magic == FshBlobFormat.Indexed8)
         {
-
             var quantizerFactory = new OctreeQuantizer(new QuantizerOptions() { MaxColors = 256 });
             var quantizer = quantizerFactory.CreatePixelSpecificQuantizer<Rgba32>(Configuration.Default);
 

@@ -28,10 +28,16 @@ public static class FileFilters
     public static IEnumerable<FileFilterItem> QfsFileFilter { get; } = [new FileFilterItem(St.QfsFile, "*.qfs"), FileFilterItem.AllFiles];
 
     /// <summary>
-    /// Gets a set of file filters to be used on file dialogs for opening and
-    /// saving either FSH or QFS files.
+    /// Gets a set of file filters to be used on file dialogs for opening
+    /// either FSH or QFS files.
     /// </summary>
-    public static IEnumerable<FileFilterItem> FshQfsFileFilter { get; } = [new FileFilterItem(St.FshFile, "*.fsh"), new FileFilterItem(St.QfsFile, "*.qfs"), FileFilterItem.AllFiles];
+    public static IEnumerable<FileFilterItem> FshQfsOpenFileFilter { get; } = [new FileFilterItem("FSH/QFS texture", [ "*.fsh", "*.qfs"]), FileFilterItem.AllFiles];
+
+    /// <summary>
+    /// Gets a set of file filters to be used on file dialogs for saving either
+    /// FSH or QFS files.
+    /// </summary>
+    public static IEnumerable<FileFilterItem> FshQfsSaveFileFilter { get; } = [new FileFilterItem(St.FshFile, "*.fsh"), new FileFilterItem(St.QfsFile, "*.qfs"), FileFilterItem.AllFiles];
 
     /// <summary>
     /// Gets a set of file filters to be used on file dialogs for importing any

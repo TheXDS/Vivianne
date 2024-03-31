@@ -1,6 +1,4 @@
 ﻿using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Formats;
-using SixLabors.ImageSharp.Formats.Png;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -28,7 +26,7 @@ namespace TheXDS.Vivianne.ViewModels;
 public class FshEditorViewModel : ViewModel, IViewModel
 {
     private readonly FshFile _Fsh;
-    private readonly Action<FshFile>? saveCallback;
+    private readonly Func<FshFile, Task>? saveCallback;
     private BackgroundType _Background;
     private FshBlob? _CurrentImage;
     private bool _UnsavedChanges;
@@ -40,8 +38,11 @@ public class FshEditorViewModel : ViewModel, IViewModel
     /// class.
     /// </summary>
     /// <param name="fsh">FSH file to preview.</param>
-    /// <param name="saveCallback">Save callback to invoke when persisting changes. If set to <see langword="null"/>, this ViewModel will function in read-only mode.</param>
-    public FshEditorViewModel(FshFile fsh, Action<FshFile>? saveCallback = null)
+    /// <param name="saveCallback">
+    /// Save callback to invoke when persisting changes. If set to
+    /// <see langword="null"/>, this ViewModel will function in read-only mode.
+    /// </param>
+    public FshEditorViewModel(FshFile fsh, Func<FshFile, Task>? saveCallback = null)
     {
         var cb = CommandBuilder.For(this);
         AddNewCommand = cb.BuildSimple(OnAddNew);
@@ -53,12 +54,25 @@ public class FshEditorViewModel : ViewModel, IViewModel
         ExportBlobFooterCommand = cb.BuildObserving(OnExportBlobFooter).CanExecuteIfNotNull(p => p.CurrentImage).Build();
         ImportBlobFooterCommand = cb.BuildObserving(OnImportBlobFooter).CanExecuteIfNotNull(p => p.CurrentImage).Build();
         RemoveCurrentFooterCommand = cb.BuildObserving(OnRemoveBlobFooter).CanExecuteIfNotNull(p => p.CurrentImage).Build();
+        DashEditorCommand = cb.BuildObserving(OnDashEditor).ListensToCanExecute(p => p.IsDash).Build();
         _Fsh = fsh;
         this.saveCallback = saveCallback;
         Images = new ObservableDictionaryWrap<string, FshBlob>(_Fsh.Entries);
         CurrentImage = _Fsh.Entries.Values.FirstOrDefault();
         RegisterPropertyChangeBroadcast(nameof(CurrentImage), nameof(Palette), nameof(CurrentFshBlobId));
     }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="FshEditorViewModel"/>
+    /// class.
+    /// </summary>
+    /// <param name="fsh">FSH file to preview.</param>
+    /// <param name="saveCallback">
+    /// Save callback to invoke when persisting changes. If set to
+    /// <see langword="null"/>, this ViewModel will function in read-only mode.
+    /// </param>
+    public FshEditorViewModel(FshFile fsh, Action<FshFile>? saveCallback = null) : this(fsh, async (p) => await (saveCallback is not null ? Task.Run(() => saveCallback.Invoke(p)) : Task.CompletedTask))
+    { }
 
     /// <summary>
     /// Gets or sets the desired background to use when previewing textures.
@@ -70,7 +84,7 @@ public class FshEditorViewModel : ViewModel, IViewModel
     }
 
     /// <summary>
-    /// Gets or sets a reference to the GIMX blob currently on display.
+    /// Gets or sets a reference to the FSH blob currently on display.
     /// </summary>
     public FshBlob? CurrentImage
     {
@@ -99,7 +113,7 @@ public class FshEditorViewModel : ViewModel, IViewModel
     /// <summary>
     /// Gets a value that indicates if this FSH file contains a car dashboard.
     /// </summary>
-    public bool IsDash => Images.Count > 2 && Images.TryGetValue("0000", out FshBlob? dashGimx) && dashGimx.Footer.Length == 104;
+    public bool IsDash => Images.Count >= 2 && Images.TryGetValue("0000", out FshBlob? dashGimx) && dashGimx.GaugeData is not null;
 
     /// <summary>
     /// Gets a color palette from the FSH file if one exists, or sets a global
@@ -183,6 +197,8 @@ public class FshEditorViewModel : ViewModel, IViewModel
     /// FSH file.
     /// </summary>
     public ICommand SaveChangesCommand { get; }
+
+    public ICommand DashEditorCommand { get; }
 
     private async Task OnAddNew()
     {
@@ -299,10 +315,18 @@ public class FshEditorViewModel : ViewModel, IViewModel
         }
     }
 
-    private void OnSaveChanges()
+    private async Task OnSaveChanges()
     {
-        saveCallback?.Invoke(_Fsh);
+
+        await (saveCallback?.Invoke(_Fsh) ?? Task.CompletedTask);
         UnsavedChanges = false;
+    }
+
+    private async Task OnDashEditor()
+    {
+        var state = new GaugeDataState(CurrentImage!);
+        await DialogService!.CustomDialog(new DashEditorViewModel(state) { Title = "Dashboard editor" });
+        UnsavedChanges |= state.UnsavedChanges;
     }
 
     private async Task<(string file, string id, int formatIndex)?> GetNewFshBlobData()
@@ -333,7 +357,7 @@ public class FshEditorViewModel : ViewModel, IViewModel
         {
             switch (await DialogService!.AskYnc("Unsaved changes", $"Do you want to save {Title}?"))
             {
-                case true: OnSaveChanges(); break;
+                case true: await OnSaveChanges(); break;
                 case null: navigation.Cancel(); break;
             }
         }

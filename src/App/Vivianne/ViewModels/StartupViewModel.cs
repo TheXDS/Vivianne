@@ -1,15 +1,14 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TheXDS.Ganymede.Helpers;
 using TheXDS.Ganymede.Types;
 using TheXDS.Ganymede.Types.Base;
+using TheXDS.MCART.Helpers;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Properties;
 using TheXDS.Vivianne.Resources;
-using TheXDS.Vivianne.Serializers;
 using TheXDS.Vivianne.Tools;
 using St = TheXDS.Vivianne.Resources.Strings.Views.StartupView;
 
@@ -26,7 +25,7 @@ public class StartupViewModel : ViewModel
     /// Gets a list of recent files that can be quickly opened from the UI.
     /// </summary>
     public IEnumerable<VivInfo> RecentFiles
-    { 
+    {
         get => recentFiles;
         private set => Change(ref recentFiles, value);
     }
@@ -55,10 +54,10 @@ public class StartupViewModel : ViewModel
         var cb = CommandBuilder.For(this);
         NewVivCommand = cb.BuildSimple(OnNewViv);
         OpenVivCommand = cb.BuildSimple(OnOpenViv);
-        ExtraTools.Add(new(cb.BuildSimple(OnQfsDecompressCommand), "QFS decompress"));
-        ExtraTools.Add(new(cb.BuildSimple(OnFshCompressCommand), "FSH compress"));
-        ExtraTools.Add(new(cb.BuildSimple(OnFshPreviewCommand), "FSH preview"));
-        ExtraTools.Add(new(cb.BuildSimple(() => SerialNumberAnalyzer.RunTool(DialogService!)), "Serial number analyzer"));
+        foreach (var x in ReflectionHelpers.FindAllObjects<IVivianneTool>())
+        {
+            ExtraTools.Add(new(cb.BuildSimple(() => x.Run(DialogService!, NavigationService!)), x.ToolName));
+        }
     }
 
     /// <inheritdoc/>
@@ -96,49 +95,5 @@ public class StartupViewModel : ViewModel
         Settings.Current.RecentFiles = [.. l];
         await Settings.Save();
         NavigationService!.NavigateAndReset<VivMainViewModel, VivMainState>(s);
-    }
-
-    private async Task OnQfsDecompressCommand()
-    {
-        var fin = await DialogService!.GetFileOpenPath(St.Open, St.OpenMessage, FileFilters.QfsFileFilter);
-        if (fin.Success) 
-        {
-            var fout = await DialogService!.GetFileSavePath(St.Open, St.OpenMessage, FileFilters.FshFileFilter);
-            if (fout.Success)
-            {
-                await DialogService.RunOperation(async p =>
-                {
-                    p.Report("Converting QFS to FSH...");
-                    var qfs = await File.ReadAllBytesAsync(fin.Result);
-                    var fsh = await Task.Run(() => QfsCodec.Decompress(qfs));
-                    await File.WriteAllBytesAsync(fout.Result, fsh);
-                });
-            }
-        }
-    }
-
-    private async Task OnFshPreviewCommand()
-    {
-        var fin = await DialogService!.GetFileOpenPath(St.Open, St.OpenMessage, FileFilters.FshQfsFileFilter);
-        if (!fin.Success) return;
-        
-        var data = QfsCodec.Decompress(await File.ReadAllBytesAsync(fin.Result));
-        using var ms = new MemoryStream(data);
-        NavigationService!.Navigate(new FshEditorViewModel(new FshSerializer().Deserialize(ms)));
-    }
-
-    private async Task OnFshCompressCommand()
-    {
-        var fin = await DialogService!.GetFileOpenPath(St.Open, St.OpenMessage, FileFilters.FshFileFilter);
-        if (!fin.Success) return;
-        var fout = await DialogService!.GetFileSavePath(St.Open, St.OpenMessage, FileFilters.QfsFileFilter);
-        if (!fout.Success) return;
-        await DialogService.RunOperation(async p =>
-        {
-            p.Report("Converting FSH to QFS...");
-            var fsh = await File.ReadAllBytesAsync(fin.Result);
-            var qfs = await Task.Run(() => QfsCodec.Compress(fsh));
-            await File.WriteAllBytesAsync(fout.Result, fsh);
-        });
     }
 }

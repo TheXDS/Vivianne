@@ -6,7 +6,7 @@ using TheXDS.Vivianne.Serializers;
 namespace TheXDS.Vivianne.Models;
 
 /// <summary>
-/// Represents the current state of the main ViewModel used to manage VIV
+/// Represents the current _state of the main ViewModel used to manage VIV
 /// files.
 /// </summary>
 public class VivMainState : VivInfo
@@ -54,7 +54,7 @@ public class VivMainState : VivInfo
     /// <summary>
     /// Initializes a new instance of the <see cref="VivMainState"/> class.
     /// </summary>
-    /// <param name="viv">Viv file to represent in this state.</param>
+    /// <param name="viv">Viv file to represent in this _state.</param>
     public VivMainState(VivFile viv)
     {
         _Viv = viv;
