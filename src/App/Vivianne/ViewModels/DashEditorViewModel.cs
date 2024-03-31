@@ -12,7 +12,14 @@ public class DashEditorViewModel(GaugeDataState state) : EditorViewModelBase<Gau
     /// <inheritdoc/>
     protected override Task OnSaveChanges()
     {
-        State.Blob.GaugeData = State.BackingStore;
+        State.Cabin.GaugeData = State.BackingStore;
+        if (State.Steering is not null)
+        {
+            State.Steering.XPosition = (ushort)State.SteeringXPosition;
+            State.Steering.YPosition = (ushort)State.SteeringYPosition;
+            State.Steering.XRotation = (ushort)State.SteeringXRotation;
+            State.Steering.YRotation = (ushort)State.SteeringYRotation;
+        }
         return Task.CompletedTask;
     }
 }

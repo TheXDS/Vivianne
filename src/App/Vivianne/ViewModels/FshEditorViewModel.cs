@@ -327,7 +327,7 @@ public class FshEditorViewModel : ViewModel, IViewModel
 
     private async Task OnDashEditor()
     {
-        var state = new GaugeDataState(CurrentImage!);
+        var state = new GaugeDataState(_Fsh);
         await DialogService!.CustomDialog(new DashEditorViewModel(state) { Title = "Dashboard editor" });
         UnsavedChanges |= state.UnsavedChanges;
     }
@@ -345,8 +345,8 @@ public class FshEditorViewModel : ViewModel, IViewModel
         IInputItemDescriptor[] inputs =
         [
             new InputItemDescriptor<string>(d => d.GetFileOpenPath("Add texture", "Select a file to add as a new texture")!),
-            new InputItemDescriptor<string>(d => d.GetInputText("Blob ID", "Enter the ID to use for the new texture", InferNewFshBlobName()), IsGimxInvalid),
-            new InputItemDescriptor<int>(d => d.SelectOption("Blob pixel format", "Select a pixel format for the new texture", Mappings.FshBlobToLabel.Values.ToArray()))
+            new InputItemDescriptor<string>(d => d.GetInputText("Cabin ID", "Enter the ID to use for the new texture", InferNewFshBlobName()), IsGimxInvalid),
+            new InputItemDescriptor<int>(d => d.SelectOption("Cabin pixel format", "Select a pixel format for the new texture", Mappings.FshBlobToLabel.Values.ToArray()))
         ];
         return await DialogService!.AskSequentially(inputs) is { } data ? ((string)data[0], (string)data[1], (int)data[2]) : null;
     }

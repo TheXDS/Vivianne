@@ -3,15 +3,59 @@
 public class GaugeDataState : EditorViewModelStateBase
 {
     private GaugeData _data;
+    private int _previewSteerAngle;
+    private int _SteeringXRotation;
+    private int _SteeringYRotation;
+    private int _SteeringXPosition;
+    private int _SteeringYPosition;
+    private int _GearXPosition;
+    private int _GearYPosition;
 
     public GaugeData BackingStore => _data;
 
-    public FshBlob Blob { get; }
+    public FshBlob Cabin { get; }
 
-    public GaugeDataState(FshBlob blob)
+    public FshBlob? Steering { get; }
+
+    public FshBlob? GearIndicator { get; }
+
+    public GaugeDataState(FshFile fsh)
     {
-        Blob = blob;
-        _data = blob.GaugeData.Value;
+        Cabin = fsh.Entries["0000"];
+        if (fsh.Entries.TryGetValue("0001", out var steering))
+        {
+            Steering = steering;
+            SteeringXPosition = steering.XPosition;
+            SteeringYPosition = steering.YPosition;
+            SteeringXRotation = steering.XRotation;
+            SteeringYRotation = steering.YRotation;
+        }
+        if (fsh.Entries.TryGetValue("gea1", out var gear))
+        {
+            GearIndicator = gear;
+            GearXPosition = gear.XPosition;
+            GearYPosition = gear.YPosition;
+        }
+        _data = Cabin.GaugeData ?? default;
+
+        RegisterPropertyChangeTrigger(nameof(SteeringLeft), nameof(SteeringXPosition), nameof(SteeringXRotation));
+        RegisterPropertyChangeTrigger(nameof(SteeringTop), nameof(SteeringYPosition), nameof(SteeringYRotation));
+        RegisterPropertyChangeTrigger(nameof(GearLeft), nameof(GearXPosition));
+        RegisterPropertyChangeTrigger(nameof(GearTop), nameof(GearYPosition));
+    }
+
+    public int SteeringLeft => Steering is not null ? SteeringXPosition - SteeringXRotation : 0;
+
+    public int SteeringTop => Steering is not null ? SteeringYPosition - SteeringYRotation : 0;
+
+    public int GearLeft => GearIndicator is not null ? GearXPosition : 0;
+
+    public int GearTop => GearIndicator is not null ? GearYPosition : 0;
+
+    public int PreviewSteerAngle
+    {
+        get => _previewSteerAngle;
+        set => Change(ref _previewSteerAngle, value);
     }
 
     public int DialColorX
@@ -156,5 +200,41 @@ public class GaugeDataState : EditorViewModelStateBase
     {
         get => _data.TachometerMaxY;
         set => Change(ref _data.TachometerMaxY, value);
+    }
+
+    public int SteeringXRotation
+    {
+        get => _SteeringXRotation;
+        set => Change(ref _SteeringXRotation, value);
+    }
+
+    public int SteeringYRotation
+    {
+        get => _SteeringYRotation;
+        set => Change(ref _SteeringYRotation, value);
+    }
+
+    public int SteeringXPosition
+    {
+        get => _SteeringXPosition;
+        set => Change(ref _SteeringXPosition, value);
+    }
+
+    public int SteeringYPosition
+    {
+        get => _SteeringYPosition;
+        set => Change(ref _SteeringYPosition, value);
+    }
+
+    public int GearXPosition
+    {
+        get => _GearXPosition;
+        set => Change(ref _GearXPosition, value);
+    }
+
+    public int GearYPosition
+    {
+        get => _GearYPosition;
+        set => Change(ref _GearYPosition, value);
     }
 }

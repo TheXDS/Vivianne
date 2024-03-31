@@ -23,7 +23,7 @@ public class FshImageConverter : IMultiValueConverter
     {
         if (values.Length >=1 && values[0] is FshBlob blob)
         {
-            var p = values.Length >=2 ? (values[1] as IEnumerable<SixLabors.ImageSharp.Color>)?.ToArray() : null;
+            var p = values.Length >=2 ? (values[1] as IEnumerable<SixLabors.ImageSharp.Color>)?.ToArray() : blob.LocalPalette;
             return blob.ToImage(p) switch {
                 Image<Rgba32> i => ConvertImageToBitmapSource(FshBlobFormat.Argb32, i),
                 Image<Rgb24> i => ConvertImageToBitmapSource(FshBlobFormat.Rgb24, i),
