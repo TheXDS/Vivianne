@@ -15,13 +15,26 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Grid>
+                                <Grid Margin="{Binding Padding, RelativeSource={RelativeSource AncestorType=local:CurveEditor}}">
                                     <Grid.RowDefinitions>
                                         <RowDefinition/>
                                         <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
-                                    <Slider HorizontalAlignment="Center" Orientation="Vertical" Value="{Binding Value}" Minimum="0" Maximum="200" />
-                                    <gn:DoubleTextBox Icon="" Grid.Row="1" Value="{Binding Value}" Width="35" HorizontalContentAlignment="Center" Minimum="0" Maximum="200" UpDownButtonsVisibility="Collapsed"/>
+                                    <Slider
+                                        HorizontalAlignment="Center"
+                                        Orientation="Vertical"
+                                        Value="{Binding Value}"
+                                        Minimum="{Binding Minimum, RelativeSource={RelativeSource AncestorType=local:CurveEditor}}"
+                                        Maximum="{Binding Maximum, RelativeSource={RelativeSource AncestorType=local:CurveEditor}}" />
+                                    <gn:DoubleTextBox
+                                        Icon=""
+                                        Grid.Row="1"
+                                        Value="{Binding Value}"
+                                        Width="{Binding BarWidth, RelativeSource={RelativeSource AncestorType=local:CurveEditor}}"
+                                        HorizontalContentAlignment="Center"
+                                        Minimum="{Binding Minimum, RelativeSource={RelativeSource AncestorType=local:CurveEditor}}"
+                                        Maximum="{Binding Maximum, RelativeSource={RelativeSource AncestorType=local:CurveEditor}}"
+                                        UpDownButtonsVisibility="Collapsed"/>
                                 </Grid>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>

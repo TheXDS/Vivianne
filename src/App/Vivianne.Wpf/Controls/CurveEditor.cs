@@ -1,56 +1,75 @@
-﻿using System.Collections.ObjectModel;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Markup;
-using System.Windows.Media;
 using TheXDS.MCART.Types.Base;
 using static TheXDS.Ganymede.Helpers.DependencyObjectHelpers;
 
-
 namespace TheXDS.Vivianne.Controls;
-
-public partial class EnumValProvider : MarkupExtension
-{
-    public Type EnumType { get; set; }
-
-    /// <inheritdoc/>
-    public override object ProvideValue(IServiceProvider serviceProvider)
-    {
-        return Enum.GetValues(EnumType);
-    }
-}
-
-
 
 [ContentProperty(nameof(Curve))]
 public class CurveEditor : Control
 {
+    public static DependencyPropertyKey CurvePropertyKey;
     public static DependencyProperty CurveProperty;
-
-    public static DependencyProperty AllowAddAndRemoveProperty;
+    public static DependencyProperty CollectionProperty;
+    public static DependencyProperty MinimumProperty;
+    public static DependencyProperty MaximumProperty;
+    public static DependencyProperty StepProperty;
+    public static DependencyProperty BarWidthProperty;
 
     static CurveEditor()
     {
-        AllowAddAndRemoveProperty = NewDp<bool, CurveEditor>(nameof(AllowAddAndRemove));
-        CurveProperty = NewDp2Way<ObservableCollection<DoubleValue>, CurveEditor>(nameof(Curve), []);
+        MinimumProperty = NewDp<double, CurveEditor>(nameof(Minimum), 0.0);
+        MaximumProperty = NewDp<double, CurveEditor>(nameof(Maximum), 100.0);
+        StepProperty = NewDp<double, CurveEditor>(nameof(Step), 10.0);
+        (CurvePropertyKey, CurveProperty) = NewDpRo<ICollection<DoubleValue>, CurveEditor>(nameof(Curve), null!);
+        CollectionProperty = NewDp2Way<ICollection<double>, CurveEditor>(nameof(Collection), null!,OnCollectionChanged);
         DefaultStyleKeyProperty.OverrideMetadata(typeof(CurveEditor), new FrameworkPropertyMetadata(typeof(CurveEditor)));
+        BarWidthProperty = NewDp<double, CurveEditor>(nameof(BarWidth), 35);
     }
 
-    public bool AllowAddAndRemove
+    private static void OnCollectionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        get => (bool)GetValue(AllowAddAndRemoveProperty);
-        set => SetValue(AllowAddAndRemoveProperty, value);
+        var value = e.NewValue as ICollection<double>;
+        d.SetValue(CurvePropertyKey, new List<DoubleValue>(value.Select(p => new DoubleValue() { Value = p })));
     }
 
-    public ObservableCollection<DoubleValue> Curve
+    public ICollection<DoubleValue> Curve
     {
-        get => (ObservableCollection<DoubleValue>)GetValue(CurveProperty);
-        set => SetValue(CurveProperty, value);
+        get => (ICollection<DoubleValue>)GetValue(CurveProperty);
+    }
+
+    public ICollection<double> Collection
+    {
+        get => (ICollection<double>)GetValue(CollectionProperty);
+        set => SetValue(CollectionProperty, value);
+    }
+
+    public double Minimum
+    {
+        get => (double)GetValue(MinimumProperty);
+        set => SetValue(MinimumProperty, value);
+    }
+
+    public double Maximum
+    {
+        get => (double)GetValue(MaximumProperty);
+        set => SetValue(MaximumProperty, value);
+    }
+
+    public double Step
+    {
+        get => (double)GetValue(StepProperty);
+        set => SetValue(StepProperty, value);
+    }
+
+    public double BarWidth
+    {
+        get => (double)GetValue(BarWidthProperty);
+        set => SetValue(BarWidthProperty, value);
     }
 }
 
-[ContentProperty(nameof(Value))]
 public class DoubleValue : NotifyPropertyChanged
 {
     private double _Value;
@@ -60,8 +79,4 @@ public class DoubleValue : NotifyPropertyChanged
         get => _Value;
         set => Change(ref _Value, value);
     }
-
-    public static implicit operator DoubleValue(double value) => new() { Value = value };
-    public static implicit operator double(DoubleValue value) => value.Value;
-
 }

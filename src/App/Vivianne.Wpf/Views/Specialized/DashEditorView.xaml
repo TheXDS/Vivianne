@@ -11,7 +11,7 @@
     d:DataContext="{d:DesignInstance Type=vm:DashEditorViewModel}"
     mc:Ignorable="d">
     <DockPanel>
-        <ScrollViewer Width="430" VerticalScrollBarVisibility="Auto">
+        <ScrollViewer Width="430" Height="520" VerticalScrollBarVisibility="Auto">
             <StackPanel>
                 <StackPanel.Resources>
                     <Style TargetType="gn:Int32TextBox">
@@ -104,6 +104,7 @@
                         </MultiBinding>
                     </Image.Source>
                 </Image>
+                
                 <Image
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
