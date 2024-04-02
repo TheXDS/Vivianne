@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using TheXDS.Ganymede.Helpers;
 using TheXDS.Ganymede.Services;
+using TheXDS.Vivianne.Component;
 
 namespace Vivianne.Wpf
 {
@@ -15,6 +16,7 @@ namespace Vivianne.Wpf
         public App()
         {
             UiThread.SetProxy(new DispatcherUiThreadProxy());
+            KeyboardProxy.SetProxy(new WpfKeyboardProxy());
         }
     }
 }

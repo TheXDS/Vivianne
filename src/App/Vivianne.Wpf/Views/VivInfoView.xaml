@@ -20,7 +20,7 @@
         <Separator/>
         <TextBlock>
             Directory size: <Run Text="{Binding State.Viv.Directory.Count, Mode=OneWay}"/> files<LineBreak/>
-            Estimated file size: <Run Text="{Binding State.Viv.FileSize, Mode=OneWay, Converter={StaticResource sizeConv}}"/>
+            Estimated file size: <Run Text="{Binding State.FileSize, Mode=OneWay, Converter={StaticResource sizeConv}}"/>
         </TextBlock>
         <UniformGrid Margin="15">
             <Button Margin="5" Padding="10,2" Command="{Binding ExportAllCommand, Mode=OneWay}" Content="Export all files"/>

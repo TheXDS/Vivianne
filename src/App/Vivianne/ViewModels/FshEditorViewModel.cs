@@ -320,23 +320,30 @@ public class FshEditorViewModel : ViewModel, IViewModel
 
     private async Task OnSaveChanges()
     {
-
         await (saveCallback?.Invoke(_Fsh) ?? Task.CompletedTask);
-        UnsavedChanges = false;
     }
 
     private async Task OnDashEditor()
     {
         var state = new GaugeDataState(_Fsh);
-        await DialogService!.CustomDialog(new DashEditorViewModel(state) { Title = "Dashboard editor" });
-        UnsavedChanges |= state.UnsavedChanges;
+        var vm = new DashEditorViewModel(state) { Title = "Dashboard editor" };
+        vm.StateSaved += Vm_StateSaved;
+        await DialogService!.CustomDialog(vm);
+        vm.StateSaved -= Vm_StateSaved;
+    }
+
+    private void Vm_StateSaved(object? sender, EventArgs e)
+    {
+        UnsavedChanges = true;
     }
 
     private async Task OnCoordsEditor()
     {
         var state = new FshBlobCoordsState(CurrentImage!);
-        await DialogService!.CustomDialog(new FshBlobCoordsEditorViewModel(state) { Title = "Coords editor" });
-        UnsavedChanges |= state.UnsavedChanges;
+        var vm = new FshBlobCoordsEditorViewModel(state) { Title = "Coords editor" };
+        vm.StateSaved += Vm_StateSaved;
+        await DialogService!.CustomDialog(vm);
+        vm.StateSaved -= Vm_StateSaved;
     }
 
     private async Task<(string file, string id, int formatIndex)?> GetNewFshBlobData()

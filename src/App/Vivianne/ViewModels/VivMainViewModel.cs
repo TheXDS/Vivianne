@@ -49,13 +49,15 @@ public class VivMainViewModel : HostViewModelBase, IStatefulViewModel<VivMainSta
         { ".fsh", CreateFshEditorViewModel },
         { ".qfs", CreateQfsEditorViewModel },
 
-        { ".bri", CreateFeDataPreviewViewModel },
-        { ".eng", CreateFeDataPreviewViewModel },
-        { ".fre", CreateFeDataPreviewViewModel },
-        { ".ger", CreateFeDataPreviewViewModel },
-        { ".ita", CreateFeDataPreviewViewModel },
-        { ".spa", CreateFeDataPreviewViewModel },
-        { ".swe", CreateFeDataPreviewViewModel },
+        { "fedata.bri", CreateFeDataPreviewViewModel },
+        { "fedata.eng", CreateFeDataPreviewViewModel },
+        { "fedata.fre", CreateFeDataPreviewViewModel },
+        { "fedata.ger", CreateFeDataPreviewViewModel },
+        { "fedata.ita", CreateFeDataPreviewViewModel },
+        { "fedata.spa", CreateFeDataPreviewViewModel },
+        { "fedata.swe", CreateFeDataPreviewViewModel },
+
+        { "carp.txt", CreateCarpEditorViewModel }
     };
 
     private static readonly Dictionary<string, Func<byte[]>> VivTemplates = new()
@@ -82,6 +84,12 @@ public class VivMainViewModel : HostViewModelBase, IStatefulViewModel<VivMainSta
         return new FeDataPreviewViewModel(data, saveCallback);
     }
 
+    private static IViewModel CreateCarpEditorViewModel(byte[] data, Action<byte[]> saveCallback)
+    {
+        void SaveCarp(string c) => saveCallback.Invoke(System.Text.Encoding.Latin1.GetBytes(c));
+        return new CarpEditorViewModel(CarpEditorState.From(System.Text.Encoding.Latin1.GetString(data)), SaveCarp);
+    }
+
     private static IViewModel CreateTexturePreviewViewModel(byte[] data, Action<byte[]> _)
     {
         return new TexturePreviewViewModel(data);
@@ -99,6 +107,12 @@ public class VivMainViewModel : HostViewModelBase, IStatefulViewModel<VivMainSta
         void CompressBack(byte[] data) => saveCallback.Invoke(QfsCodec.Compress(data));
         return CreateFshEditorViewModel(QfsCodec.Decompress(data), CompressBack);
     }
+
+
+
+
+
+
 
     private VivMainState state = null!;
 
@@ -191,10 +205,10 @@ public class VivMainViewModel : HostViewModelBase, IStatefulViewModel<VivMainSta
                 State.UnsavedChanges = true;
             }
 
-            var ext = Path.GetExtension(file);
-            IViewModel vm = ContentVisualizers.TryGetValue(ext, out var factory)
+            IViewModel vm = ContentVisualizers.FirstOrDefault(p => file.EndsWith(p.Key, StringComparison.InvariantCultureIgnoreCase)) is { Value: { } factory }
                 ? factory.Invoke(rawData, Save)
                 : new ExternalFileViewModel(rawData, Save);
+
             vm.Title = file;
             ChildNavService!.Navigate(vm);
         }

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using TheXDS.Ganymede.Types.Base;
 using TheXDS.Ganymede.ViewModels;
@@ -18,7 +19,18 @@ namespace TheXDS.Vivianne.ViewModels;
 public abstract class EditorViewModelBase<T> : DialogViewModel, IStatefulViewModel<T>, IAwaitableDialogViewModel where T : EditorViewModelStateBase
 {
     private T _state = default!;
-    private readonly TaskCompletionSource dlgAwaiter = new();
+    private TaskCompletionSource dlgAwaiter = new();
+
+    /// <summary>
+    /// Triggered when the user has saved any pending changes.
+    /// </summary>
+    public event EventHandler? StateSaved;
+
+    /// <summary>
+    /// Triggered when the user saves any pending changes (right before
+    /// <see cref="OnSaveChanges"/> is invoked).
+    /// </summary>
+    public event EventHandler? StateSaving;
 
     /// <inheritdoc/>
     public T State
@@ -52,7 +64,7 @@ public abstract class EditorViewModelBase<T> : DialogViewModel, IStatefulViewMod
         SaveChangesCommand = ObservingCommandBuilder.Create(state, InvokeSaveChanges)
             .ListensToCanExecute(p => p.UnsavedChanges)
             .Build();
-        DiscardChangesCommand = new SimpleCommand(dlgAwaiter.SetResult);
+        DiscardChangesCommand = new SimpleCommand(OnDiscardChanges);
 
         Interactions.Add(new(SaveChangesCommand, St.Save));
         Interactions.Add(new(DiscardChangesCommand, St.Discard));
@@ -60,14 +72,25 @@ public abstract class EditorViewModelBase<T> : DialogViewModel, IStatefulViewMod
 
     private async Task InvokeSaveChanges()
     {
+        StateSaving?.Invoke(this, EventArgs.Empty);
         await OnSaveChanges();
+        StateSaved?.Invoke(this, EventArgs.Empty);
+        OnDiscardChanges();
+    }
+
+    private void OnDiscardChanges()
+    {
+        State.UnsavedChanges = false;
         dlgAwaiter.SetResult();
+        dlgAwaiter = new();
     }
 
     /// <summary>
     /// Executes an operation that will persist any pending changes on the
     /// state.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>
+    /// A <see cref="Task"/> that can be used to await the async operation.
+    /// </returns>
     protected abstract Task OnSaveChanges();
 }

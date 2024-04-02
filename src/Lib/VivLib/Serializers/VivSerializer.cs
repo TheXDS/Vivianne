@@ -73,7 +73,7 @@ public class VivSerializer : ISerializer<VivFile>
         }
     }
 
-    private static int GetFileSize(Dictionary<string, byte[]> directory)
+    public static int GetFileSize(Dictionary<string, byte[]> directory)
     {
         var sum = 16;
         foreach (var j in directory)

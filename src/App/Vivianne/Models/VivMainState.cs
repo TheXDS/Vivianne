@@ -31,6 +31,11 @@ public class VivMainState : VivInfo
     }
 
     /// <summary>
+    /// Calculates the estimated size of the VIV file.
+    /// </summary>
+    public int FileSize => VivSerializer.GetFileSize(_Viv.Directory);
+
+    /// <summary>
     /// Gets a reference to an observable collection with the VIV directory.
     /// </summary>
     public ObservableDictionaryWrap<string, byte[]> Directory { get; private set; }
