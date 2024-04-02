@@ -156,6 +156,7 @@ public partial class CarpEditorState
         gear efficiency automatic (size {GearEfficiencyAuto.Count})(78)
         {string.Join(",", GearEfficiencyAuto)}
         torque curve (size {TorqueCurve.Count}) in {(TorqueCurve.Count != 0 ? EngineMaxRpm / TorqueCurve.Count : 0)} rpm increments(10)
+        {string.Join(",", TorqueCurve)}
         final gear(11)
         {FinalGearManual}
         final gear automatic(79)

@@ -2,6 +2,9 @@
 using System.Windows.Controls;
 using System.Windows.Markup;
 using TheXDS.MCART.Types.Base;
+using TheXDS.MCART.Types.Extensions;
+using TheXDS.Vivianne.Models;
+using TheXDS.Vivianne.ViewModels;
 using static TheXDS.Ganymede.Helpers.DependencyObjectHelpers;
 
 namespace TheXDS.Vivianne.Controls;
@@ -26,6 +29,30 @@ public class CurveEditor : Control
         CollectionProperty = NewDp2Way<ICollection<double>, CurveEditor>(nameof(Collection), null!,OnCollectionChanged);
         DefaultStyleKeyProperty.OverrideMetadata(typeof(CurveEditor), new FrameworkPropertyMetadata(typeof(CurveEditor)));
         BarWidthProperty = NewDp<double, CurveEditor>(nameof(BarWidth), 35);
+    }
+
+    public CurveEditor()
+    {
+        DataContextChanged += CurveEditor_DataContextChanged;
+    }
+
+    private void CurveEditor_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+    {
+        if (e.OldValue is CurveEditorDialogViewModel oldVm)
+        {
+            oldVm.StateSaving -= OnSaveState;
+        }
+        if (e.NewValue is CurveEditorDialogViewModel newVm)
+        {
+            newVm.StateSaving += OnSaveState;
+        }
+    }
+
+    private void OnSaveState(object? sender, EventArgs e)
+    {
+        var vm = (CurveEditorDialogViewModel)sender!;
+        vm.State.Collection.Clear();
+        vm.State.Collection.AddRange(Curve.Select(p => p.Value).ToArray());
     }
 
     private static void OnCollectionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

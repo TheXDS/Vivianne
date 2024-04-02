@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TheXDS.MCART.Component;
@@ -11,16 +10,6 @@ using TheXDS.Vivianne.Component;
 using TheXDS.Vivianne.Models;
 
 namespace TheXDS.Vivianne.ViewModels;
-
-public class CurveEditorDialogViewModel(CurveEditorState state) : EditorViewModelBase<CurveEditorState>(state)
-{
-    protected override Task OnSaveChanges()
-    {
-        State.TargetCollection.Clear();
-        State.TargetCollection.AddRange(State.Collection);
-        return Task.CompletedTask;
-    }
-}
 
 /// <summary>
 /// Implements a ViewModel that alows the user to edit Carp data.
@@ -137,7 +126,9 @@ public class CarpEditorViewModel : EditorViewModelBase<CarpEditorState>
             rng = new(d.Minimum, d.Maximum);
         }
         var vm = new CurveEditorDialogViewModel(new(c) { Minimum = rng.Minimum, Maximum = rng.Maximum, Step = d.Step, BarWidth = d.BarWidth }) { Message = d.Message };
-        await DialogService!.CustomDialog(vm!);
+        vm.StateSaved += Vm_StateSaved;
+        await DialogService!.CustomDialog(vm);
+        vm.StateSaved -= Vm_StateSaved;
         return vm.State.TargetCollection;
     }
 
@@ -182,5 +173,9 @@ public class CarpEditorViewModel : EditorViewModelBase<CarpEditorState>
         State.TireWidthRear = State.TireWidthFront;
         State.TireSidewallRear = State.TireSidewallFront;
         State.TireRimRear = State.TireRimFront;
+    }
+    private void Vm_StateSaved(object? sender, EventArgs e)
+    {
+        State.UnsavedChanges = true;
     }
 }
