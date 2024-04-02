@@ -1,4 +1,6 @@
 ﻿using System.Windows;
+using TheXDS.Ganymede.Helpers;
+using TheXDS.Ganymede.Services;
 
 namespace Vivianne.Wpf
 {
@@ -7,5 +9,12 @@ namespace Vivianne.Wpf
     /// </summary>
     public partial class App : Application
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="App"/> class.
+        /// </summary>
+        public App()
+        {
+            UiThread.SetProxy(new DispatcherUiThreadProxy());
+        }
     }
 }

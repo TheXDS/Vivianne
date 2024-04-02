@@ -16,8 +16,8 @@ public struct GaugeData
     public int DialWidthTip;
     public int SpeedometerCenterX;
     public int SpeedometerCenterY;
-    public int SpeedometerCenterOffsetBase;
-    public int SpeedometerCenterOffsetTip;
+    public int SpeedometerCenterOffset;
+    public int SpeedometerEdgeOffset;
     public int SpeedometerMin;
     public int SpeedometerMax;
     public int SpeedometerMinX;
@@ -26,8 +26,8 @@ public struct GaugeData
     public int SpeedometerMaxY;
     public int TachometerCenterX;
     public int TachometerCenterY;
-    public int TachometerCenterOffsetBase;
-    public int TachometerCenterOffsetTip;
+    public int TachometerCenterOffset;
+    public int TachometerEdgeOffset;
     public int TachometerMin;
     public int TachometerMax;
     public int TachometerMinX;

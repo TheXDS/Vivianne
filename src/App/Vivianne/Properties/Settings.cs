@@ -67,5 +67,10 @@ public class Settings
     /// <summary>
     /// Gets or sets the path to the NFS3 main directory.
     /// </summary>
-    public string Nfs3Path { get; set; }
+    public string? Nfs3Path { get; set; }
+
+    /// <summary>
+    /// If enabled, generates backups whenever a file is saved.
+    /// </summary>
+    public bool AutoBackup { get; set; }
 }

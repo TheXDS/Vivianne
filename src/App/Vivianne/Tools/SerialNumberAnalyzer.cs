@@ -5,13 +5,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using TheXDS.Ganymede.Services;
 using TheXDS.MCART.Types.Extensions;
-using TheXDS.Vivianne.Containers;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Serializers;
 
 namespace TheXDS.Vivianne.Tools;
 
-public static class SerialNumberAnalyzer
+public class SerialNumberAnalyzer : IVivianneTool
 {
     private class SnEntry
     {
@@ -29,11 +28,13 @@ public static class SerialNumberAnalyzer
     {
         try
         {
+            var parser = new VivSerializer();
             using var f = file.OpenRead();
             return new SnEntry()
             {
                 FilePath = file.FullName,
-                VivFile = VivFile.ReadFrom(f),
+
+                VivFile = parser.Deserialize(f),
             };
         }
         catch (Exception ex)
@@ -63,7 +64,7 @@ public static class SerialNumberAnalyzer
             }
         }
         catch (Exception ex)
-        { 
+        {
             _ = ex.Message;
         }
         return null;
@@ -88,50 +89,54 @@ public static class SerialNumberAnalyzer
         }
     }
 
-    public static async Task RunTool(IDialogService dlg)
+    public string ToolName => "Serial number analyzer";
+
+    public async Task Run(IDialogService dlg, INavigationService _)
     {
         var r = await dlg.GetDirectoryPath("CarModel path", "Select the 'CarModel' rootDirectory inside NFS3/Gamedata folder.");
-        if (r.Success)
+        if (!r.Success) return;
+
+        Random rnd = new();
+        List<ushort> uniqueSerials = [];
+        List<SnEntry> entries = [];
+        await foreach (var entry in LoadEntries(r.Result))
         {
-            Random rnd = new();
-            List<ushort> uniqueSerials = [];
-            List<SnEntry> entries = [];
-            await foreach (var entry in LoadEntries(r.Result))
+            if (entry.SerialNumber is not null && !uniqueSerials.Contains(entry.SerialNumber.Value))
             {
-                if (entry.SerialNumber is not null && !uniqueSerials.Contains(entry.SerialNumber.Value))
-                {
-                    uniqueSerials.Add(entry.SerialNumber.Value);
-                }
-                else
-                {
-                    entries.Add(entry);
-                }
+                uniqueSerials.Add(entry.SerialNumber.Value);
             }
-            foreach (var entry in entries)
+            else
             {
-                ushort newSerial;
-                do
-                {
-                    newSerial = (ushort)rnd.Next(1, ushort.MaxValue);
-                } while (uniqueSerials.Contains(newSerial));
-                entry.NewSerial = newSerial;
-                foreach (var fe in entry.FeDatas)
-                {
-                    fe.Value.SerialNumber = newSerial;
-                    entry.VivFile.Directory[fe.Key] = serializer.Serialize(fe.Value);
-                }
-                File.Delete(entry.FilePath);
-                using var vivF = File.OpenWrite(entry.FilePath);
-                entry.VivFile.WriteTo(vivF);
+                entries.Add(entry);
             }
-            if (entries.Count == 0)
+        }
+
+
+        foreach (var entry in entries)
+        {
+            ushort newSerial;
+            do
             {
-                await (dlg.Message("Serial number analysis", "No duplicate/conflicting/missing serial numbers found."));
-            }
-            else if (await dlg.GetOption("Serial number analysis", $"Operation completed successfully. Number of fixed serial numbers: {entries.Count}", "Ok", "Details") == 1)
+                newSerial = (ushort)rnd.Next(1, ushort.MaxValue);
+            } while (uniqueSerials.Contains(newSerial));
+            entry.NewSerial = newSerial;
+            foreach (var fe in entry.FeDatas)
             {
-                await (dlg.Message("Serial number analysis", string.Join(Environment.NewLine, entries.Select(p => $"{p.FilePath}: {p.SerialNumber.ToString() ?? "undefined"} -> {p.NewSerial}"))));
+                fe.Value.SerialNumber = newSerial;
+                entry.VivFile.Directory[fe.Key] = serializer.Serialize(fe.Value);
             }
+            File.Delete(entry.FilePath);
+            using var vivF = File.OpenWrite(entry.FilePath);
+            var parser = new VivSerializer();
+            parser.SerializeTo(entry.VivFile, vivF);
+        }
+        if (entries.Count == 0)
+        {
+            await dlg.Message("Serial number analysis", "No duplicate/conflicting/missing serial numbers found.");
+        }
+        else if (await dlg.GetOption("Serial number analysis", $"Operation completed successfully. Number of fixed serial numbers: {entries.Count}", "Ok", "Details") == 1)
+        {
+            await dlg.Message("Serial number analysis", string.Join(Environment.NewLine, entries.Select(p => $"{p.FilePath}: {p.SerialNumber.ToString() ?? "undefined"} -> {p.NewSerial}")));
         }
     }
 }

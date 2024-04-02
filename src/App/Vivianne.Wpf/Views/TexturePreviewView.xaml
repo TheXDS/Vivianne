@@ -25,9 +25,6 @@
             <Border
                 x:Name="brdContent"
                 Cursor="ScrollAll"
-                MouseLeftButtonDown="Sv_MouseLeftButtonDown"
-                PreviewMouseMove="Sv_PreviewMouseMove"
-                PreviewMouseLeftButtonUp="Sv_PreviewMouseLeftButtonUp"
                 HorizontalAlignment="Center" VerticalAlignment="Center"
                 Background="{Binding Background, Converter={StaticResource bg2b}, Mode=OneWay}">
                 <Image Stretch="None" Source="{Binding RawFile, Converter={StaticResource r2img}, Mode=OneWay}">
@@ -37,25 +34,53 @@
                 </Image>
             </Border>
         </ScrollViewer>
-        <DockPanel VerticalAlignment="Bottom">
-            <Expander ExpandDirection="Up">
+        <StackPanel HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top">
+            <StackPanel.Resources>
+                <Style TargetType="Expander">
+                    <Setter Property="ExpandDirection" Value="Down"/>
+                    <Setter Property="TextBlock.Foreground" Value="White"/>
+                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                    <Setter Property="VerticalAlignment" Value="Top"/>
+                </Style>
+                <Style TargetType="Border">
+                    <Setter Property="Background" Value="#B0000000"/>
+                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                    <Setter Property="Margin" Value="10"/>
+                </Style>
+                <Style TargetType="StackPanel">
+                    <Setter Property="Margin" Value="5"/>
+                    <Setter Property="TextBlock.Foreground" Value="White"/>
+                </Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Style>
+                <Style TargetType="Button">
+                    <Setter Property="Padding" Value="10,2"/>
+                    <Setter Property="Margin" Value="5"/>
+                </Style>
+            </StackPanel.Resources>
+            <Expander>
                 <Expander.Header>
-                    <TextBlock Foreground="White">View options</TextBlock>
+                    <TextBlock Text="View options">
+                        <TextBlock.Effect>
+                            <DropShadowEffect/>
+                        </TextBlock.Effect>
+                    </TextBlock>
                 </Expander.Header>
-                <Border
-                    Margin="10"
-                    Background="#B0000000"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Bottom">
-                    <StackPanel Margin="5" TextBlock.Foreground="White">
-                        <Slider Minimum="1.0" Maximum="10.0" Value="{Binding ZoomLevel}" Margin="5" Width="100"/>
+                <Border>
+                    <StackPanel Margin="5">
+                        <TextBlock>Zoom: <Run Text="{Binding ZoomLevel, Mode=OneWay}"/></TextBlock>
+                        <Slider x:Name="sldZoom" Minimum="1.0" Maximum="10.0" Value="{Binding ZoomLevel}" Margin="5" Width="100"/>
+                        <TextBlock>Background:</TextBlock>
                         <ComboBox
-                            IsEditable="False"
-                            SelectedItem="{Binding Background, FallbackValue={x:Static vm:BackgroundType.Checkerboard}}"
-                            ItemsSource="{controls:EnumValProvider EnumType={x:Type vm:BackgroundType}}"/>
+                                TextBlock.Foreground="Black"
+                                IsEditable="False"
+                                SelectedItem="{Binding Background, FallbackValue={x:Static vm:BackgroundType.Checkerboard}}"
+                                ItemsSource="{controls:EnumValProvider EnumType={x:Type vm:BackgroundType}}"/>
                     </StackPanel>
                 </Border>
             </Expander>
-        </DockPanel>
+        </StackPanel>
     </Grid>
 </UserControl>

@@ -54,7 +54,12 @@ public class QfsCodec
 {
     private const ushort QFS_Signature = 0xFB10;
 
-    private static bool IsCompressed(byte[] entryData)
+    /// <summary>
+    /// Gets a value that indicates if the raw file contents are compressed.
+    /// </summary>
+    /// <param name="entryData"></param>
+    /// <returns></returns>
+    public static bool IsCompressed(byte[] entryData)
     {
         return entryData.Length > 2 && BitConverter.ToUInt16(entryData, 0) == QFS_Signature;
     }
@@ -121,7 +126,7 @@ public class QfsCodec
                 sourcePosition += length + 3;
                 destinationPosition += length;
                 length = (ctrlByte1 & 0x3F) + 4;
-                offset = (ctrlByte2 & 0x3F) * 256 + ctrlByte3 + 1;
+                offset = ((ctrlByte2 & 0x3F) * 256) + ctrlByte3 + 1;
                 LZCompliantCopy(ref destinationBytes, destinationPosition - offset, ref destinationBytes, destinationPosition, length);
 
                 destinationPosition += length;
@@ -133,14 +138,14 @@ public class QfsCodec
                 LZCompliantCopy(ref sourceBytes, sourcePosition + 4, ref destinationBytes, destinationPosition, length);
                 sourcePosition += length + 4;
                 destinationPosition += length;
-                length = ((ctrlByte1 >> 2) & 3) * 256 + ctrlByte4 + 5;
-                offset = ((ctrlByte1 & 0x10) << 12) + 256 * ctrlByte2 + ctrlByte3 + 1;
+                length = (((ctrlByte1 >> 2) & 3) * 256) + ctrlByte4 + 5;
+                offset = ((ctrlByte1 & 0x10) << 12) + (256 * ctrlByte2) + ctrlByte3 + 1;
                 LZCompliantCopy(ref destinationBytes, destinationPosition - offset, ref destinationBytes, destinationPosition, length);
                 destinationPosition += length;
             }
             else
             {
-                length = (ctrlByte1 & 0x1F) * 4 + 4;
+                length = ((ctrlByte1 & 0x1F) * 4) + 4;
                 LZCompliantCopy(ref sourceBytes, sourcePosition + 1, ref destinationBytes, destinationPosition, length);
 
                 sourcePosition += length + 1;
@@ -216,7 +221,7 @@ public class QfsCodec
                     idx++;
                 }
                 if (bestLength > dData.Length - dPos)
-                    bestLength = 0; // was (InPos - InLen) effectively - best length
+                    bestLength = 0;
                 if (bestLength <= 2)
                 {
                     bestLength = 0;
@@ -233,12 +238,12 @@ public class QfsCodec
                 {
                     while (dPos - lastwrote >= 4)
                     {
-                        matchLength = (dPos - lastwrote) / 4 - 1;
+                        matchLength = ((dPos - lastwrote) / 4) - 1;
                         if (matchLength > 0x1B)
                             matchLength = 0x1B;
                         cData[cPos] = (byte)(0xE0 + matchLength);
                         cPos++;
-                        matchLength = 4 * matchLength + 4;
+                        matchLength = (4 * matchLength) + 4;
                         SlowMemCopy(cData, cPos, dData, lastwrote, matchLength);
                         lastwrote += matchLength;
                         cPos += matchLength;
@@ -246,9 +251,9 @@ public class QfsCodec
                     matchLength = dPos - lastwrote;
                     if (bestLength <= 10 && bestoffset <= 1024)
                     {
-                        cData[cPos] = (byte)((bestoffset - 1) / 256 * 32 + (bestLength - 3) * 4 + matchLength);
+                        cData[cPos] = (byte)(((bestoffset - 1) / 256 * 32) + ((bestLength - 3) * 4) + matchLength);
                         cPos++;
-                        cData[cPos] = (byte)(bestoffset - 1 & 0xFF);
+                        cData[cPos] = (byte)((bestoffset - 1) & 0xFF);
                         cPos++;
                         SlowMemCopy(cData, cPos, dData, lastwrote, matchLength);
                         lastwrote += matchLength;
@@ -259,9 +264,9 @@ public class QfsCodec
                     {
                         cData[cPos] = (byte)(0x80 + (bestLength - 4));
                         cPos++;
-                        cData[cPos] = (byte)(matchLength * 64 + (bestoffset - 1) / 256);
+                        cData[cPos] = (byte)((matchLength * 64) + ((bestoffset - 1) / 256));
                         cPos++;
-                        cData[cPos] = (byte)(bestoffset - 1 & 0xFF);
+                        cData[cPos] = (byte)((bestoffset - 1) & 0xFF);
                         cPos++;
                         SlowMemCopy(cData, cPos, dData, lastwrote, matchLength);
                         lastwrote += matchLength;
@@ -271,13 +276,13 @@ public class QfsCodec
                     else if (bestLength <= 1028 && bestoffset < WINDOW_SIZE)
                     {
                         bestoffset--;
-                        cData[cPos] = (byte)(0xC0 + bestoffset / 65536 * 16 + (bestLength - 5) / 256 * 4 + matchLength);
+                        cData[cPos] = (byte)(0xC0 + (bestoffset / 65536 * 16) + ((bestLength - 5) / 256 * 4) + matchLength);
                         cPos++;
-                        cData[cPos] = (byte)(bestoffset / 256 & 0xFF);
+                        cData[cPos] = (byte)((bestoffset / 256) & 0xFF);
                         cPos++;
                         cData[cPos] = (byte)(bestoffset & 0xFF);
                         cPos++;
-                        cData[cPos] = (byte)(bestLength - 5 & 0xFF);
+                        cData[cPos] = (byte)((bestLength - 5) & 0xFF);
                         cPos++;
                         SlowMemCopy(cData, cPos, dData, lastwrote, matchLength);
                         lastwrote += matchLength;
@@ -290,14 +295,14 @@ public class QfsCodec
         dPos = dData.Length;
         while (dPos - lastwrote >= 4)
         {
-            matchLength = (dPos - lastwrote) / 4 - 1;
+            matchLength = (dPos - lastwrote) / (4 - 1);
             if (matchLength > 0x1B)
             {
                 matchLength = 0x1B;
             }
             cData[cPos] = (byte)(0xE0 + matchLength);
             cPos++;
-            matchLength = 4 * matchLength + 4;
+            matchLength = (4 * matchLength) + 4;
             SlowMemCopy(cData, cPos, dData, lastwrote, matchLength);
             lastwrote += matchLength;
             cPos += matchLength;

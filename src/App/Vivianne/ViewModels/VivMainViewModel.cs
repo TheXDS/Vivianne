@@ -42,8 +42,8 @@ public class VivMainViewModel : HostViewModelBase, IStatefulViewModel<VivMainSta
         { ".gif", CreateTexturePreviewViewModel },
 
         // FSH/QFS need to be properly decoded before displaying - do not use TexturePreviewViewModel.
-        { ".fsh", CreateFshPreviewViewModel },
-        { ".qfs", CreateQfsPreviewViewModel },
+        { ".fsh", CreateFshEditorViewModel },
+        { ".qfs", CreateQfsEditorViewModel },
 
         { ".bri", CreateFeDataPreviewViewModel },
         { ".eng", CreateFeDataPreviewViewModel },
@@ -64,17 +64,17 @@ public class VivMainViewModel : HostViewModelBase, IStatefulViewModel<VivMainSta
         return new TexturePreviewViewModel(data);
     }
 
-    private static IViewModel CreateFshPreviewViewModel(byte[] data, Action<byte[]> _)
+    private static IViewModel CreateFshEditorViewModel(byte[] data, Action<byte[]> saveCallback)
     {
-        using var ms = new MemoryStream(data);
-        return new FshPreviewViewModel(new FshSerializer().Deserialize(ms)) { Title = ""};
+        ISerializer<FshFile> serializer = new FshSerializer();
+        void SaveFsh(FshFile fsh) => saveCallback.Invoke(serializer.Serialize(fsh));
+        return new FshEditorViewModel(serializer.Deserialize(data), SaveFsh);
     }
 
-    private static IViewModel CreateQfsPreviewViewModel(byte[] data, Action<byte[]> _)
+    private static IViewModel CreateQfsEditorViewModel(byte[] data, Action<byte[]> saveCallback)
     {
-        var uncompressed = QfsCodec.Decompress(data);
-        using var ms = new MemoryStream(uncompressed);
-        return new FshPreviewViewModel(new FshSerializer().Deserialize(ms));
+        void CompressBack(byte[] data) => saveCallback.Invoke(QfsCodec.Compress(data));
+        return CreateFshEditorViewModel(QfsCodec.Decompress(data), CompressBack);
     }
 
     private VivMainState state = null!;
@@ -144,8 +144,10 @@ public class VivMainViewModel : HostViewModelBase, IStatefulViewModel<VivMainSta
             }
         }
         progress.Report("Saving...");
+        var parser = new VivSerializer();
+
         await using var fs = File.Create(State.FilePath);
-        await Task.Run(() => State.Viv.WriteTo(fs));
+        await Task.Run(() => parser.SerializeTo(State.Viv, fs));
         return false;
     }
 
@@ -155,7 +157,7 @@ public class VivMainViewModel : HostViewModelBase, IStatefulViewModel<VivMainSta
         {
             void Save(byte[] data)
             {
-                State.Directory[file] = data;
+                UiThread.Invoke((Action)(() => State.Directory[file] = data));
                 State.UnsavedChanges = true;
             }
 
@@ -178,11 +180,11 @@ public class VivMainViewModel : HostViewModelBase, IStatefulViewModel<VivMainSta
         if (r.Success)
         {
             var keyName = Path.GetFileName(r.Result).ToLower();
-            if (State.Viv.Directory.ContainsKey(keyName) && !await DialogService.Ask("Replace file", $"The file '{keyName}' already exist. Do you want to replace it?"))
+            if (State.Directory.ContainsKey(keyName) && !await DialogService.Ask("Replace file", $"The file '{keyName}' already exist. Do you want to replace it?"))
             {
                 return;
             }
-            State.Viv.Directory[keyName] = await DialogService.RunOperation(p => File.ReadAllBytesAsync(r.Result));
+            State.Directory[keyName] = await DialogService.RunOperation(p => File.ReadAllBytesAsync(r.Result));
         }
     }
 
@@ -205,10 +207,10 @@ public class VivMainViewModel : HostViewModelBase, IStatefulViewModel<VivMainSta
         {
             var ext = Path.GetExtension(file)[1..];
 
-            var r = await DialogService!.GetFileOpenPath("Replace file", $"Select a file to repace '{file}' with", [FileFilterItem.Simple(ext), FileFilterItem.AllFiles]);
+            var r = await DialogService!.GetFileOpenPath($"Replace '{file}'", $"Select a file to repace '{file}' with", [FileFilterItem.Simple(ext), FileFilterItem.AllFiles]);
             if (r.Success)
             {
-                State.Viv.Directory[Path.GetFileName(r.Result).ToLower()] = await DialogService.RunOperation(p => File.ReadAllBytesAsync(r.Result));
+                State.Directory[Path.GetFileName(r.Result).ToLower()] = await DialogService.RunOperation(p => File.ReadAllBytesAsync(r.Result));
             }
         }
     }
@@ -217,10 +219,9 @@ public class VivMainViewModel : HostViewModelBase, IStatefulViewModel<VivMainSta
     {
         if (parameter is KeyValuePair<string, byte[]> { Key: { } file })
         {
-            if (await DialogService!.Ask($"Are you sure you want to remove '{file}'?"))
+            if (await DialogService!.Ask($"Remove '{file}'", $"Are you sure you want to remove '{file}'?"))
             {
-                State.Viv.Directory.Remove(file);
-                Notify(nameof(State));
+                State.Directory.Remove(file);
             }
         }
     }
@@ -232,7 +233,7 @@ public class VivMainViewModel : HostViewModelBase, IStatefulViewModel<VivMainSta
             bool ask = false;
             do
             {
-                switch (await DialogService!.AskYnc($"Do you want to save {State.FriendlyName}?"))
+                switch (await DialogService!.AskYnc("Unsaved changes", $"Do you want to save {State.FriendlyName}?"))
                 {
                     case true: ask = await DialogService.RunOperation(SaveVivAsync); break;
                     case null: navigation.Cancel(); break;
