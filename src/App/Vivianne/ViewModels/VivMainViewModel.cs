@@ -1,12 +1,16 @@
-﻿using System;
+﻿using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TheXDS.Ganymede.Helpers;
 using TheXDS.Ganymede.Models;
 using TheXDS.Ganymede.Types.Base;
 using TheXDS.Ganymede.ViewModels;
+using TheXDS.Vivianne.Extensions;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Resources;
 using TheXDS.Vivianne.Serializers;
@@ -54,6 +58,25 @@ public class VivMainViewModel : HostViewModelBase, IStatefulViewModel<VivMainSta
         { ".swe", CreateFeDataPreviewViewModel },
     };
 
+    private static readonly Dictionary<string, Func<byte[]>> VivTemplates = new()
+    {
+        { "DASH.qfs", TemplateDashQfs}
+    };
+
+    private static byte[] TemplateDashQfs()
+    {
+        var cabinBlob = new FshBlob() { Magic = FshBlobFormat.Argb32, GaugeData = new() };
+        cabinBlob.ReplaceWith(new Image<Rgba32>(640, 480));
+        cabinBlob.Footer = Mappings.FshFooterWriter[FshBlobFooterType.CarDashboard].Invoke(cabinBlob);
+        var steerBlob = new FshBlob() { Magic = FshBlobFormat.Argb32, XRotation=128, YRotation=128, XPosition=192, YPosition=352 };
+        steerBlob.ReplaceWith(new Image<Rgba32>(256, 256));
+
+        var fsh = new FshFile();
+        fsh.Entries.Add("0000", cabinBlob);
+        fsh.Entries.Add("0001", steerBlob);
+        return QfsCodec.Compress(((ISerializer<FshFile>)new FshSerializer()).Serialize(fsh));
+    }
+
     private static IViewModel CreateFeDataPreviewViewModel(byte[] data, Action<byte[]> saveCallback)
     {
         return new FeDataPreviewViewModel(data, saveCallback);
@@ -97,6 +120,7 @@ public class VivMainViewModel : HostViewModelBase, IStatefulViewModel<VivMainSta
         ReplaceFileCommand = cb.BuildSimple(OnReplaceFile);
         ExportFileCommand = cb.BuildSimple(OnExportFile);
         RemoveFileCommand = cb.BuildSimple(OnRemoveFile);
+        NewFromTemplateCommand = cb.BuildSimple(OnNewFromTemplate);
     }
 
     /// <summary>
@@ -110,6 +134,12 @@ public class VivMainViewModel : HostViewModelBase, IStatefulViewModel<VivMainSta
     /// directory.
     /// </summary>
     public ICommand ImportFileCommand { get; }
+
+    /// <summary>
+    /// Gets a reference to the command used to create a new file inside the
+    /// VIV directory based on a template.
+    /// </summary>
+    public ICommand NewFromTemplateCommand { get; }
 
     /// <summary>
     /// Gets a reference to the command used to export a selected file from the
@@ -223,6 +253,16 @@ public class VivMainViewModel : HostViewModelBase, IStatefulViewModel<VivMainSta
             {
                 State.Directory.Remove(file);
             }
+        }
+    }
+
+    private async Task OnNewFromTemplate()
+    {
+        var r = await DialogService!.SelectOption("New from template", "Select a template to create a new file in the VIV directory.", VivTemplates.Keys.ToArray());
+        if (r.Success)
+        {
+            var template = VivTemplates.ToList()[r.Result];
+            State.Directory[template.Key] = template.Value.Invoke();
         }
     }
 

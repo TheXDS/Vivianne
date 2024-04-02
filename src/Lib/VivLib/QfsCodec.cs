@@ -50,7 +50,7 @@ namespace TheXDS.Vivianne;
 /// <item>César Morgan (xds_xps_ivx@hotmail.com)</item>
 /// </list>
 /// </remarks>
-public class QfsCodec
+public static class QfsCodec
 {
     private const ushort QFS_Signature = 0xFB10;
 
