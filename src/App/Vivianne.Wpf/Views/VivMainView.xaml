@@ -37,6 +37,7 @@
             </RadioButton>
             <mcart:StretchyWrapPanel Orientation="Horizontal" DockPanel.Dock="Bottom">
                 <Button Command="{Binding ImportFileCommand}">➕</Button>
+                <Button Command="{Binding NewFromTemplateCommand}">📄</Button>
             </mcart:StretchyWrapPanel>
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <ItemsControl Margin="0,0,0,0" MinWidth="150" ItemsSource="{Binding State.Directory}">
