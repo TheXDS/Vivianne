@@ -13,14 +13,14 @@
                         SnapsToDevicePixels="True">
                         <DockPanel.Resources>
                             <Color x:Key="ledOnColor">#00ff00</Color>
-                            <Color x:Key="ledOffColor">#004000</Color>
+                            <Color x:Key="ledOffColor">#206020</Color>
                             <Color x:Key="shadowColor">#404040</Color>
                         </DockPanel.Resources>
                         <Grid
-                            Margin="4"
-                            DockPanel.Dock="Right"
-                            Height="8" 
-                            Width="8"
+                            Margin="10,5"
+                            DockPanel.Dock="Left"
+                            Height="6" 
+                            Width="6"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center">
                             <Ellipse x:Name="redLed">
@@ -42,7 +42,7 @@
                                 x:Name="greenLed">
                                 <Ellipse.Stroke>
                                     <LinearGradientBrush EndPoint="0,1">
-                                        <GradientStop Color="{DynamicResource ledOnColor}"/>
+                                        <GradientStop Color="{DynamicResource ledOnColor}" Offset="0.5"/>
                                         <GradientStop Color="{DynamicResource shadowColor}" Offset="1"/>
                                     </LinearGradientBrush>
                                 </Ellipse.Stroke>
@@ -53,7 +53,7 @@
                                     </LinearGradientBrush>
                                 </Ellipse.Fill>
                                 <Ellipse.Effect>
-                                    <DropShadowEffect
+                                    <DropShadowEffect                                        
                                         ShadowDepth="0"
                                         BlurRadius="10"
                                         Color="{DynamicResource ledOnColor}">
