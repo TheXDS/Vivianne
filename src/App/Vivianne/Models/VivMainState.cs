@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using TheXDS.Ganymede.Helpers;
 using TheXDS.MCART.Types;
 using TheXDS.Vivianne.Serializers;
+using System.Collections.Specialized;
+using System.Linq;
 
 namespace TheXDS.Vivianne.Models;
 
@@ -38,7 +40,19 @@ public class VivMainState : VivInfo
     /// <summary>
     /// Gets a reference to an observable collection with the VIV directory.
     /// </summary>
-    public ObservableDictionaryWrap<string, byte[]> Directory { get; private set; }
+    public ObservableDictionaryWrap<string, byte[]> Directory { get; private set; } = null!;
+
+    public bool HasCarFce => HasFile("car.fce");
+    public bool HasBnk => HasFile("car.bnk");
+    public bool HasDash => HasFile("dash.qfs");
+    public bool HasFedataFsh => HasFile("fedata.fsh");
+    public bool FeDataBri=> HasFile("fedata.bri");
+    public bool FeDataEng => HasFile("fedata.eng");
+    public bool FeDataFre => HasFile("fedata.fre");
+    public bool FeDataGer => HasFile("fedata.ger");
+    public bool FeDataIta => HasFile("fedata.ita");
+    public bool FeDataSpa => HasFile("fedata.spa");
+    public bool FeDataSwe => HasFile("fedata.swe");
 
     /// <summary>
     /// Gets or sets a value that indicates if the loaded VIV file contains
@@ -65,7 +79,26 @@ public class VivMainState : VivInfo
     {
         _Viv = viv;
         UiThread.Invoke(() => Directory = new(_Viv.Directory));
+        Directory.CollectionChanged += Directory_CollectionChanged;
         _unsavedChanges = false;
+    }
+
+    private bool HasFile(string key) => Directory.Keys.Any(p => p.Equals(key, System.StringComparison.InvariantCultureIgnoreCase));
+
+    private void Directory_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        switch (e.Action)
+        {
+            case NotifyCollectionChangedAction.Add:
+            case NotifyCollectionChangedAction.Remove:
+            case NotifyCollectionChangedAction.Reset:
+                Notify(
+                    nameof(HasCarFce), nameof(HasBnk), nameof(HasDash),
+                    nameof(HasFedataFsh), nameof(FeDataBri), nameof(FeDataEng),
+                    nameof(FeDataFre), nameof(FeDataGer), nameof(FeDataIta),
+                    nameof(FeDataSpa), nameof(FeDataSwe));
+                break;
+        }
     }
 
     /// <summary>
@@ -80,11 +113,13 @@ public class VivMainState : VivInfo
     {
         await using var fs = File.OpenRead(path);
         ISerializer<VivFile> parser = new VivSerializer();
-        return new(await parser.DeserializeAsync(fs))
+        var viv = await parser.DeserializeAsync(fs);
+
+        return new(viv)
         {
             UnsavedChanges = false,
             FilePath = path,
-            FriendlyName = Path.GetFileName(Path.GetDirectoryName(path)) ?? Path.GetFileName(path)
+            FriendlyName = viv.TryGetValue("fedata.eng", out var fd) ? ((ISerializer<FeData>)new FeDataSerializer()).Deserialize(fd).CarName : Path.GetFileName(Path.GetDirectoryName(path)) ?? Path.GetFileName(path)
         };
     }
 }

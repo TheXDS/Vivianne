@@ -10,7 +10,7 @@
     x:Name="ucRoot"
     d:DataContext="{d:DesignInstance Type=viewmodels:VivMainViewModel}"
     mc:Ignorable="d" 
-    d:DesignHeight="450" d:DesignWidth="800">
+    d:DesignHeight="450" d:DesignWidth="400">
     <UserControl.Resources>
         <vc2:ByteCountConverter x:Key="sizeConv"/>
     </UserControl.Resources>
@@ -20,16 +20,21 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <DockPanel>
-            <RadioButton GroupName="VivDirectory" Command="{Binding OpenFileCommand, Mode=OneWay}" DockPanel.Dock="Top" IsChecked="True">
+            <RadioButton Margin="0,0,0,5" Height="40" GroupName="VivDirectory" Command="{Binding OpenFileCommand, Mode=OneWay}" DockPanel.Dock="Top" IsChecked="True">
                 <RadioButton.Template>
                     <ControlTemplate TargetType="RadioButton">
-                        <Border CornerRadius="10,0,0,10" x:Name="PART_SelectionBg">
-                            <TextBlock x:Name="PART_title" Margin="10,5" Text="VIV information" FontSize="16" Foreground="Gray"/>
+                        <Border CornerRadius="10,0,0,10" x:Name="PART_SelectionBg" Background="{StaticResource DarkBackground}">
+                            <TextBlock x:Name="PART_title" VerticalAlignment="Center" HorizontalAlignment="Center" Text="VIV information" FontSize="16" Foreground="{StaticResource MidBackground}"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsChecked" Value="true">
-                                <Setter TargetName="PART_SelectionBg" Property="Background" Value="#808080"/>
-                                <Setter TargetName="PART_title" Property="Foreground" Value="White"/>
+                                <Setter TargetName="PART_SelectionBg" Property="Background" Value="{StaticResource MidBackground}"/>
+                                <Setter TargetName="PART_SelectionBg" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect/>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="PART_title" Property="Foreground" Value="{StaticResource DarkAreaForeground}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -44,32 +49,35 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <RadioButton
+                                Margin="0,0,0,5"
                                 GroupName="VivDirectory"
                                 Command="{Binding DataContext.OpenFileCommand, ElementName=ucRoot, Mode=OneWay}"
                                 CommandParameter="{Binding Mode=OneWay}">
                                 <RadioButton.Template>
                                     <ControlTemplate TargetType="RadioButton">
-                                        <Border CornerRadius="10,0,0,10" x:Name="PART_SelectionBg">
+                                        <Border CornerRadius="10,0,0,10" x:Name="PART_SelectionBg" Background="{StaticResource DarkBackground}">
                                             <DockPanel Margin="10,5">
                                                 <Button
+                                                    x:Name="PART_btnRemove"
                                                     DockPanel.Dock="Right"
                                                     Background="Transparent"
                                                     BorderThickness="0"
                                                     VerticalAlignment="Center"
-                                                    Foreground="Gray"
+                                                    Foreground="{StaticResource MidBackground}"
                                                     Command="{Binding DataContext.RemoveFileCommand, ElementName=ucRoot, Mode=OneWay}"
                                                     CommandParameter="{Binding Mode=OneWay}" Content="❌"/>
                                                 <Button
+                                                    x:Name="PART_btnExport"
                                                     DockPanel.Dock="Right"
                                                     Background="Transparent"
                                                     BorderThickness="0"
-                                                    Foreground="Gray"
+                                                    Foreground="{StaticResource MidBackground}"
                                                     VerticalAlignment="Center"
                                                     Command="{Binding DataContext.ExportFileCommand, ElementName=ucRoot, Mode=OneWay}"
                                                     CommandParameter="{Binding Mode=OneWay}" Content="💾"/>
                                                 <StackPanel>
-                                                    <TextBlock x:Name="PART_filename" Text="{Binding Key, Mode=OneWay}" FontSize="16" Foreground="Gray"/>
-                                                    <TextBlock x:Name="PART_filesize" FontSize="9" Foreground="Gray">
+                                                    <TextBlock x:Name="PART_filename" Text="{Binding Key, Mode=OneWay}" FontSize="16" Foreground="{StaticResource MidBackground}"/>
+                                                    <TextBlock x:Name="PART_filesize" FontSize="9" Foreground="{StaticResource MidBackground}">
                                                         Size: <Run Text="{Binding Value, Mode=OneWay, Converter={StaticResource sizeConv}}"/>
                                                     </TextBlock>
                                                 </StackPanel>                                    
@@ -77,9 +85,20 @@
                                         </Border>
                                         <ControlTemplate.Triggers>
                                             <Trigger Property="IsChecked" Value="true">
-                                                <Setter TargetName="PART_SelectionBg" Property="Background" Value="#808080"/>
-                                                <Setter TargetName="PART_filename" Property="Foreground" Value="White"/>
-                                                <Setter TargetName="PART_filesize" Property="Foreground" Value="White"/>
+                                                <Setter TargetName="PART_SelectionBg" Property="Effect">
+                                                    <Setter.Value>
+                                                        <DropShadowEffect/>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Setter TargetName="PART_SelectionBg" Property="Background" Value="{StaticResource MidBackground}"/>
+                                                <Setter TargetName="PART_btnRemove" Property="Foreground" Value="{StaticResource DarkAreaForeground}"/>
+                                                <Setter TargetName="PART_btnExport" Property="Foreground" Value="{StaticResource DarkAreaForeground}"/>
+                                                <Setter TargetName="PART_filename" Property="Foreground" Value="{StaticResource DarkAreaForeground}"/>
+                                                <Setter TargetName="PART_filesize" Property="Foreground" Value="{StaticResource DarkAreaForeground}"/>
+                                            </Trigger>
+                                            <Trigger Property="IsEnabled" Value="False">
+                                                <Setter TargetName="PART_btnRemove" Property="Visibility" Value="Hidden"/>
+                                                <Setter TargetName="PART_btnExport" Property="Visibility" Value="Hidden"/>
                                             </Trigger>
                                         </ControlTemplate.Triggers>
                                     </ControlTemplate>

@@ -23,11 +23,11 @@
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="45"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Border Background="#404040">
-            <DockPanel Margin="10">
+            <DockPanel Margin="10,0" VerticalAlignment="Center">
                 <DockPanel.Resources>
                     <Style TargetType="TextBlock">
                         <Setter Property="Foreground" Value="White"/>
