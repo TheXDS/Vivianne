@@ -20,11 +20,11 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <DockPanel>
-            <RadioButton Margin="0,0,0,5" GroupName="VivDirectory" Command="{Binding OpenFileCommand, Mode=OneWay}" DockPanel.Dock="Top" IsChecked="True">
+            <RadioButton Margin="0,0,0,5" Height="40" GroupName="VivDirectory" Command="{Binding OpenFileCommand, Mode=OneWay}" DockPanel.Dock="Top" IsChecked="True">
                 <RadioButton.Template>
                     <ControlTemplate TargetType="RadioButton">
                         <Border CornerRadius="10,0,0,10" x:Name="PART_SelectionBg" Background="{StaticResource DarkBackground}">
-                            <TextBlock x:Name="PART_title" Margin="10" Text="VIV information" FontSize="16" Foreground="{StaticResource MidBackground}"/>
+                            <TextBlock x:Name="PART_title" VerticalAlignment="Center" HorizontalAlignment="Center" Text="VIV information" FontSize="16" Foreground="{StaticResource MidBackground}"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsChecked" Value="true">

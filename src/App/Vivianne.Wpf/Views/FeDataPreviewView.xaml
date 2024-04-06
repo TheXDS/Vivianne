@@ -16,13 +16,18 @@
     d:DesignHeight="450" d:DesignWidth="600">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="45"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <UniformGrid Rows="1" Margin="10" HorizontalAlignment="Center">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <UniformGrid Rows="1" Margin="10" HorizontalAlignment="Center" Grid.ColumnSpan="2">
             <Button Padding="10,2" Command="{Binding SaveCommand, Mode=OneWay}" Content="{x:Static stc:Common.Save}"/>
         </UniformGrid>
-        <TabControl Grid.Row="1">
+        <Rectangle Margin="0,22,0,0" Grid.Row="1" Fill="{StaticResource MainAreaBackground}"/>
+        <TabControl Grid.Row="1" Grid.Column="1" BorderThickness="0">
             <TabControl.Resources>
                 <Style TargetType="ScrollViewer">
                     <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>

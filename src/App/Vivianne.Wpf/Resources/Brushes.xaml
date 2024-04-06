@@ -29,10 +29,17 @@
     </LinearGradientBrush>
     <LinearGradientBrush x:Key="MainAreaDarkBackground" EndPoint="1,0">
         <LinearGradientBrush.GradientStops>
-            <GradientStop Color="{StaticResource MidBackgroundColor}" Offset="0.02"/>
-            <GradientStop Color="{StaticResource DarkBackgroundColor}" Offset="0.05"/>
+            <GradientStop Color="{StaticResource MidBackgroundColor}" Offset="0.2"/>
+            <GradientStop Color="{StaticResource DarkBackgroundColor}" Offset="1"/>
         </LinearGradientBrush.GradientStops>
     </LinearGradientBrush>
+    <LinearGradientBrush x:Key="MainAreaAdaptiveBackground" EndPoint="1,0">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Color="{StaticResource MidBackgroundColor}" Offset="0.2"/>
+            <GradientStop Color="Transparent" Offset="1"/>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
     <RadialGradientBrush x:Key="DashboardDarkBackground" GradientOrigin="0,0.5" Center="0,0.5" RadiusY="0.75" RadiusX="-0.5">
         <RadialGradientBrush.RelativeTransform>
             <TransformGroup>
