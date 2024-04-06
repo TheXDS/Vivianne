@@ -74,6 +74,20 @@ public class FeDataSerializer : ISerializer<FeData>
             CarTopSpeed = fedataHeader.TopSpeed,
             CarHandling = fedataHeader.Handling,
             CarBraking = fedataHeader.Braking,
+
+            // TODO: Investigate what these values are:
+            Unk_0x0c = fedataHeader.Unk_0x0c,
+            Unk_0x0e = fedataHeader.Unk_0x0e,
+            Unk_0x14 = fedataHeader.Unk_0x14,
+            Unk_0x16 = fedataHeader.Unk_0x16,
+            Unk_0x1a = fedataHeader.Unk_0x1a,
+            Unk_0x1c = fedataHeader.Unk_0x1c,
+            Unk_0x1e = fedataHeader.Unk_0x1e,
+            Unk_0x20 = fedataHeader.Unk_0x20,
+            Unk_0x22 = fedataHeader.Unk_0x22,
+            Unk_0x24 = fedataHeader.Unk_0x24,
+            Unk_0x26 = fedataHeader.Unk_0x26,
+            Unk_0x2c = fedataHeader.Unk_0x2c,
         };
         uint[] offsets = new uint[40];
         for (int i = 0; i < 40; i++)
@@ -95,7 +109,7 @@ public class FeDataSerializer : ISerializer<FeData>
     {
         using var writer = new BinaryWriter(stream);
         writer.Write(Encoding.ASCII.GetBytes(entity.CarId));
-        writer.WriteStruct(FeDataHeader.Empty with
+        writer.WriteStruct(new FeDataHeader()
         {
             IsBonus = entity.IsBonus ? (ushort)1 : (ushort)0,
             AvailableToAi = entity.AvailableToAi ? (ushort)1 : (ushort)0,
@@ -107,6 +121,20 @@ public class FeDataSerializer : ISerializer<FeData>
             TopSpeed = entity.CarTopSpeed,
             Handling = entity.CarHandling,
             Braking = entity.CarBraking,
+
+            // TODO: Investigate what these values are:
+            Unk_0x0c = entity.Unk_0x0c,
+            Unk_0x0e = entity.Unk_0x0e,
+            Unk_0x14 = entity.Unk_0x14,
+            Unk_0x16 = entity.Unk_0x16,
+            Unk_0x1a = entity.Unk_0x1a,
+            Unk_0x1c = entity.Unk_0x1c,
+            Unk_0x1e = entity.Unk_0x1e,
+            Unk_0x20 = entity.Unk_0x20,
+            Unk_0x22 = entity.Unk_0x22,
+            Unk_0x24 = entity.Unk_0x24,
+            Unk_0x26 = entity.Unk_0x26,
+            Unk_0x2c = entity.Unk_0x2c,
         });
         uint lastOffset = 0xcf;
         using var ms2 = new MemoryStream();

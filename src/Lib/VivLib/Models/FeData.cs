@@ -7,6 +7,68 @@ namespace TheXDS.Vivianne.Models;
 /// </summary>
 public class FeData
 {
+    #region Unknown values
+    /// <summary>
+    /// Gets or sets the unknown <c>WORD</c> value at offset <c>0x0c</c>.
+    /// </summary>
+    public ushort Unk_0x0c { get; set; }
+
+    /// <summary>
+    /// Gets or sets the unknown <c>WORD</c> value at offset <c>0x0e</c>.
+    /// </summary>
+    public ushort Unk_0x0e { get; set; }
+
+    /// <summary>
+    /// Gets or sets the unknown <c>WORD</c> value at offset <c>0x14</c>.
+    /// </summary>
+    public ushort Unk_0x14 { get; set; }
+
+    /// <summary>
+    /// Gets or sets the unknown <c>WORD</c> value at offset <c>0x16</c>.
+    /// </summary>
+    public ushort Unk_0x16 { get; set; }
+
+    /// <summary>
+    /// Gets or sets the unknown <c>WORD</c> value at offset <c>0x1a</c>.
+    /// </summary>
+    public ushort Unk_0x1a { get; set; }
+
+    /// <summary>
+    /// Gets or sets the unknown <c>WORD</c> value at offset <c>0x1c</c>.
+    /// </summary>
+    public ushort Unk_0x1c { get; set; }
+
+    /// <summary>
+    /// Gets or sets the unknown <c>WORD</c> value at offset <c>0x1e</c>.
+    /// </summary>
+    public ushort Unk_0x1e { get; set; }
+
+    /// <summary>
+    /// Gets or sets the unknown <c>WORD</c> value at offset <c>0x20</c>.
+    /// </summary>
+    public ushort Unk_0x20 { get; set; }
+
+    /// <summary>
+    /// Gets or sets the unknown <c>WORD</c> value at offset <c>0x22</c>.
+    /// </summary>
+    public ushort Unk_0x22 { get; set; }
+
+    /// <summary>
+    /// Gets or sets the unknown <c>WORD</c> value at offset <c>0x24</c>.
+    /// </summary>
+    public ushort Unk_0x24 { get; set; }
+
+    /// <summary>
+    /// Gets or sets the unknown <c>WORD</c> value at offset <c>0x26</c>.
+    /// </summary>
+    public ushort Unk_0x26 { get; set; }
+
+    /// <summary>
+    /// Gets or sets the unknown <c>BYTE</c> value at offset <c>0x2c</c>.
+    /// </summary>
+    public byte Unk_0x2c { get; set; }
+    #endregion
+
     /// <summary>
     /// Enumerates all the known fedata file extensions.
     /// </summary>
