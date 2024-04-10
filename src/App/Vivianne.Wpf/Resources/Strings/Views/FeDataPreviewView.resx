@@ -237,11 +237,17 @@
   <data name="IsBonus" xml:space="preserve">
     <value>Is bonus car</value>
   </data>
+  <data name="IsDlcCar" xml:space="preserve">
+    <value>Is a DLC car</value>
+  </data>
   <data name="IsPolice" xml:space="preserve">
     <value>Is police car</value>
   </data>
   <data name="Length" xml:space="preserve">
     <value>Length</value>
+  </data>
+  <data name="LinkEdits" xml:space="preserve">
+    <value>Sync edits on other FeData files / Carp</value>
   </data>
   <data name="Manufacturer" xml:space="preserve">
     <value>Manufacturer</value>

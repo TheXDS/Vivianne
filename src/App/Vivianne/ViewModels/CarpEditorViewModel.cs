@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using TheXDS.Ganymede.Helpers;
 using TheXDS.MCART.Component;
 using TheXDS.MCART.Types;
 using TheXDS.MCART.Types.Extensions;
@@ -30,10 +31,19 @@ public class CarpEditorViewModel : EditorViewModelBase<CarpEditorState>
         CopyTransToManualCommand = new SimpleCommand(OnCopyTransToManual);
         CopyTiresToFrontCommand = new SimpleCommand(OnCopyTiresToFront);
         CopyTiresToRearCommand = new SimpleCommand(OnCopyTiresToRear);
+        FedataSyncCommand = new SimpleCommand(OnFeDataSync, vivFileRef is not null);
     }
 
+    /// <summary>
+    /// Gets a reference to the command used to run a wizard to generate
+    /// realistic Carp files.
+    /// </summary>
     public ICommand CarpWizardCommand { get; }
 
+    /// <summary>
+    /// Gets a reference to the command used to sync up Carp data with FeData
+    /// files.
+    /// </summary>
     public ICommand FedataSyncCommand { get; }
 
     /// <summary>
@@ -111,30 +121,9 @@ public class CarpEditorViewModel : EditorViewModelBase<CarpEditorState>
         }
     }
 
-    private async Task<ICollection<double>> RunCurveEditor(ICollection<double> c, CollectionDescriptor? d = null)
+    private async Task OnFeDataSync()
     {
-        Range<double> rng;
-        d ??= new() { Minimum = 0, Maximum = 100, Step = 10, BarWidth = 40 };
-        if (KeyboardProxy.IsShiftKeyDown)
-        {
-            var result = await DialogService!.GetInputRange("Edit curve", "Select a value range to edit this curve", d.Minimum, d.Maximum);
-            if (!result) return [];
-            rng = new(result.Result.Min, result.Result.Max);
-        }
-        else
-        {
-            rng = new(d.Minimum, d.Maximum);
-        }
-        var vm = new CurveEditorDialogViewModel(new(c) { Minimum = rng.Minimum, Maximum = rng.Maximum, Step = d.Step, BarWidth = d.BarWidth }) { Message = d.Message };
-        vm.StateSaved += Vm_StateSaved;
-        await DialogService!.CustomDialog(vm);
-        vm.StateSaved -= Vm_StateSaved;
-        return vm.State.TargetCollection;
-    }
 
-    private ICollection<T>? GetCollection<T>(string name) where T : unmanaged
-    {
-        return typeof(CarpEditorState).GetProperty(name)?.GetValue(State) as ICollection<T>;
     }
 
     private void OnCopyTransToManual()
@@ -174,8 +163,35 @@ public class CarpEditorViewModel : EditorViewModelBase<CarpEditorState>
         State.TireSidewallRear = State.TireSidewallFront;
         State.TireRimRear = State.TireRimFront;
     }
+
     private void Vm_StateSaved(object? sender, EventArgs e)
     {
         State.UnsavedChanges = true;
+    }
+
+    private async Task<ICollection<double>> RunCurveEditor(ICollection<double> c, CollectionDescriptor? d = null)
+    {
+        Range<double> rng;
+        d ??= new() { Minimum = 0, Maximum = 100, Step = 10, BarWidth = 40 };
+        if (KeyboardProxy.IsShiftKeyDown)
+        {
+            var result = await DialogService!.GetInputRange("Edit curve", "Select a value range to edit this curve", d.Minimum, d.Maximum);
+            if (!result) return [];
+            rng = new(result.Result.Min, result.Result.Max);
+        }
+        else
+        {
+            rng = new(d.Minimum, d.Maximum);
+        }
+        var vm = new CurveEditorDialogViewModel(new(c) { Minimum = rng.Minimum, Maximum = rng.Maximum, Step = d.Step, BarWidth = d.BarWidth }) { Message = d.Message };
+        vm.StateSaved += Vm_StateSaved;
+        await DialogService!.CustomDialog(vm);
+        vm.StateSaved -= Vm_StateSaved;
+        return vm.State.TargetCollection;
+    }
+
+    private ICollection<T>? GetCollection<T>(string name) where T : unmanaged
+    {
+        return typeof(CarpEditorState).GetProperty(name)?.GetValue(State) as ICollection<T>;
     }
 }

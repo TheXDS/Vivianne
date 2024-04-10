@@ -421,6 +421,15 @@ namespace TheXDS.Vivianne.Resources.Strings.Views {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Is a DLC car.
+        /// </summary>
+        public static string IsDlcCar {
+            get {
+                return ResourceManager.GetString("IsDlcCar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Is police car.
         /// </summary>
         public static string IsPolice {
@@ -435,6 +444,15 @@ namespace TheXDS.Vivianne.Resources.Strings.Views {
         public static string Length {
             get {
                 return ResourceManager.GetString("Length", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Sync edits on other FeData files / Carp.
+        /// </summary>
+        public static string LinkEdits {
+            get {
+                return ResourceManager.GetString("LinkEdits", resourceCulture);
             }
         }
         

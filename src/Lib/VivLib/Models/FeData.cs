@@ -16,7 +16,7 @@ public class FeData
     /// <summary>
     /// Gets or sets the unknown <c>WORD</c> value at offset <c>0x0e</c>.
     /// </summary>
-    public ushort Unk_0x0e { get; set; }
+    public ushort IsDlcCar { get; set; }
 
     /// <summary>
     /// Gets or sets the unknown <c>WORD</c> value at offset <c>0x14</c>.

@@ -18,9 +18,6 @@ public class FeDataSerializer : ISerializer<FeData>
         public static FeDataHeader Empty = new()
         {
             FlagCount = 0x0009,
-            Unk_0x0c = 0x0003,
-            Unk_0x16 = 0x0080,
-            Unk_0x2c = 0x05,
             StringEntries = 0x0028
         };
 
@@ -29,7 +26,7 @@ public class FeDataSerializer : ISerializer<FeData>
         public ushort AvailableToAi;
         public ushort CarClass;
         public ushort Unk_0x0c;// = 0x0003
-        public ushort Unk_0x0e;// = 0x0000
+        public ushort IsDlcCar;
         public ushort IsPolice;
         public ushort Seat;
         public ushort Unk_0x14; // = 0x0000
@@ -69,6 +66,7 @@ public class FeDataSerializer : ISerializer<FeData>
             VehicleClass = (Nfs3CarClass)fedataHeader.CarClass,
             IsPolice = fedataHeader.IsPolice == 1,
             Seat = (DriverSeatPosition)fedataHeader.Seat,
+            IsDlcCar = fedataHeader.IsDlcCar,
             SerialNumber = fedataHeader.SerialNumber,
             CarAccel = fedataHeader.Accel,
             CarTopSpeed = fedataHeader.TopSpeed,
@@ -77,7 +75,6 @@ public class FeDataSerializer : ISerializer<FeData>
 
             // TODO: Investigate what these values are:
             Unk_0x0c = fedataHeader.Unk_0x0c,
-            Unk_0x0e = fedataHeader.Unk_0x0e,
             Unk_0x14 = fedataHeader.Unk_0x14,
             Unk_0x16 = fedataHeader.Unk_0x16,
             Unk_0x1a = fedataHeader.Unk_0x1a,
@@ -109,13 +106,14 @@ public class FeDataSerializer : ISerializer<FeData>
     {
         using var writer = new BinaryWriter(stream);
         writer.Write(Encoding.ASCII.GetBytes(entity.CarId));
-        writer.WriteStruct(new FeDataHeader()
+        writer.WriteStruct(FeDataHeader.Empty with
         {
             IsBonus = entity.IsBonus ? (ushort)1 : (ushort)0,
             AvailableToAi = entity.AvailableToAi ? (ushort)1 : (ushort)0,
             CarClass = (ushort)entity.VehicleClass,
             IsPolice = entity.IsPolice ? (ushort)1 : (ushort)0,
             Seat = (ushort)entity.Seat,
+            IsDlcCar = entity.IsDlcCar,
             SerialNumber = entity.SerialNumber,
             Accel = entity.CarAccel,
             TopSpeed = entity.CarTopSpeed,
@@ -124,7 +122,6 @@ public class FeDataSerializer : ISerializer<FeData>
 
             // TODO: Investigate what these values are:
             Unk_0x0c = entity.Unk_0x0c,
-            Unk_0x0e = entity.Unk_0x0e,
             Unk_0x14 = entity.Unk_0x14,
             Unk_0x16 = entity.Unk_0x16,
             Unk_0x1a = entity.Unk_0x1a,

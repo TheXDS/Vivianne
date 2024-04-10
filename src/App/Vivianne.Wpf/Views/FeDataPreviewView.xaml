@@ -22,12 +22,16 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
             <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <UniformGrid Rows="1" Margin="10" HorizontalAlignment="Center" Grid.ColumnSpan="2">
             <Button Padding="10,2" Command="{Binding SaveCommand, Mode=OneWay}" Content="{x:Static stc:Common.Save}"/>
         </UniformGrid>
+        <CheckBox Margin="10,0" Style="{StaticResource ToggleSwitch}" Grid.Column="2">
+            <TextBlock Text="{x:Static st:FeDataPreviewView.LinkEdits}" Foreground="White"/>
+        </CheckBox>
         <Rectangle Margin="0,22,0,0" Grid.Row="1" Fill="{StaticResource MainAreaBackground}"/>
-        <TabControl Grid.Row="1" Grid.Column="1" BorderThickness="0">
+        <TabControl Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" BorderThickness="0">
             <TabControl.Resources>
                 <Style TargetType="ScrollViewer">
                     <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
@@ -68,6 +72,9 @@
                                     </CheckBox>
                                     <CheckBox Margin="5" IsChecked="{Binding Data.AvailableToAi}">
                                         <TextBlock Text="{x:Static st:FeDataPreviewView.IsAvailableToAI}"/>
+                                    </CheckBox>
+                                    <CheckBox Margin="5" IsChecked="{Binding Data.IsDlcCar}">
+                                        <TextBlock Text="{x:Static st:FeDataPreviewView.IsDlcCar}"/>
                                     </CheckBox>
                                 </UniformGrid>
                             </StackPanel>
@@ -165,6 +172,23 @@
                         <gn:TextBoxEx Icon="🎨" Label="{x:Static st:FeDataPreviewView.Color8}" Text="{Binding Data.Color8}"/>
                         <gn:TextBoxEx Icon="🎨" Label="{x:Static st:FeDataPreviewView.Color9}" Text="{Binding Data.Color9}"/>
                         <gn:TextBoxEx Icon="🎨" Label="{x:Static st:FeDataPreviewView.Color10}" Text="{Binding Data.Color10}"/>
+                    </UniformGrid>
+                </ScrollViewer>
+            </TabItem>
+            <TabItem Header="Unknown values">
+                <ScrollViewer>
+                    <UniformGrid Columns="4">
+                        <gn:Int32TextBox Label="Unk_0x0c" Value="{Binding Data.Unk_0x0c}"/>
+                        <gn:Int32TextBox Label="Unk_0x14" Value="{Binding Data.Unk_0x14}"/>
+                        <gn:Int32TextBox Label="Unk_0x16" Value="{Binding Data.Unk_0x16}"/>                        
+                        <gn:Int32TextBox Label="Unk_0x1a" Value="{Binding Data.Unk_0x1a}"/>
+                        <gn:Int32TextBox Label="Unk_0x1c" Value="{Binding Data.Unk_0x1c}"/>
+                        <gn:Int32TextBox Label="Unk_0x1e" Value="{Binding Data.Unk_0x1e}"/>
+                        <gn:Int32TextBox Label="Unk_0x20" Value="{Binding Data.Unk_0x20}"/>
+                        <gn:Int32TextBox Label="Unk_0x22" Value="{Binding Data.Unk_0x22}"/>
+                        <gn:Int32TextBox Label="Unk_0x24" Value="{Binding Data.Unk_0x24}"/>
+                        <gn:Int32TextBox Label="Unk_0x26" Value="{Binding Data.Unk_0x26}"/>
+                        <gn:Int32TextBox Label="Unk_0x2c" Value="{Binding Data.Unk_0x2c}"/>
                     </UniformGrid>
                 </ScrollViewer>
             </TabItem>

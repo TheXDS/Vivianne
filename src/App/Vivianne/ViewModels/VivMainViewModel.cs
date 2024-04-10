@@ -1,6 +1,4 @@
-﻿using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.PixelFormats;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,7 +8,7 @@ using TheXDS.Ganymede.Helpers;
 using TheXDS.Ganymede.Models;
 using TheXDS.Ganymede.Types.Base;
 using TheXDS.Ganymede.ViewModels;
-using TheXDS.Vivianne.Extensions;
+using TheXDS.Vivianne.Component;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Resources;
 using TheXDS.Vivianne.Serializers;
@@ -18,102 +16,12 @@ using TheXDS.Vivianne.Serializers;
 namespace TheXDS.Vivianne.ViewModels;
 
 /// <summary>
-/// Defines the signature for a method that can be used to create a ViewModel
-/// for visualizing and optionally editing a file inside a VIV.
-/// </summary>
-/// <param name="data">Raw file data to be loaded into the viewer.</param>
-/// <param name="saveCalback">
-/// Callback to invoke when the ViewModel needs to request saving the file.
-/// </param>
-/// <returns>
-/// A <see cref="IViewModel"/> that can be navigated to for previewing and
-/// optionally edit the file.
-/// </returns>
-public delegate IViewModel ContentVisualizerViewModelFactory(byte[] data, Action<byte[]> saveCalback);
-
-/// <summary>
 /// ViewModel that serves as the main view for interacting with a VIV file.
 /// </summary>
 public class VivMainViewModel : HostViewModelBase, IStatefulViewModel<VivMainState>
 {
-    private static readonly Dictionary<string, ContentVisualizerViewModelFactory> ContentVisualizers = new()
-    {
-        { ".tga", CreateTexturePreviewViewModel },
-        { ".jpg", CreateTexturePreviewViewModel },
-        { ".jpeg", CreateTexturePreviewViewModel },
-        { ".png", CreateTexturePreviewViewModel },
-        { ".bmp", CreateTexturePreviewViewModel },
-        { ".gif", CreateTexturePreviewViewModel },
-
-        // FSH/QFS need to be properly decoded before displaying - do not use TexturePreviewViewModel.
-        { ".fsh", CreateFshEditorViewModel },
-        { ".qfs", CreateQfsEditorViewModel },
-
-        { "fedata.bri", CreateFeDataPreviewViewModel },
-        { "fedata.eng", CreateFeDataPreviewViewModel },
-        { "fedata.fre", CreateFeDataPreviewViewModel },
-        { "fedata.ger", CreateFeDataPreviewViewModel },
-        { "fedata.ita", CreateFeDataPreviewViewModel },
-        { "fedata.spa", CreateFeDataPreviewViewModel },
-        { "fedata.swe", CreateFeDataPreviewViewModel },
-
-        { "carp.txt", CreateCarpEditorViewModel }
-    };
-
-    private static readonly Dictionary<string, Func<byte[]>> VivTemplates = new()
-    {
-        { "DASH.qfs", TemplateDashQfs}
-    };
-
-    private static byte[] TemplateDashQfs()
-    {
-        var cabinBlob = new FshBlob() { Magic = FshBlobFormat.Argb32, GaugeData = new() };
-        cabinBlob.ReplaceWith(new Image<Rgba32>(640, 480));
-        cabinBlob.Footer = Mappings.FshFooterWriter[FshBlobFooterType.CarDashboard].Invoke(cabinBlob);
-        var steerBlob = new FshBlob() { Magic = FshBlobFormat.Argb32, XRotation=128, YRotation=128, XPosition=192, YPosition=352 };
-        steerBlob.ReplaceWith(new Image<Rgba32>(256, 256));
-
-        var fsh = new FshFile();
-        fsh.Entries.Add("0000", cabinBlob);
-        fsh.Entries.Add("0001", steerBlob);
-        return QfsCodec.Compress(((ISerializer<FshFile>)new FshSerializer()).Serialize(fsh));
-    }
-
-    private static IViewModel CreateFeDataPreviewViewModel(byte[] data, Action<byte[]> saveCallback)
-    {
-        return new FeDataPreviewViewModel(data, saveCallback);
-    }
-
-    private static IViewModel CreateCarpEditorViewModel(byte[] data, Action<byte[]> saveCallback)
-    {
-        void SaveCarp(string c) => saveCallback.Invoke(System.Text.Encoding.Latin1.GetBytes(c));
-        return new CarpEditorViewModel(CarpEditorState.From(System.Text.Encoding.Latin1.GetString(data)), SaveCarp);
-    }
-
-    private static IViewModel CreateTexturePreviewViewModel(byte[] data, Action<byte[]> _)
-    {
-        return new TexturePreviewViewModel(data);
-    }
-
-    private static IViewModel CreateFshEditorViewModel(byte[] data, Action<byte[]> saveCallback)
-    {
-        ISerializer<FshFile> serializer = new FshSerializer();
-        void SaveFsh(FshFile fsh) => saveCallback.Invoke(serializer.Serialize(fsh));
-        return new FshEditorViewModel(serializer.Deserialize(data), SaveFsh);
-    }
-
-    private static IViewModel CreateQfsEditorViewModel(byte[] data, Action<byte[]> saveCallback)
-    {
-        void CompressBack(byte[] data) => saveCallback.Invoke(QfsCodec.Compress(data));
-        return CreateFshEditorViewModel(QfsCodec.Decompress(data), CompressBack);
-    }
-
-
-
-
-
-
-
+    private static readonly Dictionary<string, ContentVisualizerViewModelFactory> ContentVisualizers = new(ContentVisualizerConfiguration.Get());
+    private static readonly Dictionary<string, Func<byte[]>> Templates = new(VivTemplates.Get());
     private VivMainState state = null!;
 
     /// <inheritdoc/>
@@ -206,7 +114,7 @@ public class VivMainViewModel : HostViewModelBase, IStatefulViewModel<VivMainSta
             }
 
             IViewModel vm = ContentVisualizers.FirstOrDefault(p => file.EndsWith(p.Key, StringComparison.InvariantCultureIgnoreCase)) is { Value: { } factory }
-                ? factory.Invoke(rawData, Save)
+                ? factory.Invoke(rawData, Save, State.Viv, file)
                 : new ExternalFileViewModel(rawData, Save);
 
             vm.Title = file;
@@ -272,10 +180,10 @@ public class VivMainViewModel : HostViewModelBase, IStatefulViewModel<VivMainSta
 
     private async Task OnNewFromTemplate()
     {
-        var r = await DialogService!.SelectOption("New from template", "Select a template to create a new file in the VIV directory.", VivTemplates.Keys.ToArray());
+        var r = await DialogService!.SelectOption("New from template", "Select a template to create a new file in the VIV directory.", Templates.Keys.ToArray());
         if (r.Success)
         {
-            var template = VivTemplates.ToList()[r.Result];
+            var template = Templates.ToList()[r.Result];
             State.Directory[template.Key] = template.Value.Invoke();
         }
     }
