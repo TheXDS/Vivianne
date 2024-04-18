@@ -45,7 +45,7 @@ namespace TheXDS.Vivianne;
 /// <list type="bullet">
 /// <item>Nicholas Hayes</item>
 /// </list>
-/// Minor cleanup / Need For Speed compatibility by:
+/// Minor cleanup / Need For TopSpeed compatibility by:
 /// <list type="bullet">
 /// <item>César Morgan (xds_xps_ivx@hotmail.com)</item>
 /// </list>

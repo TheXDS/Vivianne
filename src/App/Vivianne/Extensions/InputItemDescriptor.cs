@@ -3,7 +3,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using TheXDS.Ganymede.Models;
 using TheXDS.Ganymede.Services;
-using TheXDS.Vivianne.Extensions;
 
 namespace TheXDS.Vivianne.Extensions;
 
@@ -39,7 +38,7 @@ public class InputItemDescriptor<T>(Func<IDialogService, Task<InputResult<T?>>> 
     /// <see langword="false"/> if the value passes all validation,
     /// <see langword="true"/> otherwise.
     /// </returns>
-    public delegate bool IsInvalidCallback(T? value, [NotNullWhen(true)]out string? errorMessage);
+    public delegate bool IsInvalidCallback(T? value, [NotNullWhen(true)] out string? errorMessage);
 
     private readonly Func<IDialogService, Task<InputResult<T?>>> inputCallback = inputCallback ?? throw new ArgumentNullException(nameof(inputCallback));
     private readonly IsInvalidCallback? isInvalidCallback = isInvalidCallback;

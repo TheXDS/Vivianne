@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="OpnMessage" xml:space="preserve">
-    <value>Select the source FSS file to compress</value>
+    <value>Select the source FSH file to compress</value>
   </data>
   <data name="ProcessMsg" xml:space="preserve">
     <value>Converting FSH to QFS...</value>

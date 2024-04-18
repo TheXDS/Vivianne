@@ -8,6 +8,7 @@ namespace TheXDS.Vivianne.Models;
 public class FeData
 {
     #region Unknown values
+
     /// <summary>
     /// Gets or sets the unknown <c>WORD</c> value at offset <c>0x0c</c>.
     /// </summary>
@@ -67,6 +68,7 @@ public class FeData
     /// Gets or sets the unknown <c>BYTE</c> value at offset <c>0x2c</c>.
     /// </summary>
     public byte Unk_0x2c { get; set; }
+
     #endregion
 
     /// <summary>

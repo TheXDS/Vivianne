@@ -29,6 +29,11 @@
 		  <AutoGen>True</AutoGen>
 		  <DependentUpon>QfsDecompressTool.resx</DependentUpon>
 		</Compile>
+		<Compile Update="Resources\Strings\ViewModels\FshEditorViewModel.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>FshEditorViewModel.resx</DependentUpon>
+		</Compile>
 		<Compile Update="Resources\Strings\Views\StartupView.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
@@ -51,6 +56,10 @@
 		<EmbeddedResource Update="Resources\Strings\Tools\QfsDecompressTool.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>
 		  <LastGenOutput>QfsDecompressTool.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Strings\ViewModels\FshEditorViewModel.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>FshEditorViewModel.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Strings\Views\StartupView.resx">
 			<Generator>ResXFileCodeGenerator</Generator>

@@ -61,7 +61,7 @@ namespace TheXDS.Vivianne.Resources.Strings.Tools {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Select the source FSS file to compress.
+        ///   Busca una cadena traducida similar a Select the source FSH file to compress.
         /// </summary>
         internal static string OpnMessage {
             get {

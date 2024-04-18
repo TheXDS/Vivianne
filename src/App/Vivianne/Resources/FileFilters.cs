@@ -43,7 +43,7 @@ public static class FileFilters
     /// Gets a set of file filters to be used on file dialogs for importing any
     /// kind of file commonly hosted inside a VIV.
     /// </summary>
-    public static IEnumerable<FileFilterItem> AnyVivContentFilter { get; } = [new FileFilterItem("Common VIV content files", ["car*.fce", "car*.fsh", "dash*.qfs", "carp.txt", "fedata.*"]), FileFilterItem.AllFiles];
+    public static IEnumerable<FileFilterItem> AnyVivContentFilter { get; } = [new FileFilterItem("Common VIV content files", ["car*.fce", "car*.tga", "car*.fsh", "dash*.qfs", "carp.txt", "fedata.*", "*.bnk"]), FileFilterItem.AllFiles];
 
     /// <summary>
     /// Gets a set of file filter to be used on file dialogs for saving files

@@ -9,6 +9,8 @@ using TheXDS.MCART.Types;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Component;
 using TheXDS.Vivianne.Models;
+using TheXDS.Vivianne.Resources;
+using TheXDS.Vivianne.Tools;
 
 namespace TheXDS.Vivianne.ViewModels;
 
@@ -18,9 +20,19 @@ namespace TheXDS.Vivianne.ViewModels;
 public class CarpEditorViewModel : EditorViewModelBase<CarpEditorState>
 {
     private readonly Action<string> _saveCallback;
-    private readonly VivFile? _vivFileRef;
+    private readonly VivMainState? _vivFileRef;
 
-    public CarpEditorViewModel(CarpEditorState state, Action<string> saveCallback, VivFile? vivFileRef = null) : base(state)
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CarpEditorViewModel"/> class.
+    /// </summary>
+    /// <param name="state">State to use on this ViewModel.</param>
+    /// <param name="saveCallback">
+    /// Callback to invoke when saving the Carp data.
+    /// </param>
+    /// <param name="vivFileRef">
+    /// Reference to the source VIV, for external file sync purposes.
+    /// </param>
+    public CarpEditorViewModel(CarpEditorState state, Action<string> saveCallback, VivMainState? vivFileRef = null) : base(state)
     {
         _saveCallback = saveCallback;
         _vivFileRef = vivFileRef;
@@ -32,6 +44,7 @@ public class CarpEditorViewModel : EditorViewModelBase<CarpEditorState>
         CopyTiresToFrontCommand = new SimpleCommand(OnCopyTiresToFront);
         CopyTiresToRearCommand = new SimpleCommand(OnCopyTiresToRear);
         FedataSyncCommand = new SimpleCommand(OnFeDataSync, vivFileRef is not null);
+        PerformanceMetricsCommand = new SimpleCommand(OnPerformanceMetrics);
     }
 
     /// <summary>
@@ -82,10 +95,16 @@ public class CarpEditorViewModel : EditorViewModelBase<CarpEditorState>
     /// </summary>
     public ICommand CopyTiresToRearCommand { get; }
 
+    /// <summary>
+    /// Gets a reference to the command used to calculate and expose some
+    /// performance metrics based on the current Carp data.
+    /// </summary>
+    public ICommand PerformanceMetricsCommand { get; }
+
     /// <inheritdoc/>
     protected override Task OnSaveChanges()
     {
-        _saveCallback.Invoke(State.ToString());
+        _saveCallback.Invoke(State.ToSerializedCarp());
         return Task.CompletedTask;
     }
 
@@ -123,7 +142,11 @@ public class CarpEditorViewModel : EditorViewModelBase<CarpEditorState>
 
     private async Task OnFeDataSync()
     {
-
+        if (_vivFileRef is not null)
+        {
+            UiThread.Invoke(() => FedataSyncTool.Sync(State.ToCarp(), _vivFileRef.Directory));
+            await DialogService!.Message("FeData Sync", "Operation has been completed successfully");
+        }
     }
 
     private void OnCopyTransToManual()
@@ -188,6 +211,22 @@ public class CarpEditorViewModel : EditorViewModelBase<CarpEditorState>
         await DialogService!.CustomDialog(vm);
         vm.StateSaved -= Vm_StateSaved;
         return vm.State.TargetCollection;
+    }
+
+    private Task OnPerformanceMetrics()
+    {
+        var a = Mappings.GetTextProviderFromCulture(State.ToCarp());
+        return DialogService!.Message("Performance metrics", $"""
+            Weight: {a.Weight}
+            Top speed: {a.TopSpeed}
+            Power: {a.Power}
+            Torque: {a.Torque}
+            Max Engine RPM: {a.MaxRpm}
+            Tire specs: {a.Tires}
+            Gearbox: {a.Gearbox}
+            0 to 60 MPH: {a.Accel0To60}
+            0 to 100 MPH: {a.Accel0To100}
+            """);
     }
 
     private ICollection<T>? GetCollection<T>(string name) where T : unmanaged

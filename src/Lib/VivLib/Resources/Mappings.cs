@@ -6,9 +6,11 @@ using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.Formats.Tga;
 using SixLabors.ImageSharp.PixelFormats;
+using System.Globalization;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Serializers;
+using TheXDS.Vivianne.Tools;
 
 namespace TheXDS.Vivianne.Resources;
 
@@ -149,13 +151,13 @@ public static class Mappings
     /// </remarks>
     public static IReadOnlyDictionary<FshBlobFormat, Func<object, byte[]>> FshBlobToPixelWriter { get; } = new Dictionary<FshBlobFormat, Func<object, byte[]>>()
     {
-        { FshBlobFormat.Argb32,         c => { var x = (Rgba32)c; return [x.R, x.G, x.B, x.A]; }},
-        { FshBlobFormat.Rgb24,          c => { var x = (Rgb24)c; return [x.R, x.G, x.B]; }},
+        { FshBlobFormat.Argb32,         c => { var x = (Rgba32)c; return [x.B, x.G, x.R, x.A]; }},
+        { FshBlobFormat.Rgb24,          c => { var x = (Rgb24)c; return [x.B, x.G, x.R]; }},
         { FshBlobFormat.Rgb565,         c => { var x = (Bgr565)c; return BitConverter.GetBytes(x.PackedValue); }},
         { FshBlobFormat.Argb1555,       c => { var x = (Bgra5551)c; return BitConverter.GetBytes(x.PackedValue); }},
-        { FshBlobFormat.Palette32,      c => { var x = (Rgba32)c; return [x.R, x.G, x.B, x.A]; }},
-        { FshBlobFormat.Palette24Dos,   c => { var x = (Rgb24)c; return [x.R, x.G, x.B]; }},
-        { FshBlobFormat.Palette24,      c => { var x = (Rgb24)c; return [x.R, x.G, x.B]; }},
+        { FshBlobFormat.Palette32,      c => { var x = (Rgba32)c; return [x.B, x.G, x.R, x.A]; }},
+        { FshBlobFormat.Palette24Dos,   c => { var x = (Rgb24)c; return [x.B, x.G, x.R]; }},
+        { FshBlobFormat.Palette24,      c => { var x = (Rgb24)c; return [x.B, x.G, x.R]; }},
         { FshBlobFormat.Palette16Nfs5,  c => { var x = (Bgr565)c; return BitConverter.GetBytes(x.PackedValue); }},
         { FshBlobFormat.Palette16,      c => { var x = (Bgr565)c; return BitConverter.GetBytes(x.PackedValue); }},
     }.AsReadOnly();
@@ -164,9 +166,9 @@ public static class Mappings
     {
         return image switch
         {
-            Image<Rgba32>   img when img[x, y] is { } p => [p.R, p.G, p.B, p.A],
-            Image<Rgb24>    img when img[x, y] is { } p => [p.R, p.G, p.B],
-            Image<Bgr565>   img when img[x, y] is { } p => BitConverter.GetBytes(p.PackedValue),
+            Image<Rgba32> img when img[x, y] is { } p => [p.R, p.G, p.B, p.A],
+            Image<Rgb24> img when img[x, y] is { } p => [p.R, p.G, p.B],
+            Image<Bgr565> img when img[x, y] is { } p => BitConverter.GetBytes(p.PackedValue),
             Image<Bgra5551> img when img[x, y] is { } p => BitConverter.GetBytes(p.PackedValue),
         };
     }
@@ -175,9 +177,9 @@ public static class Mappings
     {
         return image switch
         {
-            Image<Rgba32>   => FshBlobFormat.Argb32,
-            Image<Rgb24>    => FshBlobFormat.Rgb24,
-            Image<Bgr565>   => FshBlobFormat.Rgb565,
+            Image<Rgba32> => FshBlobFormat.Argb32,
+            Image<Rgb24> => FshBlobFormat.Rgb24,
+            Image<Bgr565> => FshBlobFormat.Rgb565,
             Image<Bgra5551> => FshBlobFormat.Argb1555,
         };
     }
@@ -205,7 +207,7 @@ public static class Mappings
     private static byte[] WriteColorPalette(FshBlob blob)
     {
         if (blob.LocalPalette is null)
-        { 
+        {
             throw new InvalidOperationException("The specified FSH does not contain a palette.");
         }
         using var ms = new MemoryStream();
@@ -259,6 +261,30 @@ public static class Mappings
                 result.Add(Color.FromPixel((T)Activator.CreateInstance(typeof(T), p)!));
             }
             return [.. result];
+        };
+    }
+
+    public static Dictionary<string, Func<Carp, FeDataTextProvider>> FeDataToTextProvider { get; } = new Dictionary<string, Func<Carp, FeDataTextProvider>>
+    {
+        { ".bri", c => new BriUnitTextProvider(c) },
+        { ".eng", c => new EngUnitTextProvider(c) },
+        { ".fre", c => new FreUnitTextProvider(c) },
+        { ".ger", c => new GerUnitTextProvider(c) },
+        { ".ita", c => new ItaUnitTextProvider(c) },
+        { ".spa", c => new SpaUnitTextProvider(c) },
+        { ".swe", c => new SweUnitTextProvider(c) },
+    };
+
+    public static FeDataTextProvider GetTextProviderFromCulture(Carp c)
+    {
+        return CultureInfo.CurrentUICulture.TwoLetterISOLanguageName switch
+        {
+            "fr" => new FreUnitTextProvider(c),
+            "de" => new GerUnitTextProvider(c),
+            "it" => new ItaUnitTextProvider(c),
+            "es" => new SpaUnitTextProvider(c),
+            "sv" => new SweUnitTextProvider(c),
+            _ => new EngUnitTextProvider(c)
         };
     }
 }

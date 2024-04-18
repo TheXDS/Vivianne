@@ -457,6 +457,15 @@ namespace TheXDS.Vivianne.Resources.Strings.Views {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Currently, only non-localized fields are supported (basic props, compare and unknown values)..
+        /// </summary>
+        public static string LinkEditsNote {
+            get {
+                return ResourceManager.GetString("LinkEditsNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Manufacturer.
         /// </summary>
         public static string Manufacturer {

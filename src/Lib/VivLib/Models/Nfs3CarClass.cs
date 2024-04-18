@@ -1,7 +1,7 @@
 ﻿namespace TheXDS.Vivianne.Models;
 
 /// <summary>
-/// Enumerates the available car classes that exist in Need For Speed 3.
+/// Enumerates the available car classes that exist in Need For TopSpeed 3.
 /// </summary>
 public enum Nfs3CarClass : ushort
 {

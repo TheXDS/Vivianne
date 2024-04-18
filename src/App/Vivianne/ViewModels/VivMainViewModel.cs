@@ -112,11 +112,16 @@ public class VivMainViewModel : HostViewModelBase, IStatefulViewModel<VivMainSta
                 UiThread.Invoke((Action)(() => State.Directory[file] = data));
                 State.UnsavedChanges = true;
             }
-
-            IViewModel vm = ContentVisualizers.FirstOrDefault(p => file.EndsWith(p.Key, StringComparison.InvariantCultureIgnoreCase)) is { Value: { } factory }
-                ? factory.Invoke(rawData, Save, State.Viv, file)
-                : new ExternalFileViewModel(rawData, Save);
-
+            IViewModel? vm = null;
+            foreach (var j in ContentVisualizers.Where(p => file.EndsWith(p.Key, StringComparison.InvariantCultureIgnoreCase)))
+            {
+                if (j.Value is { } factory && factory.Invoke(rawData, Save, State, file) is { } visualizer)
+                {
+                    vm = visualizer;
+                    break;
+                }
+            }
+            vm ??= new ExternalFileViewModel(rawData, Save);
             vm.Title = file;
             ChildNavService!.Navigate(vm);
         }

@@ -187,7 +187,7 @@ namespace TheXDS.Vivianne.Resources.Strings.Views {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Has in-menu car logo.
+        ///   Busca una cadena traducida similar a Has in-menu FSH car logo.
         /// </summary>
         public static string HasFedataFsh {
             get {

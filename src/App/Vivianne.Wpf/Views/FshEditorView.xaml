@@ -26,7 +26,11 @@
             <RowDefinition Height="45"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Border Background="#404040">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Border Background="#404040" Grid.ColumnSpan="2">
             <DockPanel Margin="10,0" VerticalAlignment="Center">
                 <DockPanel.Resources>
                     <Style TargetType="TextBlock">
@@ -43,12 +47,12 @@
                         <Setter Property="Margin" Value="10,0"/>
                     </Style>
                 </DockPanel.Resources>
-                <CheckBox x:Name="chkEdit" Style="{StaticResource ToggleSwitch}" IsEnabled="{Binding UnsavedChanges, Converter={StaticResource binv}}" VerticalContentAlignment="Center">
+                <!--<CheckBox x:Name="chkEdit" Style="{StaticResource ToggleSwitch}" IsEnabled="{Binding UnsavedChanges, Converter={StaticResource binv}}" VerticalContentAlignment="Center">
                     <CheckBox.Content>
                         <TextBlock Text="{x:Static st:FshEditorView.ShowEditCtrls}"/>
                     </CheckBox.Content>
                 </CheckBox>
-                <Separator/>
+                <Separator/>-->
                 <ComboBox
                     VerticalAlignment="Center"
                     IsEditable="False"
@@ -88,10 +92,121 @@
             </DockPanel>
         </Border>
         <ScrollViewer
+            VerticalScrollBarVisibility="Auto"
+            Grid.Row="1">
+            <StackPanel
+                Margin="0"
+                Background="{StaticResource DashboardDarkBackground}">
+                <StackPanel.Resources>
+                    <Style TargetType="Expander">
+                        <Setter Property="ExpandDirection" Value="Down"/>
+                        <Setter Property="TextBlock.Foreground" Value="White"/>
+                        <Setter Property="HorizontalAlignment" Value="Left"/>
+                        <Setter Property="VerticalAlignment" Value="Top"/>
+                        <Setter Property="IsExpanded" Value="True"/>
+                    </Style>
+                    <Style TargetType="Border">
+                        <Setter Property="Background" Value="#E0000000"/>
+                        <Setter Property="Width" Value="150"/>
+                        <Setter Property="Margin" Value="10"/>
+                    </Style>
+                    <Style TargetType="StackPanel">
+                        <Setter Property="Margin" Value="5"/>
+                        <Setter Property="TextBlock.Foreground" Value="White"/>
+                    </Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="Foreground" Value="White"/>
+                    </Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Padding" Value="10,2"/>
+                        <Setter Property="Margin" Value="5"/>
+                    </Style>
+                </StackPanel.Resources>
+                <Expander Visibility="{Binding IsReadOnly, Converter={StaticResource b2invV}}">
+                    <Expander.Header>
+                        <TextBlock Text="{x:Static st:FshEditorView.FshOptions}">
+                            <TextBlock.Effect>
+                                <DropShadowEffect/>
+                            </TextBlock.Effect>
+                        </TextBlock>
+                    </Expander.Header>
+                    <Border>
+                        <StackPanel>
+                            <Button
+                                IsEnabled="{Binding IsReadOnly, Converter={StaticResource binv}}" 
+                                Command="{Binding AddNewCommand, Mode=OneWay}"
+                                Content="{x:Static st:FshEditorView.AddTexture}"/>
+                            <Button
+                                IsEnabled="{Binding IsReadOnly, Converter={StaticResource binv}}"
+                                Visibility="{Binding IsDash, Converter={StaticResource b2v}}"
+                                Command="{Binding DashEditorCommand, Mode=OneWay}"
+                                Content="{x:Static st:FshEditorView.DashEditor}"/>
+                        </StackPanel>
+                    </Border>
+                </Expander>
+                <Expander>
+                    <Expander.Header>
+                        <TextBlock Text="{x:Static st:FshEditorView.FshBlobOptions}">
+                            <TextBlock.Effect>
+                                <DropShadowEffect/>
+                            </TextBlock.Effect>
+                        </TextBlock>
+                    </Expander.Header>
+                    <Border>
+                        <StackPanel>
+                            <Button
+                                Visibility="{Binding IsReadOnly, Converter={StaticResource b2invV}}"
+                                Command="{Binding CoordsEditorCommand, Mode=OneWay}"
+                                Content="{x:Static st:FshEditorView.EditCoords}"/>
+                            <Button
+                                Command="{Binding ExportCommand, Mode=OneWay}"
+                                Content="{x:Static st:FshEditorView.Export}"/>
+                            <Button
+                                Visibility="{Binding IsReadOnly, Converter={StaticResource b2invV}}"
+                                Command="{Binding ReplaceImageCommand, Mode=OneWay}"
+                                Content="{x:Static st:FshEditorView.Replace}"/>
+                            <Button
+                                Visibility="{Binding IsReadOnly, Converter={StaticResource b2invV}}"
+                                Command="{Binding RemoveCurrentCommand, Mode=OneWay}"
+                                Content="{x:Static st:FshEditorView.Remove}"/>
+                            <Button
+                                Visibility="{Binding IsReadOnly, Converter={StaticResource b2invV}}"
+                                Command="{Binding RenameCurrentCommand, Mode=OneWay}"
+                                Content="{x:Static st:FshEditorView.Rename}"/>
+                        </StackPanel>
+                    </Border>
+                </Expander>
+                <Expander>
+                    <Expander.Header>
+                        <TextBlock Text="{x:Static st:FshEditorView.FshBlobFooter}">
+                            <TextBlock.Effect>
+                                <DropShadowEffect/>
+                            </TextBlock.Effect>
+                        </TextBlock>
+                    </Expander.Header>
+                    <Border>
+                        <StackPanel>
+                            <Button
+                                Command="{Binding ImportBlobFooterCommand, Mode=OneWay}"
+                                Content="{x:Static st:FshEditorView.Import}"/>
+                            <Button
+                                Command="{Binding ExportBlobFooterCommand, Mode=OneWay}"
+                                Content="{x:Static st:FshEditorView.Export}"/>
+                            <Button
+                                Command="{Binding RemoveCurrentFooterCommand, Mode=OneWay}"
+                                Content="{x:Static st:FshEditorView.Remove}"/>
+                        </StackPanel>
+                    </Border>
+                </Expander>
+            </StackPanel>
+        </ScrollViewer>
+        <ScrollViewer
             x:Name="scvContent"
             VerticalScrollBarVisibility="Auto"
             HorizontalScrollBarVisibility="Auto"
-            Grid.Row="1">
+            Grid.Row="1"
+            Grid.Column="1">
             <Border
                 x:Name="brdContent"
                 Cursor="ScrollAll"
@@ -113,7 +228,7 @@
                 </Image>
             </Border>
         </ScrollViewer>
-        <Expander Grid.Row="1" HorizontalAlignment="Right" ExpandDirection="Left" VerticalAlignment="Top" Margin="20,5">
+        <Expander Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right" ExpandDirection="Left" VerticalAlignment="Top" Margin="20,5" x:Name="expDetails">
             <Expander.Resources>
                 <Style TargetType="TextBlock">
                     <Setter Property="VerticalAlignment" Value="Center"/>
@@ -130,120 +245,22 @@
                     </TextBlock.Effect>
                 </TextBlock>
             </Expander.Header>
-            <Border Background="#E0000000" Margin="10">
-                <StackPanel Margin="5">
-                    <TextBlock><Run Text="{x:Static st:FshEditorView.Resolution}"/>: <Run Text="{Binding CurrentImage.Width, Mode=OneWay}"/>x<Run Text="{Binding CurrentImage.Height, Mode=OneWay}"/></TextBlock>
-                    <TextBlock><Run Text="{x:Static st:FshEditorView.PixelFormat}"/>: <Run Text="{Binding CurrentImage.Magic, Mode=OneWay, Converter={StaticResource gimx2str}}"/></TextBlock>
-                    <TextBlock><Run Text="{x:Static st:FshEditorView.RotationAxis}"/>: X:<Run Text="{Binding CurrentImage.XRotation, Mode=OneWay}"/>, Y:<Run Text="{Binding CurrentImage.YRotation}"/></TextBlock>
-                    <TextBlock><Run Text="{x:Static st:FshEditorView.ImageOffset}"/>: X:<Run Text="{Binding CurrentImage.XPosition, Mode=OneWay}"/>, Y:<Run Text="{Binding CurrentImage.YPosition}"/></TextBlock>
-                    <TextBlock><Run Text="{x:Static st:FshEditorView.PixelDataSize}"/>: <Run Text="{Binding CurrentImage.PixelData, Mode=OneWay, Converter={StaticResource bc2str}}"/></TextBlock>
-                    <TextBlock><Run Text="{x:Static st:FshEditorView.FooterData}"/>: <Run Text="{Binding CurrentImage, Mode=OneWay, Converter={StaticResource gimxf2str}}"/></TextBlock>
-                </StackPanel>
-            </Border>
         </Expander>
-        <StackPanel Visibility="{Binding IsChecked, ElementName=chkEdit, Converter={StaticResource b2v}}" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="1" Margin="5">
-            <StackPanel.Resources>
-                <Style TargetType="Expander">
-                    <Setter Property="ExpandDirection" Value="Down"/>
-                    <Setter Property="TextBlock.Foreground" Value="White"/>
-                    <Setter Property="HorizontalAlignment" Value="Left"/>
-                    <Setter Property="VerticalAlignment" Value="Top"/>
-                    <Setter Property="IsExpanded" Value="True"/>
-                </Style>
-                <Style TargetType="Border">
-                    <Setter Property="Background" Value="#E0000000"/>
-                    <Setter Property="HorizontalAlignment" Value="Left"/>
-                    <Setter Property="Margin" Value="10"/>
-                </Style>
-                <Style TargetType="StackPanel">
-                    <Setter Property="Margin" Value="5"/>
-                    <Setter Property="TextBlock.Foreground" Value="White"/>
-                </Style>
+        <Border Grid.Row="1" Grid.Column="1" Background="#E0000000" Visibility="{Binding IsExpanded, ElementName=expDetails, Converter={StaticResource b2v}}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="50,10" IsHitTestVisible="False">
+            <Border.Resources>
                 <Style TargetType="TextBlock">
                     <Setter Property="VerticalAlignment" Value="Center"/>
                     <Setter Property="Foreground" Value="White"/>
                 </Style>
-                <Style TargetType="Button">
-                    <Setter Property="Padding" Value="10,2"/>
-                    <Setter Property="Margin" Value="5"/>
-                </Style>
-            </StackPanel.Resources>
-            <Expander Visibility="{Binding IsReadOnly, Converter={StaticResource b2invV}}">
-                <Expander.Header>
-                    <TextBlock Text="{x:Static st:FshEditorView.FshOptions}">
-                        <TextBlock.Effect>
-                            <DropShadowEffect/>
-                        </TextBlock.Effect>
-                    </TextBlock>
-                </Expander.Header>
-                <Border>
-                    <StackPanel>
-                        <Button
-                            IsEnabled="{Binding IsReadOnly, Converter={StaticResource binv}}" 
-                            Command="{Binding AddNewCommand, Mode=OneWay}"
-                            Content="{x:Static st:FshEditorView.AddTexture}"/>
-                        <Button
-                            IsEnabled="{Binding IsReadOnly, Converter={StaticResource binv}}"
-                            Visibility="{Binding IsDash, Converter={StaticResource b2v}}"
-                            Command="{Binding DashEditorCommand, Mode=OneWay}"
-                            Content="{x:Static st:FshEditorView.DashEditor}"/>
-                    </StackPanel>
-                </Border>
-            </Expander>
-            <Expander>
-                <Expander.Header>
-                    <TextBlock Text="{x:Static st:FshEditorView.FshBlobOptions}">
-                        <TextBlock.Effect>
-                            <DropShadowEffect/>
-                        </TextBlock.Effect>
-                    </TextBlock>
-                </Expander.Header>
-                <Border>
-                    <StackPanel>
-                        <Button
-                            Visibility="{Binding IsReadOnly, Converter={StaticResource b2invV}}"
-                            Command="{Binding CoordsEditorCommand, Mode=OneWay}"
-                            Content="{x:Static st:FshEditorView.EditCoords}"/>
-                        <Button
-                            Command="{Binding ExportCommand, Mode=OneWay}"
-                            Content="{x:Static st:FshEditorView.Export}"/>
-                        <Button
-                            Visibility="{Binding IsReadOnly, Converter={StaticResource b2invV}}"
-                            Command="{Binding ReplaceImageCommand, Mode=OneWay}"
-                            Content="{x:Static st:FshEditorView.Replace}"/>
-                        <Button
-                            Visibility="{Binding IsReadOnly, Converter={StaticResource b2invV}}"
-                            Command="{Binding RemoveCurrentCommand, Mode=OneWay}"
-                            Content="{x:Static st:FshEditorView.Remove}"/>
-                        <Button
-                            Visibility="{Binding IsReadOnly, Converter={StaticResource b2invV}}"
-                            Command="{Binding RenameCurrentCommand, Mode=OneWay}"
-                            Content="{x:Static st:FshEditorView.Rename}"/>
-                    </StackPanel>
-                </Border>
-            </Expander>
-            <Expander>
-                <Expander.Header>
-                    <TextBlock Text="{x:Static st:FshEditorView.FshBlobFooter}">
-                        <TextBlock.Effect>
-                            <DropShadowEffect/>
-                        </TextBlock.Effect>
-                    </TextBlock>
-                </Expander.Header>
-                <Border>
-                    <StackPanel>
-                        <Button
-                            Command="{Binding ImportBlobFooterCommand, Mode=OneWay}"
-                            Content="{x:Static st:FshEditorView.Import}"/>
-                        <Button
-                            Command="{Binding ExportBlobFooterCommand, Mode=OneWay}"
-                            Content="{x:Static st:FshEditorView.Export}"/>
-                        <Button
-                            Command="{Binding RemoveCurrentFooterCommand, Mode=OneWay}"
-                            Content="{x:Static st:FshEditorView.Remove}"/>
-                    </StackPanel>
-                </Border>
-            </Expander>
-        </StackPanel>
+            </Border.Resources>
+            <StackPanel Margin="5">
+                <TextBlock><Run Text="{x:Static st:FshEditorView.Resolution}"/>: <Run Text="{Binding CurrentImage.Width, Mode=OneWay}"/>x<Run Text="{Binding CurrentImage.Height, Mode=OneWay}"/></TextBlock>
+                <TextBlock><Run Text="{x:Static st:FshEditorView.PixelFormat}"/>: <Run Text="{Binding CurrentImage.Magic, Mode=OneWay, Converter={StaticResource gimx2str}}"/></TextBlock>
+                <TextBlock><Run Text="{x:Static st:FshEditorView.RotationAxis}"/>: X:<Run Text="{Binding CurrentImage.XRotation, Mode=OneWay}"/>, Y:<Run Text="{Binding CurrentImage.YRotation}"/></TextBlock>
+                <TextBlock><Run Text="{x:Static st:FshEditorView.ImageOffset}"/>: X:<Run Text="{Binding CurrentImage.XPosition, Mode=OneWay}"/>, Y:<Run Text="{Binding CurrentImage.YPosition}"/></TextBlock>
+                <TextBlock><Run Text="{x:Static st:FshEditorView.PixelDataSize}"/>: <Run Text="{Binding CurrentImage.PixelData, Mode=OneWay, Converter={StaticResource bc2str}}"/></TextBlock>
+                <TextBlock><Run Text="{x:Static st:FshEditorView.FooterData}"/>: <Run Text="{Binding CurrentImage, Mode=OneWay, Converter={StaticResource gimxf2str}}"/></TextBlock>
+            </StackPanel>
+        </Border>
     </Grid>
 </UserControl>

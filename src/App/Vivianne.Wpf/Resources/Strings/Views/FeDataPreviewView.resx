@@ -249,6 +249,9 @@
   <data name="LinkEdits" xml:space="preserve">
     <value>Sync edits on other FeData files / Carp</value>
   </data>
+  <data name="LinkEditsNote" xml:space="preserve">
+    <value>Currently, only non-localized fields are supported (basic props, compare and unknown values).</value>
+  </data>
   <data name="Manufacturer" xml:space="preserve">
     <value>Manufacturer</value>
   </data>

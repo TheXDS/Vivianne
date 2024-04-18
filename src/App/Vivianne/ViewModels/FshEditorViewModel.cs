@@ -14,6 +14,7 @@ using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Extensions;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Resources;
+using St = TheXDS.Vivianne.Resources.Strings.ViewModels.FshEditorViewModel;
 
 namespace TheXDS.Vivianne.ViewModels;
 
@@ -128,7 +129,7 @@ public class FshEditorViewModel : ViewModel, IViewModel
     /// palette.
     /// </remarks>
     public Color[]? Palette
-    { 
+    {
         get => _palette ?? CurrentImage?.LocalPalette ?? _Fsh.GetPalette();
         set => Change(ref _palette, value);
     }
@@ -199,8 +200,15 @@ public class FshEditorViewModel : ViewModel, IViewModel
     /// </summary>
     public ICommand SaveChangesCommand { get; }
 
+    /// <summary>
+    /// Gets a reference to the command used to open the dash editor dialog.
+    /// </summary>
     public ICommand DashEditorCommand { get; }
 
+    /// <summary>
+    /// Gets a reference to the command used to open a dialog to edit the FSH
+    /// blob coordinates.
+    /// </summary>
     public ICommand CoordsEditorCommand { get; }
 
     private async Task OnAddNew()
@@ -224,14 +232,14 @@ public class FshEditorViewModel : ViewModel, IViewModel
 
     private async Task OnExport()
     {
-        var r = await DialogService!.GetFileSavePath($"Save texture as", FileFilters.CommonBitmapSaveFormats);
+        var r = await DialogService!.GetFileSavePath(St.SaveTextureAs, FileFilters.CommonBitmapSaveFormats);
         if (!r.Success) return;
         CurrentImage!.ToImage(Palette)!.Save(r.Result, Mappings.ExportEnconder[Path.GetExtension(r.Result)]);
     }
 
     private async Task OnExportBlobFooter()
     {
-        var r = await DialogService!.GetFileSavePath($"Save blob footer as");
+        var r = await DialogService!.GetFileSavePath(St.SaveBlobFooterAs);
         if (!r.Success) return;
         System.IO.File.WriteAllBytes(r.Result, CurrentImage!.Footer);
     }
@@ -240,15 +248,15 @@ public class FshEditorViewModel : ViewModel, IViewModel
     {
         if (CurrentImage?.Footer is not null && CurrentImage?.Footer.Length > 0)
         {
-            switch(await DialogService!.AskYnc("Do you want to export the previous footer data for this FSH blob?"))
+            switch (await DialogService!.AskYnc(St.ExportFooterConfirm))
             {
                 case true: await OnExportBlobFooter(); break;
                 case null: return;
             }
         }
-        var r = await DialogService!.GetFileOpenPath($"Import blob footer");
+        var r = await DialogService!.GetFileOpenPath(St.ImportBlobFooter);
         if (!r.Success) return;
-        CurrentImage!.Footer = System.IO.File.ReadAllBytes(r.Result);
+        CurrentImage!.Footer = File.ReadAllBytes(r.Result);
         UnsavedChanges = true;
     }
 
@@ -256,7 +264,7 @@ public class FshEditorViewModel : ViewModel, IViewModel
     {
         if (CurrentImage?.Footer is not null && CurrentImage?.Footer.Length > 0)
         {
-            switch (await DialogService!.AskYnc("Do you want to export the previous footer data for this FSH blob?"))
+            switch (await DialogService!.AskYnc(St.ExportFooterConfirm))
             {
                 case true: await OnExportBlobFooter(); break;
                 case null: return;
@@ -270,13 +278,13 @@ public class FshEditorViewModel : ViewModel, IViewModel
     {
         if (Images.Count <= 1)
         {
-            await DialogService!.Error("Cannot remove GIMX", "A FSH file must contain at least one GIMX texture.");
+            await DialogService!.Error(St.RemoveLastFshError, St.RemoveLastFshDetails);
             return;
         }
         var key = CurrentFshBlobId;
         if (key is not null)
         {
-            if (!await DialogService!.Ask($"Remove '{CurrentFshBlobId}'", $"Are you sure you want to remove '{key}' from the FSH?")) return;
+            if (!await DialogService!.Ask(string.Format(St.RemoveX, key), string.Format(St.RemoveXDetails, key))) return;
             Images.Remove(key);
             CurrentImage = Images.First().Value;
             UnsavedChanges = true;
@@ -285,11 +293,11 @@ public class FshEditorViewModel : ViewModel, IViewModel
 
     private async Task OnRenameCurrent()
     {
-        var id = await DialogService!.GetInputText("FSH blob ID", $"Enter the new ID to use for the '{CurrentFshBlobId}' GIMX texture", CurrentFshBlobId);
+        var id = await DialogService!.GetInputText(St.FshId, string.Format(St.FshXNewId, CurrentFshBlobId), CurrentFshBlobId);
         if (!id.Success || id.Result.IsEmpty()) return;
         if (FshExtensions.IsNewGimxIdInvalid(id.Result, _Fsh, out var errorMsg))
         {
-            await DialogService.Error("Invalid FSH blob ID", errorMsg);
+            await DialogService.Error(St.InvalidFshId, errorMsg);
             return;
         }
         var gimx = CurrentImage!;
@@ -301,7 +309,7 @@ public class FshEditorViewModel : ViewModel, IViewModel
 
     private async Task OnReplaceImage()
     {
-        var r = await DialogService!.GetFileOpenPath($"Replace '{CurrentFshBlobId}'", $"Select a file to replace '{CurrentFshBlobId}' with", FileFilters.CommonBitmapOpenFormats);
+        var r = await DialogService!.GetFileOpenPath(string.Format(St.ReplaceFsh, CurrentFshBlobId), string.Format(St.ReplaceFshPrompt, CurrentFshBlobId), FileFilters.CommonBitmapOpenFormats);
         if (r.Success)
         {
             try
@@ -326,7 +334,7 @@ public class FshEditorViewModel : ViewModel, IViewModel
     private async Task OnDashEditor()
     {
         var state = new GaugeDataState(_Fsh);
-        var vm = new DashEditorViewModel(state) { Title = "Dashboard editor" };
+        var vm = new DashEditorViewModel(state) { Title = St.DashEditor };
         vm.StateSaved += Vm_StateSaved;
         await DialogService!.CustomDialog(vm);
         vm.StateSaved -= Vm_StateSaved;
@@ -340,7 +348,7 @@ public class FshEditorViewModel : ViewModel, IViewModel
     private async Task OnCoordsEditor()
     {
         var state = new FshBlobCoordsState(CurrentImage!);
-        var vm = new FshBlobCoordsEditorViewModel(state) { Title = "Coords editor" };
+        var vm = new FshBlobCoordsEditorViewModel(state) { Title = St.CoordsEditor };
         vm.StateSaved += Vm_StateSaved;
         await DialogService!.CustomDialog(vm);
         vm.StateSaved -= Vm_StateSaved;
@@ -348,14 +356,14 @@ public class FshEditorViewModel : ViewModel, IViewModel
 
     private async Task<(string file, string id, int formatIndex)?> GetNewFshBlobData()
     {
-        bool IsGimxInvalid(string? id, [NotNullWhen(true)]out string? errorMessage) => FshExtensions.IsNewGimxIdInvalid(id, _Fsh, out errorMessage);
+        bool IsGimxInvalid(string? id, [NotNullWhen(true)] out string? errorMessage) => FshExtensions.IsNewGimxIdInvalid(id, _Fsh, out errorMessage);
         IInputItemDescriptor[] inputs =
         [
-            new InputItemDescriptor<string>(d => d.GetFileOpenPath("Add texture", "Select a file to add as a new texture")!),
-            new InputItemDescriptor<string>(d => d.GetInputText("Cabin ID", "Enter the ID to use for the new texture", InferNewFshBlobName()), IsGimxInvalid),
-            new InputItemDescriptor<int>(d => d.SelectOption("Cabin pixel format", "Select a pixel format for the new texture", Mappings.FshBlobToLabel.Values.ToArray()))
+            new InputItemDescriptor<string>(d => d.GetFileOpenPath(St.AddTexture, St.AddTexturePrompt, FileFilters.CommonBitmapOpenFormats)!),
+            new InputItemDescriptor<string>(d => d.GetInputText(St.FshId, St.FshNewId, InferNewFshBlobName()), IsGimxInvalid),
+            new InputItemDescriptor<int>(d => d.SelectOption(St.FshPixelFormat, St.FshPixelFormatPrompt, Mappings.FshBlobToLabel.Values.ToArray()))
         ];
-        return await DialogService!.AskSequentially(inputs) is { } data ? ((string)data[0], (string)data[1], (int)data[2]) : null;
+        return (await DialogService!.AskSequentially(inputs) is { } data && (int)data[2] != -1) ? ((string)data[0], (string)data[1], (int)data[2]) : null;
     }
 
     private string InferNewFshBlobName()
@@ -372,7 +380,7 @@ public class FshEditorViewModel : ViewModel, IViewModel
     {
         if (UnsavedChanges)
         {
-            switch (await DialogService!.AskYnc("Unsaved changes", $"Do you want to save {Title}?"))
+            switch (await DialogService!.AskYnc(St.Unsaved, string.Format(St.SaveConfirm, Title)))
             {
                 case true: await OnSaveChanges(); break;
                 case null: navigation.Cancel(); break;

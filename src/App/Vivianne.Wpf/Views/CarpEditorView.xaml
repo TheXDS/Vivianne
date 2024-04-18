@@ -39,11 +39,12 @@
         </Style>
     </UserControl.Resources>
     <DockPanel>
-        <Border Background="{StaticResource DarkBackground}" DockPanel.Dock="Top" Height="45">
-            <UniformGrid HorizontalAlignment="Center" Rows="1" Columns="3">
+        <Border Background="{StaticResource DarkBackground}" DockPanel.Dock="Top" MinHeight="45">
+            <UniformGrid HorizontalAlignment="Center" Rows="1">
                 <Button Command="{Binding SaveChangesCommand, Mode=OneWay}">Save</Button>
                 <Button>Realistic carp wizard</Button>
-                <Button>Sync with FeData</Button>
+                <Button Command="{Binding PerformanceMetricsCommand}">Performance metrics</Button>
+                <Button Command="{Binding FedataSyncCommand}">Sync with FeData</Button>
             </UniformGrid>
         </Border>
         <Grid>
