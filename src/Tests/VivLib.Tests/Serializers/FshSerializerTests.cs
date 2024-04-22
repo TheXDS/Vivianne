@@ -22,7 +22,7 @@ public class FshSerializerTests
     private static byte[] CreateTestFshItem()
     {
         return [
-            0x7B,               // Magic
+            0x7B,               // Unk_0x0
             0x00, 0x00, 0x00,   // 24-bit blob size
             0x03, 0x00,         // 3px width
             0x03, 0x00,         // 3px height

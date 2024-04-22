@@ -63,14 +63,13 @@ public class FcePreviewViewModelToModel3DGroupConverter : IOneWayValueConverter<
             {
                 uvData.Add(i(t), p);
             }
-
         }
 
         for (var j = 0; j < value.Triangles.Length; j++)
         {
-            RemapUv(value.Triangles[j], t => t.U1, t => t.V1, t => t.I1);
-            RemapUv(value.Triangles[j], t => t.U2, t => t.V2, t => t.I2);
-            RemapUv(value.Triangles[j], t => t.U3, t => t.V3, t => t.I3);
+            RemapUv(value.Triangles[j], t => t.U1, t => -t.V1, t => t.I1);
+            RemapUv(value.Triangles[j], t => t.U2, t => -t.V2, t => t.I2);
+            RemapUv(value.Triangles[j], t => t.U3, t => -t.V3, t => t.I3);
         }
         Debug.Print(DumpUvCoords(uvData.Values));
         return new MeshGeometry3D()
