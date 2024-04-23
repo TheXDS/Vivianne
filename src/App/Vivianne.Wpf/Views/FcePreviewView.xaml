@@ -59,6 +59,7 @@
                 SelectedValue="{Binding SelectedCarTexture}"/>            
             <ComboBox
                 Width="150"
+                SelectedIndex="{Binding SelectedColorIndex}"
                 ItemsSource="{Binding CarColors, Mode=OneWay}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>

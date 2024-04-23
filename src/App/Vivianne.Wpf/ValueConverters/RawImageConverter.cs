@@ -13,6 +13,6 @@ public class RawImageConverter : RawImageConverterBase, IOneWayValueConverter<by
     /// <inheritdoc/>
     public BitmapSource Convert(byte[] value, object? parameter, CultureInfo? culture)
     {
-        return GetBitmap(value);
+        return GetBitmap(value, null)!;
     }
 }
