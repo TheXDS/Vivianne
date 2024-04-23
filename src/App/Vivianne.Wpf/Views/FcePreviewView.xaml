@@ -14,6 +14,7 @@
         <valueconverters:FcePartToMeshGeometryConverter x:Key="fce2mesh"/>
         <valueconverters:FcePreviewViewModelToModel3DGroupConverter x:Key="fcevm2mesh"/>
         <valueconverters:LookBackConverter x:Key="lbc"/>
+        <valueconverters:DrawingColorToBrushConverter x:Key="dc2bc"/>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -55,9 +56,25 @@
                 ItemsSource="{Binding CarTextures, Mode=OneWay}"
                 SelectedValuePath="Value"
                 DisplayMemberPath="Name"
-                SelectedValue="{Binding SelectedCarTexture}"/>
-            
-            <ComboBox></ComboBox>
+                SelectedValue="{Binding SelectedCarTexture}"/>            
+            <ComboBox
+                Width="150"
+                ItemsSource="{Binding CarColors, Mode=OneWay}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Rectangle Width="10" Height="10" Fill="{Binding Primary, Mode=OneWay, Converter={StaticResource dc2bc}}"/>
+                            <Rectangle Width="10" Height="10" Grid.Column="1" Fill="{Binding Secondary, Mode=OneWay, Converter={StaticResource dc2bc}}"/>
+                            <TextBlock Margin="5,0,0,0" Grid.Column="2" Text="{Binding Name, Mode=OneWay}"/>
+                        </Grid>                        
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
         </WrapPanel>
         <Border Grid.Row="1" Grid.Column="1">
             <Viewport3D>
