@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Diagnostics;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
@@ -40,38 +41,22 @@ public class FcePreviewViewModelToModel3DGroupConverter : IOneWayValueConverter<
 
     private static MeshGeometry3D ToGeometry(FcePart value)
     {
-        var vertices = value.Vertices.Select(p => ToPoint3D(p, value.Origin)).ToList();
-        var uvData = new Dictionary<int, Point>();
-
-        // WPF rendering engine does not support per-triangle UV coords. Remap them.
-        void RemapUv(Triangle t, Func<Triangle, double> u, Func<Triangle, double> v, Func<Triangle, int> i)
+        var vertex = new (Point3D, Point)[value.Vertices.Length];
+        foreach (var j in value.Triangles)
         {
-            var p = new Point(u(t), v(t));
-            if (uvData.TryGetValue(i(t), out var uv) && (uv.X != p.X && uv.Y != p.Y))
-            {
-                var o = vertices[i(t)];
-                var copy = new Point3D(o.X, o.Y, o.Z);
-                vertices.Add(copy);
-                uvData.Add(vertices.Count, p);
-            }
-            else if (!uvData.ContainsKey(i(t)))
-            {
-                uvData.Add(i(t), p);
-            }
-        }
-
-        for (var j = 0; j < value.Triangles.Length; j++)
-        {
-            RemapUv(value.Triangles[j], t => t.U1, t => t.V1, t => t.I1);
-            RemapUv(value.Triangles[j], t => t.U2, t => t.V2, t => t.I2);
-            RemapUv(value.Triangles[j], t => t.U3, t => t.V3, t => t.I3);
+            var v1 = value.Vertices[j.I1];
+            var v2 = value.Vertices[j.I2];
+            var v3 = value.Vertices[j.I3];
+            vertex[j.I1] = (new Point3D(SizeFactor * v1.Z, SizeFactor * v1.X, SizeFactor * v1.Y), new Point(j.U1, j.V1));
+            vertex[j.I2] = (new Point3D(SizeFactor * v2.Z, SizeFactor * v2.X, SizeFactor * v2.Y), new Point(j.U2, j.V2));
+            vertex[j.I3] = (new Point3D(SizeFactor * v3.Z, SizeFactor * v3.X, SizeFactor * v3.Y), new Point(j.U3, j.V3));
         }
         return new MeshGeometry3D()
         {
-            Positions = new Point3DCollection(vertices),
+            Positions = new Point3DCollection(vertex.Select(p => p.Item1)),
             TriangleIndices = new Int32Collection(value.Triangles.SelectMany(p => (int[])[p.I1, p.I2, p.I3])),
             Normals = new Vector3DCollection(value.Normals.Select(p => new Vector3D(p.Z, p.X, p.Y))),
-            TextureCoordinates = new PointCollection(uvData.OrderBy(p => p.Key).Select(p => p.Value)),
+            TextureCoordinates = new PointCollection(vertex.Select(p => p.Item2)),
         };
     }
 
@@ -92,7 +77,7 @@ public class FcePreviewViewModelToModel3DGroupConverter : IOneWayValueConverter<
         var group = new Model3DGroup()
         {
             Children = {
-                new DirectionalLight() { Color = Colors.White, Direction = new Vector3D(-1, -1, -3) },
+                new DirectionalLight() { Color = Colors.White, Direction = new Vector3D(1, 1, 3) },
                 new AmbientLight() { Color = new Color(){ R = 0x20, G = 0x20, B = 0x20 } }
             }
         };
