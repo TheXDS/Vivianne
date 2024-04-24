@@ -73,6 +73,11 @@ public class VivSerializer : ISerializer<VivFile>
         }
     }
 
+    /// <summary>
+    /// Infers the file size in bytes by adding up the size of all blobs and the resulting header.
+    /// </summary>
+    /// <param name="directory">Directory of the VIV file.</param>
+    /// <returns>The estimated file size.</returns>
     public static int GetFileSize(Dictionary<string, byte[]> directory)
     {
         var sum = 16;

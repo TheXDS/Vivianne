@@ -1,7 +1,7 @@
 ﻿namespace TheXDS.Vivianne.Models;
 
 /// <summary>
-/// Enumerates the possible engine locations ina vehicle.
+/// Enumerates the possible engine locations in a vehicle.
 /// </summary>
 public enum EngineLocation : ushort
 {

@@ -48,17 +48,17 @@ public class FceFile : IReadOnlyDictionary<string, FcePart>
     /// <summary>
     /// Enumerates the car part names in this FCE.
     /// </summary>
-    public IEnumerable<string> Keys => Header.PartNames.Take(Header.CarParts).Select(p => p.ToString()).Where(p => !string.IsNullOrWhiteSpace(p));
+    public IEnumerable<string> Keys => Header.PartNames.Take(Header.CarPartCount).Select(p => p.ToString()).Where(p => !string.IsNullOrWhiteSpace(p));
 
     /// <summary>
     /// Enumerates the car parts contained in this instance.
     /// </summary>
-    public IEnumerable<FcePart> Values => Enumerable.Range(0, Header.CarParts).Select(p => this[p]!);
+    public IEnumerable<FcePart> Values => Enumerable.Range(0, Header.CarPartCount).Select(p => this[p]!);
 
     /// <summary>
     /// Gets the count of car parts contained in this instance.
     /// </summary>
-    public int Count => Header.CarParts;
+    public int Count => Header.CarPartCount;
 
     /// <summary>
     /// Gets a car part with the specified name.
@@ -72,7 +72,7 @@ public class FceFile : IReadOnlyDictionary<string, FcePart>
     {
         get
         {
-            var index = Header.PartNames.Take(Header.CarParts).Select(p => p.ToString()).FindIndexOf(partName);
+            var index = Header.PartNames.Take(Header.CarPartCount).Select(p => p.ToString()).FindIndexOf(partName);
             return index != -1 ? this[index] : throw new KeyNotFoundException();
         }
     }
@@ -89,7 +89,7 @@ public class FceFile : IReadOnlyDictionary<string, FcePart>
     {
         get
         {
-            return index < Header.CarParts ? new()
+            return index < Header.CarPartCount ? new()
             {
                 Origin = Header.CarPartsCoords[index],
                 Vertices = Vertices[Header.PartVertexOffset[index]..(Header.PartVertexOffset[index] + Header.PartVertexCount[index])],
@@ -101,7 +101,7 @@ public class FceFile : IReadOnlyDictionary<string, FcePart>
 
     private IEnumerable<KeyValuePair<string, FcePart>> GetParts()
     {
-        return Header.PartNames.Take(Header.CarParts).Where(p => !string.IsNullOrWhiteSpace(p.ToString())).Select<FceAsciiBlob, KeyValuePair<string, FcePart>>(p => new(p.ToString(), this[p]!));
+        return Header.PartNames.Take(Header.CarPartCount).Where(p => !string.IsNullOrWhiteSpace(p.ToString())).Select<FceAsciiBlob, KeyValuePair<string, FcePart>>(p => new(p.ToString(), this[p]!));
     }
 
     /// <summary>

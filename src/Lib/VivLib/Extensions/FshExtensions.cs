@@ -43,7 +43,7 @@ public static class FshExtensions
     /// <see langword="true"/> if the string is a valid GIMX ID,
     /// <see langword="false"/> otherwise.
     /// </returns>
-    public static bool IsGimxIdInvalid(string? id, [NotNullWhen(true)] out string? errorMessage)
+    public static bool IsGimxIdInvalid([NotNullWhen(false)] string? id, [NotNullWhen(true)] out string? errorMessage)
     {
         foreach (var (FailsValidation, ErrorMessage) in GimxIdValidationRules)
         {
@@ -76,7 +76,7 @@ public static class FshExtensions
     public static bool IsNewGimxIdInvalid(string? newId, FshFile fsh, [NotNullWhen(true)] out string? errorMessage)
     {
         if (IsGimxIdInvalid(newId, out errorMessage)) return true;
-        if (fsh.Entries.ContainsKey(newId))
+        if (fsh.Entries.ContainsKey(newId!))
         {
             errorMessage = "The specified ID is already in use.";
         }

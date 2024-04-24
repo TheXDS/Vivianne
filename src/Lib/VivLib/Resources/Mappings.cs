@@ -103,6 +103,10 @@ public static class Mappings
         { FshBlobFormat.Rgb24,      (b, w, h) => Image.LoadPixelData<Bgr24>(b, w, h) },
     }.AsReadOnly();
 
+    /// <summary>
+    /// Maps a <see cref="FshBlobFormat"/> value to a function that reads a
+    /// palette from the color data.
+    /// </summary>
     public static IReadOnlyDictionary<FshBlobFormat, Func<FshBlob, Color[]>> FshBlobToPalette { get; } = new Dictionary<FshBlobFormat, Func<FshBlob, Color[]>>()
     {
         { FshBlobFormat.Palette32,      ReadPalette<Rgba32>(4) },
@@ -112,6 +116,10 @@ public static class Mappings
         //{ FshBlobFormat.Palette16Nfs5, },
     };
 
+    /// <summary>
+    /// Maps a file extension to a <see cref="ImageEncoder"/> that can be used
+    /// to save an image.
+    /// </summary>
     public static IReadOnlyDictionary<string, ImageEncoder> ExportEnconder { get; } = new Dictionary<string, ImageEncoder>()
     {
         { ".png",   new PngEncoder() },
@@ -162,6 +170,16 @@ public static class Mappings
         { FshBlobFormat.Palette16,      c => { var x = (Bgr565)c; return BitConverter.GetBytes(x.PackedValue); }},
     }.AsReadOnly();
 
+    /// <summary>
+    /// Gets the bytes representing a single pixel on the specified coords on
+    /// the image.
+    /// </summary>
+    /// <param name="image">Image to extract the color data from.</param>
+    /// <param name="x">X coord of the pixel.</param>
+    /// <param name="y">Y coord of the pixel.</param>
+    /// <returns>
+    /// A byte array containing the bytes that represent the pixel.
+    /// </returns>
     public static byte[] GetPixelBytes(Image image, int x, int y)
     {
         return image switch
@@ -173,6 +191,17 @@ public static class Mappings
         };
     }
 
+    /// <summary>
+    /// Maps the format of an <see cref="Image{TPixel}"/> to a value that
+    /// indicates the FSH format.
+    /// </summary>
+    /// <param name="image">
+    /// Image to get the FSH format magic value for.
+    /// </param>
+    /// <returns>
+    /// A <see cref="FshBlobFormat"/> value that can be used to identify the
+    /// format of the image's data.
+    /// </returns>
     public static FshBlobFormat ImageToFshBlobMagic(Image image)
     {
         return image switch
@@ -184,17 +213,28 @@ public static class Mappings
         };
     }
 
-    private static void ReadColorPalette(FshBlob blob, byte[] data)
-    {
-        blob.LocalPalette = LoadPalette(data);
-    }
-
+    /// <summary>
+    /// Loads a color palette from the specified raw footer.
+    /// </summary>
+    /// <param name="footer">
+    /// Byte array extracted from the footer that contains the color palette
+    /// for the image.
+    /// </param>
+    /// <returns>
+    /// An array of <see cref="Color"/> with the color palette to use when
+    /// rendering the texture.
+    /// </returns>
     public static Color[]? LoadPalette(byte[] footer)
     {
         var s = new FshBlobSerializer();
         using var ms = new MemoryStream(footer);
         var blob = s.Deserialize(ms)!;
         return FshBlobToPalette[blob.Magic].Invoke(blob);
+    }
+
+    private static void ReadColorPalette(FshBlob blob, byte[] data)
+    {
+        blob.LocalPalette = LoadPalette(data);
     }
 
     private static void ReadGaugeData(FshBlob blob, byte[] data)
@@ -237,6 +277,27 @@ public static class Mappings
         return ms.ToArray();
     }
 
+    /// <summary>
+    /// Loads an <see cref="Image"/> from the specified <see cref="FshBlob"/>,
+    /// including the color palette to use as well as a transform function to
+    /// cast the color data to the required pixel format of the image.
+    /// </summary>
+    /// <typeparam name="T">
+    /// Type of the pixel data to be used for the resulting image.
+    /// </typeparam>
+    /// <param name="blob">FSH blob to load the image from.</param>
+    /// <param name="palette">
+    /// Existing color palette to be used. Must've been loaded from the footer,
+    /// from a companion FSH blob or inferred/implicit if no palette could be
+    /// found.
+    /// </param>
+    /// <param name="colorCast">
+    /// Transform function to cast the color data to the required pixel format
+    /// of the image.
+    /// </param>
+    /// <returns>
+    /// A new <see cref="Image"/> loaded from the <see cref="FshBlob"/>.
+    /// </returns>
     public static Image LoadFromIndexedBlob<T>(FshBlob blob, Color[] palette, Func<Color, T> colorCast) where T : unmanaged, IPixel<T>
     {
         var img = new Image<T>(blob.Width, blob.Height);
@@ -250,6 +311,14 @@ public static class Mappings
         return img;
     }
 
+    /// <summary>
+    /// Returns a function that reads a palette in a specific pixel format.
+    /// </summary>
+    /// <typeparam name="T">Type of the pixel format to use.</typeparam>
+    /// <param name="size">
+    /// Number of bytes per pixel to be loaded.
+    /// </param>
+    /// <returns></returns>
     public static Func<FshBlob, Color[]> ReadPalette<T>(int size) where T : unmanaged, IPixel<T>
     {
         return blob =>
@@ -264,6 +333,10 @@ public static class Mappings
         };
     }
 
+    /// <summary>
+    /// Maps a FeData file extension to a proper text provider used to generate
+    /// FeData performance information based on Carp data.
+    /// </summary>
     public static Dictionary<string, Func<Carp, FeDataTextProvider>> FeDataToTextProvider { get; } = new Dictionary<string, Func<Carp, FeDataTextProvider>>
     {
         { ".bri", c => new BriUnitTextProvider(c) },
@@ -275,9 +348,34 @@ public static class Mappings
         { ".swe", c => new SweUnitTextProvider(c) },
     };
 
+    /// <summary>
+    /// Gets a <see cref="FeDataTextProvider"/> based on the current UI culture.
+    /// </summary>
+    /// <param name="c">Carp data to extract performance data from.</param>
+    /// <returns>
+    /// A <see cref="FeDataTextProvider"/> that gets the localized performance
+    /// metrics from the specified <see cref="Carp"/>.
+    /// </returns>
     public static FeDataTextProvider GetTextProviderFromCulture(Carp c)
     {
-        return CultureInfo.CurrentUICulture.TwoLetterISOLanguageName switch
+        return GetTextProviderFromCulture(c, CultureInfo.CurrentUICulture.TwoLetterISOLanguageName);
+    }
+
+    /// <summary>
+    /// Gets a <see cref="FeDataTextProvider"/> based on the specified culture.
+    /// </summary>
+    /// <param name="c">Carp data to extract performance data from.</param>
+    /// <param name="culture">
+    /// 2-letter culture code (language) to get the
+    /// <see cref="FeDataTextProvider"/> for.
+    /// </param>
+    /// <returns>
+    /// A <see cref="FeDataTextProvider"/> that gets the localized performance
+    /// metrics from the specified <see cref="Carp"/>.
+    /// </returns>
+    public static FeDataTextProvider GetTextProviderFromCulture(Carp c, string culture)
+    {
+        return culture.ToLowerInvariant() switch
         {
             "fr" => new FreUnitTextProvider(c),
             "de" => new GerUnitTextProvider(c),
