@@ -1,9 +1,10 @@
-﻿using SixLabors.ImageSharp.Formats.Png;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using TheXDS.Ganymede.Types.Base;
 using TheXDS.MCART.Types;
 using TheXDS.Vivianne.Models;
+using TheXDS.Vivianne.Serializers;
 
 namespace TheXDS.Vivianne.ViewModels;
 
@@ -12,11 +13,36 @@ namespace TheXDS.Vivianne.ViewModels;
 /// </summary>
 public class FcePreviewViewModel : ViewModel
 {
-    private readonly FceColor[] PrimaryColors;
-    private readonly FceColor[] SecondaryColors;
     private byte[]? _SelectedCarTexture;
     private RenderTreeState? _RenderTree;
     private int _selectedColorIndex;
+
+    private static IEnumerable<CarColorItem> CreateColors(IDictionary<string, byte[]> vivDirectory, FceFileHeader header)
+    {
+        static Color ToColor(FceColor color)
+        {
+            var (R, G, B) = color.ToRgb();
+            return Color.FromArgb(R, G, B);
+        }
+        static string[] ReadColors(byte[] fd)
+        {
+            var fe = ((ISerializer<FeData>)new FeDataSerializer()).Deserialize(fd);
+            return [fe.Color1, fe.Color2, fe.Color3, fe.Color4, fe.Color5, fe.Color6, fe.Color7, fe.Color8, fe.Color9, fe.Color10];
+        }
+
+        var names = vivDirectory.TryGetValue("fedata.eng", out var fd)
+            ? ReadColors(fd)
+            : header.PrimaryColorTable.Select(p => p.ToString());
+
+        return header.PrimaryColorTable
+            .Zip(header.SecondaryColorTable, names.Take(header.PrimaryColors))
+            .Select(p => new CarColorItem(p.Third, ToColor(p.First), ToColor(p.Second)));
+    }
+
+    private IEnumerable<NamedObject<byte[]>> GetTextures(IDictionary<string, byte[]> vivDirectory)
+    {
+        return vivDirectory.Where(p => p.Key.EndsWith(".tga")).Select(p => new NamedObject<byte[]>(p.Value, p.Key));
+    }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="FcePreviewViewModel"/> class.
@@ -26,9 +52,8 @@ public class FcePreviewViewModel : ViewModel
     public FcePreviewViewModel(FceFile fce, IDictionary<string, byte[]> vivDirectory)
     {
         Parts = fce.Select(p => new FcePartListItem(p)).ToArray();
-        PrimaryColors = fce.Header.PrimaryColorTable;
-        SecondaryColors = fce.Header.SecondaryColorTable;
-        CarTextures = vivDirectory.Where(p => p.Key.EndsWith(".tga")).Select(p => new NamedObject<byte[]>(p.Value, p.Key));
+        CarTextures = GetTextures(vivDirectory);
+        CarColors = CreateColors(vivDirectory, fce.Header);
         foreach (var j in Parts)
         {
             j.ForwardChange(this);
@@ -36,6 +61,8 @@ public class FcePreviewViewModel : ViewModel
         RenderTree = new(this);
         RegisterPropertyChangeTrigger(nameof(RenderTree), "IsVisible", nameof(SelectedColorIndex), nameof(SelectedCarTexture));
     }
+
+    public IEnumerable<CarColorItem> CarColors { get; }
 
     /// <summary>
     /// Gets a collection of the FCE parts contained in the model.
@@ -75,3 +102,5 @@ public class FcePreviewViewModel : ViewModel
         set => Change(ref _RenderTree, value);
     }
 }
+
+public record class CarColorItem(string Name, Color Primary, Color Secondary);

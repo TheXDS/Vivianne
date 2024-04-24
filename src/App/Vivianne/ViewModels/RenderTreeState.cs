@@ -21,7 +21,13 @@ public class RenderTreeState(FcePreviewViewModel source)
     public IEnumerable<FcePart> Parts => source.Parts.Where(p => p.IsVisible).Select(p => p.Part);
 
     /// <summary>
-    /// Gets the pre-transformed texture to be used to draw the FCE model. This will include applied car colors.
+    /// Gets the pre-transformed texture to be used to draw the FCE model. This
+    /// will include applied car colors.
     /// </summary>
     public byte[]? Texture => source.SelectedCarTexture;
+
+    /// <summary>
+    /// Gets the selected car color to be used to paint over the texture.
+    /// </summary>
+    public CarColorItem? SelectedColor => source.SelectedColorIndex > -1 ? source.CarColors.ToArray()[source.SelectedColorIndex] : null;
 }
