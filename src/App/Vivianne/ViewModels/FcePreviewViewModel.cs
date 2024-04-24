@@ -17,7 +17,7 @@ public class FcePreviewViewModel : ViewModel
     private RenderTreeState? _RenderTree;
     private int _selectedColorIndex;
 
-    private static IEnumerable<CarColorItem> CreateColors(IDictionary<string, byte[]> vivDirectory, FceFileHeader header)
+    private static IEnumerable<CarColorItem> CreateColors(IDictionary<string, byte[]>? vivDirectory, FceFileHeader header)
     {
         static Color ToColor(FceColor color)
         {
@@ -30,7 +30,7 @@ public class FcePreviewViewModel : ViewModel
             return [fe.Color1, fe.Color2, fe.Color3, fe.Color4, fe.Color5, fe.Color6, fe.Color7, fe.Color8, fe.Color9, fe.Color10];
         }
 
-        var names = vivDirectory.TryGetValue("fedata.eng", out var fd)
+        var names = vivDirectory is not null && vivDirectory.TryGetValue("fedata.eng", out var fd)
             ? ReadColors(fd)
             : header.PrimaryColorTable.Select(p => p.ToString());
 
@@ -39,7 +39,7 @@ public class FcePreviewViewModel : ViewModel
             .Select(p => new CarColorItem(p.Third, ToColor(p.First), ToColor(p.Second)));
     }
 
-    private IEnumerable<NamedObject<byte[]>> GetTextures(IDictionary<string, byte[]> vivDirectory)
+    private static IEnumerable<NamedObject<byte[]>> GetTextures(IDictionary<string, byte[]> vivDirectory)
     {
         return vivDirectory.Where(p => p.Key.EndsWith(".tga")).Select(p => new NamedObject<byte[]>(p.Value, p.Key));
     }
@@ -47,7 +47,7 @@ public class FcePreviewViewModel : ViewModel
     /// <summary>
     /// Initializes a new instance of the <see cref="FcePreviewViewModel"/> class.
     /// </summary>
-    /// <param name="fce">Model to preview</param>
+    /// <param name="fce">Model to preview.</param>
     /// <param name="vivDirectory">Reference to the VIV file from which to enumerate the available textures.</param>
     public FcePreviewViewModel(FceFile fce, IDictionary<string, byte[]> vivDirectory)
     {
@@ -62,6 +62,26 @@ public class FcePreviewViewModel : ViewModel
         RegisterPropertyChangeTrigger(nameof(RenderTree), "IsVisible", nameof(SelectedColorIndex), nameof(SelectedCarTexture));
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="FcePreviewViewModel"/> class.
+    /// </summary>
+    /// <param name="fce">Model to preview.</param>
+    public FcePreviewViewModel(FceFile fce)
+    {
+        Parts = fce.Select(p => new FcePartListItem(p)).ToArray();
+        CarTextures = [];
+        CarColors = CreateColors(null, fce.Header);
+        foreach (var j in Parts)
+        {
+            j.ForwardChange(this);
+        }
+        RenderTree = new(this);
+        RegisterPropertyChangeTrigger(nameof(RenderTree), "IsVisible", nameof(SelectedColorIndex), nameof(SelectedCarTexture));
+    }
+
+    /// <summary>
+    /// Gets a collection with the available car colors.
+    /// </summary>
     public IEnumerable<CarColorItem> CarColors { get; }
 
     /// <summary>
@@ -102,5 +122,3 @@ public class FcePreviewViewModel : ViewModel
         set => Change(ref _RenderTree, value);
     }
 }
-
-public record class CarColorItem(string Name, Color Primary, Color Secondary);

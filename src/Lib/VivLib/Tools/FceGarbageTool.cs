@@ -12,10 +12,10 @@ internal static class FceCleanupAnalyzers
     public static FceCleanupResult? StrayPartNames(FceFile fce)
     {
         var actualPartList = fce.Header.PartNames.Select(p => p.ToString()).Where(p => !p.IsEmpty()).ToArray();
-        var strayPartNameCount = actualPartList.Length - fce.Header.CarParts;
+        var strayPartNameCount = actualPartList.Length - fce.Header.CarPartCount;
 
         void RemoveBadNames(FceFile f) => _ = Enumerable.Range(strayPartNameCount, 64 - strayPartNameCount).Select<int, object>(i => f.Header.PartNames[i] = FceAsciiBlob.Empty);
-        void NameUnnamed(FceFile f) => _ = Enumerable.Range(fce.Header.CarParts + strayPartNameCount, -strayPartNameCount).Select<int, object>(i => f.Header.PartNames[i] = Guid.NewGuid().ToString());
+        void NameUnnamed(FceFile f) => _ = Enumerable.Range(fce.Header.CarPartCount + strayPartNameCount, -strayPartNameCount).Select<int, object>(i => f.Header.PartNames[i] = Guid.NewGuid().ToString());
 
 
         return strayPartNameCount switch

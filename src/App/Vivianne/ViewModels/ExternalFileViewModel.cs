@@ -12,5 +12,8 @@ namespace TheXDS.Vivianne.ViewModels;
 /// </param>
 public class ExternalFileViewModel(byte[] rawFile, Action<byte[]> saveCallback) : RawContentViewModel(rawFile)
 {
+    /// <summary>
+    /// Gets a reference to the callback used to save the data back to the VIV file.
+    /// </summary>
     protected readonly Action<byte[]> _saveCallback = saveCallback;
 }

@@ -1,13 +1,17 @@
 ﻿using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Extensions;
 using TheXDS.Vivianne.Models;
-//using static TheXDS.Vivianne.Extensions.BinaryReaderExtensions;
 
 namespace TheXDS.Vivianne.Serializers;
 
+/// <summary>
+/// Implements a serializer that can read and write FCE files.
+/// </summary>
 public class FceSerializer : ISerializer<FceFile>
 {
     const int DataOffset = 0x1f04;
+
+    /// <inheritdoc/>
     public FceFile Deserialize(Stream stream)
     {
         using BinaryReader br = new(stream);
@@ -25,6 +29,7 @@ public class FceSerializer : ISerializer<FceFile>
         return fce;
     }
 
+    /// <inheritdoc/>
     public void SerializeTo(FceFile entity, Stream stream)
     {
 #if EnableFceWriteSupport

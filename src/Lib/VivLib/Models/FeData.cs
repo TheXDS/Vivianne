@@ -15,11 +15,6 @@ public class FeData
     public ushort Unk_0x0c { get; set; }
 
     /// <summary>
-    /// Gets or sets the unknown <c>WORD</c> value at offset <c>0x0e</c>.
-    /// </summary>
-    public ushort IsDlcCar { get; set; }
-
-    /// <summary>
     /// Gets or sets the unknown <c>WORD</c> value at offset <c>0x14</c>.
     /// </summary>
     public ushort Unk_0x14 { get; set; }
@@ -105,6 +100,11 @@ public class FeData
     /// Gets or sets a value that indicates if this vehicle is a bonus car.
     /// </summary>
     public bool IsBonus { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value that indicates if the car is part of a DLC (downloadable content) package.
+    /// </summary>
+    public ushort IsDlcCar { get; set; }
 
     /// <summary>
     /// Gets or sets a value that indicates if this vehicle is available to AI drivers.

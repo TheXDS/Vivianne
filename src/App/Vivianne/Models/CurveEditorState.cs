@@ -39,7 +39,6 @@ public class CurveEditorState : EditorViewModelStateBase
         set => Change(ref _Step, value);
     }
 
-
     public double BarWidth
     {
         get => _BarWidth;

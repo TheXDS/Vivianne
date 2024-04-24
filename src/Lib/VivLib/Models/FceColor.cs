@@ -1,24 +1,41 @@
 ﻿using System.Runtime.InteropServices;
+using TheXDS.MCART.Math;
 
 namespace TheXDS.Vivianne.Models;
 
+/// <summary>
+/// Represents a color in HSB color space, including an alpha component.
+/// </summary>
+/// <param name="Hue">Color Hue</param>
+/// <param name="Saturation">Color saturation.</param>
+/// <param name="Brightness">Brightness of the color.</param>
+/// <param name="Alpha">Alpha channel.</param>
 [StructLayout(LayoutKind.Sequential)]
-public record struct FceColor(int Hue, int Saturation, int Brightness, int Transparency)
+public record struct FceColor(int Hue, int Saturation, int Brightness, int Alpha)
 {
+    /// <summary>
+    /// Converts a <see cref="FceColor"/> instance to RGBA color space.
+    /// </summary>
+    /// <returns>A tuple of the RGBA components of this color.</returns>
+    public readonly (int R, int G, int B, int A) ToRgba()
+    {
+        var (R, G, B) = ToRgb();
+        return (R, G, B, Alpha);
+    }
+
     /// <summary>
     /// Converts a <see cref="FceColor"/> instance to RGB color space.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>A tuple of the RGB components of this color.</returns>
     public readonly (int R, int G, int B) ToRgb()
     {
-        double h = (double)Hue / 255.0;
-        double s = Math.Min(1.0, Math.Max(0.0, (double)Saturation / 255.0));
-        double b = Math.Min(1.0, Math.Max(0.0, (double)Brightness / 255.0));
+        double h = (Hue / 255.0).Clamp(0.0, 1.0);
+        double s = (Saturation / 255.0).Clamp(0.0, 1.0);
+        double b = (Brightness / 255.0).Clamp(0.0, 1.0);
 
         double red = 0.0;
         double green = 0.0;
         double blue = 0.0;
-
         if (s == 0)
         {
             red = b;
@@ -68,7 +85,6 @@ public record struct FceColor(int Hue, int Saturation, int Brightness, int Trans
                     break;
             }
         }
-
         return ((int)(red * 255), (int)(green * 255), (int)(blue * 255));
     }
 }

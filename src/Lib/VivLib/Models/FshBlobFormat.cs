@@ -12,8 +12,9 @@ public enum FshBlobFormat : byte
     Palette32 = 0x2A,
     /// <summary>
     /// Indicates that the FSH blob includes a 256 color image. If a palette
-    /// is not included as a companion blob in the parent FSH file, a common
-    /// palette should be used.
+    /// is not included in the blob's footer or as a companion blob in the
+    /// parent FSH file, a common palette should be used (Checks should be
+    /// performed in that order).
     /// </summary>
     Indexed8 = 0x7B,
     /// <summary>
@@ -50,7 +51,7 @@ public enum FshBlobFormat : byte
     /// </summary>
     Rgb24 = 0x7F,
     /// <summary>
-    /// Indicates that the FSH blob includes a 32-bit color image in ARGB1555
+    /// Indicates that the FSH blob includes a 16-bit color image in ARGB1555
     /// format, that is, with a 1 bit alpha channel.
     /// </summary>
     Argb1555 = 0x7E,

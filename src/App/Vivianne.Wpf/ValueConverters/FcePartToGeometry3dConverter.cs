@@ -47,9 +47,9 @@ public class FcePreviewViewModelToModel3DGroupConverter : IOneWayValueConverter<
             var v1 = value.Vertices[j.I1];
             var v2 = value.Vertices[j.I2];
             var v3 = value.Vertices[j.I3];
-            vertex[j.I1] = (new Point3D(SizeFactor * v1.Z, SizeFactor * v1.X, SizeFactor * v1.Y), new Point(j.U1, j.V1));
-            vertex[j.I2] = (new Point3D(SizeFactor * v2.Z, SizeFactor * v2.X, SizeFactor * v2.Y), new Point(j.U2, j.V2));
-            vertex[j.I3] = (new Point3D(SizeFactor * v3.Z, SizeFactor * v3.X, SizeFactor * v3.Y), new Point(j.U3, j.V3));
+            vertex[j.I1] = (new Point3D(SizeFactor * v1.Z, SizeFactor * v1.X, SizeFactor * v1.Y), new Point(j.U1, -j.V1));
+            vertex[j.I2] = (new Point3D(SizeFactor * v2.Z, SizeFactor * v2.X, SizeFactor * v2.Y), new Point(j.U2, -j.V2));
+            vertex[j.I3] = (new Point3D(SizeFactor * v3.Z, SizeFactor * v3.X, SizeFactor * v3.Y), new Point(j.U3, -j.V3));
         }
         return new MeshGeometry3D()
         {

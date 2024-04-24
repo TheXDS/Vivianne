@@ -21,6 +21,14 @@ public partial class CarpEditorState
         return From(s.Deserialize(rawData.ToStream()));
     }
 
+    /// <summary>
+    /// Creates a new instance of the <see cref="CarpEditorState"/> class from
+    /// a <see cref="Carp"/> object.
+    /// </summary>
+    /// <param name="c">Object to get the data from.</param>
+    /// <returns>
+    /// A new instance of the <see cref="CarpEditorState"/> class.
+    /// </returns>
     public static CarpEditorState From(Carp c)
     {
         var result = new CarpEditorState();
@@ -57,6 +65,12 @@ public partial class CarpEditorState
         return result;
     }
 
+    /// <summary>
+    /// Converts this instance to a <see cref="Carp"/> object.
+    /// </summary>
+    /// <returns>
+    /// A <see cref="Carp"/> object with the same values as this instance.
+    /// </returns>
     public Carp ToCarp()
     {
         var result = new Carp();
@@ -93,6 +107,10 @@ public partial class CarpEditorState
         return result;
     }
 
+    /// <summary>
+    /// Serializes this instance to a string containing all Carp data.
+    /// </summary>
+    /// <returns>A string that contains the raw Carp data.</returns>
     public string ToSerializedCarp()
     {
         ISerializer<Carp> s = new CarpSerializer();

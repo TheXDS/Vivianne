@@ -15,7 +15,7 @@ public class FshFile
     /// </summary>
     /// <remarks>
     /// By default, this value is set to '<c>GIMX</c>', which is the default
-    /// directory ID for Need For TopSpeed 3/4.
+    /// directory ID for Need For Speed 3/4.
     /// </remarks>
     public string DirectoryId { get; set; } = "GIMX";
 }
