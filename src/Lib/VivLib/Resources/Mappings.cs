@@ -159,13 +159,13 @@ public static class Mappings
     /// </remarks>
     public static IReadOnlyDictionary<FshBlobFormat, Func<object, byte[]>> FshBlobToPixelWriter { get; } = new Dictionary<FshBlobFormat, Func<object, byte[]>>()
     {
-        { FshBlobFormat.Argb32,         c => { var x = (Rgba32)c; return [x.B, x.G, x.R, x.A]; }},
-        { FshBlobFormat.Rgb24,          c => { var x = (Rgb24)c; return [x.B, x.G, x.R]; }},
+        { FshBlobFormat.Argb32,         c => { var x = (Rgba32)c; return [x.R, x.G, x.B, x.A]; }},
+        { FshBlobFormat.Rgb24,          c => { var x = (Rgb24)c; return [x.R, x.G, x.B]; }},
         { FshBlobFormat.Rgb565,         c => { var x = (Bgr565)c; return BitConverter.GetBytes(x.PackedValue); }},
         { FshBlobFormat.Argb1555,       c => { var x = (Bgra5551)c; return BitConverter.GetBytes(x.PackedValue); }},
-        { FshBlobFormat.Palette32,      c => { var x = (Rgba32)c; return [x.B, x.G, x.R, x.A]; }},
-        { FshBlobFormat.Palette24Dos,   c => { var x = (Rgb24)c; return [x.B, x.G, x.R]; }},
-        { FshBlobFormat.Palette24,      c => { var x = (Rgb24)c; return [x.B, x.G, x.R]; }},
+        { FshBlobFormat.Palette32,      c => { var x = (Rgba32)c; return [x.R, x.G, x.B, x.A]; }},
+        { FshBlobFormat.Palette24Dos,   c => { var x = (Rgb24)c; return [x.R, x.G, x.B]; }},
+        { FshBlobFormat.Palette24,      c => { var x = (Rgb24)c; return [x.R, x.G, x.B]; }},
         { FshBlobFormat.Palette16Nfs5,  c => { var x = (Bgr565)c; return BitConverter.GetBytes(x.PackedValue); }},
         { FshBlobFormat.Palette16,      c => { var x = (Bgr565)c; return BitConverter.GetBytes(x.PackedValue); }},
     }.AsReadOnly();
