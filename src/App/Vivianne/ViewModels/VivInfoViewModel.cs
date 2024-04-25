@@ -48,7 +48,6 @@ public class VivInfoViewModel : ViewModel, IStatefulViewModel<VivMainState>
         {
             p.Report(new(c * 100 / State.Viv.Directory.Count, $"Exporting {j.Key}..."));
             await File.WriteAllBytesAsync(Path.Combine(r.Result, j.Key), j.Value);
-            await Task.Delay(2000);
             c++;
         }
     }
