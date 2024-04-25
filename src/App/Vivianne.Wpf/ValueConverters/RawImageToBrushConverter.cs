@@ -13,6 +13,6 @@ public class RawImageToBrushConverter : RawImageConverterBase, IOneWayValueConve
     /// <inheritdoc/>
     public Brush? Convert(byte[] value, object? parameter, CultureInfo? culture)
     {
-        return GetBitmap(value, parameter as CarColorItem) is { } bmp ? new ImageBrush(bmp) { TileMode = TileMode.Tile } : (Brush?)null;
+        return GetBitmap(value, parameter as CarColorItem) is { } bmp ? new ImageBrush(bmp) { ViewportUnits = BrushMappingMode.Absolute, TileMode = TileMode.Tile } : (Brush?)null;
     }
 }
