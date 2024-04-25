@@ -1,4 +1,9 @@
-﻿using TheXDS.Vivianne.ViewModels;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using TheXDS.MCART.Types.Base;
+using TheXDS.Vivianne.ViewModels;
 
 namespace TheXDS.Vivianne.Models;
 
@@ -53,4 +58,96 @@ public class FshBlobCoordsState(FshBlob blob) : EditorViewModelStateBase
         get => _YPosition;
         set => Change(ref _YPosition, value);
     }
+}
+
+public class FceColorTableEditorState(FceFile fce) : EditorViewModelStateBase
+{
+    public FceFile Fce { get; } = fce;
+
+    public ICollection<FceColorItem> Colors { get; } = CreateFromFce(fce);
+
+    private static ICollection<FceColorItem> CreateFromFce(FceFile fce)
+    {
+        var primary = fce.Header.PrimaryColorTable
+            .Take(fce.Header.PrimaryColors)
+            .Select(MutableFceColor.From);
+        var secondary = fce.Header.SecondaryColorTable
+            .Take(fce.Header.SecondaryColors)
+            .Select(MutableFceColor.From);
+        var joint = primary
+            .Zip(secondary)
+            .Select(p => new FceColorItem()
+            { 
+                PrimaryColor = p.First,
+                SecondaryColor = p.Second
+            });
+        return new ObservableCollection<FceColorItem>(joint);
+    }
+}
+
+public class FceColorItem : NotifyPropertyChanged
+{
+    private MutableFceColor _PrimaryColor;
+    private MutableFceColor _SecondaryColor;
+
+    public MutableFceColor PrimaryColor
+    {
+        get => _PrimaryColor;
+        set => Change(ref _PrimaryColor, value);
+    }
+
+    public MutableFceColor SecondaryColor
+    {
+        get => _SecondaryColor;
+        set => Change(ref _SecondaryColor, value);
+    }
+}
+
+public class MutableFceColor : NotifyPropertyChanged
+{
+    private byte _Hue;
+    private byte _Saturation;
+    private byte _Brightness;
+    private byte _Alpha;
+
+    public MutableFceColor()
+    {
+        RegisterPropertyChangeTrigger(nameof(Preview), nameof(Hue), nameof(Saturation), nameof(Brightness), nameof(Alpha));
+    }
+
+    public byte Hue
+    {
+        get => _Hue;
+        set => Change(ref _Hue, value);
+    }
+
+    public byte Saturation
+    {
+        get => _Saturation;
+        set => Change(ref _Saturation, value);
+    }
+
+    public byte Brightness
+    {
+        get => _Brightness;
+        set => Change(ref _Brightness, value);
+    }
+
+    public byte Alpha
+    {
+        get => _Alpha;
+        set => Change(ref _Alpha, value);
+    }
+
+    public FceColor Preview => ToColor();
+
+    public FceColor ToColor() => new(Hue, Saturation, Brightness, Alpha);
+
+    public static MutableFceColor From(FceColor color) => new()
+    {
+        Hue = (byte)color.Hue,
+        Saturation = (byte)color.Saturation,
+        Brightness = (byte)color.Brightness,
+        Alpha = (byte)color.Alpha
+    };
 }

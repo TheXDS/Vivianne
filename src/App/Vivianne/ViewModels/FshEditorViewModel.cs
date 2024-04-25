@@ -95,7 +95,7 @@ public class FshEditorViewModel : ViewModel, IViewModel
     }
 
     /// <summary>
-    /// Gets a value that indicates if there's unsaved changes on the unferlying FSH file.
+    /// Gets a value that indicates if there's unsaved changes on the underlying FSH file.
     /// </summary>
     public bool UnsavedChanges
     {
