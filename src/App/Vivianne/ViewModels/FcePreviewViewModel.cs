@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using TheXDS.Ganymede.Helpers;
 using TheXDS.Ganymede.Types.Base;
-using TheXDS.MCART.Component;
 using TheXDS.MCART.Types;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models;
@@ -60,6 +59,9 @@ public class FcePreviewViewModel : ViewModel
     /// </summary>
     /// <param name="fce">Model to preview.</param>
     /// <param name="vivDirectory">Reference to the VIV file from which to enumerate the available textures.</param>
+    /// <param name="saveCallback">
+    /// Optional save callback to use when trying to save FCE files.
+    /// </param>
     public FcePreviewViewModel(FceFile fce, IDictionary<string, byte[]> vivDirectory, Func<FceFile, Task>? saveCallback = null)
         : this(fce, saveCallback)
     {
@@ -72,6 +74,9 @@ public class FcePreviewViewModel : ViewModel
     /// Initializes a new instance of the <see cref="FcePreviewViewModel"/> class.
     /// </summary>
     /// <param name="fce">Model to preview.</param>
+    /// <param name="saveCallback">
+    /// Optional save callback to use when trying to save FCE files.
+    /// </param>
     public FcePreviewViewModel(FceFile fce, Func<FceFile, Task>? saveCallback = null)
     {
         var cb = CommandBuilder.For(this);

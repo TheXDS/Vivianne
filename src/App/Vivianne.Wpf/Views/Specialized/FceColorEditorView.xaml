@@ -31,7 +31,7 @@
                             </Grid.ColumnDefinitions>
                             <Grid.Resources>
                                 <Style TargetType="gn:Int32TextBox">
-                                    <Setter Property="Width" Value="80"/>
+                                    <Setter Property="Width" Value="60"/>
                                     <Setter Property="HorizontalContentAlignment" Value="Right"/>
                                     <Setter Property="Minimum" Value="0"/>
                                     <Setter Property="Maximum" Value="255"/>
@@ -39,39 +39,39 @@
                                 <valueconverters:FceColorToBrushConverter x:Key="mfc2bv"/>
                             </Grid.Resources>
                             <gn:Int32TextBox
-                                Label="H"
+                                Icon="H"
                                 Value="{Binding PrimaryColor.Hue}"/>
                             <gn:Int32TextBox
                                 Grid.Column="1"
-                                Label="S"
+                                Icon="S"
                                 Value="{Binding PrimaryColor.Saturation}"/>
                             <gn:Int32TextBox
                                 Grid.Column="2"
-                                Label="B"
+                                Icon="B"
                                 Value="{Binding PrimaryColor.Brightness}"/>
                             <gn:Int32TextBox
                                 Grid.Column="3"
-                                Label="A"
+                                Icon="A"
                                 Value="{Binding PrimaryColor.Alpha}"/>
                             <Rectangle Fill="{Binding PrimaryColor.Preview, Mode=OneWay, Converter={StaticResource mfc2bv}}" Grid.Column="4"/>
                             <gn:Int32TextBox
                                 Grid.Row="1"
-                                Label="H"
+                                Icon="H"
                                 Value="{Binding SecondaryColor.Hue}"/>
                             <gn:Int32TextBox
                                 Grid.Row="1"
                                 Grid.Column="1"
-                                Label="S"
+                                Icon="S"
                                 Value="{Binding SecondaryColor.Saturation}"/>
                             <gn:Int32TextBox
                                 Grid.Row="1"
                                 Grid.Column="2"
-                                Label="B"
+                                Icon="B"
                                 Value="{Binding SecondaryColor.Brightness}"/>
                             <gn:Int32TextBox
                                 Grid.Row="1"
                                 Grid.Column="3"
-                                Label="A"
+                                Icon="A"
                                 Value="{Binding SecondaryColor.Alpha}"/>
                             <Rectangle Fill="{Binding SecondaryColor.Preview, Mode=OneWay, Converter={StaticResource mfc2bv}}" Grid.Row="1" Grid.Column="4"/>
                             <Button

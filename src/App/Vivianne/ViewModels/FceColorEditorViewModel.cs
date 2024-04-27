@@ -50,7 +50,7 @@ public class FceColorEditorViewModel : EditorViewModelBase<FceColorTableEditorSt
 
     private void OnAddNewColor()
     {
-        State.Colors.Add(new FceColorItem() { PrimaryColor = new(), SecondaryColor = new() });
+        State.Colors.Add(new FceColorItem(new(),new()));
         State.UnsavedChanges = true;
         UpdateCommands();
     }

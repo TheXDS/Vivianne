@@ -54,9 +54,9 @@ public class FcePreviewViewModelToModel3DGroupConverter : IOneWayValueConverter<
             var v1 = value.Vertices[j.I1];
             var v2 = value.Vertices[j.I2];
             var v3 = value.Vertices[j.I3];
-            var vert1 = new Point3D(SizeFactor * (v1.Z + value.Origin.Z), SizeFactor * (v1.X + value.Origin.X), SizeFactor * (v1.Y + value.Origin.Y));
-            var vert2 = new Point3D(SizeFactor * (v2.Z + value.Origin.Z), SizeFactor * (v2.X + value.Origin.X), SizeFactor * (v2.Y + value.Origin.Y));
-            var vert3 = new Point3D(SizeFactor * (v3.Z + value.Origin.Z), SizeFactor * (v3.X + value.Origin.X), SizeFactor * (v3.Y + value.Origin.Y));
+            var vert1 = new Point3D(SizeFactor * (v1.Z + value.Origin.Z), SizeFactor * (-v1.X + -value.Origin.X), SizeFactor * (v1.Y + value.Origin.Y));
+            var vert2 = new Point3D(SizeFactor * (v2.Z + value.Origin.Z), SizeFactor * (-v2.X + -value.Origin.X), SizeFactor * (v2.Y + value.Origin.Y));
+            var vert3 = new Point3D(SizeFactor * (v3.Z + value.Origin.Z), SizeFactor * (-v3.X + -value.Origin.X), SizeFactor * (v3.Y + value.Origin.Y));
             var uv1 = new Point(uFlip * j.U1, vFlip * j.V1);
             var uv2 = new Point(uFlip * j.U2, vFlip * j.V2);
             var uv3 = new Point(uFlip * j.U3, vFlip * j.V3);
@@ -84,7 +84,7 @@ public class FcePreviewViewModelToModel3DGroupConverter : IOneWayValueConverter<
         {
             Positions = new Point3DCollection(vertex.Select(p => p?.Vertex ?? default)),
             TriangleIndices = new Int32Collection(workingCopy.SelectMany(p => (int[])[p.I1, p.I2, p.I3])),
-            Normals = new Vector3DCollection(vertex.Select(p => p?.Normal ?? default).Select(p => new Vector3D(p.Z, p.X, p.Y))),
+            Normals = new Vector3DCollection(vertex.Select(p => p?.Normal ?? default).Select(p => new Vector3D(-p.Z, p.X, -p.Y))),
             TextureCoordinates = new PointCollection(vertex.Select(p => p?.Uv ?? default)),
         };
     }
