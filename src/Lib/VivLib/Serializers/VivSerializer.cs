@@ -80,10 +80,20 @@ public class VivSerializer : ISerializer<VivFile>
     /// <returns>The estimated file size.</returns>
     public static int GetFileSize(Dictionary<string, byte[]> directory)
     {
+        return GetFileSize(directory.Select(p => new KeyValuePair<string, int>(p.Key, p.Value.Length)));
+    }
+
+    /// <summary>
+    /// Infers the file size in bytes by adding up the size of all blobs and the resulting header.
+    /// </summary>
+    /// <param name="directory">Directory of the VIV file.</param>
+    /// <returns>The estimated file size.</returns>
+    public static int GetFileSize(IEnumerable<KeyValuePair<string, int>> directory)
+    {
         var sum = 16;
         foreach (var j in directory)
         {
-            sum += j.Key.Length + 9 + j.Value.Length;
+            sum += j.Key.Length + 9 + j.Value;
         }
         return sum;
     }

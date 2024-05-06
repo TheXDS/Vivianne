@@ -40,7 +40,7 @@ public class VivInfoViewModel : ViewModel, IStatefulViewModel<VivMainState>
 
     private async Task OnExportAll(IProgress<ProgressReport> p)
     {
-        var r = await DialogService.GetDirectoryPath("Export all", "Select a path to extract all VIV file contents into.");
+        var r = await DialogService!.GetDirectoryPath("Export all", "Select a path to extract all VIV file contents into.");
         if (!r.Success) return;
         
         var c = 0;

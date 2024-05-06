@@ -83,6 +83,13 @@ public static class FshExtensions
         return !errorMessage.IsEmpty();
     }
 
+    /// <summary>
+    /// Enumerates a collection of colors that have been loaded from the
+    /// provided raw data.
+    /// </summary>
+    /// <param name="data">Data to read the palette from.</param>
+    /// <param name="paletteSize">Number of elements on the palette.</param>
+    /// <returns>An enumeration of colors.</returns>
     public static IEnumerable<Color> ReadColors(byte[] data, int paletteSize)
     {
         using var ms = new MemoryStream(data);

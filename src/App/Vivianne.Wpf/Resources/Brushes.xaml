@@ -39,7 +39,6 @@
             <GradientStop Color="Transparent" Offset="1"/>
         </LinearGradientBrush.GradientStops>
     </LinearGradientBrush>
-
     <RadialGradientBrush x:Key="DashboardDarkBackground" GradientOrigin="0,0.5" Center="0,0.5" RadiusY="0.75" RadiusX="-0.5">
         <RadialGradientBrush.RelativeTransform>
             <TransformGroup>
