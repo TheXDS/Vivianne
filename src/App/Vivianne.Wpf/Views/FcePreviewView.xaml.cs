@@ -11,13 +11,17 @@ namespace TheXDS.Vivianne.Views;
 /// </summary>
 public partial class FcePreviewView : UserControl
 {
+    Point from;
+    
+    /// <summary>
+    /// Initializes a new instance of the <see cref="FcePreviewView"/> class.
+    /// </summary>
     public FcePreviewView()
     {
         InitializeComponent();
         PreviewMouseMove += Window_PreviewMouseMove;
     }
 
-    Point from;
     private void Window_PreviewMouseMove(object sender, MouseEventArgs e)
     {
         var till = e.GetPosition(sender as IInputElement);

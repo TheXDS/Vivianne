@@ -11,28 +11,23 @@ namespace TheXDS.Vivianne.Commands;
 public abstract class VivianneCommand
 {
     /// <summary>
-    /// Writes an error message to both standard output and standard error and
-    /// exits the program with an exit code.
+    /// Writes an error message to the standard error stream and exits the
+    /// program with an exit code.
     /// </summary>
     /// <param name="message">
-    /// Message to write to <c>stdout</c> and <c>stderr</c>.
+    /// Message to write to <c>stderr</c>.
     /// </param>
     /// <param name="exitCode">
     /// Exit code to return to the operating system. If ommitted, will default
     /// to <c>-1</c>.
     /// </param>
     protected static void Fail(string message, int exitCode = -1){
-        using var stdout = Console.OpenStandardOutput();
-        using var stderr = Console.OpenStandardError();
-        using var stdoutw = new StreamWriter(stdout);
-        using var stderrw = new StreamWriter(stderr);
-        stdoutw.WriteLine(message);
-        stderrw.WriteLine(message);
+        using (var stderr = Console.OpenStandardError())
+        using (var stderrw = new StreamWriter(stderr))
+        {
+            stderrw.WriteLine(message);
+        }
         Environment.Exit(exitCode);
-    }
-
-    static VivianneCommand()
-    {
     }
 
     /// <summary>
