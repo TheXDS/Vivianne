@@ -1,6 +1,6 @@
 using System.CommandLine;
 
-namespace TheXDS.Vivianne.Commands;
+namespace TheXDS.Vivianne.Commands.Viv;
 
 /// <summary>
 /// Defines a command that allows the user to interact with a VIV file.

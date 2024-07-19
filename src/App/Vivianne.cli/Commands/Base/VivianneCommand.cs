@@ -2,7 +2,7 @@
 using TheXDS.MCART.Types.Extensions;
 using static TheXDS.MCART.Helpers.ReflectionHelpers;
 
-namespace TheXDS.Vivianne.Commands;
+namespace TheXDS.Vivianne.Commands.Base;
 
 /// <summary>
 /// Base class for all Vivianne CLI commands. It includes some shared

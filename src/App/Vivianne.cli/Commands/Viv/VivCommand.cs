@@ -3,7 +3,7 @@ using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Serializers;
 using static System.Reflection.BindingFlags;
 
-namespace TheXDS.Vivianne.Commands;
+namespace TheXDS.Vivianne.Commands.Viv;
 
 /// <summary>
 /// Defines a command that allows the user to interact with a VIV file.

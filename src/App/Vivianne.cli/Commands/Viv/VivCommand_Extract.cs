@@ -1,7 +1,7 @@
 using System.CommandLine;
 using System.Text.RegularExpressions;
 
-namespace TheXDS.Vivianne.Commands;
+namespace TheXDS.Vivianne.Commands.Viv;
 
 /// <summary>
 /// Defines a command that allows the user to interact with a VIV file.
@@ -12,7 +12,7 @@ public partial class VivCommand
     {
         var cmd = new Command("extract", "Extracts a file from within the specified VIV.");
         var regexArg = new Argument<string>("file(s) regex", () => "^.*$", "File name/regex that indicates the file(s) to be extracted from within the specified VIV. If omitted, all files will be extracted.");
-        var outDirOption = new Option<DirectoryInfo>(["--directory", "-d"], () => new DirectoryInfo(Environment.ProcessPath ?? "."), "Output directory to write the file(s) into. Defaults to the current path.");
+        var outDirOption = new Option<DirectoryInfo>(["--directory", "-d"], () => new DirectoryInfo(Environment.CurrentDirectory), "Output directory to write the file(s) into. Defaults to the current path.");
         cmd.AddArgument(regexArg);
         cmd.AddOption(outDirOption);
         cmd.SetHandler(ExtractCommand, vivFile, regexArg, outDirOption);
