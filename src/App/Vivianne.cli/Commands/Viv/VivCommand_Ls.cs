@@ -16,7 +16,7 @@ public partial class VivCommand
         var sizeOption = new Option<bool>(["--size", "-s"], "Includes the file size in the listing.");
         var offsetOption = new Option<bool>(["--offset", "-o"], "Includes the file offset in the listing.");
         var humanOption = new Option<bool>(["--human", "-H"], "File sizes will be formatted in human-readable format.");
-        var decOption = new Option<bool>(["--dec", "-d"], "The file offsets will be preented in decimal format.");
+        var decOption = new Option<bool>(["--dec", "-d"], "The file offsets will be presented in decimal format.");
         cmd.AddOption(sizeOption);
         cmd.AddOption(offsetOption);
         cmd.AddOption(humanOption);
@@ -28,7 +28,7 @@ public partial class VivCommand
     private static async Task LsCommand(FileInfo vivFile, bool sizeOpt, bool offsetOpt, bool humanOpt, bool decOpt)
     {
         ISerializer<VivFileHeader> parser = new VivHeaderSerializer();
-        using var fs = vivFile.OpenRead();
+        await using var fs = vivFile.OpenRead();
         var viv = await parser.DeserializeAsync(fs);
         int fLen = viv.Entries.Max(p => p.Key.Length);
         foreach (var j in viv.Entries)
