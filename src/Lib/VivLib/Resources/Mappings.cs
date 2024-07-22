@@ -188,6 +188,7 @@ public static class Mappings
             Image<Rgb24> img when img[x, y] is { } p => [p.R, p.G, p.B],
             Image<Bgr565> img when img[x, y] is { } p => BitConverter.GetBytes(p.PackedValue),
             Image<Bgra5551> img when img[x, y] is { } p => BitConverter.GetBytes(p.PackedValue),
+            _ => throw new NotImplementedException()
         };
     }
 
@@ -210,6 +211,7 @@ public static class Mappings
             Image<Rgb24> => FshBlobFormat.Rgb24,
             Image<Bgr565> => FshBlobFormat.Rgb565,
             Image<Bgra5551> => FshBlobFormat.Argb1555,
+            _ => throw new NotImplementedException()
         };
     }
 

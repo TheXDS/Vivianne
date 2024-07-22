@@ -45,7 +45,7 @@ namespace TheXDS.Vivianne;
 /// <list type="bullet">
 /// <item>Nicholas Hayes</item>
 /// </list>
-/// Minor cleanup / Need For TopSpeed compatibility by:
+/// Minor cleanup / Need For Speed compatibility by:
 /// <list type="bullet">
 /// <item>César Morgan (xds_xps_ivx@hotmail.com)</item>
 /// </list>
@@ -71,14 +71,8 @@ public static class QfsCodec
     /// <returns>Decompressed data array</returns>
     /// <example>
     /// <c>
-    /// // Load save game
-    /// SC4SaveFile savegame = new SC4SaveFile(@"C:\Path\To\Save\Game.sc4");
-    ///
-    /// // Read raw data for Region View Subfile from save
-    /// byte[] data = sc4Save.LoadIndexEntryRaw(REGION_VIEW_SUBFILE_TGI);
-    ///
     /// // Decompress data (This file will normally be compressed, should ideally check before decompressing)
-    /// byte[] decompressedData = QFS.UncompressData(data);
+    /// byte[] decompressedData = QfsCodec.Decompress(data);
     /// </c>
     /// </example>
     /// <exception cref="System.IndexOutOfRangeException">

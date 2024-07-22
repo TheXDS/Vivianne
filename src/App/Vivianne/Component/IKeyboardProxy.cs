@@ -2,7 +2,7 @@
 
 /// <summary>
 /// Defines a set of members to be implemented by a type that exposes keyboard
-/// data for modifier keys that can be used to poen editors and dialogs in
+/// data for modifier keys that can be used to open editors and dialogs in
 /// alternate modes or with extra options.
 /// </summary>
 public interface IKeyboardProxy

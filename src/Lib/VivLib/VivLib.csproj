@@ -6,6 +6,6 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="SixLabors.ImageSharp" Version="3.1.4" />
-		<PackageReference Include="TheXDS.MCART" Version="0.17.2-alpha.16" />
+		<PackageReference Include="TheXDS.MCART" Version="0.17.3-alpha.1" />
 	</ItemGroup>
 </Project>

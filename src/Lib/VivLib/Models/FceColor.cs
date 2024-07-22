@@ -32,10 +32,9 @@ public record struct FceColor(int Hue, int Saturation, int Brightness, int Alpha
         double h = (Hue / 255.0).Clamp(0.0, 1.0);
         double s = (Saturation / 255.0).Clamp(0.0, 1.0);
         double b = (Brightness / 255.0).Clamp(0.0, 1.0);
-
-        double red = 0.0;
-        double green = 0.0;
-        double blue = 0.0;
+        double red;
+        double green;
+        double blue;
         if (s == 0)
         {
             red = b;
@@ -50,43 +49,17 @@ public record struct FceColor(int Hue, int Saturation, int Brightness, int Alpha
             double p = b * (1.0 - s);
             double q = b * (1.0 - s * f);
             double t = b * (1.0 - s * (1.0 - f));
-
-            switch (i)
+            (red, green, blue) = i switch
             {
-                case 0:
-                    red = b;
-                    green = t;
-                    blue = p;
-                    break;
-                case 1:
-                    red = q;
-                    green = b;
-                    blue = p;
-                    break;
-                case 2:
-                    red = p;
-                    green = b;
-                    blue = t;
-                    break;
-                case 3:
-                    red = p;
-                    green = q;
-                    blue = b;
-                    break;
-                case 4:
-                    red = t;
-                    green = p;
-                    blue = b;
-                    break;
-                case 5:
-                    red = b;
-                    green = p;
-                    blue = q;
-                    break;
-            }
+                0 => (b, t, p),
+                1 => (q, b, p),
+                2 => (p, b, t),
+                3 => (p, q, b),
+                4 => (t, p, b),
+                5 => (b, p, q),
+                _ => throw new InvalidOperationException()
+            };
         }
         return ((int)(red * 255), (int)(green * 255), (int)(blue * 255));
     }
 }
-
-

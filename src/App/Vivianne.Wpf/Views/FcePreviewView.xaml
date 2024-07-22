@@ -9,7 +9,7 @@
     d:DataContext="{d:DesignInstance Type=viewmodels:FcePreviewViewModel}"
     mc:Ignorable="d" 
     Background="{StaticResource DarkBackground}"
-    d:DesignHeight="250" d:DesignWidth="400">
+    d:DesignHeight="250" d:DesignWidth="500">
     <UserControl.Resources>
         <valueconverters:FcePreviewViewModelToModel3DGroupConverter x:Key="fcevm2mesh"/>
         <valueconverters:LookBackConverter x:Key="lbc"/>
@@ -75,13 +75,14 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
+            <Button Margin="5" Command="{Binding ColorEditorCommand, Mode=OneWay}">Edit colors...</Button>
         </WrapPanel>
         <Border Grid.Row="1" Grid.Column="1">
             <Viewport3D>
                 <Viewport3D.Camera>
-                    <PerspectiveCamera                        
-                    x:Name="ptcMain"
-                    UpDirection="0,0,1"
+                    <PerspectiveCamera
+                        x:Name="ptcMain"
+                        UpDirection="0,0,1"
                     LookDirection="40,-40,-40"
                     Position="-40,40,40"/>
                 </Viewport3D.Camera>

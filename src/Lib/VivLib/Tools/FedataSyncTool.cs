@@ -1,15 +1,30 @@
-﻿using System.Threading;
-using TheXDS.MCART.Types.Extensions;
+﻿using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Resources;
 using TheXDS.Vivianne.Serializers;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TheXDS.Vivianne.Tools;
 
+/// <summary>
+/// Includes a set of methods used to sync changes between FeData files and
+/// Carp.
+/// </summary>
 public static class FedataSyncTool
 {
-
+    /// <summary>
+    /// Syncs changes between FeData files and Carp.
+    /// </summary>
+    /// <param name="source">
+    /// Source <see cref="FeData"/> to sync all supported values from.
+    /// </param>
+    /// <param name="sourceExt">
+    /// File extension of <paramref name="source"/>. Used to exclude it from
+    /// sync destinations.
+    /// </param>
+    /// <param name="vivDirectory">
+    /// Directory of the VIV file. Changes will be synced on all supported
+    /// files inside the directory.
+    /// </param>
     public static void Sync(FeData source, string sourceExt, IDictionary<string, byte[]> vivDirectory)
     {
         ISerializer<FeData> fs = new FeDataSerializer();

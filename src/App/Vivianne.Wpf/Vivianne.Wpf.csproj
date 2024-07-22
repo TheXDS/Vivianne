@@ -5,13 +5,14 @@
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<UseWPF>true</UseWPF>
+		<EnableWindowsTargeting>true</EnableWindowsTargeting>
 	</PropertyGroup>
 	<ItemGroup>
 	  <None Remove="Resources\Fonts\Muli-Light.ttf" />
 	  <None Remove="Resources\Fonts\NFS_by_JLTV.ttf" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="TheXDS.Ganymede.Wpf" Version="0.3.1-alpha.42" />
+		<PackageReference Include="TheXDS.Ganymede.Wpf" Version="0.3.2-alpha.1" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Vivianne\Vivianne.csproj" />

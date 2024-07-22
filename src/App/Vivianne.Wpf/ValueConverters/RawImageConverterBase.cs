@@ -9,8 +9,30 @@ using TheXDS.Vivianne.ViewModels;
 
 namespace TheXDS.Vivianne.ValueConverters;
 
+/// <summary>
+/// Base class for all converters that can load an image from raw bytes and
+/// return a <see cref="BitmapSource"/>.
+/// </summary>
 public abstract class RawImageConverterBase
 {
+    /// <summary>
+    /// Converts a byte array into a <see cref="BitmapSource"/>, optionally
+    /// including a Car color to paint over the semi-transparent areas of the
+    /// texture.
+    /// </summary>
+    /// <param name="value">
+    /// Raw image content. Will be loaded using any supported codec (TGA, PNG,
+    /// etc).
+    /// </param>
+    /// <param name="textureColor">
+    /// Gets a color to pain over the semi-transparent areas of the texture. If
+    /// set to <see langword="null"/>, the texture will not be painted over.
+    /// </param>
+    /// <returns>
+    /// A <see cref="BitmapSource"/> that can be rendered as a texture or
+    /// surface, or <see langword="null"/> if the byte array could not be
+    /// parsed as an image in any known format.
+    /// </returns>
     protected BitmapSource? GetBitmap(byte[] value, CarColorItem? textureColor)
     {
         if (value is null) return null;

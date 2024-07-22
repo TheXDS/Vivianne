@@ -9,12 +9,12 @@ namespace TheXDS.Vivianne.Models
     public struct TargaHeader
     {
         /// <summary>
-        /// ID lenght field.
+        /// ID length field.
         /// </summary>
         public byte IdLength;
 
         /// <summary>
-        /// Indicates whether or not a color map is present.
+        /// Indicates whether a color map is present.
         /// </summary>
         public ColorMapType ColorMapType;
 
@@ -29,7 +29,7 @@ namespace TheXDS.Vivianne.Models
         public ColorMapSpec ColorMapInfo;
 
         /// <summary>
-        /// Contains information on the image dimensions/origin anbd format.
+        /// Contains information on the image dimensions/origin and format.
         /// </summary>
         public ImageSpec ImageInfo;
     }

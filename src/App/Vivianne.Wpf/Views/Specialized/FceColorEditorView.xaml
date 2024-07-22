@@ -1,0 +1,90 @@
+﻿<UserControl
+    x:Class="TheXDS.Vivianne.Views.Specialized.FceColorEditorView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:local="clr-namespace:TheXDS.Vivianne.Views.Specialized"
+    xmlns:viewmodels="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne"
+    xmlns:gn="http://schemas.thexds.local/ganymede" xmlns:valueconverters="clr-namespace:TheXDS.Vivianne.ValueConverters"
+    d:DataContext="{d:DesignInstance Type=viewmodels:FceColorEditorViewModel}"
+    mc:Ignorable="d" 
+    x:Name="ucRoot"
+    d:DesignHeight="150" d:DesignWidth="400">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel>
+            <ItemsControl ItemsSource="{Binding State.Colors, Mode=OneWay}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="0,5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="24"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.Resources>
+                                <Style TargetType="gn:Int32TextBox">
+                                    <Setter Property="Width" Value="60"/>
+                                    <Setter Property="HorizontalContentAlignment" Value="Right"/>
+                                    <Setter Property="Minimum" Value="0"/>
+                                    <Setter Property="Maximum" Value="255"/>
+                                </Style>
+                                <valueconverters:FceColorToBrushConverter x:Key="mfc2bv"/>
+                            </Grid.Resources>
+                            <gn:Int32TextBox
+                                Icon="H"
+                                Value="{Binding PrimaryColor.Hue}"/>
+                            <gn:Int32TextBox
+                                Grid.Column="1"
+                                Icon="S"
+                                Value="{Binding PrimaryColor.Saturation}"/>
+                            <gn:Int32TextBox
+                                Grid.Column="2"
+                                Icon="B"
+                                Value="{Binding PrimaryColor.Brightness}"/>
+                            <gn:Int32TextBox
+                                Grid.Column="3"
+                                Icon="A"
+                                Value="{Binding PrimaryColor.Alpha}"/>
+                            <Rectangle Fill="{Binding PrimaryColor.Preview, Mode=OneWay, Converter={StaticResource mfc2bv}}" Grid.Column="4"/>
+                            <gn:Int32TextBox
+                                Grid.Row="1"
+                                Icon="H"
+                                Value="{Binding SecondaryColor.Hue}"/>
+                            <gn:Int32TextBox
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Icon="S"
+                                Value="{Binding SecondaryColor.Saturation}"/>
+                            <gn:Int32TextBox
+                                Grid.Row="1"
+                                Grid.Column="2"
+                                Icon="B"
+                                Value="{Binding SecondaryColor.Brightness}"/>
+                            <gn:Int32TextBox
+                                Grid.Row="1"
+                                Grid.Column="3"
+                                Icon="A"
+                                Value="{Binding SecondaryColor.Alpha}"/>
+                            <Rectangle Fill="{Binding SecondaryColor.Preview, Mode=OneWay, Converter={StaticResource mfc2bv}}" Grid.Row="1" Grid.Column="4"/>
+                            <Button
+                                Width="32"
+                                Grid.Column="5"
+                                Grid.RowSpan="2"
+                                Command="{Binding DataContext.RemoveColorCommand, ElementName=ucRoot, Mode=OneWay}"
+                                CommandParameter="{Binding Mode=OneWay}">-</Button>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <Button Margin="5" Padding="10,0" HorizontalAlignment="Left" Command="{Binding AddNewColorCommand, Mode=OneWay}">Add new color...</Button>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

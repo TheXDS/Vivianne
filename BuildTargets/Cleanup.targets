@@ -3,7 +3,7 @@
 	<ItemGroup>
 		<DirectoriesToDelete Include="$(Root)Build\bin\*_wpftmp"/>
 	</ItemGroup>
-	<Target Name="AfterBuildCleanup" AfterTargets="Build">
+	<Target Name="AfterBuildCleanup" AfterTargets="Build" Condition="'$(TargetOS)'=='Windows_NT'">
 		<Exec Command="powershell -Command &quot;Remove-Item -Force -Recurse '$(Root)Build\bin\$(MSBuildProjectName)_*_wpftmp'&quot;" />
 	</Target>
 </Project>
