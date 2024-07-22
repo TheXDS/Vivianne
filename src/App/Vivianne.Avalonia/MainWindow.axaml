@@ -1,0 +1,14 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:gn="http://schemas.thexds.local/ganymede"
+        xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Vivianne.Avalonia.MainWindow"
+        Title="Vivianne.Avalonia">
+    <gn:NavigationHost
+        DialogService="{gn:NavDialogService}"
+        Navigator="{gn:NavService Home={x:Type vm:StartupViewModel}}"
+        VisualResolver="{gn:ConventionResolver}"/>
+</Window>
