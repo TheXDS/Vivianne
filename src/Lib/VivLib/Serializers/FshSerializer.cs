@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models;
 using static System.Text.Encoding;
 
@@ -14,17 +15,28 @@ public class FshSerializer : ISerializer<FshFile>
     private static readonly byte[][] DirIds =
     [
         "GIMX"u8.ToArray(),
+        #if EnableFullFshFormat
         "G354"u8.ToArray(),
         "G264"u8.ToArray(),
         "G266"u8.ToArray(),
         "G290"u8.ToArray(),
         "G315"u8.ToArray(),
         "G344"u8.ToArray(),
+        #endif
     ];
 
     /// <inheritdoc/>
     public FshFile Deserialize(Stream stream)
     {
+        if (QfsCodec.IsCompressed(stream))
+        {
+            using var ms = new MemoryStream();
+            stream.CopyTo(ms);
+            var x = ((ISerializer<FshFile>)this).Deserialize(QfsCodec.Decompress(ms.ToArray()));
+            x.IsCompressed = true;
+            return x;
+        }
+
         using var reader = new BinaryReader(stream);
         VerifyValidFsh(reader);
         var entries = reader.ReadInt32();
@@ -41,7 +53,7 @@ public class FshSerializer : ISerializer<FshFile>
             
             if (!fileOffsets.TryAdd(name, offset))
             {
-                Debug.Print($"duplicated FSH entity entry: {name} at offset 0x{offset:X8}. skipping...");
+                Debug.Print($"duplicated FSH entity entry: {name} at offset 0x{offset:X8}. Skipping...");
             }
         }
 
@@ -50,7 +62,7 @@ public class FshSerializer : ISerializer<FshFile>
         foreach (var j in fileOffsets)
         {
             reader.BaseStream.Seek(j.Value, SeekOrigin.Begin);
-            var endOffset = fileOffsets.Values.Cast<int?>().Order().FirstOrDefault(p => p > j.Value) ?? (int)stream.Length;
+            var endOffset = fileOffsets.Values.Cast<int?>().Order().FirstOrDefault(p => p > j.Value) ?? (int)reader.BaseStream.Length;
             using var ms = new MemoryStream(reader.ReadBytes(endOffset - j.Value));
             if (fshBlobSerializer.Deserialize(ms) is { } blob)
             {
@@ -69,6 +81,13 @@ public class FshSerializer : ISerializer<FshFile>
     /// <inheritdoc/>
     public void SerializeTo(FshFile entity, Stream stream)
     {
+        if (entity.IsCompressed)
+        {
+            using var ms = new MemoryStream();
+            SerializeTo(entity, ms);
+            stream.WriteBytes(QfsCodec.Compress(ms.ToArray()));
+            return;
+        }
         using BinaryWriter writer = new(stream);
         writer.Write(Header);
         writer.Write(GetFileSize(entity.Entries));
@@ -83,7 +102,6 @@ public class FshSerializer : ISerializer<FshFile>
             o += 16 + j.Value.PixelData.Length + j.Value.Footer.Length;
         }
         ISerializer<FshBlob?> fshBlobSerializer = new FshBlobSerializer();
-
         foreach (var j in entity.Entries.Values)
         {
             writer.Write(fshBlobSerializer.Serialize(j));

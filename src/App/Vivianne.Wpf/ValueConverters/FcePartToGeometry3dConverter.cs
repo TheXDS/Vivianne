@@ -33,13 +33,13 @@ public class FcePreviewViewModelToModel3DGroupConverter : IOneWayValueConverter<
          * requires some more direct manipulation of the 3D api in use
          * (DirectX).
          * 
-         * This is a WPF app, and WPF itself includes a simple yet
-         * easy to use 3D rendering engine, but it's limited to use per-vertex
-         * UV. This means that in order to properly render FCE models that
-         * utilize per-triangle UV mapping, we have to convert from
-         * per-triangle UV to per-vertex UV format. This implies duplicating
-         * vertices and normals just so we can pair that new vertex with its
-         * own UV data, and then we remap the triangle to use the copy.
+         * This is a WPF app, and WPF itself includes a simple yet easy to use
+         * 3D rendering engine, but it's limited to use per-vertex UV. This
+         * means that in order to properly render FCE models that utilize
+         * per-triangle UV mapping, we have to convert from per-triangle UV to
+         * per-vertex UV format. This implies duplicating vertices and normals
+         * just so we can pair that new vertex with its own UV data, and then
+         * we remap the triangle to use the copy.
          * 
          * This is not a problem if the FCE file was created in such a way that
          * any triangle sharing vertices was made to use the exact same UV
@@ -96,8 +96,7 @@ public class FcePreviewViewModelToModel3DGroupConverter : IOneWayValueConverter<
     private static bool IsTextureLikelyTga(RenderTreeState state, [NotNullWhen(true)] out TargaHeader? header)
     {
         var bytes = state.Texture?.Take(18).ToArray() ?? throw new TamperException();
-        if (bytes.Length == 18 && (bytes[0..1].SequenceEqual<byte>([0x00, 0x00]) ||
-                                   bytes[0..1].SequenceEqual<byte>([0x12, 0x00])))
+        if (bytes.Length == 18)
         {
             using var ms = new MemoryStream(bytes);
             using var br = new BinaryReader(ms);

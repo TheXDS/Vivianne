@@ -57,11 +57,23 @@ public static class QfsCodec
     /// <summary>
     /// Gets a value that indicates if the raw file contents are compressed.
     /// </summary>
-    /// <param name="entryData"></param>
-    /// <returns></returns>
+    /// <param name="entryData">Contents to be verified.</param>
+    /// <returns>
+    /// <see langword="true"/> if the raw byte array appears to contain a
+    /// compressed FSH file (QFS); <see langword="false"/> otherwise.
+    /// </returns>
     public static bool IsCompressed(byte[] entryData)
     {
-        return entryData.Length > 2 && BitConverter.ToUInt16(entryData, 0) == QFS_Signature;
+        return entryData.Length >= 2 && BitConverter.ToUInt16(entryData, 0) == QFS_Signature;
+    }
+
+    public static bool IsCompressed(Stream stream)
+    {
+        stream.Seek(0, SeekOrigin.Begin);
+        byte[] magic = [(byte)stream.ReadByte(), (byte)stream.ReadByte()];
+        var result = stream.Length > 2 && IsCompressed(magic);
+        stream.Seek(0, SeekOrigin.Begin);
+        return result;
     }
 
     /// <summary>
@@ -75,17 +87,15 @@ public static class QfsCodec
     /// byte[] decompressedData = QfsCodec.Decompress(data);
     /// </c>
     /// </example>
-    /// <exception cref="System.IndexOutOfRangeException">
+    /// <exception cref="IndexOutOfRangeException">
     /// Thrown when the compression algorithm tries to access an element that is out of bounds in the array
     /// </exception>
     public static byte[] Decompress(byte[] sourceBytes)
     {
-        if (!IsCompressed(sourceBytes)) return sourceBytes;        
+        if (!IsCompressed(sourceBytes)) return sourceBytes;
+
         int destinationPosition = 0;
-        byte[] header = new byte[5];
-        Buffer.BlockCopy(sourceBytes, 0, header, 0, 5);
-        uint uncompressedSize = Convert.ToUInt32((long)(header[2] << 16) + (header[3] << 8) + header[4]);
-        byte[] destinationBytes = new byte[uncompressedSize];
+        byte[] destinationBytes = CreateDecompressArray(sourceBytes);
 
         int sourcePosition = 5;
 
@@ -110,8 +120,6 @@ public static class QfsCodec
                 length = ((ctrlByte1 & 0x1C) >> 2) + 3;
                 offset = ((ctrlByte1 >> 5) << 8) + ctrlByte2 + 1;
                 LZCompliantCopy(ref destinationBytes, destinationPosition - offset, ref destinationBytes, destinationPosition, length);
-
-                destinationPosition += length;
             }
             else if ((ctrlByte1 & 0x40) == 0)
             {
@@ -122,8 +130,6 @@ public static class QfsCodec
                 length = (ctrlByte1 & 0x3F) + 4;
                 offset = ((ctrlByte2 & 0x3F) * 256) + ctrlByte3 + 1;
                 LZCompliantCopy(ref destinationBytes, destinationPosition - offset, ref destinationBytes, destinationPosition, length);
-
-                destinationPosition += length;
             }
             else if ((ctrlByte1 & 0x20) == 0)
             {
@@ -135,16 +141,14 @@ public static class QfsCodec
                 length = (((ctrlByte1 >> 2) & 3) * 256) + ctrlByte4 + 5;
                 offset = ((ctrlByte1 & 0x10) << 12) + (256 * ctrlByte2) + ctrlByte3 + 1;
                 LZCompliantCopy(ref destinationBytes, destinationPosition - offset, ref destinationBytes, destinationPosition, length);
-                destinationPosition += length;
             }
             else
             {
                 length = ((ctrlByte1 & 0x1F) * 4) + 4;
                 LZCompliantCopy(ref sourceBytes, sourcePosition + 1, ref destinationBytes, destinationPosition, length);
-
                 sourcePosition += length + 1;
-                destinationPosition += length;
             }
+            destinationPosition += length;
         }
         if ((sourcePosition < sourceBytes.Length) && (destinationPosition < destinationBytes.Length))
         {
@@ -313,6 +317,14 @@ public static class QfsCodec
         }
         Array.Resize(ref cData, cPos);
         return cData;
+    }
+
+    private static byte[] CreateDecompressArray(byte[] sourceBytes)
+    {
+        byte[] header = new byte[5];
+        Buffer.BlockCopy(sourceBytes, 0, header, 0, 5);
+        uint uncompressedSize = Convert.ToUInt32((long)(header[2] << 16) + (header[3] << 8) + header[4]);
+        return new byte[uncompressedSize];
     }
 
     private static void SlowMemCopy(byte[] dst, int dstptr, byte[] src, int srcptr, int nbytes)

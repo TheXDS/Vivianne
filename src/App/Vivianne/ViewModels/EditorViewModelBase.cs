@@ -16,7 +16,7 @@ namespace TheXDS.Vivianne.ViewModels;
 /// functionality for the state, as well as a command to persist these changes.
 /// </summary>
 /// <typeparam name="T">Type of state to edit.</typeparam>
-public abstract class EditorViewModelBase<T> : DialogViewModel, IStatefulViewModel<T>, IAwaitableDialogViewModel where T : EditorViewModelStateBase
+public abstract class EditorViewModelBase<T> : AwaitableDialogViewModel, IStatefulViewModel<T> where T : EditorViewModelStateBase
 {
     private T _state = default!;
     private TaskCompletionSource dlgAwaiter = new();

@@ -7,6 +7,8 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Ganymede.Wpf;component/Themes/Generic.xaml"/>
+                <ResourceDictionary Source="/MCART.Wpf.Controls;component/Themes/Generic.xaml"/>
+                <ResourceDictionary Source="/MCART.Wpf.Controls.ModernWindow;component/Themes/Generic.xaml"/>
                 <ResourceDictionary Source="/Resources/ControlTemplates.xaml"/>
                 <ResourceDictionary Source="/Resources/Images.xaml"/>
                 <ResourceDictionary Source="/Resources/Fonts.xaml"/>

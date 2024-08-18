@@ -47,12 +47,6 @@
                         <Setter Property="Margin" Value="10,0"/>
                     </Style>
                 </DockPanel.Resources>
-                <!--<CheckBox x:Name="chkEdit" Style="{StaticResource ToggleSwitch}" IsEnabled="{Binding UnsavedChanges, Converter={StaticResource binv}}" VerticalContentAlignment="Center">
-                    <CheckBox.Content>
-                        <TextBlock Text="{x:Static st:FshEditorView.ShowEditCtrls}"/>
-                    </CheckBox.Content>
-                </CheckBox>
-                <Separator/>-->
                 <ComboBox
                     VerticalAlignment="Center"
                     IsEditable="False"
@@ -96,7 +90,7 @@
             Grid.Row="1">
             <StackPanel
                 Margin="0"
-                Background="{StaticResource DashboardDarkBackground}">
+                Background="{StaticResource MainAreaDarkBackground}">
                 <StackPanel.Resources>
                     <Style TargetType="Expander">
                         <Setter Property="ExpandDirection" Value="Down"/>

@@ -20,6 +20,11 @@ public class DashEditorViewModel(GaugeDataState state) : EditorViewModelBase<Gau
             State.Steering.XRotation = (ushort)State.SteeringXRotation;
             State.Steering.YRotation = (ushort)State.SteeringYRotation;
         }
+        foreach (var j in State.Gears)
+        {
+            j.XPosition = (ushort)State.GearXPosition;
+            j.YPosition = (ushort)State.GearYPosition;
+        }
         return Task.CompletedTask;
     }
 }

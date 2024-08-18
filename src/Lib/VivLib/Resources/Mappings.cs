@@ -98,7 +98,7 @@ public static class Mappings
     public static IReadOnlyDictionary<FshBlobFormat, Func<byte[], int, int, Image>> FshBlobPixelReader { get; } = new Dictionary<FshBlobFormat, Func<byte[], int, int, Image>>()
     {
         { FshBlobFormat.Rgb565,     (b, w, h) => Image.LoadPixelData<Bgr565>(b, w, h) },
-        { FshBlobFormat.Argb32,     (b, w, h) => Image.LoadPixelData<Rgba32>(b, w, h) },
+        { FshBlobFormat.Argb32,     (b, w, h) => Image.LoadPixelData<Bgra32>(b, w, h) },
         { FshBlobFormat.Argb1555,   (b, w, h) => Image.LoadPixelData<Bgra5551>(b, w, h) },
         { FshBlobFormat.Rgb24,      (b, w, h) => Image.LoadPixelData<Bgr24>(b, w, h) },
     }.AsReadOnly();
@@ -109,11 +109,11 @@ public static class Mappings
     /// </summary>
     public static IReadOnlyDictionary<FshBlobFormat, Func<FshBlob, Color[]>> FshBlobToPalette { get; } = new Dictionary<FshBlobFormat, Func<FshBlob, Color[]>>()
     {
-        { FshBlobFormat.Palette32,      ReadPalette<Rgba32>(4) },
-        { FshBlobFormat.Palette24,      ReadPalette<Rgb24>(3) },
-        { FshBlobFormat.Palette24Dos,   ReadPalette<Rgb24>(3) },
-        //{ FshBlobFormat.Palette16, },
-        //{ FshBlobFormat.Palette16Nfs5, },
+        { FshBlobFormat.Palette32,      ReadPalette<Bgra32>(4) },
+        { FshBlobFormat.Palette24,      ReadPalette<Bgr24>(3) },
+        { FshBlobFormat.Palette24Dos,   ReadPalette<Bgr24>(3) },
+        { FshBlobFormat.Palette16,      ReadPalette<Bgr565>() },
+        { FshBlobFormat.Palette16Nfs5,  ReadPalette<Bgra5551>() },
     };
 
     /// <summary>
@@ -128,6 +128,19 @@ public static class Mappings
         { ".jpg",   new JpegEncoder() },
         { ".jpeg",  new JpegEncoder() },
         { ".bmp",   new BmpEncoder() },
+    };
+
+    /// <summary>
+    /// Maps an image format to a <see cref="ImageEncoder"/> that can be used
+    /// to save an image.
+    /// </summary>
+    public static IReadOnlyDictionary<ImageFormat, ImageEncoder> ImageFormatEnconder { get; } = new Dictionary<ImageFormat, ImageEncoder>()
+    {
+        { ImageFormat.Png,   new PngEncoder() },
+        { ImageFormat.Gif,   new GifEncoder() },
+        { ImageFormat.Tga,   new TgaEncoder() },
+        { ImageFormat.Jpeg,  new JpegEncoder() },
+        { ImageFormat.Bmp,   new BmpEncoder() },
     };
 
     /// <summary>
@@ -159,13 +172,13 @@ public static class Mappings
     /// </remarks>
     public static IReadOnlyDictionary<FshBlobFormat, Func<object, byte[]>> FshBlobToPixelWriter { get; } = new Dictionary<FshBlobFormat, Func<object, byte[]>>()
     {
-        { FshBlobFormat.Argb32,         c => { var x = (Rgba32)c; return [x.R, x.G, x.B, x.A]; }},
-        { FshBlobFormat.Rgb24,          c => { var x = (Rgb24)c; return [x.R, x.G, x.B]; }},
+        { FshBlobFormat.Argb32,         c => { var x = (Bgra32)c; return [x.B, x.G, x.R, x.A]; }},
+        { FshBlobFormat.Rgb24,          c => { var x = (Bgr24)c; return [x.B, x.G, x.R]; }},
         { FshBlobFormat.Rgb565,         c => { var x = (Bgr565)c; return BitConverter.GetBytes(x.PackedValue); }},
         { FshBlobFormat.Argb1555,       c => { var x = (Bgra5551)c; return BitConverter.GetBytes(x.PackedValue); }},
-        { FshBlobFormat.Palette32,      c => { var x = (Rgba32)c; return [x.R, x.G, x.B, x.A]; }},
-        { FshBlobFormat.Palette24Dos,   c => { var x = (Rgb24)c; return [x.R, x.G, x.B]; }},
-        { FshBlobFormat.Palette24,      c => { var x = (Rgb24)c; return [x.R, x.G, x.B]; }},
+        { FshBlobFormat.Palette32,      c => { var x = (Bgra32)c; return [x.B, x.G, x.R, x.A]; }},
+        { FshBlobFormat.Palette24Dos,   c => { var x = (Bgr24)c; return [x.B, x.G, x.R]; }},
+        { FshBlobFormat.Palette24,      c => { var x = (Bgr24)c; return [x.B, x.G, x.R]; }},
         { FshBlobFormat.Palette16Nfs5,  c => { var x = (Bgr565)c; return BitConverter.GetBytes(x.PackedValue); }},
         { FshBlobFormat.Palette16,      c => { var x = (Bgr565)c; return BitConverter.GetBytes(x.PackedValue); }},
     }.AsReadOnly();
@@ -234,51 +247,6 @@ public static class Mappings
         return FshBlobToPalette[blob.Magic].Invoke(blob);
     }
 
-    private static void ReadColorPalette(FshBlob blob, byte[] data)
-    {
-        blob.LocalPalette = LoadPalette(data);
-    }
-
-    private static void ReadGaugeData(FshBlob blob, byte[] data)
-    {
-        using var ms = new MemoryStream(data);
-        using var br = new BinaryReader(ms);
-        blob.GaugeData = br.ReadStruct<GaugeData>();
-    }
-
-    private static byte[] WriteColorPalette(FshBlob blob)
-    {
-        if (blob.LocalPalette is null)
-        {
-            throw new InvalidOperationException("The specified FSH does not contain a palette.");
-        }
-        using var ms = new MemoryStream();
-        using var bw = new BinaryWriter(ms);
-        foreach (var j in blob.LocalPalette)
-        {
-            Rgba32 c = j.ToPixel<Rgba32>();
-            bw.Write([c.B, c.G, c.R, c.A]);
-        }
-        var b = new FshBlob()
-        {
-            Magic = FshBlobFormat.Palette32,
-            Width = 256,
-            Height = 1,
-            PixelData = ms.ToArray()
-        };
-        using var ms2 = new MemoryStream();
-        new FshBlobSerializer().SerializeTo(b, ms2);
-        return ms2.ToArray();
-    }
-
-    private static byte[] WriteGaugeData(FshBlob blob)
-    {
-        using var ms = new MemoryStream();
-        using var br = new BinaryWriter(ms);
-        br.WriteStruct(blob.GaugeData ?? default);
-        return ms.ToArray();
-    }
-
     /// <summary>
     /// Loads an <see cref="Image"/> from the specified <see cref="FshBlob"/>,
     /// including the color palette to use as well as a transform function to
@@ -320,16 +288,97 @@ public static class Mappings
     /// <param name="size">
     /// Number of bytes per pixel to be loaded.
     /// </param>
-    /// <returns></returns>
+    /// <returns>
+    /// A function that reads a palette in a specific pixel format.
+    /// </returns>
     public static Func<FshBlob, Color[]> ReadPalette<T>(int size) where T : unmanaged, IPixel<T>
+    {
+        return ReadPalette<T>(size, Enumerable.Cast<object>);
+    }
+
+    /// <summary>
+    /// Returns a function that reads a palette in a specific pixel format.
+    /// </summary>
+    /// <typeparam name="T">Type of the pixel format to use.</typeparam>
+    /// <param name="size">
+    /// Number of bytes to be loaded to generate the constructor args for the
+    /// pixel type <typeparamref name="T"/>.
+    /// </param>
+    /// <param name="ctorArgs">
+    /// Parameters to be passed to the constructor for the pixel type
+    /// <typeparamref name="T"/>.
+    /// </param>
+    /// <returns>
+    /// A function that reads a palette in a specific pixel format.
+    /// </returns>
+    public static Func<FshBlob, Color[]> ReadPalette<T>(int size, Func<byte[], IEnumerable<object>> ctorArgs) where T : unmanaged, IPixel<T>
+    {
+        return ReadPalette(size, p => (T)Activator.CreateInstance(typeof(T), p)!);
+    }
+
+    /// <summary>
+    /// Returns a function that reads a palette in a specific pixel format for
+    /// 16-bit colors.
+    /// </summary>
+    /// <typeparam name="TPixel">Type of the pixel format to use.</typeparam>
+    /// <returns>
+    /// A function that reads a palette in a specific pixel format.
+    /// </returns>
+    public static Func<FshBlob, Color[]> ReadPalette<TPixel>() where TPixel : unmanaged, IPixel<TPixel>, IPackedVector<ushort>
+    {
+        return ReadPalette<TPixel, ushort>(2, b => (ushort)BitConverter.ToInt16(b));
+    }
+
+    /// <summary>
+    /// Returns a function that reads a palette in a specific pixel format.
+    /// </summary>
+    /// <typeparam name="TPixel">Type of the pixel format to use.</typeparam>
+    /// <typeparam name="TPacked">
+    /// Value type of the packed pixel color.
+    /// </typeparam>
+    /// <param name="size">
+    /// Number of bytes to be loaded to generate the constructor args for the
+    /// pixel type <typeparamref name="TPixel"/>.
+    /// </param>
+    /// <param name="packed">Function that gets the packed pixel color.</param>
+    /// <returns>
+    /// A function that reads a palette in a specific pixel format.
+    /// </returns>
+    public static Func<FshBlob, Color[]> ReadPalette<TPixel, TPacked>(int size, Func<byte[], TPacked> packed)
+        where TPixel : unmanaged, IPixel<TPixel>, IPackedVector<TPacked>
+        where TPacked : unmanaged, IEquatable<TPacked>
+    {
+        return ReadPalette(size, b =>
+        {
+            TPixel p = typeof(TPixel).New<TPixel>();
+            p.PackedValue = packed.Invoke(b);
+            return p;
+        });
+    }
+
+    /// <summary>
+    /// Returns a function that reads a palette in a specific pixel format.
+    /// </summary>
+    /// <typeparam name="T">Type of the pixel format to use.</typeparam>
+    /// <param name="size">
+    /// Number of bytes to be loaded to generate the constructor args for the
+    /// pixel type <typeparamref name="T"/>.
+    /// </param>
+    /// <param name="pixelFactory">
+    /// Factory to be used when unpacking a new pixel for the palette.
+    /// <typeparamref name="T"/>.
+    /// </param>
+    /// <returns>
+    /// A function that reads a palette in a specific pixel format.
+    /// </returns>
+    public static Func<FshBlob, Color[]> ReadPalette<T>(int size, Func<byte[], T> pixelFactory) where T : unmanaged, IPixel<T>
     {
         return blob =>
         {
             var result = new List<Color>();
             for (int x = 0; x < (blob.Width * size); x += size)
             {
-                var p = blob.PixelData[x..(x + size)].Cast<object>().ToArray();
-                result.Add(Color.FromPixel((T)Activator.CreateInstance(typeof(T), p)!));
+                result.Add(Color.FromPixel(pixelFactory.Invoke(blob.PixelData[x..(x + size)])));
             }
             return [.. result];
         };
@@ -386,5 +435,50 @@ public static class Mappings
             "sv" => new SweUnitTextProvider(c),
             _ => new EngUnitTextProvider(c)
         };
+    }
+ 
+    private static void ReadColorPalette(FshBlob blob, byte[] data)
+    {
+        blob.LocalPalette = LoadPalette(data);
+    }
+
+    private static void ReadGaugeData(FshBlob blob, byte[] data)
+    {
+        using var ms = new MemoryStream(data);
+        using var br = new BinaryReader(ms);
+        blob.GaugeData = br.ReadStruct<GaugeData>();
+    }
+
+    private static byte[] WriteColorPalette(FshBlob blob)
+    {
+        if (blob.LocalPalette is null)
+        {
+            throw new InvalidOperationException("The specified FSH does not contain a palette.");
+        }
+        using var ms = new MemoryStream();
+        using var bw = new BinaryWriter(ms);
+        foreach (var j in blob.LocalPalette)
+        {
+            Rgba32 c = j.ToPixel<Rgba32>();
+            bw.Write([c.B, c.G, c.R, c.A]);
+        }
+        var b = new FshBlob()
+        {
+            Magic = FshBlobFormat.Palette32,
+            Width = 256,
+            Height = 1,
+            PixelData = ms.ToArray()
+        };
+        using var ms2 = new MemoryStream();
+        new FshBlobSerializer().SerializeTo(b, ms2);
+        return ms2.ToArray();
+    }
+
+    private static byte[] WriteGaugeData(FshBlob blob)
+    {
+        using var ms = new MemoryStream();
+        using var br = new BinaryWriter(ms);
+        br.WriteStruct(blob.GaugeData ?? default);
+        return ms.ToArray();
     }
 }

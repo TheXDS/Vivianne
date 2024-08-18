@@ -11,59 +11,78 @@ public struct FceFileHeader
     /// <summary>
     /// Gets the first 4 bytes from the FCE header.
     /// </summary>
-    /// <remarks>Might be a magic header, but NFS3 will happily load an FCE file where these bytes are set to <c>0</c>.</remarks>
+    /// <remarks>
+    /// Might be a magic header, but NFS3 will happily load an FCE file where
+    /// these bytes are set to <c>0</c>.
+    /// </remarks>
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public byte[] Unk_0x0;
 
     /// <summary>
     /// Gets the triangle count for the entire model.
     /// </summary>
-    /// <remarks>This value is used to load a global triangle table, from where FCE parts may then select their own triangles.</remarks>
+    /// <remarks>
+    /// This value is used to load a global triangle table, from where FCE
+    /// parts may then select their own triangles.
+    /// </remarks>
     public int Triangles;
 
     /// <summary>
     /// Gets the vertex count for the entire model.
     /// </summary>
-    /// <remarks>This value is used to load a global vertex table, from where FCE parts may then select their own vertices.</remarks>
+    /// <remarks>
+    /// This value is used to load a global vertex table, from where FCE parts
+    /// may then select their own vertices.
+    /// </remarks>
     public int Vertices;
 
     /// <summary>
-    /// Gets a value that indicates the number of arts contained in the FCE file.
+    /// Gets a value that indicates the number of arts contained in the FCE
+    /// file.
     /// </summary>
-    /// <remarks>For NFS3, this value should remain at <c>1</c> for a valid FCE file.</remarks>
+    /// <remarks>
+    /// For NFS3, this value should remain at <c>1</c> for a valid FCE file.
+    /// </remarks>
     public int Arts;
 
     /// <summary>
-    /// Gets the offset of the global vertex table relative to the length of the FCE header.
+    /// Gets the offset of the global vertex table relative to the length of
+    /// the FCE header.
     /// </summary>
     public int VertexTblOffset;
 
     /// <summary>
-    /// Gets the offset of the global normals table relative to the length of the FCE header.
+    /// Gets the offset of the global normals table relative to the length of
+    /// the FCE header.
     /// </summary>
     public int NormalsTblOffset;
 
     /// <summary>
-    /// Gets the offset of the global triangle table relative to the length of the FCE header.
+    /// Gets the offset of the global triangle table relative to the length of
+    /// the FCE header.
     /// </summary>
     public int TriangleTblOffset;
 
     /// <summary>
-    /// Gets the offset of the first reserved data table relative to the length of the FCE header.
+    /// Gets the offset of the first reserved data table relative to the length
+    /// of the FCE header.
     /// </summary>
     public int Rsvd1Offset;
 
     /// <summary>
-    /// Gets the offset of the second reserved data table relative to the length of the FCE header.
+    /// Gets the offset of the second reserved data table relative to the
+    /// length of the FCE header.
     /// </summary>
     public int Rsvd2Offset;
 
     /// <summary>
-    /// Gets the offset of the third reserved data table relative to the length of the FCE header.
+    /// Gets the offset of the third reserved data table relative to the length
+    /// of the FCE header.
     /// </summary>
     public int Rsvd3Offset;
 
     /// <summary>
-    /// Gets a value that, when multiplied by <c>2.0</c>, indicates the size of the model in the X axis. 
+    /// Gets a value that, when multiplied by <c>2.0</c>, indicates the size of
+    /// the model in the X axis. 
     /// </summary>
     public float XHalfSize;
 
