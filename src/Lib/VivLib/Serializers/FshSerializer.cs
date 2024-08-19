@@ -84,7 +84,9 @@ public class FshSerializer : ISerializer<FshFile>
         if (entity.IsCompressed)
         {
             using var ms = new MemoryStream();
+            entity.IsCompressed = false;
             SerializeTo(entity, ms);
+            entity.IsCompressed = true;
             stream.WriteBytes(QfsCodec.Compress(ms.ToArray()));
             return;
         }
