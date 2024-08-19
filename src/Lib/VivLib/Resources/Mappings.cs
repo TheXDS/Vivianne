@@ -293,26 +293,6 @@ public static class Mappings
     /// </returns>
     public static Func<FshBlob, Color[]> ReadPalette<T>(int size) where T : unmanaged, IPixel<T>
     {
-        return ReadPalette<T>(size, Enumerable.Cast<object>);
-    }
-
-    /// <summary>
-    /// Returns a function that reads a palette in a specific pixel format.
-    /// </summary>
-    /// <typeparam name="T">Type of the pixel format to use.</typeparam>
-    /// <param name="size">
-    /// Number of bytes to be loaded to generate the constructor args for the
-    /// pixel type <typeparamref name="T"/>.
-    /// </param>
-    /// <param name="ctorArgs">
-    /// Parameters to be passed to the constructor for the pixel type
-    /// <typeparamref name="T"/>.
-    /// </param>
-    /// <returns>
-    /// A function that reads a palette in a specific pixel format.
-    /// </returns>
-    public static Func<FshBlob, Color[]> ReadPalette<T>(int size, Func<byte[], IEnumerable<object>> ctorArgs) where T : unmanaged, IPixel<T>
-    {
         return ReadPalette(size, p => (T)Activator.CreateInstance(typeof(T), p)!);
     }
 

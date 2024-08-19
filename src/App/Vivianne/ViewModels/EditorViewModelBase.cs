@@ -19,7 +19,6 @@ namespace TheXDS.Vivianne.ViewModels;
 public abstract class EditorViewModelBase<T> : AwaitableDialogViewModel, IStatefulViewModel<T> where T : EditorViewModelStateBase
 {
     private T _state = default!;
-    private TaskCompletionSource dlgAwaiter = new();
 
     /// <summary>
     /// Triggered when the user has saved any pending changes.
@@ -51,9 +50,6 @@ public abstract class EditorViewModelBase<T> : AwaitableDialogViewModel, IStatef
     /// </summary>
     public ICommand DiscardChangesCommand { get; }
 
-    /// <inheritdoc/>
-    public Task DialogAwaiter => dlgAwaiter.Task;
-
     /// <summary>
     /// Initializes a new instance of the <see cref="EditorViewModelBase{T}"/>
     /// class.
@@ -81,8 +77,7 @@ public abstract class EditorViewModelBase<T> : AwaitableDialogViewModel, IStatef
     private void OnDiscardChanges()
     {
         State.UnsavedChanges = false;
-        dlgAwaiter.SetResult();
-        dlgAwaiter = new();
+        CloseDialog();
     }
 
     /// <summary>

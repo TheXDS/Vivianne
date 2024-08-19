@@ -14,6 +14,7 @@
     mc:Ignorable="d">
     <UserControl.Resources>
         <mcart:NotNullToBooleanConverter x:Key="nn2bc"/>
+        <vc:GuageDrawingContext x:Key="gdc"/>
     </UserControl.Resources>
     <DockPanel>
         <ScrollViewer Width="430" Height="520" VerticalScrollBarVisibility="Auto">
@@ -311,7 +312,7 @@
                             </MultiBinding>
                         </Image.Source>
                     </Image>
-                    <!--gauges-->
+                    <Image Source="{Binding State.PreviewGauge, Converter={StaticResource gdc}, Mode=OneWay}"/>
                     <Image
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"

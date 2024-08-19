@@ -15,6 +15,13 @@ public class GaugeDataState : EditorViewModelStateBase
     private int _SteeringYPosition;
     private int _GearXPosition;
     private int _GearYPosition;
+    private int _previewSpeed;
+    private int _previewRpm;
+
+    /// <summary>
+    /// Gets an object that exposes Gauge data for preview purposes.
+    /// </summary>
+    public GaugePreviewData PreviewGauge { get; }
 
     /// <summary>
     /// Gets a reference to the gauge data structure stored on the footer of
@@ -73,6 +80,7 @@ public class GaugeDataState : EditorViewModelStateBase
     public GaugeDataState(FshFile fsh)
     {
         Cabin = fsh.Entries["0000"];
+        PreviewGauge = new(this);
         if (fsh.Entries.TryGetValue("0001", out var steering))
         {
             Steering = steering;
@@ -97,6 +105,30 @@ public class GaugeDataState : EditorViewModelStateBase
         RegisterPropertyChangeTrigger(nameof(SteeringTop), nameof(SteeringYPosition), nameof(SteeringYRotation));
         RegisterPropertyChangeTrigger(nameof(GearLeft), nameof(GearXPosition));
         RegisterPropertyChangeTrigger(nameof(GearTop), nameof(GearYPosition));
+        RegisterPropertyChangeTrigger(nameof(PreviewGauge), [
+            nameof(DialColorX),
+            nameof(DialColorY),
+            nameof(SpeedometerCenterX),
+            nameof(SpeedometerCenterY),
+            nameof(SpeedometerCenterOffset),
+            nameof(SpeedometerEdgeOffset),
+            nameof(SpeedometerMin),
+            nameof(SpeedometerMax),
+            nameof(SpeedometerMinX),
+            nameof(SpeedometerMinY),
+            nameof(SpeedometerMaxX),
+            nameof(SpeedometerMaxY),
+            nameof(TachometerCenterX),
+            nameof(TachometerCenterY),
+            nameof(TachometerCenterOffset),
+            nameof(TachometerEdgeOffset),
+            nameof(TachometerMin),
+            nameof(TachometerMax),
+            nameof(TachometerMinX),
+            nameof(TachometerMinY),
+            nameof(TachometerMaxX),
+            nameof(TachometerMaxY),
+            ]);
     }
 
     /// <summary>
@@ -131,6 +163,26 @@ public class GaugeDataState : EditorViewModelStateBase
     {
         get => _previewSteerAngle;
         set => Change(ref _previewSteerAngle, value);
+    }
+
+    /// <summary>
+    /// Gets or sets a value used to preview the indicated speed on the gauge
+    /// cluster.
+    /// </summary>
+    public int PreviewSpeed
+    {
+        get => _previewSpeed;
+        set => Change(ref _previewSpeed, value);
+    }
+
+    /// <summary>
+    /// Gets or sets a value used to preview the indicated RPM on the gauge
+    /// cluster.
+    /// </summary>
+    public int PreviewRpm
+    {
+        get => _previewRpm;
+        set => Change(ref _previewRpm, value);
     }
 
     /// <summary>
@@ -174,8 +226,8 @@ public class GaugeDataState : EditorViewModelStateBase
     /// </summary>
     public int SpeedometerCenterX
     {
-        get => _data.SpeedometerCenterX;
-        set => Change(ref _data.SpeedometerCenterX, value);
+        get => _data.Speedometer.CenterX;
+        set => Change(ref _data.Speedometer.CenterX, value);
     }
 
     /// <summary>
@@ -183,8 +235,8 @@ public class GaugeDataState : EditorViewModelStateBase
     /// </summary>
     public int SpeedometerCenterY
     {
-        get => _data.SpeedometerCenterY;
-        set => Change(ref _data.SpeedometerCenterY, value);
+        get => _data.Speedometer.CenterY;
+        set => Change(ref _data.Speedometer.CenterY, value);
     }
 
     /// <summary>
@@ -193,8 +245,8 @@ public class GaugeDataState : EditorViewModelStateBase
     /// </summary>
     public int SpeedometerCenterOffset
     {
-        get => _data.SpeedometerCenterOffset; 
-        set => Change(ref _data.SpeedometerCenterOffset, value);
+        get => _data.Speedometer.CenterOffset; 
+        set => Change(ref _data.Speedometer.CenterOffset, value);
     }
 
     /// <summary>
@@ -203,8 +255,8 @@ public class GaugeDataState : EditorViewModelStateBase
     /// </summary>
     public int SpeedometerEdgeOffset
     {
-        get => _data.SpeedometerEdgeOffset;
-        set => Change(ref _data.SpeedometerEdgeOffset, value);
+        get => _data.Speedometer.EdgeOffset;
+        set => Change(ref _data.Speedometer.EdgeOffset, value);
     }
 
     /// <summary>
@@ -212,8 +264,8 @@ public class GaugeDataState : EditorViewModelStateBase
     /// </summary>
     public int SpeedometerMin
     {
-        get => _data.SpeedometerMin;
-        set => Change(ref _data.SpeedometerMin, value);
+        get => _data.Speedometer.Min;
+        set => Change(ref _data.Speedometer.Min, value);
     }
 
     /// <summary>
@@ -221,8 +273,8 @@ public class GaugeDataState : EditorViewModelStateBase
     /// </summary>
     public int SpeedometerMax
     {
-        get => _data.SpeedometerMax;
-        set => Change(ref _data.SpeedometerMax, value);
+        get => _data.Speedometer.Max;
+        set => Change(ref _data.Speedometer.Max, value);
     }
 
     /// <summary>
@@ -231,8 +283,8 @@ public class GaugeDataState : EditorViewModelStateBase
     /// </summary>
     public int SpeedometerMinX
     {
-        get => _data.SpeedometerMinX;
-        set => Change(ref _data.SpeedometerMinX, value);
+        get => _data.Speedometer.MinX;
+        set => Change(ref _data.Speedometer.MinX, value);
     }
 
     /// <summary>
@@ -241,8 +293,8 @@ public class GaugeDataState : EditorViewModelStateBase
     /// </summary>
     public int SpeedometerMinY
     {
-        get => _data.SpeedometerMinY;
-        set => Change(ref _data.SpeedometerMinY, value);
+        get => _data.Speedometer.MinY;
+        set => Change(ref _data.Speedometer.MinY, value);
     }
 
     /// <summary>
@@ -251,8 +303,8 @@ public class GaugeDataState : EditorViewModelStateBase
     /// </summary>
     public int SpeedometerMaxX
     {
-        get => _data.SpeedometerMax;
-        set => Change(ref _data.SpeedometerMaxX, value);
+        get => _data.Speedometer.Max;
+        set => Change(ref _data.Speedometer.MaxX, value);
     }
 
     /// <summary>
@@ -261,8 +313,8 @@ public class GaugeDataState : EditorViewModelStateBase
     /// </summary>
     public int SpeedometerMaxY
     {
-        get => _data.SpeedometerMaxY;
-        set => Change(ref _data.SpeedometerMaxY, value);
+        get => _data.Speedometer.MaxY;
+        set => Change(ref _data.Speedometer.MaxY, value);
     }
 
     /// <summary>
@@ -270,8 +322,8 @@ public class GaugeDataState : EditorViewModelStateBase
     /// </summary>
     public int TachometerCenterX
     {
-        get => _data.TachometerCenterX;
-        set => Change(ref _data.TachometerCenterX, value);
+        get => _data.Tachometer.CenterX;
+        set => Change(ref _data.Tachometer.CenterX, value);
     }
 
     /// <summary>
@@ -279,8 +331,8 @@ public class GaugeDataState : EditorViewModelStateBase
     /// </summary>
     public int TachometerCenterY
     {
-        get => _data.TachometerCenterY;
-        set => Change(ref _data.TachometerCenterY, value);
+        get => _data.Tachometer.CenterY;
+        set => Change(ref _data.Tachometer.CenterY, value);
     }
 
     /// <summary>
@@ -289,8 +341,8 @@ public class GaugeDataState : EditorViewModelStateBase
     /// </summary>
     public int TachometerCenterOffset
     {
-        get => _data.TachometerCenterOffset;
-        set => Change(ref _data.TachometerCenterOffset, value);
+        get => _data.Tachometer.CenterOffset;
+        set => Change(ref _data.Tachometer.CenterOffset, value);
     }
 
     /// <summary>
@@ -299,8 +351,8 @@ public class GaugeDataState : EditorViewModelStateBase
     /// </summary>
     public int TachometerEdgeOffset
     {
-        get => _data.TachometerEdgeOffset;
-        set => Change(ref _data.TachometerEdgeOffset, value);
+        get => _data.Tachometer.EdgeOffset;
+        set => Change(ref _data.Tachometer.EdgeOffset, value);
     }
 
     /// <summary>
@@ -308,8 +360,8 @@ public class GaugeDataState : EditorViewModelStateBase
     /// </summary>
     public int TachometerMin
     {
-        get => _data.TachometerMin;
-        set => Change(ref _data.TachometerMin, value);
+        get => _data.Tachometer.Min;
+        set => Change(ref _data.Tachometer.Min, value);
     }
 
     /// <summary>
@@ -317,8 +369,8 @@ public class GaugeDataState : EditorViewModelStateBase
     /// </summary>
     public int TachometerMax
     {
-        get => _data.TachometerMax;
-        set => Change(ref _data.TachometerMax, value);
+        get => _data.Tachometer.Max;
+        set => Change(ref _data.Tachometer.Max, value);
     }
 
     /// <summary>
@@ -327,8 +379,8 @@ public class GaugeDataState : EditorViewModelStateBase
     /// </summary>
     public int TachometerMinX
     {
-        get => _data.TachometerMinX;
-        set => Change(ref _data.TachometerMinX, value);
+        get => _data.Tachometer.MinX;
+        set => Change(ref _data.Tachometer.MinX, value);
     }
 
     /// <summary>
@@ -337,8 +389,8 @@ public class GaugeDataState : EditorViewModelStateBase
     /// </summary>
     public int TachometerMinY
     {
-        get => _data.TachometerMinY;
-        set => Change(ref _data.TachometerMinY, value);
+        get => _data.Tachometer.MinY;
+        set => Change(ref _data.Tachometer.MinY, value);
     }
 
     /// <summary>
@@ -347,8 +399,8 @@ public class GaugeDataState : EditorViewModelStateBase
     /// </summary>
     public int TachometerMaxX
     {
-        get => _data.TachometerMax;
-        set => Change(ref _data.TachometerMaxX, value);
+        get => _data.Tachometer.Max;
+        set => Change(ref _data.Tachometer.MaxX, value);
     }
 
     /// <summary>
@@ -357,8 +409,8 @@ public class GaugeDataState : EditorViewModelStateBase
     /// </summary>
     public int TachometerMaxY
     {
-        get => _data.TachometerMaxY;
-        set => Change(ref _data.TachometerMaxY, value);
+        get => _data.Tachometer.MaxY;
+        set => Change(ref _data.Tachometer.MaxY, value);
     }
 
     /// <summary>
