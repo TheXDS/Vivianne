@@ -73,7 +73,7 @@ public class Carp
     /// Gets a collection of values that indicate a factor to divide the RPM by
     /// to calculate the actual top speed in any given gear for the automatic
     /// transmission.
-    /// </summary>https://www.youtube.com/shorts/L2UMyb9PIHI
+    /// </summary>
     public ICollection<double> VelocityToRpmAuto { get; } = [];
 
     /// <summary>
