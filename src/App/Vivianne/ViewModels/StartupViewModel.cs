@@ -78,6 +78,11 @@ public class StartupViewModel : ViewModel
         List<VivInfo> l = RecentFiles.ToList();
         if (parameter is VivInfo viv)
         {
+            if (!System.IO.File.Exists(viv.FilePath))
+            {
+                await (DialogService?.Error("File not found.", "The file you selected does not exist or it's inaccessible.") ?? Task.CompletedTask);
+                return;
+            }
             l.Remove(viv);
             filePath = viv.FilePath;
         }
