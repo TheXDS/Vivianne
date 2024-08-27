@@ -5,6 +5,9 @@ using static System.Reflection.BindingFlags;
 
 namespace TheXDS.Vivianne.Commands.Fsh;
 
+/// <summary>
+/// Defines a command that allows the user to interact with a FSH or QFS file.
+/// </summary>
 public partial class FshCommand() : FileCommandBase<VivFile, VivSerializer>(
     "fsh",
     "Performs operations on FSH and QFS files.",

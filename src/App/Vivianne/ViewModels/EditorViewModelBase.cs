@@ -16,10 +16,9 @@ namespace TheXDS.Vivianne.ViewModels;
 /// functionality for the state, as well as a command to persist these changes.
 /// </summary>
 /// <typeparam name="T">Type of state to edit.</typeparam>
-public abstract class EditorViewModelBase<T> : DialogViewModel, IStatefulViewModel<T>, IAwaitableDialogViewModel where T : EditorViewModelStateBase
+public abstract class EditorViewModelBase<T> : AwaitableDialogViewModel, IStatefulViewModel<T> where T : EditorViewModelStateBase
 {
     private T _state = default!;
-    private TaskCompletionSource dlgAwaiter = new();
 
     /// <summary>
     /// Triggered when the user has saved any pending changes.
@@ -51,9 +50,6 @@ public abstract class EditorViewModelBase<T> : DialogViewModel, IStatefulViewMod
     /// </summary>
     public ICommand DiscardChangesCommand { get; }
 
-    /// <inheritdoc/>
-    public Task DialogAwaiter => dlgAwaiter.Task;
-
     /// <summary>
     /// Initializes a new instance of the <see cref="EditorViewModelBase{T}"/>
     /// class.
@@ -64,7 +60,7 @@ public abstract class EditorViewModelBase<T> : DialogViewModel, IStatefulViewMod
         SaveChangesCommand = ObservingCommandBuilder.Create(state, InvokeSaveChanges)
             .ListensToCanExecute(p => p.UnsavedChanges)
             .Build();
-        DiscardChangesCommand = new SimpleCommand(OnDiscardChanges);
+        DiscardChangesCommand = new SimpleCommand(CloseDialog);
 
         Interactions.Add(new(SaveChangesCommand, St.Save));
         Interactions.Add(new(DiscardChangesCommand, St.Discard));
@@ -75,14 +71,7 @@ public abstract class EditorViewModelBase<T> : DialogViewModel, IStatefulViewMod
         StateSaving?.Invoke(this, EventArgs.Empty);
         await OnSaveChanges();
         StateSaved?.Invoke(this, EventArgs.Empty);
-        OnDiscardChanges();
-    }
-
-    private void OnDiscardChanges()
-    {
-        State.UnsavedChanges = false;
-        dlgAwaiter.SetResult();
-        dlgAwaiter = new();
+        CloseDialog();
     }
 
     /// <summary>
