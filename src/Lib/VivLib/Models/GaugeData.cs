@@ -39,102 +39,12 @@ public struct GaugeData
     public int DialWidthTip;
 
     /// <summary>
-    /// X coord of the center of the speedometer dial.
+    /// Dial data for the speedometer.
     /// </summary>
-    public int SpeedometerCenterX;
+    public DialData Speedometer;
 
     /// <summary>
-    /// Y coord of the center of the speedometer dial.
+    /// Dial data for the tachometer.
     /// </summary>
-    public int SpeedometerCenterY;
-
-    /// <summary>
-    /// Offset to start drawing the speedometer dial from, starting at the
-    /// center.
-    /// </summary>
-    public int SpeedometerCenterOffset;
-
-    /// <summary>
-    /// Offset to end drawing the speedometer dial, starting at the edge.
-    /// </summary>
-    public int SpeedometerEdgeOffset;
-
-    /// <summary>
-    /// Minimum value of the speedometer. Should ideally be <c>0</c>.
-    /// </summary>
-    public int SpeedometerMin;
-
-    /// <summary>
-    /// Maximum value of the speedometer.
-    /// </summary>
-    public int SpeedometerMax;
-
-    /// <summary>
-    /// X coord of the minimum indicated speedometer value.
-    /// </summary>
-    public int SpeedometerMinX;
-
-    /// <summary>
-    /// Y coord of the minimum indicated speedometer value.
-    /// </summary>
-    public int SpeedometerMinY;
-
-    /// <summary>
-    /// X coord of the maximum indicated speedometer value.
-    /// </summary>
-    public int SpeedometerMaxX;
-
-    /// <summary>
-    /// Y coord of the maximum indicated speedometer value.
-    /// </summary>
-    public int SpeedometerMaxY;
-
-    /// <summary>
-    /// X coord of the center of the tachometer dial.
-    /// </summary>
-    public int TachometerCenterX;
-
-    /// <summary>
-    /// Y coord of the center of the tachometer dial.
-    /// </summary>
-    public int TachometerCenterY;
-    /// <summary>
-    /// Offset to start drawing the tachometer dial from, starting at the
-    /// center.
-    /// </summary>
-    public int TachometerCenterOffset;
-    /// <summary>
-    /// Offset to end drawing the tachometer dial, starting at the edge.
-    /// </summary>
-    public int TachometerEdgeOffset;
-
-    /// <summary>
-    /// Minimum value of the tachometer. Should ideally be <c>0</c>.
-    /// </summary>
-    public int TachometerMin;
-
-    /// <summary>
-    /// Maximum value of the tachometer.
-    /// </summary>
-    public int TachometerMax;
-
-    /// <summary>
-    /// X coord of the minimum indicated tachometer value.
-    /// </summary>
-    public int TachometerMinX;
-
-    /// <summary>
-    /// Y coord of the minimum indicated tachometer value.
-    /// </summary>
-    public int TachometerMinY;
-
-    /// <summary>
-    /// X coord of the maximum indicated tachometer value.
-    /// </summary>
-    public int TachometerMaxX;
-
-    /// <summary>
-    /// Y coord of the maximum indicated tachometer value.
-    /// </summary>
-    public int TachometerMaxY;
+    public DialData Tachometer;
 }

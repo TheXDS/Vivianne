@@ -9,7 +9,6 @@ namespace TheXDS.Vivianne.Tools;
 /// <param name="carp">Performance data source.</param>
 public class BriUnitTextProvider(Carp carp) : FeDataTextProvider(carp, CultureInfo.GetCultureInfo("en-GB"))
 {
-
     /// <inheritdoc/>
     public override string TopSpeed => $"{(CarpData.TopSpeed * 2.236936).ToString("0", Culture)} MPH";
 

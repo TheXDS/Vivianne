@@ -81,7 +81,7 @@ internal static class FceCleanupAnalyzers
 }
 
 /// <summary>
-/// Includes tools that can be used to cleanup invalid data on an
+/// Includes tools that can be used to cleanup invalid data on a
 /// <see cref="FceFile"/>.
 /// </summary>
 public static class FceCleanupTool
