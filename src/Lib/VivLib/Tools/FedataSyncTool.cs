@@ -61,12 +61,12 @@ public static class FedataSyncTool
                 vivDirectory[$"fedata{j}"] = fs.Serialize(f);
             }
         }
-        if (vivDirectory.TryGetValue("source.txt", out var carpContent))
+        if (vivDirectory.TryGetValue("carp.txt", out var carpContent))
         {
             var c = cs.Deserialize(carpContent);
             c.SerialNumber = source.SerialNumber;
             c.CarClass = source.VehicleClass;
-            vivDirectory["source.txt"] = cs.Serialize(c);
+            vivDirectory["carp.txt"] = cs.Serialize(c);
         }
     }
 
@@ -78,8 +78,7 @@ public static class FedataSyncTool
     /// <param name="vivDirectory">VIV Directory to modify.</param>
     public static void Sync(Carp source, IDictionary<string, byte[]> vivDirectory)
     {
-        ISerializer<FeData> fedataSerializer = new FeDataSerializer();
-        ISerializer<Carp> carpSerializer = new CarpSerializer();
+        ISerializer<FeData> fedataSerializer = new FeDataSerializer();        
         foreach (var j in Mappings.FeDataToTextProvider)
         {
             if (vivDirectory.TryGetValue($"fedata{j.Key}", out var content))
@@ -97,7 +96,6 @@ public static class FedataSyncTool
                 f.Gearbox = perfDataSource.Gearbox;
                 f.Accel0To60 = perfDataSource.Accel0To60;
                 f.Accel0To100 = perfDataSource.Accel0To100;
-
                 vivDirectory[$"fedata{j.Key}"] = fedataSerializer.Serialize(f);
             }
         }

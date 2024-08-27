@@ -1,7 +1,9 @@
-﻿namespace TheXDS.Vivianne.Models;
+﻿using System.Linq;
+
+namespace TheXDS.Vivianne.Models;
 
 /// <summary>
-/// Represents the state of <see cref="ViewModels.DashEditorViewModel"/>.
+/// Represents the state of the car dashboard editor.
 /// </summary>
 public class GaugeDataState : EditorViewModelStateBase
 {
@@ -13,14 +15,72 @@ public class GaugeDataState : EditorViewModelStateBase
     private int _SteeringYPosition;
     private int _GearXPosition;
     private int _GearYPosition;
+    private int _previewSpeed;
+    private int _previewRpm;
+
+    /// <summary>
+    /// Gets an object that exposes Gauge data for preview purposes.
+    /// </summary>
+    public GaugePreviewData PreviewGauge { get; }
+
+    /// <summary>
+    /// Gets a reference to the gauge data structure stored on the footer of
+    /// the FSH id '0000'.
+    /// </summary>
+    public GaugeData BackingStore => _data;
+
+    /// <summary>
+    /// Gets the <see cref="FshBlob"/> associated with the actual cabin of the
+    /// car.
+    /// </summary>
+    /// <remarks>
+    /// The FSH blob associated with the car cabin must have the id
+    /// '<c>0000</c>'.
+    /// </remarks>
+    public FshBlob Cabin { get; }
+
+    /// <summary>
+    /// Gets the <see cref="FshBlob"/> associated with the steering wheel of
+    /// the car if one is present.
+    /// </summary>
+    /// <remarks>
+    /// The FSH blob associated with the steering wheel must have the id
+    /// '<c>0001</c>'.
+    /// </remarks>
+    public FshBlob? Steering { get; }
+
+    /// <summary>
+    /// Gets the <see cref="FshBlob"/> associated with a single image from the
+    /// digital gear indicator collection if present.
+    /// </summary>
+    /// <remarks>
+    /// For the gear indicators to work, the source FSH file should contain a
+    /// set of FSH images with ids prefixed by '<c>gea</c>' followed by a
+    /// single character denoting the gear. For example, '<c>geaR</c>' for
+    /// reverse, '<c>geaN</c>' for neutral, '<c>gea1</c>' for first, etc.
+    /// </remarks>
+    public FshBlob? GearIndicator { get; }
+
+    /// <summary>
+    /// Gets the collection <see cref="FshBlob"/> associated with the digital
+    /// gear indicators of the car if present.
+    /// </summary>
+    /// <remarks>
+    /// For the gear indicators to work, the source FSH file should contain a
+    /// set of FSH images with ids prefixed by '<c>gea</c>' followed by a
+    /// single character denoting the gear. For example, '<c>geaR</c>' for
+    /// reverse, '<c>geaN</c>' for neutral, '<c>gea1</c>' for first, etc.
+    /// </remarks>
+    public FshBlob[] Gears { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="GaugeDataState"/> class.
     /// </summary>
-    /// <param name="fsh"></param>
+    /// <param name="fsh">Source FSH file.</param>
     public GaugeDataState(FshFile fsh)
     {
         Cabin = fsh.Entries["0000"];
+        PreviewGauge = new(this);
         if (fsh.Entries.TryGetValue("0001", out var steering))
         {
             Steering = steering;
@@ -29,11 +89,15 @@ public class GaugeDataState : EditorViewModelStateBase
             SteeringXRotation = steering.XRotation;
             SteeringYRotation = steering.YRotation;
         }
-        if (fsh.Entries.TryGetValue("gea1", out var gear))
+        Gears = fsh.Entries
+            .Where(p => p.Key.StartsWith("gea", System.StringComparison.InvariantCultureIgnoreCase))
+            .Select(p => p.Value)
+            .ToArray();
+        if (Gears.Length > 0)
         {
-            GearIndicator = gear;
-            GearXPosition = gear.XPosition;
-            GearYPosition = gear.YPosition;
+            GearIndicator = Gears[0];
+            GearXPosition = Gears[0].XPosition;
+            GearYPosition = Gears[0].YPosition;
         }
         _data = Cabin.GaugeData ?? default;
 
@@ -41,56 +105,59 @@ public class GaugeDataState : EditorViewModelStateBase
         RegisterPropertyChangeTrigger(nameof(SteeringTop), nameof(SteeringYPosition), nameof(SteeringYRotation));
         RegisterPropertyChangeTrigger(nameof(GearLeft), nameof(GearXPosition));
         RegisterPropertyChangeTrigger(nameof(GearTop), nameof(GearYPosition));
+        RegisterPropertyChangeTrigger(nameof(PreviewGauge), [
+            nameof(DialColorX),
+            nameof(DialColorY),
+            nameof(SpeedometerCenterX),
+            nameof(SpeedometerCenterY),
+            nameof(SpeedometerCenterOffset),
+            nameof(SpeedometerEdgeOffset),
+            nameof(SpeedometerMin),
+            nameof(SpeedometerMax),
+            nameof(SpeedometerMinX),
+            nameof(SpeedometerMinY),
+            nameof(SpeedometerMaxX),
+            nameof(SpeedometerMaxY),
+            nameof(TachometerCenterX),
+            nameof(TachometerCenterY),
+            nameof(TachometerCenterOffset),
+            nameof(TachometerEdgeOffset),
+            nameof(TachometerMin),
+            nameof(TachometerMax),
+            nameof(TachometerMinX),
+            nameof(TachometerMinY),
+            nameof(TachometerMaxX),
+            nameof(TachometerMaxY),
+            ]);
     }
 
     /// <summary>
-    /// Exposes a reference to the current gauge data.
-    /// </summary>
-    public GaugeData BackingStore => _data;
-
-    /// <summary>
-    /// Gets a reference to the FSH blob that contains the entire cabin image.
-    /// </summary>
-    public FshBlob Cabin { get; }
-
-    /// <summary>
-    /// Gets a reference to the FSH blob that contains the steering wheel.
-    /// </summary>
-    public FshBlob? Steering { get; }
-
-    /// <summary>
-    /// Gets a reference to an optional FSH blob that contains one state of the
-    /// gear indicator if one is present.
-    /// </summary>
-    public FshBlob? GearIndicator { get; }
-
-    /// <summary>
-    /// Gets a value that indicates the horizontal position of the steering 
-    /// from the left.
+    /// Indicates the current absolute X rendering position for the steering
+    /// wheel.
     /// </summary>
     public int SteeringLeft => Steering is not null ? SteeringXPosition - SteeringXRotation : 0;
 
     /// <summary>
-    /// Gets a value that indicates the vertical position of the steering from
-    /// the top.
+    /// Indicates the current absolute Y rendering position for the steering
+    /// wheel.
     /// </summary>
     public int SteeringTop => Steering is not null ? SteeringYPosition - SteeringYRotation : 0;
 
     /// <summary>
-    /// Gets a value that indicates the horizontal position of the gear 
-    /// indicator from the left.
+    /// Indicates the current absolute X rendering position for the gear
+    /// indicator.
     /// </summary>
     public int GearLeft => GearIndicator is not null ? GearXPosition : 0;
 
     /// <summary>
-    /// Gets a value that indicates the vertical position of the gear indicator
-    /// from the top.
+    /// Indicates the current absolute Y rendering position for the gear
+    /// indicator.
     /// </summary>
     public int GearTop => GearIndicator is not null ? GearYPosition : 0;
 
     /// <summary>
-    /// Gets or sets a value that indicates the angle of the steering wheel on
-    /// the Preview pane.
+    /// Gets or sets the steering wheel angle for rendering on the preview
+    /// pane.
     /// </summary>
     public int PreviewSteerAngle
     {
@@ -101,6 +168,25 @@ public class GaugeDataState : EditorViewModelStateBase
     /// <summary>
     /// Gets or sets the X coordinate of the pixel from which to derive the
     /// color of the dials.
+    /// </summary>
+    public int PreviewSpeed
+    {
+        get => _previewSpeed;
+        set => Change(ref _previewSpeed, value);
+    }
+
+    /// <summary>
+    /// Gets or sets a value used to preview the indicated RPM on the gauge
+    /// cluster.
+    /// </summary>
+    public int PreviewRpm
+    {
+        get => _previewRpm;
+        set => Change(ref _previewRpm, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the X coordinates for the dial color.
     /// </summary>
     public int DialColorX
     {
@@ -118,12 +204,18 @@ public class GaugeDataState : EditorViewModelStateBase
         set => Change(ref _data.DialColorY, value);
     }
 
+    /// <summary>
+    /// Gets or sets the width of the dial base.
+    /// </summary>
     public int DialWidthBase
     {
         get => _data.DialWidthBase;
         set => Change(ref _data.DialWidthBase, value);
     }
 
+    /// <summary>
+    /// GEts or sets the width of the dial tip.
+    /// </summary>
     public int DialWidthTip
     { 
         get => _data.DialWidthTip;
@@ -131,12 +223,12 @@ public class GaugeDataState : EditorViewModelStateBase
     }
 
     /// <summary>
-    /// Gets or sets the X coordinate of the center of the Speedometer dial.
+    /// Gets or sets the X center coordinate for the speedometer dial.
     /// </summary>
     public int SpeedometerCenterX
     {
-        get => _data.SpeedometerCenterX;
-        set => Change(ref _data.SpeedometerCenterX, value);
+        get => _data.Speedometer.CenterX;
+        set => Change(ref _data.Speedometer.CenterX, value);
     }
 
     /// <summary>
@@ -144,8 +236,8 @@ public class GaugeDataState : EditorViewModelStateBase
     /// </summary>
     public int SpeedometerCenterY
     {
-        get => _data.SpeedometerCenterY;
-        set => Change(ref _data.SpeedometerCenterY, value);
+        get => _data.Speedometer.CenterY;
+        set => Change(ref _data.Speedometer.CenterY, value);
     }
 
     /// <summary>
@@ -154,14 +246,18 @@ public class GaugeDataState : EditorViewModelStateBase
     /// </summary>
     public int SpeedometerCenterOffset
     {
-        get => _data.SpeedometerCenterOffset; 
-        set => Change(ref _data.SpeedometerCenterOffset, value);
+        get => _data.Speedometer.CenterOffset; 
+        set => Change(ref _data.Speedometer.CenterOffset, value);
     }
 
+    /// <summary>
+    /// Gets or sets the offset to apply from the edge to the actual end of the
+    /// speedometer dial.
+    /// </summary>
     public int SpeedometerEdgeOffset
     {
-        get => _data.SpeedometerEdgeOffset;
-        set => Change(ref _data.SpeedometerEdgeOffset, value);
+        get => _data.Speedometer.EdgeOffset;
+        set => Change(ref _data.Speedometer.EdgeOffset, value);
     }
 
     /// <summary>
@@ -170,8 +266,8 @@ public class GaugeDataState : EditorViewModelStateBase
     /// <remarks>It's recommended to keep this value at zero.</remarks>
     public int SpeedometerMin
     {
-        get => _data.SpeedometerMin;
-        set => Change(ref _data.SpeedometerMin, value);
+        get => _data.Speedometer.Min;
+        set => Change(ref _data.Speedometer.Min, value);
     }
 
     /// <summary>
@@ -179,8 +275,8 @@ public class GaugeDataState : EditorViewModelStateBase
     /// </summary>
     public int SpeedometerMax
     {
-        get => _data.SpeedometerMax;
-        set => Change(ref _data.SpeedometerMax, value);
+        get => _data.Speedometer.Max;
+        set => Change(ref _data.Speedometer.Max, value);
     }
 
     /// <summary>
@@ -189,8 +285,8 @@ public class GaugeDataState : EditorViewModelStateBase
     /// </summary>
     public int SpeedometerMinX
     {
-        get => _data.SpeedometerMinX;
-        set => Change(ref _data.SpeedometerMinX, value);
+        get => _data.Speedometer.MinX;
+        set => Change(ref _data.Speedometer.MinX, value);
     }
 
     /// <summary>
@@ -199,8 +295,8 @@ public class GaugeDataState : EditorViewModelStateBase
     /// </summary>
     public int SpeedometerMinY
     {
-        get => _data.SpeedometerMinY;
-        set => Change(ref _data.SpeedometerMinY, value);
+        get => _data.Speedometer.MinY;
+        set => Change(ref _data.Speedometer.MinY, value);
     }
 
     /// <summary>
@@ -209,8 +305,8 @@ public class GaugeDataState : EditorViewModelStateBase
     /// </summary>
     public int SpeedometerMaxX
     {
-        get => _data.SpeedometerMax;
-        set => Change(ref _data.SpeedometerMaxX, value);
+        get => _data.Speedometer.Max;
+        set => Change(ref _data.Speedometer.MaxX, value);
     }
 
     /// <summary>
@@ -219,8 +315,8 @@ public class GaugeDataState : EditorViewModelStateBase
     /// </summary>
     public int SpeedometerMaxY
     {
-        get => _data.SpeedometerMaxY;
-        set => Change(ref _data.SpeedometerMaxY, value);
+        get => _data.Speedometer.MaxY;
+        set => Change(ref _data.Speedometer.MaxY, value);
     }
 
     /// <summary>
@@ -228,8 +324,8 @@ public class GaugeDataState : EditorViewModelStateBase
     /// </summary>
     public int TachometerCenterX
     {
-        get => _data.TachometerCenterX;
-        set => Change(ref _data.TachometerCenterX, value);
+        get => _data.Tachometer.CenterX;
+        set => Change(ref _data.Tachometer.CenterX, value);
     }
 
     /// <summary>
@@ -237,43 +333,47 @@ public class GaugeDataState : EditorViewModelStateBase
     /// </summary>
     public int TachometerCenterY
     {
-        get => _data.TachometerCenterY;
-        set => Change(ref _data.TachometerCenterY, value);
+        get => _data.Tachometer.CenterY;
+        set => Change(ref _data.Tachometer.CenterY, value);
     }
 
     /// <summary>
-    /// Gets or sets the offset from the center to use when drawing the
-    /// Tachometer dial.
+    /// Gets or sets the offset to apply from the center to the actual start of
+    /// the tachometer dial.
     /// </summary>
     public int TachometerCenterOffset
     {
-        get => _data.TachometerCenterOffset;
-        set => Change(ref _data.TachometerCenterOffset, value);
-    }
-
-    public int TachometerEdgeOffset
-    {
-        get => _data.TachometerEdgeOffset;
-        set => Change(ref _data.TachometerEdgeOffset, value);
+        get => _data.Tachometer.CenterOffset;
+        set => Change(ref _data.Tachometer.CenterOffset, value);
     }
 
     /// <summary>
-    /// Gets or sets the indicated minimum value of the Tachometer.
+    /// Gets or sets the offset to apply from the edge to the actual end of the
+    /// tachometer dial.
+    /// </summary>
+    public int TachometerEdgeOffset
+    {
+        get => _data.Tachometer.EdgeOffset;
+        set => Change(ref _data.Tachometer.EdgeOffset, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the minimum indicated value of the tachometer.
     /// </summary>
     /// <remarks>It's recommended to keep this value at zero.</remarks>
     public int TachometerMin
     {
-        get => _data.TachometerMin;
-        set => Change(ref _data.TachometerMin, value);
+        get => _data.Tachometer.Min;
+        set => Change(ref _data.Tachometer.Min, value);
     }
 
     /// <summary>
-    /// Gets or sets the indicated maximum value of the Tachometer.
+    /// Gets or sets the maximum indicated value for the tachometer.
     /// </summary>
     public int TachometerMax
     {
-        get => _data.TachometerMax;
-        set => Change(ref _data.TachometerMax, value);
+        get => _data.Tachometer.Max;
+        set => Change(ref _data.Tachometer.Max, value);
     }
 
     /// <summary>
@@ -282,8 +382,8 @@ public class GaugeDataState : EditorViewModelStateBase
     /// </summary>
     public int TachometerMinX
     {
-        get => _data.TachometerMinX;
-        set => Change(ref _data.TachometerMinX, value);
+        get => _data.Tachometer.MinX;
+        set => Change(ref _data.Tachometer.MinX, value);
     }
 
     /// <summary>
@@ -292,8 +392,8 @@ public class GaugeDataState : EditorViewModelStateBase
     /// </summary>
     public int TachometerMinY
     {
-        get => _data.TachometerMinY;
-        set => Change(ref _data.TachometerMinY, value);
+        get => _data.Tachometer.MinY;
+        set => Change(ref _data.Tachometer.MinY, value);
     }
 
     /// <summary>
@@ -302,8 +402,8 @@ public class GaugeDataState : EditorViewModelStateBase
     /// </summary>
     public int TachometerMaxX
     {
-        get => _data.TachometerMax;
-        set => Change(ref _data.TachometerMaxX, value);
+        get => _data.Tachometer.Max;
+        set => Change(ref _data.Tachometer.MaxX, value);
     }
 
     /// <summary>
@@ -312,8 +412,8 @@ public class GaugeDataState : EditorViewModelStateBase
     /// </summary>
     public int TachometerMaxY
     {
-        get => _data.TachometerMaxY;
-        set => Change(ref _data.TachometerMaxY, value);
+        get => _data.Tachometer.MaxY;
+        set => Change(ref _data.Tachometer.MaxY, value);
     }
 
     /// <summary>

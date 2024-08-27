@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Text;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Attributes;
@@ -53,6 +54,11 @@ public class FeDataSerializer : ISerializer<FeData>
         using var reader = new BinaryReader(stream);
         string SeekAndRead(uint offset)
         {
+            if (offset > stream.Length)
+            {
+                Debug.Print($"Tried to read a string outside of file bounds (offset 0x{offset:X8}). Returning an empty string instead...");
+                return string.Empty;
+            }
             stream.Seek(offset, SeekOrigin.Begin);
             return reader.ReadNullTerminatedString(Encoding.Latin1);
         }
@@ -61,10 +67,10 @@ public class FeDataSerializer : ISerializer<FeData>
         var data = new FeData
         {
             CarId = carId,
-            IsBonus = fedataHeader.IsBonus == 1,
-            AvailableToAi = fedataHeader.AvailableToAi == 1,
+            IsBonus = fedataHeader.IsBonus != 0,
+            AvailableToAi = fedataHeader.AvailableToAi != 0,
             VehicleClass = (Nfs3CarClass)fedataHeader.CarClass,
-            IsPolice = fedataHeader.IsPolice == 1,
+            IsPolice = fedataHeader.IsPolice != 0,
             Seat = (DriverSeatPosition)fedataHeader.Seat,
             IsDlcCar = fedataHeader.IsDlcCar,
             SerialNumber = fedataHeader.SerialNumber,
@@ -72,6 +78,7 @@ public class FeDataSerializer : ISerializer<FeData>
             CarTopSpeed = fedataHeader.TopSpeed,
             CarHandling = fedataHeader.Handling,
             CarBraking = fedataHeader.Braking,
+            StringEntries = fedataHeader.StringEntries,
 
             // TODO: Investigate what these values are:
             Unk_0x0c = fedataHeader.Unk_0x0c,
@@ -86,8 +93,8 @@ public class FeDataSerializer : ISerializer<FeData>
             Unk_0x26 = fedataHeader.Unk_0x26,
             Unk_0x2c = fedataHeader.Unk_0x2c,
         };
-        uint[] offsets = new uint[40];
-        for (int i = 0; i < 40; i++)
+        uint[] offsets = new uint[fedataHeader.StringEntries];
+        for (int i = 0; i < fedataHeader.StringEntries; i++)
         {
             offsets[i] = reader.ReadUInt32();
         }
@@ -119,6 +126,7 @@ public class FeDataSerializer : ISerializer<FeData>
             TopSpeed = entity.CarTopSpeed,
             Handling = entity.CarHandling,
             Braking = entity.CarBraking,
+            StringEntries = entity.StringEntries,
 
             // TODO: Investigate what these values are:
             Unk_0x0c = entity.Unk_0x0c,
@@ -133,7 +141,7 @@ public class FeDataSerializer : ISerializer<FeData>
             Unk_0x26 = entity.Unk_0x26,
             Unk_0x2c = entity.Unk_0x2c,
         });
-        uint lastOffset = 0xcf;
+        uint lastOffset = (uint)(0x2f + (entity.StringEntries * 4));
         using var ms2 = new MemoryStream();
         using (var writer2 = new BinaryWriter(ms2))
         {

@@ -13,5 +13,5 @@ namespace TheXDS.Vivianne.Attributes;
 public class EndiannessAttribute(Endianness endianness) : Attribute, IValueAttribute<Endianness>
 {
     /// <inheritdoc/>
-    public Endianness Value {get;} = endianness;
+    public Endianness Value { get; } = endianness;
 }

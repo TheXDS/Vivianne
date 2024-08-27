@@ -12,8 +12,8 @@ namespace TheXDS.Vivianne.Extensions;
 public static class FshExtensions
 {
     private static readonly IEnumerable<(Func<string?, bool> FailsValidation, string ErrorMessage)> GimxIdValidationRules = [
-        (p => p.IsEmpty(), "FSH requires blobs to include a 4 character ID."),
-        (p => !p!.ToLowerInvariant().All("abcdefghijklmnopqrstuvwxyz1234567890".Contains), "FSH blob ID must include letters and/or digits only."),
+        (p => p.IsEmpty(), Resources.Strings.Common.FshBlobEmptyId),
+        (p => !p!.ToLowerInvariant().All("abcdefghijklmnopqrstuvwxyz1234567890".Contains), Resources.Strings.Common.FshBlobBadId),
         (p => p!.Length != 4, "FSH blob ID length mismatch. Please specify a 4 character long ID."),
     ];
 

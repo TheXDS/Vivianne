@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Attributes;
 
@@ -23,7 +22,7 @@ public static class BinaryReaderExtensions
         using var ms = new MemoryStream(raw);
         foreach (var j in typeof(T).GetFields())
         {
-            if (j.GetAttribute<EndiannessAttribute>() is {Value: Endianness e})
+            if (j.GetAttribute<EndiannessAttribute>() is {Value: var e })
             {
                 switch (e)
                 {

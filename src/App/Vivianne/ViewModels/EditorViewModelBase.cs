@@ -60,7 +60,7 @@ public abstract class EditorViewModelBase<T> : AwaitableDialogViewModel, IStatef
         SaveChangesCommand = ObservingCommandBuilder.Create(state, InvokeSaveChanges)
             .ListensToCanExecute(p => p.UnsavedChanges)
             .Build();
-        DiscardChangesCommand = new SimpleCommand(CloseDialog);
+        DiscardChangesCommand = new SimpleCommand(OnDiscardChanges);
 
         Interactions.Add(new(SaveChangesCommand, St.Save));
         Interactions.Add(new(DiscardChangesCommand, St.Discard));
@@ -71,6 +71,12 @@ public abstract class EditorViewModelBase<T> : AwaitableDialogViewModel, IStatef
         StateSaving?.Invoke(this, EventArgs.Empty);
         await OnSaveChanges();
         StateSaved?.Invoke(this, EventArgs.Empty);
+        OnDiscardChanges();
+    }
+
+    private void OnDiscardChanges()
+    {
+        State.UnsavedChanges = false;
         CloseDialog();
     }
 

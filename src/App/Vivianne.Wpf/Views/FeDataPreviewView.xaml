@@ -56,11 +56,9 @@
                     <GroupBox Header="{x:Static st:FeDataPreviewView.BasicProperties}">
                         <StackPanel Margin="5">
                             <gn:TextBoxEx Label="{x:Static st:FeDataPreviewView.CarName}" Text="{Binding Data.CarName}"/>
-                            <UniformGrid Margin="0" Columns="4">
-                            </UniformGrid>
                             <mcart:StretchyWrapPanel Margin="5" StretchProportionally="True">
                                 <gn:TextBoxEx VerticalAlignment="Center" Icon="🗝️" Label="{x:Static st:FeDataPreviewView.CarId}" MaxLength="4" Text="{Binding Data.CarId}"/>
-                                <gn:Int32TextBox VerticalAlignment="Center" Icon=" # " Label="{x:Static st:FeDataPreviewView.SerialNumber}" Minimum="1" Maximum="65535" Value="{Binding Data.SerialNumber}"/>
+                                <gn:Int32TextBox VerticalAlignment="Center" Icon=" # " Label="{x:Static st:FeDataPreviewView.SerialNumber}" Minimum="0" Maximum="65535" Value="{Binding Data.SerialNumber}"/>
                                 <mcart:StretchyWrapPanel StretchProportionally="True">
                                     <UniformGrid Margin="5" Rows="1">
                                         <TextBlock VerticalAlignment="Center" TextAlignment="Right" Margin="5,0" Text="{x:Static st:FeDataPreviewView.CarClass}"/>

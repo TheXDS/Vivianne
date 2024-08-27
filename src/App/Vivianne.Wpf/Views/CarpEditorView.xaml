@@ -199,7 +199,7 @@
                             </UniformGrid>
                         </GroupBox>
                         <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
-                            <TextBlock>Copy</TextBlock>
+                            <TextBlock TextAlignment="Center">Copy</TextBlock>
                             <Button Command="{Binding CopyTransToManualCommand, Mode=OneWay}">◀️</Button>
                             <Button Command="{Binding CopyTransToAutoCommand, Mode=OneWay}">▶️</Button>
                         </StackPanel>
@@ -318,7 +318,7 @@
                             </UniformGrid>
                         </GroupBox>
                         <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
-                            <TextBlock>Copy</TextBlock>
+                            <TextBlock TextAlignment="Center">Copy</TextBlock>
                             <Button Command="{Binding CopyTiresToFrontCommand}">◀️</Button>
                             <Button Command="{Binding CopyTiresToRearCommand}">▶️</Button>
                         </StackPanel>

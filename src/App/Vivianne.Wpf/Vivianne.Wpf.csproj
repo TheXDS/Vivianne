@@ -24,6 +24,11 @@
 	  <Resource Include="Resources\Images\bg.jpg" />
 	</ItemGroup>
 	<ItemGroup>
+	  <Compile Update="Resources\Strings\Views\DashEditorView.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>DashEditorView.resx</DependentUpon>
+	  </Compile>
 	  <Compile Update="Resources\Strings\Views\FeDataPreviewView.Designer.cs">
 	    <DesignTime>True</DesignTime>
 	    <AutoGen>True</AutoGen>
@@ -41,6 +46,10 @@
 	  </Compile>
 	</ItemGroup>
 	<ItemGroup>
+	  <EmbeddedResource Update="Resources\Strings\Views\DashEditorView.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <LastGenOutput>DashEditorView.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
 	  <EmbeddedResource Update="Resources\Strings\Views\FeDataPreviewView.resx">
 	    <Generator>PublicResXFileCodeGenerator</Generator>
 	    <LastGenOutput>FeDataPreviewView.Designer.cs</LastGenOutput>

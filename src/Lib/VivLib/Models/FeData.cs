@@ -132,6 +132,14 @@ public class FeData
     public byte CarBraking { get; set; }
 
     /// <summary>
+    /// Gets or sets the number of string entries present in the file.
+    /// </summary>
+    /// <remarks>
+    /// For a valid NFS3 FeData file, This value must always be equal to 40.
+    /// </remarks>
+    public ushort StringEntries { get; set; }
+
+    /// <summary>
     /// Gets or sets a string for the manufacturer of this vehicle.
     /// </summary>
     [OffsetTableIndex(0)]

@@ -19,7 +19,7 @@ public class CarpAnalysis
         var torqueWithRpmCurve = TorqueWithRpmCurve(carp);
         MaxTorque = torqueWithRpmCurve.MaxBy(p => p.torque);
         MaxPower = torqueWithRpmCurve
-            .Select(p => ((p.torque * p.rpm) / 5252, p.rpm))
+            .Select(p => (p.torque * p.rpm / 5252, p.rpm))
             .MaxBy(p => p.Item1);
         this.carp = carp;
     }
