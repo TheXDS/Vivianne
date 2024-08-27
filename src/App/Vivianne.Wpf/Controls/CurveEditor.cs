@@ -1,7 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
-using TheXDS.MCART.Types.Base;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.ViewModels;
 using static TheXDS.MCART.Helpers.DependencyObjectHelpers;
@@ -93,16 +92,5 @@ public class CurveEditor : Control
     {
         get => (double)GetValue(BarWidthProperty);
         set => SetValue(BarWidthProperty, value);
-    }
-}
-
-public class DoubleValue : NotifyPropertyChanged
-{
-    private double _Value;
-
-    public double Value
-    {
-        get => _Value;
-        set => Change(ref _Value, value);
     }
 }

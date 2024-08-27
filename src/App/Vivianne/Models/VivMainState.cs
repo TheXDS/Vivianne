@@ -42,16 +42,70 @@ public class VivMainState : VivInfo
     /// </summary>
     public ObservableDictionaryWrap<string, byte[]> Directory { get; private set; } = null!;
 
+    /// <summary>
+    /// Gets a value that indicates of the VIV file contains the 'car.fce'
+    /// entry.
+    /// </summary>
     public bool HasCarFce => HasFile("car.fce");
+
+    /// <summary>
+    /// Gets a value that indicates of the VIV file contains the 'car.bnk'
+    /// entry.
+    /// </summary>
     public bool HasBnk => HasFile("car.bnk");
+
+    /// <summary>
+    /// Gets a value that indicates of the VIV file contains the 'dash.qfs'
+    /// entry.
+    /// </summary>
     public bool HasDash => HasFile("dash.qfs");
+
+    /// <summary>
+    /// Gets a value that indicates of the VIV file contains the 'fedata.fsh'
+    /// entry.
+    /// </summary>
     public bool HasFedataFsh => HasFile("fedata.fsh");
+
+    /// <summary>
+    /// Gets a value that indicates of the VIV file contains the 'fedata.bri'
+    /// entry.
+    /// </summary>
     public bool FeDataBri=> HasFile("fedata.bri");
+
+    /// <summary>
+    /// Gets a value that indicates of the VIV file contains the 'fedata.eng'
+    /// entry.
+    /// </summary>
     public bool FeDataEng => HasFile("fedata.eng");
+
+    /// <summary>
+    /// Gets a value that indicates of the VIV file contains the 'fedata.fre'
+    /// entry.
+    /// </summary>
     public bool FeDataFre => HasFile("fedata.fre");
+
+    /// <summary>
+    /// Gets a value that indicates of the VIV file contains the 'fedata.ger'
+    /// entry.
+    /// </summary>
     public bool FeDataGer => HasFile("fedata.ger");
+
+    /// <summary>
+    /// Gets a value that indicates of the VIV file contains the 'fedata.ita'
+    /// entry.
+    /// </summary>
     public bool FeDataIta => HasFile("fedata.ita");
+
+    /// <summary>
+    /// Gets a value that indicates of the VIV file contains the 'fedata.spa'
+    /// entry.
+    /// </summary>
     public bool FeDataSpa => HasFile("fedata.spa");
+
+    /// <summary>
+    /// Gets a value that indicates of the VIV file contains the 'fedata.swe'
+    /// entry.
+    /// </summary>
     public bool FeDataSwe => HasFile("fedata.swe");
 
     /// <summary>

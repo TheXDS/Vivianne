@@ -23,7 +23,7 @@ namespace TheXDS.Vivianne.Extensions;
 /// <exception cref="ArgumentNullException">
 /// Thrown if <paramref name="inputCallback"/> is <see langword="null"/>.
 /// </exception>
-public class InputItemDescriptor<T>(Func<IDialogService, Task<InputResult<T?>>> inputCallback, InputItemDescriptor<T>.IsInvalidCallback? isInvalidCallback = null) : IInputItemDescriptor where T : notnull
+public class InputItemDescriptor<T>(Func<IDialogService, Task<DialogResult<T?>>> inputCallback, InputItemDescriptor<T>.IsInvalidCallback? isInvalidCallback = null) : IInputItemDescriptor where T : notnull
 {
     /// <summary>
     /// Represents a delegate that will execute validation of the data entered
@@ -40,7 +40,7 @@ public class InputItemDescriptor<T>(Func<IDialogService, Task<InputResult<T?>>> 
     /// </returns>
     public delegate bool IsInvalidCallback(T? value, [NotNullWhen(true)] out string? errorMessage);
 
-    private readonly Func<IDialogService, Task<InputResult<T?>>> inputCallback = inputCallback ?? throw new ArgumentNullException(nameof(inputCallback));
+    private readonly Func<IDialogService, Task<DialogResult<T?>>> inputCallback = inputCallback ?? throw new ArgumentNullException(nameof(inputCallback));
     private readonly IsInvalidCallback? isInvalidCallback = isInvalidCallback;
 
     /// <inheritdoc/>

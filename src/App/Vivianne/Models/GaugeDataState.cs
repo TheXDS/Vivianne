@@ -166,8 +166,8 @@ public class GaugeDataState : EditorViewModelStateBase
     }
 
     /// <summary>
-    /// Gets or sets a value used to preview the indicated speed on the gauge
-    /// cluster.
+    /// Gets or sets the X coordinate of the pixel from which to derive the
+    /// color of the dials.
     /// </summary>
     public int PreviewSpeed
     {
@@ -195,7 +195,8 @@ public class GaugeDataState : EditorViewModelStateBase
     }
 
     /// <summary>
-    /// Gets or sets the Y coordinates for the dial color.
+    /// Gets or sets the Y coordinate of the pixel from which to derive the
+    /// color of the dials.
     /// </summary>
     public int DialColorY
     {
@@ -222,7 +223,7 @@ public class GaugeDataState : EditorViewModelStateBase
     }
 
     /// <summary>
-    /// Gets or sets the X center coordinates for the speedometer dial.
+    /// Gets or sets the X center coordinate for the speedometer dial.
     /// </summary>
     public int SpeedometerCenterX
     {
@@ -231,7 +232,7 @@ public class GaugeDataState : EditorViewModelStateBase
     }
 
     /// <summary>
-    /// Gets or sets the Y center coordinates for the speedometer dial.
+    /// Gets or sets the Y coordinate of the center of the Speedometer dial.
     /// </summary>
     public int SpeedometerCenterY
     {
@@ -240,8 +241,8 @@ public class GaugeDataState : EditorViewModelStateBase
     }
 
     /// <summary>
-    /// Gets or sets the offset to apply from the center to the actual start of
-    /// the speedometer dial.
+    /// Gets or sets the offset from the center to use when drawing the
+    /// Speedometer dial.
     /// </summary>
     public int SpeedometerCenterOffset
     {
@@ -260,8 +261,9 @@ public class GaugeDataState : EditorViewModelStateBase
     }
 
     /// <summary>
-    /// Gets or sets the minimum indicated value for the speedometer.
+    /// Gets or sets the indicated minimum value of the Speedometer.
     /// </summary>
+    /// <remarks>It's recommended to keep this value at zero.</remarks>
     public int SpeedometerMin
     {
         get => _data.Speedometer.Min;
@@ -269,7 +271,7 @@ public class GaugeDataState : EditorViewModelStateBase
     }
 
     /// <summary>
-    /// Gets or sets the maximum indicated value for the speedometer.
+    /// Gets or sets the indicated maximum value of the Speedometer.
     /// </summary>
     public int SpeedometerMax
     {
@@ -278,8 +280,8 @@ public class GaugeDataState : EditorViewModelStateBase
     }
 
     /// <summary>
-    /// Gets or sets the X coordinates for the minimum indicated value of the
-    /// speedometer.
+    /// Gets or sets the X coordinate of the minimum indicated value of the
+    /// Speedometer dial.
     /// </summary>
     public int SpeedometerMinX
     {
@@ -288,8 +290,8 @@ public class GaugeDataState : EditorViewModelStateBase
     }
 
     /// <summary>
-    /// Gets or sets the Y coordinates for the minimum indicated value of the
-    /// speedometer.
+    /// Gets or sets the Y coordinate of the minimum indicated value of the
+    /// Speedometer dial.
     /// </summary>
     public int SpeedometerMinY
     {
@@ -298,8 +300,8 @@ public class GaugeDataState : EditorViewModelStateBase
     }
 
     /// <summary>
-    /// Gets or sets the X coordinates for the maximum indicated value of the
-    /// speedometer.
+    /// Gets or sets the X coordinate of the maximum indicated value of the
+    /// Speedometer dial.
     /// </summary>
     public int SpeedometerMaxX
     {
@@ -308,8 +310,8 @@ public class GaugeDataState : EditorViewModelStateBase
     }
 
     /// <summary>
-    /// Gets or sets the Y coordinates for the maximum indicated value of the
-    /// speedometer.
+    /// Gets or sets the Y coordinate of the maximum indicated value of the
+    /// Speedometer dial.
     /// </summary>
     public int SpeedometerMaxY
     {
@@ -318,7 +320,7 @@ public class GaugeDataState : EditorViewModelStateBase
     }
 
     /// <summary>
-    /// Gets or sets the X center coordinates for the tachometer dial.
+    /// Gets or sets the X coordinate of the center of the Tachometer dial.
     /// </summary>
     public int TachometerCenterX
     {
@@ -327,7 +329,7 @@ public class GaugeDataState : EditorViewModelStateBase
     }
 
     /// <summary>
-    /// Gets or sets the Y center coordinates for the tachometer dial.
+    /// Gets or sets the Y coordinate of the center of the Tachometer dial.
     /// </summary>
     public int TachometerCenterY
     {
@@ -356,8 +358,9 @@ public class GaugeDataState : EditorViewModelStateBase
     }
 
     /// <summary>
-    /// Gets or sets the minimum indicated value for the tachometer.
+    /// Gets or sets the minimum indicated value of the tachometer.
     /// </summary>
+    /// <remarks>It's recommended to keep this value at zero.</remarks>
     public int TachometerMin
     {
         get => _data.Tachometer.Min;
@@ -374,8 +377,8 @@ public class GaugeDataState : EditorViewModelStateBase
     }
 
     /// <summary>
-    /// Gets or sets the X coordinates for the minimum indicated value of the
-    /// tachometer.
+    /// Gets or sets the X coordinate of the minimum indicated value of the
+    /// Tachometer dial.
     /// </summary>
     public int TachometerMinX
     {
@@ -384,8 +387,8 @@ public class GaugeDataState : EditorViewModelStateBase
     }
 
     /// <summary>
-    /// Gets or sets the Y coordinates for the minimum indicated value of the
-    /// tachometer.
+    /// Gets or sets the Y coordinate of the minimum indicated value of the
+    /// Tachometer dial.
     /// </summary>
     public int TachometerMinY
     {
@@ -394,8 +397,8 @@ public class GaugeDataState : EditorViewModelStateBase
     }
 
     /// <summary>
-    /// Gets or sets the X coordinates for the maximum indicated value of the
-    /// tachometer.
+    /// Gets or sets the X coordinate of the maximum indicated value of the
+    /// Tachometer dial.
     /// </summary>
     public int TachometerMaxX
     {
@@ -404,8 +407,8 @@ public class GaugeDataState : EditorViewModelStateBase
     }
 
     /// <summary>
-    /// Gets or sets the Y coordinates for the maximum indicated value of the
-    /// tachometer.
+    /// Gets or sets the Y coordinate of the maximum indicated value of the
+    /// Tachometer dial.
     /// </summary>
     public int TachometerMaxY
     {
@@ -414,7 +417,8 @@ public class GaugeDataState : EditorViewModelStateBase
     }
 
     /// <summary>
-    /// Gets or sets the relative X coordinates for the rotation axis for the steering wheel.
+    /// Gets or sets the local X coordinate for the rotation axis of the
+    /// steering wheel.
     /// </summary>
     public int SteeringXRotation
     {
@@ -423,7 +427,8 @@ public class GaugeDataState : EditorViewModelStateBase
     }
 
     /// <summary>
-    /// Gets or sets the relative Y coordinates for the rotation axis for the steering wheel.
+    /// Gets or sets the local Y coordinate for the rotation axis of the
+    /// steering wheel.
     /// </summary>
     public int SteeringYRotation
     {
@@ -432,7 +437,7 @@ public class GaugeDataState : EditorViewModelStateBase
     }
 
     /// <summary>
-    /// Gets or sets the absolute X coordinates for the position of the steering wheel.
+    /// Gets or sets the X coordinate of the center of the steering wheel.
     /// </summary>
     public int SteeringXPosition
     {
@@ -441,7 +446,7 @@ public class GaugeDataState : EditorViewModelStateBase
     }
 
     /// <summary>
-    /// Gets or sets the absolute Y coordinates for the position of the steering wheel.
+    /// Gets or sets the Y coordinate of the center of the steering wheel.
     /// </summary>
     public int SteeringYPosition
     {
@@ -450,7 +455,7 @@ public class GaugeDataState : EditorViewModelStateBase
     }
 
     /// <summary>
-    /// Gets or sets the absolute X coordinates for the position of the gear indicator.
+    /// Gets or sets the X coordinate of the position of the gear indicator.
     /// </summary>
     public int GearXPosition
     {
@@ -459,7 +464,7 @@ public class GaugeDataState : EditorViewModelStateBase
     }
 
     /// <summary>
-    /// Gets or sets the absolute Y coordinates for the position of the gear indicator.
+    /// Gets or sets the Y coordinate of the position of the gear indicator.
     /// </summary>
     public int GearYPosition
     {

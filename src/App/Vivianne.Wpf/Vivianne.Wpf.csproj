@@ -12,7 +12,7 @@
 	  <None Remove="Resources\Fonts\NFS_by_JLTV.ttf" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="TheXDS.Ganymede.Wpf" Version="0.3.2-alpha.4" />
+		<PackageReference Include="TheXDS.Ganymede.Wpf" Version="0.3.2-alpha.5" />
 		<PackageReference Include="TheXDS.MCART.Wpf.Controls.ModernWindow" Version="0.17.3-alpha.7" />
 	</ItemGroup>
 	<ItemGroup>
