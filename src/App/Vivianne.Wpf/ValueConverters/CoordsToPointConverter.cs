@@ -1,22 +1,29 @@
 ﻿using System.Globalization;
 using System.Windows.Data;
+using System.Windows;
 
 namespace TheXDS.Vivianne.ValueConverters;
 
+/// <summary>
+/// Converts a pair of integer values to a <see cref="Point"/>
+/// structure.
+/// </summary>
 public class CoordsToPointConverter : IMultiValueConverter
 {
+    /// <inheritdoc/>
     public object? Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
     {
         if (values.Length == 2 && values[0] is int x && values[1] is int y)
         {
-            return new System.Windows.Point(x, y);
+            return new Point(x, y);
         }
-        return default(System.Windows.Point);
+        return default(Point);
     }
 
+    /// <inheritdoc/>
     public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
     {
-        if (value is System.Windows.Point p)
+        if (value is Point p)
         {
             return [(int)p.X, (int)p.Y];
         }

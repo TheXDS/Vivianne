@@ -1,11 +1,9 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
-using TheXDS.MCART.Types.Base;
 using TheXDS.MCART.Types.Extensions;
-using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.ViewModels;
-using static TheXDS.Ganymede.Helpers.DependencyObjectHelpers;
+using static TheXDS.MCART.Helpers.DependencyObjectHelpers;
 
 namespace TheXDS.Vivianne.Controls;
 
@@ -26,7 +24,7 @@ public class CurveEditor : Control
         MaximumProperty = NewDp<double, CurveEditor>(nameof(Maximum), 100.0);
         StepProperty = NewDp<double, CurveEditor>(nameof(Step), 10.0);
         (CurvePropertyKey, CurveProperty) = NewDpRo<ICollection<DoubleValue>, CurveEditor>(nameof(Curve), null!);
-        CollectionProperty = NewDp2Way<ICollection<double>, CurveEditor>(nameof(Collection), null!,OnCollectionChanged);
+        CollectionProperty = NewDp2Way<ICollection<double>, CurveEditor>(nameof(Collection), null!, OnCollectionChanged);
         DefaultStyleKeyProperty.OverrideMetadata(typeof(CurveEditor), new FrameworkPropertyMetadata(typeof(CurveEditor)));
         BarWidthProperty = NewDp<double, CurveEditor>(nameof(BarWidth), 35);
     }
@@ -94,16 +92,5 @@ public class CurveEditor : Control
     {
         get => (double)GetValue(BarWidthProperty);
         set => SetValue(BarWidthProperty, value);
-    }
-}
-
-public class DoubleValue : NotifyPropertyChanged
-{
-    private double _Value;
-
-    public double Value
-    {
-        get => _Value;
-        set => Change(ref _Value, value);
     }
 }

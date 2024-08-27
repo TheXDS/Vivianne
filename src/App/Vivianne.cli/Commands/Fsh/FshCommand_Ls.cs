@@ -5,9 +5,6 @@ using TheXDS.Vivianne.Serializers;
 
 namespace TheXDS.Vivianne.Commands.Fsh;
 
-/// <summary>
-/// Defines a command that allows the user to interact with a VIV file.
-/// </summary>
 public partial class FshCommand
 {
     private static Command BuildLsCommand(Argument<FileInfo> fileArg)
@@ -34,8 +31,13 @@ public partial class FshCommand
             Console.WriteLine(string.Join("\t", ((string?[])[
                 j.Key.PadRight(4),
                 // offsetOpt ? (decOpt ? j.Value.Offset.ToString().PadRight(10): $"0x{j.Value.Offset:X8}") : null,
-                // sizeOpt ? (humanOpt ? ((long)j.Value.Length).ByteUnits() : j.Value.Length.ToString()) : null
+                 sizeOpt ? (humanOpt ? EstimateSize(j.Value).ByteUnits() : EstimateSize(j.Value).ToString()) : null
             ]).NotEmpty()));
         }
+    }
+
+    private static long EstimateSize(FshBlob blob)
+    {
+        return 13 + blob.PixelData.Length + blob.Footer.Length;
     }
 }

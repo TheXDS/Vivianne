@@ -72,20 +72,22 @@
                 DockPanel.Dock="Top"
                 Foreground="Gray"
                 FontSize="18">Recent files</TextBlock>
-            <ItemsControl ItemsSource="{Binding RecentFiles,Mode=OneWay}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Button
-                            Command="{Binding DataContext.OpenVivCommand, ElementName=pgRoot}"
-                            CommandParameter="{Binding Mode=OneWay}">
-                            <StackPanel>
-                                <TextBlock x:Name="PART_friendlyName" Text="{Binding FriendlyName, Mode=OneWay}" FontSize="16" Foreground="Gray"/>
-                                <TextBlock x:Name="PART_filePath" FontSize="9" Foreground="Gray" Text="{Binding FilePath, Mode=OneWay}"/>
-                            </StackPanel>
-                        </Button>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{Binding RecentFiles,Mode=OneWay}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button
+                                Command="{Binding DataContext.OpenVivCommand, ElementName=pgRoot}"
+                                CommandParameter="{Binding Mode=OneWay}">
+                                <StackPanel>
+                                    <TextBlock x:Name="PART_friendlyName" Text="{Binding FriendlyName, Mode=OneWay}" FontSize="16" Foreground="Gray"/>
+                                    <TextBlock x:Name="PART_filePath" FontSize="9" Foreground="Gray" Text="{Binding FilePath, Mode=OneWay}"/>
+                                </StackPanel>
+                            </Button>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
         </DockPanel>
     </Grid>
 </UserControl>

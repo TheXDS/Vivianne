@@ -8,8 +8,14 @@
     xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne"
     xmlns:mcart="http://schemas.thexds.local/mcart"
     xmlns:gn="http://schemas.thexds.local/ganymede"
+    xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings.Views"
+    Background="{StaticResource DarkBackground}"
     d:DataContext="{d:DesignInstance Type=vm:DashEditorViewModel}"
     mc:Ignorable="d">
+    <UserControl.Resources>
+        <mcart:NotNullToBooleanConverter x:Key="nn2bc"/>
+        <vc:GuageDrawingContext x:Key="gdc"/>
+    </UserControl.Resources>
     <DockPanel>
         <ScrollViewer Width="430" Height="520" VerticalScrollBarVisibility="Auto">
             <StackPanel>
@@ -21,51 +27,266 @@
                     </Style>
                     <Style TargetType="Expander">
                         <Setter Property="Margin" Value="5"/>
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="Background" Value="#40808080"/>
+                        <Setter Property="Padding" Value="5"/>
                     </Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="Margin" Value="5"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                    </Style>                    
                 </StackPanel.Resources>
-                <Expander Header="Basics">
-                    <UniformGrid Columns="2" Margin="5">
-                        <gn:Int32TextBox Label="Dial Color X" Value="{Binding State.DialColorX}" Maximum="{Binding State.Cabin.Width, Mode=OneWay}"/>
-                        <gn:Int32TextBox Label="Dial Color Y" Value="{Binding State.DialColorY}" Maximum="{Binding State.Cabin.Height, Mode=OneWay}"/>
-                        <gn:Int32TextBox Label="Dial width base" Value="{Binding State.DialWidthBase}" Maximum="30"/>
-                        <gn:Int32TextBox Label="Dial width tip" Value="{Binding State.DialWidthTip}" Maximum="30"/>
-                    </UniformGrid>
+                <Expander Header="{x:Static st:DashEditorView.Basics}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="{x:Static st:DashEditorView.DialColor}"/>
+                        <gn:Int32TextBox
+                            Grid.Column="1"
+                            Label="X"
+                            Value="{Binding State.DialColorX}"
+                            Maximum="{Binding State.Cabin.Width, Mode=OneWay}"/>
+                        <gn:Int32TextBox
+                            Grid.Column="2"     
+                            Label="Y"
+                            Value="{Binding State.DialColorY}"
+                            Maximum="{Binding State.Cabin.Height, Mode=OneWay}"/>
+                        <gn:Int32TextBox
+                            Grid.Row="1"
+                            Label="{x:Static st:DashEditorView.DialWidthBase}"
+                            Value="{Binding State.DialWidthBase}"
+                            Maximum="30"/>
+                        <gn:Int32TextBox
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Grid.ColumnSpan="2"
+                            Label="{x:Static st:DashEditorView.DialWidthTip}"
+                            Value="{Binding State.DialWidthTip}"
+                            Maximum="30"/>
+                    </Grid>
                 </Expander>
-                <Expander Header="Steering wheel placement">
-                    <UniformGrid Columns="2" Margin="5">
-                        <gn:Int32TextBox Label="Position X" Value="{Binding State.SteeringXPosition}" Maximum="{Binding State.Cabin.Width, Mode=OneWay}"/>
-                        <gn:Int32TextBox Label="Position Y" Value="{Binding State.SteeringYPosition}" Maximum="{Binding State.Cabin.Height, Mode=OneWay}"/>
-                        <gn:Int32TextBox Label="Rotation X" Value="{Binding State.SteeringXRotation}" Maximum="{Binding State.Steering.Width, Mode=OneWay}"/>
-                        <gn:Int32TextBox Label="Rotation Y" Value="{Binding State.SteeringYRotation}" Maximum="{Binding State.Steering.Height, Mode=OneWay}"/>
-                    </UniformGrid>
+                <Expander IsEnabled="{Binding State.Steering, Mode=OneWay, Converter={StaticResource nn2bc}}" Header="{x:Static st:DashEditorView.SteeringWheelProps}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="{x:Static st:DashEditorView.Position}"/>
+                        <TextBlock Grid.Row="1" Text="{x:Static st:DashEditorView.Rotation}"/>
+                        <gn:Int32TextBox
+                            Grid.Column="1"
+                            Label="X"
+                            Value="{Binding State.SteeringXPosition}"
+                            Maximum="{Binding State.Cabin.Width, Mode=OneWay}"/>
+                        <gn:Int32TextBox
+                            Grid.Column="2"
+                            Label="Y"
+                            Value="{Binding State.SteeringYPosition}"
+                            Maximum="{Binding State.Cabin.Height, Mode=OneWay}"/>
+                        <gn:Int32TextBox
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            Label="X"
+                            Value="{Binding State.SteeringXRotation}"
+                            Maximum="{Binding State.Steering.Width, Mode=OneWay}"/>
+                        <gn:Int32TextBox
+                            Grid.Column="2"
+                            Grid.Row="1"
+                            Label="Y"
+                            Value="{Binding State.SteeringYRotation}"
+                            Maximum="{Binding State.Steering.Height, Mode=OneWay}"/>
+                    </Grid>
                 </Expander>
-                <Expander Header="Speedometer">
-                    <UniformGrid Columns="2" Margin="5">
-                        <gn:Int32TextBox Label="Speedometer minimum" Value="{Binding State.SpeedometerMin}" Maximum="{Binding State.SpeedometerMax, Mode=OneWay}"/>
-                        <gn:Int32TextBox Label="Speedometer maximum" Value="{Binding State.SpeedometerMax}" Minimum="{Binding State.SpeedometerMin, Mode=OneWay}" Maximum="32767"/>
-                        <gn:Int32TextBox Label="Speedometer center X" Value="{Binding State.SpeedometerCenterX}" Maximum="{Binding State.Cabin.Width, Mode=OneWay}"/>
-                        <gn:Int32TextBox Label="Speedometer center Y" Value="{Binding State.SpeedometerCenterY}" Maximum="{Binding State.Cabin.Height, Mode=OneWay}"/>
-                        <gn:Int32TextBox Label="Speedometer center offset" Value="{Binding State.SpeedometerCenterOffset}" Maximum="50"/>
-                        <gn:Int32TextBox Label="Speedometer edge offset" Value="{Binding State.SpeedometerEdgeOffset}" Maximum="50"/>
-                        <gn:Int32TextBox Label="Speedometer minimum X" Value="{Binding State.SpeedometerMinX}" Maximum="{Binding State.Cabin.Width, Mode=OneWay}"/>
-                        <gn:Int32TextBox Label="Speedometer minimum Y" Value="{Binding State.SpeedometerMinY}" Maximum="{Binding State.Cabin.Height, Mode=OneWay}"/>
-                        <gn:Int32TextBox Label="Speedometer maximum X" Value="{Binding State.SpeedometerMaxX}" Maximum="{Binding State.Cabin.Width, Mode=OneWay}"/>
-                        <gn:Int32TextBox Label="Speedometer maximum Y" Value="{Binding State.SpeedometerMaxY}" Maximum="{Binding State.Cabin.Height, Mode=OneWay}"/>
-                    </UniformGrid>
+                <Expander Header="{x:Static st:DashEditorView.Speedometer}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <gn:Int32TextBox
+                            Label="{x:Static st:DashEditorView.Min}"
+                            Value="{Binding State.SpeedometerMin}"
+                            Maximum="{Binding State.SpeedometerMax, Mode=OneWay}"/>
+                        <gn:Int32TextBox
+                            Label="{x:Static st:DashEditorView.Max}"
+                            Grid.Column="1"
+                            Grid.ColumnSpan="2"
+                            Value="{Binding State.SpeedometerMax}"
+                            Minimum="{Binding State.SpeedometerMin, Mode=OneWay}"
+                            Maximum="32767"/>
+                        <TextBlock Grid.Row="1" Text="{x:Static st:DashEditorView.Center}"/>
+                        <gn:Int32TextBox
+                            Label="X"
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            Value="{Binding State.SpeedometerCenterX}"
+                            Maximum="{Binding State.Cabin.Width, Mode=OneWay}"/>
+                        <gn:Int32TextBox
+                            Label="Y"
+                            Grid.Column="2"
+                            Grid.Row="1"
+                            Value="{Binding State.SpeedometerCenterY}"
+                            Maximum="{Binding State.Cabin.Height, Mode=OneWay}"/>
+                        <gn:Int32TextBox
+                            Grid.Row="2"
+                            Label="{x:Static st:DashEditorView.CenterOff}"
+                            Value="{Binding State.SpeedometerCenterOffset}"
+                            Maximum="50"/>
+                        <gn:Int32TextBox
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Grid.ColumnSpan="2"
+                            Label="{x:Static st:DashEditorView.TipOff}"
+                            Value="{Binding State.SpeedometerEdgeOffset}"
+                            Maximum="50"/>
+                        <TextBlock Grid.Row="3" Text="{x:Static st:DashEditorView.MinCoords}"/>
+                        <gn:Int32TextBox
+                            Label="X"
+                            Grid.Column="1"
+                            Grid.Row="3"
+                            Value="{Binding State.SpeedometerMinX}"
+                            Maximum="{Binding State.Cabin.Width, Mode=OneWay}"/>
+                        <gn:Int32TextBox
+                            Label="Y"
+                            Grid.Column="2"
+                            Grid.Row="3"
+                            Value="{Binding State.SpeedometerMinY}"
+                            Maximum="{Binding State.Cabin.Height, Mode=OneWay}"/>
+                        <TextBlock Grid.Row="4" Text="{x:Static st:DashEditorView.MaxCoords}"/>
+                        <gn:Int32TextBox
+                            Label="X"
+                            Grid.Column="1"
+                            Grid.Row="4"
+                            Value="{Binding State.SpeedometerMaxX}"
+                            Maximum="{Binding State.Cabin.Width, Mode=OneWay}"/>
+                        <gn:Int32TextBox
+                            Label="Y"
+                            Grid.Column="2"
+                            Grid.Row="4"
+                            Value="{Binding State.SpeedometerMaxY}"
+                            Maximum="{Binding State.Cabin.Height, Mode=OneWay}"/>
+                    </Grid>
                 </Expander>
-                <Expander Header="Tachometer">
-                    <UniformGrid Columns="2" Margin="5">
-                        <gn:Int32TextBox Label="Tachometer minimum" Value="{Binding State.TachometerMin}" Maximum="{Binding State.TachometerMax, Mode=OneWay}"/>
-                        <gn:Int32TextBox Label="Tachometer maximum" Value="{Binding State.TachometerMax}" Minimum="{Binding State.TachometerMin, Mode=OneWay}" Maximum="32767"/>
-                        <gn:Int32TextBox Label="Tachometer center X" Value="{Binding State.TachometerCenterX}" Maximum="{Binding State.Cabin.Width, Mode=OneWay}"/>
-                        <gn:Int32TextBox Label="Tachometer center Y" Value="{Binding State.TachometerCenterY}" Maximum="{Binding State.Cabin.Height, Mode=OneWay}"/>
-                        <gn:Int32TextBox Label="Tachometer center offset" Value="{Binding State.TachometerCenterOffset}" Maximum="50"/>
-                        <gn:Int32TextBox Label="Tachometer edge offset" Value="{Binding State.TachometerEdgeOffset}" Maximum="50"/>
-                        <gn:Int32TextBox Label="Tachometer minimum X" Value="{Binding State.TachometerMinX}" Maximum="{Binding State.Cabin.Width, Mode=OneWay}"/>
-                        <gn:Int32TextBox Label="Tachometer minimum Y" Value="{Binding State.TachometerMinY}" Maximum="{Binding State.Cabin.Height, Mode=OneWay}"/>
-                        <gn:Int32TextBox Label="Tachometer maximum X" Value="{Binding State.TachometerMaxX}" Maximum="{Binding State.Cabin.Width, Mode=OneWay}"/>
-                        <gn:Int32TextBox Label="Tachometer maximum Y" Value="{Binding State.TachometerMaxY}" Maximum="{Binding State.Cabin.Height, Mode=OneWay}"/>
-                    </UniformGrid>
+                <Expander Header="{x:Static st:DashEditorView.Tacho}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <gn:Int32TextBox
+                            Label="{x:Static st:DashEditorView.Min}"
+                            Value="{Binding State.TachometerMin}"
+                            Maximum="{Binding State.TachometerMax, Mode=OneWay}"/>
+                        <gn:Int32TextBox
+                            Label="{x:Static st:DashEditorView.Max}"
+                            Grid.Column="1"
+                            Grid.ColumnSpan="2"
+                            Value="{Binding State.TachometerMax}"
+                            Minimum="{Binding State.TachometerMin, Mode=OneWay}"
+                            Maximum="32767"/>
+                        <TextBlock Grid.Row="1" Text="{x:Static st:DashEditorView.Center}"/>
+                        <gn:Int32TextBox
+                            Label="X"
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            Value="{Binding State.TachometerCenterX}"
+                            Maximum="{Binding State.Cabin.Width, Mode=OneWay}"/>
+                        <gn:Int32TextBox
+                            Label="Y"
+                            Grid.Column="2"
+                            Grid.Row="1"
+                            Value="{Binding State.TachometerCenterY}"
+                            Maximum="{Binding State.Cabin.Height, Mode=OneWay}"/>
+                        <gn:Int32TextBox
+                            Grid.Row="2"
+                            Label="{x:Static st:DashEditorView.CenterOff}"
+                            Value="{Binding State.TachometerCenterOffset}"
+                            Maximum="50"/>
+                        <gn:Int32TextBox
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Grid.ColumnSpan="2"
+                            Label="{x:Static st:DashEditorView.TipOff}"
+                            Value="{Binding State.TachometerEdgeOffset}"
+                            Maximum="50"/>
+                        <TextBlock Grid.Row="3" Text="{x:Static st:DashEditorView.MinCoords}"/>
+                        <gn:Int32TextBox
+                            Label="X"
+                            Grid.Column="1"
+                            Grid.Row="3"
+                            Value="{Binding State.TachometerMinX}"
+                            Maximum="{Binding State.Cabin.Width, Mode=OneWay}"/>
+                        <gn:Int32TextBox
+                            Label="Y"
+                            Grid.Column="2"
+                            Grid.Row="3"
+                            Value="{Binding State.TachometerMinY}"
+                            Maximum="{Binding State.Cabin.Height, Mode=OneWay}"/>
+                        <TextBlock Grid.Row="4" Text="{x:Static st:DashEditorView.MaxCoords}"/>
+                        <gn:Int32TextBox
+                            Label="X"
+                            Grid.Column="1"
+                            Grid.Row="4"
+                            Value="{Binding State.TachometerMaxX}"
+                            Maximum="{Binding State.Cabin.Width, Mode=OneWay}"/>
+                        <gn:Int32TextBox
+                            Label="Y"
+                            Grid.Column="2"
+                            Grid.Row="4"
+                            Value="{Binding State.TachometerMaxY}"
+                            Maximum="{Binding State.Cabin.Height, Mode=OneWay}"/>
+                    </Grid>
+                </Expander>
+                <Expander IsEnabled="{Binding State.GearIndicator, Mode=OneWay, Converter={StaticResource nn2bc}}" Header="{x:Static st:DashEditorView.Gears}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Row="4" Text="{x:Static st:DashEditorView.GearCoords}"/>
+                        <gn:Int32TextBox
+                            Label="X"
+                            Grid.Column="1"
+                            Grid.Row="4"
+                            Value="{Binding State.GearXPosition}"
+                            Maximum="{Binding State.Cabin.Width, Mode=OneWay}"/>
+                        <gn:Int32TextBox
+                            Label="Y"
+                            Grid.Column="2"
+                            Grid.Row="4"
+                            Value="{Binding State.GearYPosition}"
+                            Maximum="{Binding State.Cabin.Height, Mode=OneWay}"/>
+                    </Grid>
                 </Expander>
             </StackPanel>
         </ScrollViewer>
@@ -74,59 +295,62 @@
                 <RowDefinition/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <StackPanel Grid.Row="1" Orientation="Horizontal">
-                <Slider Minimum="-180" Maximum="180" Value="{Binding State.PreviewSteerAngle}" Width="100"/>
-                <TextBlock Text="TODO: implement mouse coords tracker"/>
-            </StackPanel>
-            <Canvas Width="640" Height="480" ClipToBounds="True">
-                <Image Width="640" Height="480" Stretch="None">
-                    <Image.Source>
-                        <MultiBinding>
-                            <MultiBinding.Converter>
-                                <vc:FshImageConverter/>
-                            </MultiBinding.Converter>
-                            <Binding Path="State.Cabin" Mode="OneWay"/>
-                        </MultiBinding>
-                    </Image.Source>
-                </Image>
-                <Image
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Canvas.Left="{Binding State.GearLeft}"
-                    Canvas.Top="{Binding State.GearTop}"
-                    Stretch="None">
-                    <Image.Source>
-                        <MultiBinding>
-                            <MultiBinding.Converter>
-                                <vc:FshImageConverter/>
-                            </MultiBinding.Converter>
-                            <Binding Path="State.GearIndicator" Mode="OneWay"/>
-                        </MultiBinding>
-                    </Image.Source>
-                </Image>
-                
-                <Image
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Canvas.Left="{Binding State.SteeringLeft}"
-                    Canvas.Top="{Binding State.SteeringTop}"
-                    Stretch="None">
-                    <Image.RenderTransform>
-                        <RotateTransform
-                            CenterX="{Binding State.Steering.XRotation, Mode=OneWay}"
-                            CenterY="{Binding State.Steering.YRotation, Mode=OneWay}"
-                            Angle="{Binding State.PreviewSteerAngle, Mode=OneWay}"/>
-                    </Image.RenderTransform>
-                    <Image.Source>
-                        <MultiBinding>
-                            <MultiBinding.Converter>
-                                <vc:FshImageConverter/>
-                            </MultiBinding.Converter>
-                            <Binding Path="State.Steering" Mode="OneWay"/>
-                        </MultiBinding>
-                    </Image.Source>
-                </Image>
-            </Canvas>
+            <Grid Grid.Row="1">
+                <Slider Minimum="-180" Maximum="180" Value="{Binding State.PreviewSteerAngle}" Width="180" LargeChange="30" TickFrequency="30" TickPlacement="TopLeft"/>
+                <!--<TextBlock Text="TODO: implement mouse coords tracker"/>-->
+            </Grid>
+            <Border BorderBrush="{StaticResource MainAreaAdaptiveBackground}" BorderThickness="1">
+                <Canvas Width="640" Height="480" ClipToBounds="True">
+                    <!--background-->
+                    <Image Width="640" Height="480" Stretch="None">
+                        <Image.Source>
+                            <MultiBinding>
+                                <MultiBinding.Converter>
+                                    <vc:FshImageConverter/>
+                                </MultiBinding.Converter>
+                                <Binding Path="State.Cabin" Mode="OneWay"/>
+                            </MultiBinding>
+                        </Image.Source>
+                    </Image>
+                    <Image Source="{Binding State.PreviewGauge, Converter={StaticResource gdc}, Mode=OneWay}"/>
+                    <Image
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Canvas.Left="{Binding State.GearLeft}"
+                        Canvas.Top="{Binding State.GearTop}"
+                        Stretch="None">
+                        <Image.Source>
+                            <MultiBinding>
+                                <MultiBinding.Converter>
+                                    <vc:FshImageConverter/>
+                                </MultiBinding.Converter>
+                                <Binding Path="State.GearIndicator" Mode="OneWay"/>
+                            </MultiBinding>
+                        </Image.Source>
+                    </Image>
+                    <Image
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Canvas.Left="{Binding State.SteeringLeft}"
+                        Canvas.Top="{Binding State.SteeringTop}"
+                        Stretch="None">
+                        <Image.RenderTransform>
+                            <RotateTransform
+                                CenterX="{Binding State.Steering.XRotation, Mode=OneWay}"
+                                CenterY="{Binding State.Steering.YRotation, Mode=OneWay}"
+                                Angle="{Binding State.PreviewSteerAngle, Mode=OneWay}"/>
+                        </Image.RenderTransform>
+                        <Image.Source>
+                            <MultiBinding>
+                                <MultiBinding.Converter>
+                                    <vc:FshImageConverter/>
+                                </MultiBinding.Converter>
+                                <Binding Path="State.Steering" Mode="OneWay"/>
+                            </MultiBinding>
+                        </Image.Source>
+                    </Image>
+                </Canvas>
+            </Border>
         </Grid>
     </DockPanel>
 </UserControl>

@@ -1,18 +1,17 @@
-﻿using TheXDS.Ganymede.Controls;
+﻿using TheXDS.MCART.Controls;
 
-namespace Vivianne.Wpf
+namespace Vivianne.Wpf;
+
+/// <summary>
+/// Interaction logic for MainWindow.xaml
+/// </summary>
+public partial class MainWindow : ModernWindow
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Initializes a new instance of the <see cref="MainWindow"/> class.
     /// </summary>
-    public partial class MainWindow : ModernWindow
+    public MainWindow()
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MainWindow"/> class.
-        /// </summary>
-        public MainWindow()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

@@ -15,7 +15,7 @@ public static class FshBlobExtensions
     /// <summary>
     /// Converts a <see cref="FshBlob"/> into an <see cref="Image"/>.
     /// </summary>
-    /// <param name="blob">GIMX to export.</param>
+    /// <param name="blob">Image blob to export.</param>
     /// <param name="palette">
     /// Specifies the Color palette to use in case the FSH blob uses the
     /// <see cref="FshBlobFormat.Indexed8"/> pixel format.
@@ -29,18 +29,15 @@ public static class FshBlobExtensions
         {
             return callback.Invoke(blob.PixelData, blob.Width, blob.Height);
         }
-        else if (blob.Magic == FshBlobFormat.Indexed8)
-        {
-            palette ??= LoadPalette(blob.Footer) ?? CreatePalette();
-            return LoadFromIndexedBlob(blob, palette, p => p.ToPixel<Rgba32>());
-        }
-        else return null;
+        if (blob.Magic != FshBlobFormat.Indexed8) return null;
+        palette ??= LoadPalette(blob.Footer) ?? CreatePalette();
+        return LoadFromIndexedBlob(blob, palette, p => p.ToPixel<Bgra32>());
     }
 
     /// <summary>
-    /// Replaces the GIMX data from an image.
+    /// Replaces the blob's image data from an image.
     /// </summary>
-    /// <param name="blob">GIMX to replace the data in.</param>
+    /// <param name="blob">Blob to replace the data in.</param>
     /// <param name="image">Image from which to load the new data.</param>
     /// <param name="palette">
     /// Specifies the Color palette to use in case the FSH blob uses the
@@ -54,7 +51,7 @@ public static class FshBlobExtensions
     {
         if (blob.Magic == FshBlobFormat.Indexed8)
         {
-            var quantizerFactory = new OctreeQuantizer(new QuantizerOptions() { MaxColors = 256 });
+            var quantizerFactory = new OctreeQuantizer(new QuantizerOptions { MaxColors = 256 });
             var quantizer = quantizerFactory.CreatePixelSpecificQuantizer<Rgba32>(Configuration.Default);
 
             quantizer.BuildPalette(new ExtensivePixelSamplingStrategy(), (Image<Rgba32>)image);
