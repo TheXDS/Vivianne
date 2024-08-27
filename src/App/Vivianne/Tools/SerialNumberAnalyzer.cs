@@ -89,7 +89,7 @@ public class SerialNumberAnalyzer : IVivianneTool
                 entry.SerialNumber = serials.Count == 1 ? serials.Single() : null;
                 if (cancel.IsCancellationRequested) yield break;
                 yield return entry;
-            };
+            }
         }
     }
 
