@@ -19,18 +19,16 @@ public class FcePreviewTool : IVivianneTool
     {
         var fin = await dialogService.GetFileOpenPath(St.Open, "", FileFilters.FceFileFilter);
         if (!fin.Success) return;
-        navigationService.Navigate(CreateViewModel(await LoadFce(fin.Result), dialogService, fin.Result));
+        navigationService.Navigate(CreateViewModel(await LoadFce(fin.Result), fin.Result));
     }
 
     private static async Task<FceFile> LoadFce(string fileName)
     {
-        var rawData = await File.ReadAllBytesAsync(fileName);
-        var data = QfsCodec.Decompress(rawData);
-        return await ((ISerializer<FceFile>)new FceSerializer()).DeserializeAsync(data);
+        return await ((ISerializer<FceFile>)new FceSerializer()).DeserializeAsync(await File.ReadAllBytesAsync(fileName));
     }
 
-    private static FcePreviewViewModel CreateViewModel(FceFile fce, IDialogService dialogService, string fileName)
+    private static FcePreviewViewModel CreateViewModel(FceFile fce, string fileName)
     {
-        return new FcePreviewViewModel(fce);
+        return new FcePreviewViewModel(fce) { Title = fileName };
     }
 }

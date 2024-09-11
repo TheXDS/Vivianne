@@ -3,12 +3,12 @@
 /// <summary>
 /// Describes Car performance data.
 /// </summary>
-public class Carp
+public class Carp : ISerialNumberModel
 {
     /// <summary>
     /// Gets or sets the car's serial number as set on the FeData.
     /// </summary>
-    public int SerialNumber { get; set; }
+    public ushort SerialNumber { get; set; }
 
     /// <summary>
     /// Gets or sets a value that indicates the Car class as set on the FeData.

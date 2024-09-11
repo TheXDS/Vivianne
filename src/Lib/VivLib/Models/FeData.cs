@@ -5,7 +5,7 @@ namespace TheXDS.Vivianne.Models;
 /// <summary>
 /// Represents a block of car information (FeData)
 /// </summary>
-public class FeData
+public class FeData : ISerialNumberModel
 {
     #region Unknown values
 

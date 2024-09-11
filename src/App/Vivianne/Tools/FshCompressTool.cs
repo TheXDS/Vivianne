@@ -27,7 +27,7 @@ public class FshCompressTool : IVivianneTool
             p.Report(St.ProcessMsg);
             var fsh = await File.ReadAllBytesAsync(fin.Result);
             var qfs = await Task.Run(() => QfsCodec.Compress(fsh));
-            await File.WriteAllBytesAsync(fout.Result, fsh);
+            await File.WriteAllBytesAsync(fout.Result, qfs);
         });
     }
 }

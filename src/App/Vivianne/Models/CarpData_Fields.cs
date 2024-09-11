@@ -2,7 +2,7 @@
 
 public partial class CarpEditorState
 {
-    private int _SerialNumber;
+    private ushort _SerialNumber;
     private Nfs3CarClass _CarClass;
     private double _Mass;
     private int _NumberOfGearsManual;

@@ -17,8 +17,7 @@ public partial class CarpEditorState
     /// </returns>
     public static CarpEditorState From(string rawData)
     {
-        ISerializer<Carp> s = new CarpSerializer();
-        return From(s.Deserialize(rawData.ToStream()));
+        return From(new CarpSerializer().Deserialize(rawData.ToStream()));
     }
 
     /// <summary>
@@ -31,38 +30,7 @@ public partial class CarpEditorState
     /// </returns>
     public static CarpEditorState From(Carp c)
     {
-        var result = new CarpEditorState();
-        void CopyProps<T>()
-        {
-            foreach (var prop in typeof(Carp).GetPropertiesOf<T>())
-            {
-                if (typeof(CarpEditorState).GetProperty(prop.Name) is { } destProp)
-                {
-                    destProp.SetValue(result, prop.GetValue(c));
-                }
-            }
-        }
-        void CopyCollection<T>()
-        {
-            foreach (var prop in typeof(Carp).GetPropertiesOf<ICollection<T>>())
-            {
-                if (typeof(CarpEditorState).GetProperty(prop.Name) is { } destProp)
-                {
-                    ICollection<T> source = (ICollection<T>)prop.GetValue(c)!;
-                    ICollection<T> dest = (ICollection<T>)destProp.GetValue(result)!;
-                    dest.Clear();
-                    dest.AddRange(source);
-                }
-            }
-        }
-
-        CopyProps<int>();
-        CopyProps<Nfs3CarClass>();
-        CopyProps<double>();
-        CopyCollection<int>();
-        CopyCollection<double>();
-
-        return result;
+        return CreateCopy<Carp, CarpEditorState>(c);
     }
 
     /// <summary>
@@ -73,38 +41,7 @@ public partial class CarpEditorState
     /// </returns>
     public Carp ToCarp()
     {
-        var result = new Carp();
-
-        void CopyProps<T>()
-        {
-            foreach (var prop in typeof(CarpEditorState).GetPropertiesOf<T>())
-            {
-                if (typeof(Carp).GetProperty(prop.Name) is { } destProp)
-                {
-                    destProp.SetValue(result, prop.GetValue(this));
-                }
-            }
-        }
-        void CopyCollection<T>()
-        {
-            foreach (var prop in typeof(CarpEditorState).GetPropertiesOf<ICollection<T>>())
-            {
-                if (typeof(Carp).GetProperty(prop.Name) is { } destProp)
-                {
-                    ICollection<T> source = (ICollection<T>)prop.GetValue(this)!;
-                    ICollection<T> dest = (ICollection<T>)destProp.GetValue(result)!;
-                    dest.Clear();
-                    dest.AddRange(source);
-                }
-            }
-        }
-
-        CopyProps<int>();
-        CopyProps<Nfs3CarClass>();
-        CopyProps<double>();
-        CopyCollection<int>();
-        CopyCollection<double>();
-        return result;
+        return CreateCopy<CarpEditorState, Carp>(this);
     }
 
     /// <summary>
@@ -113,7 +50,43 @@ public partial class CarpEditorState
     /// <returns>A string that contains the raw Carp data.</returns>
     public string ToSerializedCarp()
     {
-        ISerializer<Carp> s = new CarpSerializer();
-        return System.Text.Encoding.Latin1.GetString(s.Serialize(ToCarp()));
+        return System.Text.Encoding.Latin1.GetString(((ISerializer<Carp>)new CarpSerializer()).Serialize(ToCarp()));
+    }
+
+    private static TResult CreateCopy<TSource, TResult>(TSource source) where TResult : new()
+    {
+        var result = new TResult();
+        CopyProps<TSource, TResult, ushort>(source, result);
+        CopyProps<TSource, TResult, int>(source, result);
+        CopyProps<TSource, TResult, Nfs3CarClass>(source, result);
+        CopyProps<TSource, TResult, double>(source, result);
+        CopyCollection<TSource, TResult, int>(source, result);
+        CopyCollection<TSource, TResult, double>(source, result);
+        return result;
+    }
+
+    private static void CopyProps<TFrom, TTo, TValue>(TFrom source, TTo destination)
+    {
+        foreach (var prop in typeof(TFrom).GetPropertiesOf<TValue>())
+        {
+            if (typeof(TTo).GetProperty(prop.Name) is { } destProp)
+            {
+                destProp.SetValue(destination, prop.GetValue(source));
+            }
+        }
+    }
+
+    private static void CopyCollection<TFrom, TTo, TValue>(TFrom source, TTo destination)
+    {
+        foreach (var prop in typeof(TFrom).GetPropertiesOf<ICollection<TValue>>())
+        {
+            if (typeof(TTo).GetProperty(prop.Name) is { } destProp)
+            {
+                ICollection<TValue> sourceCollection = (ICollection<TValue>)prop.GetValue(source)!;
+                ICollection<TValue> destinationCollection = (ICollection<TValue>)destProp.GetValue(destination)!;
+                destinationCollection.Clear();
+                destinationCollection.AddRange(sourceCollection);
+            }
+        }
     }
 }

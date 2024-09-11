@@ -23,6 +23,7 @@ public class SerialNumberAnalyzer : IVivianneTool
     private class SnEntry
     {
         public readonly Dictionary<string, FeData> FeDatas = [];
+        public Carp? Carp;
         public string FilePath = null!;
         public VivFile VivFile = null!;
         public ushort? SerialNumber;
@@ -32,8 +33,9 @@ public class SerialNumberAnalyzer : IVivianneTool
     private static readonly EnumerationOptions EnumOpts = new() { MatchCasing = MatchCasing.CaseInsensitive };
     private static readonly ISerializer<FeData> feSerializer = new FeDataSerializer();
     private static readonly ISerializer<VivFile> vivSerializer = new VivSerializer();
+    private static readonly ISerializer<Carp> carpSerializer = new CarpSerializer();
 
-    private static async Task<SnEntry?> Load(FileInfo file)
+    private static async Task<SnEntry?> LoadViv(FileInfo file)
     {
         try
         {
@@ -63,9 +65,45 @@ public class SerialNumberAnalyzer : IVivianneTool
         catch (Exception ex)
         {
             Debug.Print($"Error loading FeData '{feName}': {ex.Message}. Skipping...");
-            _ = ex.Message;
         }
         return null;
+    }
+
+    private static async Task<Carp?> LoadCarp(VivFile viv)
+    {
+        try
+        {
+            if (viv.Directory.TryGetValue("carp.txt", out var carp))
+            {
+                return await carpSerializer.DeserializeAsync(carp);
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.Print($"Error loading 'carp.txt': {ex.Message}. Skipping...");
+        }
+        return null;
+    }
+
+    private static async Task ParseSnFromViv(SnEntry entry)
+    {
+        HashSet<ushort> serials = [];
+        foreach (var fe in FeData.KnownExtensions)
+        {
+            var feName = $"fedata{fe}";
+            if (await LoadFeData(entry.VivFile, feName) is { } feData)
+            {
+                entry.FeDatas.Add(feName, feData);
+                serials.Add(feData.SerialNumber);
+            }
+        }
+        if (await LoadCarp(entry.VivFile) is { } carp)
+        {
+            entry.Carp = carp;
+            serials.Add(carp.SerialNumber);
+        }
+
+        entry.SerialNumber = serials.Count == 1 ? serials.Single() : null;
     }
 
     private static async IAsyncEnumerable<SnEntry> LoadEntries(FileInfo[] files, IProgress<ProgressReport> progress, [EnumeratorCancellation] CancellationToken cancel)
@@ -74,19 +112,9 @@ public class SerialNumberAnalyzer : IVivianneTool
         foreach (var file in files)
         {
             progress.Report(new(c++ * 100 / files.Length, $"Loading '{file.FullName}'..."));
-            if (await Load(file) is { } entry)
+            if (await LoadViv(file) is { } entry)
             {
-                HashSet<ushort> serials = [];
-                foreach (var fe in FeData.KnownExtensions)
-                {
-                    var feName = $"fedata{fe}";
-                    if (await LoadFeData(entry.VivFile, feName) is { } feData)
-                    {
-                        entry.FeDatas.Add(feName, feData);
-                        serials.Add(feData.SerialNumber);
-                    }
-                }
-                entry.SerialNumber = serials.Count == 1 ? serials.Single() : null;
+                await ParseSnFromViv(entry);
                 if (cancel.IsCancellationRequested) yield break;
                 yield return entry;
             }
@@ -134,6 +162,7 @@ public class SerialNumberAnalyzer : IVivianneTool
                 fe.Value.SerialNumber = newSerial;
                 entry.VivFile.Directory[fe.Key] = feSerializer.Serialize(fe.Value);
             }
+            if (entry.Carp is not null) entry.Carp.SerialNumber = newSerial;
             progress.Report(new(c++ * 100 / entries.Length, $"Writing '{entry.FilePath}'..."));
             using var vivF = File.Open(entry.FilePath, FileMode.Truncate);
             await vivSerializer.SerializeToAsync(entry.VivFile, vivF);
@@ -164,7 +193,7 @@ public class SerialNumberAnalyzer : IVivianneTool
         }
         else if (await dlg.GetOption(ToolName, $"Operation completed successfully. Number of fixed serial numbers: {operation.Result.Length}", "Ok", "Details") == 1)
         {
-            await dlg.Message(ToolName, string.Join(Environment.NewLine, operation.Result.Select(p => $"{p.FilePath}: {p.SerialNumber.ToString() ?? "undefined"} -> {p.NewSerial}")));
+            await dlg.Message(ToolName, string.Join(Environment.NewLine, operation.Result.Select(p => $"{p.FilePath}: {p.SerialNumber.ToString().OrNull() ?? "undefined"} -> {p.NewSerial}")));
         }
     }
 }

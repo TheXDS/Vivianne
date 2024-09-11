@@ -11,7 +11,7 @@ public partial class CarpEditorState : EditorViewModelStateBase
     /// <summary>
     /// Gets or sets the car's serial number.
     /// </summary>
-    public int SerialNumber
+    public ushort SerialNumber
     {
         get => _SerialNumber;
         set => Change(ref _SerialNumber, value);

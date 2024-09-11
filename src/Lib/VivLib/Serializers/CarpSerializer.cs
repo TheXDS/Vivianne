@@ -35,7 +35,7 @@ public class CarpSerializer : ISerializer<Carp>
         }
         var carp = new Carp
         {
-            SerialNumber = TryIntKey(0),
+            SerialNumber = (ushort)TryIntKey(0),
             CarClass = (Nfs3CarClass)TryIntKey(1),
             Mass = TryDoubleKey(2),
             NumberOfGearsManual = TryIntKey(3),

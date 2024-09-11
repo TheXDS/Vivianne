@@ -84,7 +84,7 @@ public static class FedataSyncTool
             if (vivDirectory.TryGetValue($"fedata{j.Key}", out var content))
             {
                 var f = fedataSerializer.Deserialize(content);
-                f.SerialNumber = (ushort)source.SerialNumber;
+                f.SerialNumber = source.SerialNumber;
                 f.VehicleClass = source.CarClass;
                 var perfDataSource = j.Value(source);
                 f.Weight = perfDataSource.Weight;

@@ -15,8 +15,9 @@ using TheXDS.Vivianne.Tools;
 namespace TheXDS.Vivianne.Resources;
 
 /// <summary>
-/// Contains a set of resources to map GIMX pixel formats to different value
-/// types as required.
+/// Contains a set of resources to map FSH blob pixel formats and FSH footer
+/// data to different value types as required, as well as other value
+/// conversion methods.
 /// </summary>
 public static class Mappings
 {
