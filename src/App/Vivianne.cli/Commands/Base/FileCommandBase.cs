@@ -60,16 +60,23 @@ public abstract class FileCommandBase<TFile, TSerializer>(
     {
         ISerializer<TFile> serializer = new TSerializer();
         TFile value;
-        using (var fs = file.OpenRead())
+        try
         {
-            value = await serializer.DeserializeAsync(fs);
+            using (var fs = file.OpenRead())
+            {
+                value = await serializer.DeserializeAsync(fs);
+            }
+            await action.Invoke(value);
+            if (!readOnly)
+            {
+                using var fs = file.OpenWrite();
+                fs.Destroy();
+                await serializer.SerializeToAsync(value, fs);
+            }
         }
-        await action.Invoke(value);
-        if (!readOnly)
+        catch (Exception ex)
         {
-            using var fs = file.OpenWrite();
-            fs.Destroy();
-            await serializer.SerializeToAsync(value, fs);
+            Fail(ex.Message);
         }
     }
 

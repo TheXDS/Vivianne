@@ -1,3 +1,4 @@
+using TheXDS.MCART.Helpers;
 using TheXDS.Vivianne.Commands.Base;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Serializers;
@@ -14,4 +15,14 @@ public partial class FshCommand() : FileCommandBase<FshFile, FshSerializer>(
     "fsh/qfs file",
     "Path to the FSH/QFS file.",
     typeof(FshCommand).GetMethods(Static | NonPublic))
-{ }
+{
+    private static long EstimateSize(FshBlob blob)
+    {
+        return 13 + blob.PixelData.Length + blob.Footer.Length;
+    }
+
+    private static string GetSize(long bytes, bool humanReadable)
+    {
+        return humanReadable ? bytes.ByteUnits() : bytes.ToString();
+    }
+ }

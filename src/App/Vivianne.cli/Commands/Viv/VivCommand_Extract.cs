@@ -23,6 +23,7 @@ public partial class VivCommand
     {
         return FileTransaction(vivFile, viv =>
         {
+            if (!outDir.Exists) outDir.Create();
             foreach (var j in viv.Keys.Where(p => Regex.IsMatch(p, regex)))
             {
                 using var fs = File.OpenWrite(Path.Combine(outDir.FullName, j));

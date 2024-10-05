@@ -31,13 +31,8 @@ public partial class FshCommand
             Console.WriteLine(string.Join("\t", ((string?[])[
                 j.Key.PadRight(4),
                 // offsetOpt ? (decOpt ? j.Value.Offset.ToString().PadRight(10): $"0x{j.Value.Offset:X8}") : null,
-                 sizeOpt ? (humanOpt ? EstimateSize(j.Value).ByteUnits() : EstimateSize(j.Value).ToString()) : null
+                 sizeOpt ? GetSize(EstimateSize(j.Value), humanOpt) : null
             ]).NotEmpty()));
         }
-    }
-
-    private static long EstimateSize(FshBlob blob)
-    {
-        return 13 + blob.PixelData.Length + blob.Footer.Length;
     }
 }

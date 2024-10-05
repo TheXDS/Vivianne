@@ -26,6 +26,7 @@ public partial class FshCommand
     {
         return FileTransaction(fshFile, fsh =>
         {
+            if (!outDir.Exists) outDir.Create();
             foreach (var j in fsh.Entries.Keys.Where(p => Regex.IsMatch(p, regex)))
             {
                 var blob = fsh.Entries[j];

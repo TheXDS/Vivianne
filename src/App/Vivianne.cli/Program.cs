@@ -3,7 +3,6 @@ using TheXDS.Vivianne.Commands.Base;
 
 namespace TheXDS.Vivianne;
 
-
 internal static class Program
 {
     private static Task<int> Main(string[] args)

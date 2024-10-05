@@ -4,9 +4,10 @@ using System.Threading.Tasks;
 using TheXDS.Ganymede.Services;
 
 namespace TheXDS.Vivianne.Extensions;
+
 /// <summary>
 /// Extends Ganymede's <see cref="IDialogService"/> API to include a sequential
-/// prompt method to ask for various values fromthe user.
+/// prompt method to ask for various values from the user.
 /// </summary>
 internal static class DialogServiceExtensions
 {
