@@ -67,6 +67,14 @@ public static class QfsCodec
         return entryData.Length >= 2 && BitConverter.ToUInt16(entryData, 0) == QFS_Signature;
     }
 
+    /// <summary>
+    /// Gets a value that indicates if the raw file contents are compressed.
+    /// </summary>
+    /// <param name="stream">Stream with the contents to be verified.</param>
+    /// <returns>
+    /// <see langword="true"/> if the stream appears to contain a
+    /// compressed FSH file (QFS); <see langword="false"/> otherwise.
+    /// </returns>
     public static bool IsCompressed(Stream stream)
     {
         stream.Seek(0, SeekOrigin.Begin);

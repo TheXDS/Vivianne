@@ -21,7 +21,8 @@ public abstract class VivianneCommand
     /// Exit code to return to the operating system. If ommitted, will default
     /// to <c>-1</c>.
     /// </param>
-    protected static void Fail(string message, int exitCode = -1){
+    protected static void Fail(string message, int exitCode = -1)
+    {
         using (var stderr = Console.OpenStandardError())
         using (var stderrw = new StreamWriter(stderr))
         {
