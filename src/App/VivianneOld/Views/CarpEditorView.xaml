@@ -1,0 +1,466 @@
+﻿<UserControl
+    x:Class="TheXDS.Vivianne.Views.CarpEditorView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mdl="clr-namespace:TheXDS.Vivianne.Models;assembly=VivLib"
+    xmlns:gn="http://schemas.thexds.local/ganymede"
+    xmlns:controls="clr-namespace:TheXDS.Vivianne.Controls"
+    xmlns:viewmodels="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
+    xmlns:models="clr-namespace:TheXDS.Vivianne.Models;assembly=Vivianne.Common"
+    d:DataContext="{d:DesignInstance Type=viewmodels:CarpEditorViewModel}"
+    mc:Ignorable="d" 
+    Background="White"
+    d:DesignWidth="800">
+    <UserControl.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="10,2"/>
+        </Style>
+        <Style TargetType="GroupBox">
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+        <Style TargetType="UniformGrid">
+            <Setter Property="Columns" Value="4"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+        <Style TargetType="CheckBox" BasedOn="{StaticResource ToggleSwitch}">
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+        <Style TargetType="gn:Int32TextBox">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Minimum" Value="0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Right"/>
+        </Style>
+        <Style TargetType="gn:DoubleTextBox">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Minimum" Value="0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Right"/>
+        </Style>
+    </UserControl.Resources>
+    <DockPanel>
+        <Border Background="{StaticResource DarkBackground}" DockPanel.Dock="Top" MinHeight="45">
+            <UniformGrid HorizontalAlignment="Center" Rows="1">
+                <Button Command="{Binding SaveChangesCommand, Mode=OneWay}">Save</Button>
+                <Button>Realistic carp wizard</Button>
+                <Button Command="{Binding PerformanceMetricsCommand}">Performance metrics</Button>
+                <Button Command="{Binding FedataSyncCommand}">Sync with FeData</Button>
+            </UniformGrid>
+        </Border>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="30"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Rectangle Fill="{StaticResource MainAreaAdaptiveBackground}"/>
+            <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <GroupBox Header="Basic information">
+                        <UniformGrid>
+                            <gn:Int32TextBox
+                                Value="{Binding State.SerialNumber}"
+                                Label="Serial number"
+                                Maximum="65535"/>
+                            <UniformGrid Rows="1" Columns="2">
+                                <TextBlock VerticalAlignment="Center" TextAlignment="Right" Margin="5,0">Car class</TextBlock>
+                                <ComboBox
+                                    IsEditable="False"
+                                    SelectedItem="{Binding State.CarClass}"
+                                    ItemsSource="{controls:EnumValProvider EnumType={x:Type mdl:Nfs3CarClass}}"/>
+                            </UniformGrid>
+                            <gn:DoubleTextBox Label="Mass (Kg)" Minimum="1" Value="{Binding State.Mass}"/>
+                            <gn:DoubleTextBox Label="Top Speed (m/s)" Minimum="1" Value="{Binding State.TopSpeed}"/>
+                            <gn:DoubleTextBox Label="Camera arm" Maximum="1" Step="0.1" Value="{Binding State.CameraArm}"/>
+                        </UniformGrid>
+                    </GroupBox>
+                    <GroupBox Header="Drivetrain">
+                        <UniformGrid>
+                            <gn:DoubleTextBox
+                                Label="Max velocity (m/s)"
+                                Value="{Binding State.MaxVelocity}"/>
+                            <gn:DoubleTextBox
+                                Label="Front drive ratio"
+                                Maximum="1"
+                                Step="0.5"
+                                Icon="%"
+                                Value="{Binding State.FrontDriveRatio}"/>
+                            <Button
+                                Command="{Binding EditIntCurveCommand, Mode=OneWay}"
+                                CommandParameter="{Binding State.ShiftBlip}"
+                                Content="Shift Blip in RPM..."/>
+                            <Button
+                                Command="{Binding EditIntCurveCommand, Mode=OneWay}"
+                                CommandParameter="{Binding State.BrakeBlip}"
+                                Content="Brake Blip in RPM..."/>
+                            <gn:Int32TextBox
+                                Label="Gear shift delay"
+                                Minimum="0"
+                                Value="{Binding State.GearShiftDelay}"/>
+                        </UniformGrid>
+                    </GroupBox>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <GroupBox Header="Manual gearbox">
+                            <UniformGrid Columns="2">
+                                <gn:Int32TextBox 
+                                    Label="Number of gears"
+                                    Minimum="3"
+                                    Maximum="8"
+                                    Value="{Binding State.NumberOfGearsManual}"/>
+                                <gn:DoubleTextBox 
+                                    Label="Final gear ratio"
+                                    Minimum="0.01"
+                                    Maximum="999.99"
+                                    Step="0.01"
+                                    Value="{Binding State.FinalGearManual}"/>
+                                <Button
+                                    Command="{Binding EditDoubleCurveCommand, Mode=OneWay}"
+                                    Content="Velocity to RPM ratios...">
+                                    <Button.CommandParameter>
+                                        <models:CollectionDescriptor
+                                            Collection="VelocityToRpmManual"
+                                            Minimum="-600"
+                                            Maximum="600"
+                                            BarWidth="120"
+                                            Step="10"/>
+                                    </Button.CommandParameter>
+                                </Button>
+                                <Button
+                                    Command="{Binding EditDoubleCurveCommand, Mode=OneWay}"
+                                    Content="Gear ratios...">
+                                    <Button.CommandParameter>
+                                        <models:CollectionDescriptor
+                                            Collection="GearRatioManual"
+                                            Maximum="10"
+                                            Step="0.1"/>
+                                    </Button.CommandParameter>
+                                </Button>
+                                <Button
+                                    Command="{Binding EditDoubleCurveCommand, Mode=OneWay}"
+                                    Content="Gear efficiency...">
+                                    <Button.CommandParameter>
+                                        <models:CollectionDescriptor
+                                            Collection="GearEfficiencyManual"
+                                            Maximum="2"
+                                            Step="0.1"/>
+                                    </Button.CommandParameter>
+                                </Button>
+                            </UniformGrid>
+                        </GroupBox>
+                        <GroupBox Grid.Column="2" Header="Automatic gearbox">
+                            <UniformGrid Columns="2">
+                                <gn:Int32TextBox 
+                                    Label="Number of gears"
+                                    Minimum="3"
+                                    Maximum="8"
+                                    Value="{Binding State.NumberOfGearsAuto}"/>
+                                <gn:DoubleTextBox 
+                                    Label="Final gear ratio"
+                                    Minimum="0.01"
+                                    Maximum="999.99"
+                                    Step="0.01"
+                                    Value="{Binding State.FinalGearAuto}"/>
+                                <Button
+                                    Command="{Binding EditDoubleCurveCommand, Mode=OneWay}"
+                                    Content="Velocity to RPM ratios...">
+                                    <Button.CommandParameter>
+                                        <models:CollectionDescriptor
+                                            Collection="VelocityToRpmAuto"
+                                            Minimum="-600"
+                                            Maximum="600"
+                                            BarWidth="120"
+                                            Step="10"/>
+                                    </Button.CommandParameter>
+                                </Button>
+                                <Button
+                                    Command="{Binding EditDoubleCurveCommand, Mode=OneWay}"
+                                    Content="Gear ratios...">
+                                    <Button.CommandParameter>
+                                        <models:CollectionDescriptor
+                                            Collection="GearRatioAuto"
+                                            Maximum="10"
+                                            Step="0.1"/>
+                                    </Button.CommandParameter>
+                                </Button>
+                                <Button
+                                    Command="{Binding EditDoubleCurveCommand, Mode=OneWay}"
+                                    Content="Gear efficiency...">
+                                    <Button.CommandParameter>
+                                        <models:CollectionDescriptor
+                                            Collection="GearEfficiencyAuto"
+                                            Maximum="2"
+                                            Step="0.1"/>
+                                    </Button.CommandParameter>
+                                </Button>
+                            </UniformGrid>
+                        </GroupBox>
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <TextBlock TextAlignment="Center">Copy</TextBlock>
+                            <Button Command="{Binding CopyTransToManualCommand, Mode=OneWay}">◀️</Button>
+                            <Button Command="{Binding CopyTransToAutoCommand, Mode=OneWay}">▶️</Button>
+                        </StackPanel>
+                    </Grid>
+                    <GroupBox Header="Engine">
+                        <UniformGrid>
+                            <gn:Int32TextBox
+                                Label="Minimum RPM"
+                                Value="{Binding State.EngineMinRpm}"
+                                Maximum="{Binding State.EngineMaxRpm, Mode=OneWay}"/>
+                            <gn:Int32TextBox
+                                Label="Maximum RPM"
+                                Value="{Binding State.EngineMaxRpm}"
+                                Minimum="{Binding State.EngineMinRpm, Mode=OneWay}"/>
+                            <Button 
+                                Command="{Binding EditDoubleCurveCommand, Mode=OneWay}"
+                                Content="Torque curve...">
+                                <Button.CommandParameter>
+                                    <models:CollectionDescriptor
+                                        Collection="TorqueCurve"
+                                        Message="If the curve appears clipped, open this editor holding down the Shift key to select a proper value range."
+                                        Maximum="1000"
+                                        BarWidth="80"
+                                        Step="10"/>
+                                </Button.CommandParameter>
+                            </Button>
+                        </UniformGrid>
+                    </GroupBox>
+                    <GroupBox Header="Drive dynamics">
+                        <UniformGrid>
+                            <Button
+                                Command="{Binding EditIntCurveCommand, Mode=OneWay}"
+                                CommandParameter="{Binding State.GasIncreaseCurve}"
+                                Content="Gas increase curve..."/>
+                            <Button
+                                Command="{Binding EditIntCurveCommand, Mode=OneWay}"
+                                CommandParameter="{Binding State.GasDecreaseCurve}"
+                                Content="Gas decrease curve..."/>
+                            <Button
+                                Command="{Binding EditDoubleCurveCommand, Mode=OneWay}"
+                                CommandParameter="{Binding State.BrakeIncreaseCurve}"
+                                Content="Brake increase curve..."/>
+                            <Button
+                                Command="{Binding EditDoubleCurveCommand, Mode=OneWay}"
+                                CommandParameter="{Binding State.BrakeDecreaseCurve}"
+                                Content="Brake decrease curve..."/>
+                            <CheckBox IsChecked="{Binding State.Abs}" Content="Antilock Brake System"/>
+                            <gn:DoubleTextBox
+                                Label="Max braking decel"
+                                Value="{Binding State.MaxBrakeDecel}"/>
+                            <gn:DoubleTextBox
+                                Value="{Binding State.FrontBrakeBias}"
+                                Label="Front bias brake ratio"
+                                Minimum="0"
+                                Maximum="1"
+                                Step="0.05"
+                                Icon="%"/>
+                            <gn:DoubleTextBox
+                                Minimum="0.01"
+                                Value="{Binding State.WheelBase}"
+                                Label="Wheel base"/>
+                            <gn:DoubleTextBox
+                                Value="{Binding State.FrontGripBias}"
+                                Label="Front grip bias"
+                                Minimum="0"
+                                Maximum="1"
+                                Step="0.5"
+                                Icon="%"/>
+                            <CheckBox IsChecked="{Binding State.PowerSteering}" Content="Power steering"/>
+                            <gn:DoubleTextBox Label="Min steering accel" Value="{Binding State.MinimumSteerAccel}"/>
+                            <gn:Int32TextBox Label="Turn in ramp" Value="{Binding State.TurnInRamp}"/>
+                            <gn:Int32TextBox Label="Turn out ramp" Value="{Binding State.TurnOutRamp}"/>
+                            <gn:DoubleTextBox Label="Lateral acc. grip mult." Value="{Binding State.LateralAccGripMult}"/>
+                            <gn:DoubleTextBox Label="Aero downforce mult." Value="{Binding State.AeroDownMult}"/>
+                            <gn:DoubleTextBox Label="Gas off factor" Value="{Binding State.GasOffFactor}"/>
+                            <gn:DoubleTextBox Label="G transfer factor" Value="{Binding State.GTransferFactor}"/>
+                            <gn:DoubleTextBox Label="Turn circle radius" Value="{Binding State.TurnCircleRadius}"/>
+                            <gn:Int32TextBox Label="Slide multiplier" Value="{Binding State.SlideMult}"/>
+                            <gn:Int32TextBox Label="Spin velocity cap" Value="{Binding State.SpinVelocityCap}"/>
+                            <gn:Int32TextBox Label="Slide velocity cap" Value="{Binding State.SlideVelocityCap}"/>
+                            <gn:Int32TextBox Label="Slide assistance factor" Value="{Binding State.SlideAssistanceFactor}"/>
+                            <gn:Int32TextBox Label="Push factor" Value="{Binding State.PushFactor}"/>
+                            <gn:Int32TextBox Label="Low turn factor" Value="{Binding State.LowTurnFactor}"/>
+                            <gn:Int32TextBox Label="High turn factor" Value="{Binding State.HighTurnFactor}"/>
+                            <gn:DoubleTextBox Label="Pitch roll factor" Value="{Binding State.PitchRollFactor}"/>
+                            <gn:DoubleTextBox Label="Road bump factor" Value="{Binding State.RoadBumpFactor}"/>
+                            <gn:Int32TextBox Label="Spoiler function type" Value="{Binding State.SpoilerFunctionType}"/>
+                            <gn:DoubleTextBox Label="Spoiler act. speed" Value="{Binding State.SpoilerActivationSpeed}"/>
+                            <gn:Int32TextBox Label="Gradual turn cutoff" Value="{Binding State.GradualTurnCutoff}"/>
+                            <gn:Int32TextBox Label="Medium turn cutoff" Value="{Binding State.MediumTurnCutoff}"/>
+                            <gn:Int32TextBox Label="Sharp turn cutoff" Value="{Binding State.SharpTurnCutoff}"/>
+                            <gn:Int32TextBox Label="Med. turn spd. mod." Value="{Binding State.MediumTurnSpdMod}"/>
+                            <gn:Int32TextBox Label="Sharp turn spd. mod." Value="{Binding State.SharpTurnSpdMod}"/>
+                            <gn:Int32TextBox Label="Extr. turn spd. mod." Value="{Binding State.ExtremeTurnSpdMod}"/>
+                            <gn:Int32TextBox Label="Subdivide level" Value="{Binding State.SubdivideLevel}"/>
+                        </UniformGrid>
+                    </GroupBox>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <GroupBox Header="Front tires">
+                            <UniformGrid Columns="2">
+                                <gn:Int32TextBox Label="Tire width" Value="{Binding State.TireWidthFront}"/>
+                                <gn:Int32TextBox Label="Tire sidewall" Value="{Binding State.TireSidewallFront}"/>
+                                <gn:Int32TextBox Label="Rim size" Value="{Binding State.TireRimFront}"/>
+                            </UniformGrid>
+                        </GroupBox>
+                        <GroupBox Grid.Column="2" Header="Rear tires">
+                            <UniformGrid Columns="2">
+                                <gn:Int32TextBox Label="Tire width" Value="{Binding State.TireWidthRear}"/>
+                                <gn:Int32TextBox Label="Tire sidewall" Value="{Binding State.TireSidewallRear}"/>
+                                <gn:Int32TextBox Label="Rim size" Value="{Binding State.TireRimRear}"/>
+                            </UniformGrid>
+                        </GroupBox>
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <TextBlock TextAlignment="Center">Copy</TextBlock>
+                            <Button Command="{Binding CopyTiresToFrontCommand}">◀️</Button>
+                            <Button Command="{Binding CopyTiresToRearCommand}">▶️</Button>
+                        </StackPanel>
+                    </Grid>
+                    <GroupBox Header="AI curves">
+                        <UniformGrid>
+                            <Button
+                                Command="{Binding EditDoubleCurveCommand, Mode=OneWay}"
+                                Content="AI curve 0...">
+                                <Button.CommandParameter>
+                                    <models:CollectionDescriptor
+                                        Collection="AiCurve0"
+                                        Maximum="10"
+                                        BarWidth="80"
+                                        Step="0.01"/>
+                                </Button.CommandParameter>
+                            </Button>
+                            <Button
+                                Command="{Binding EditDoubleCurveCommand, Mode=OneWay}"
+                                Content="AI curve 1...">
+                                <Button.CommandParameter>
+                                    <models:CollectionDescriptor
+                                        Collection="AiCurve1"
+                                        Maximum="10"
+                                        BarWidth="80"
+                                        Step="0.01"/>
+                                </Button.CommandParameter>
+                            </Button>
+                            <Button
+                                Command="{Binding EditDoubleCurveCommand, Mode=OneWay}"
+                                Content="AI curve 2...">
+                                <Button.CommandParameter>
+                                    <models:CollectionDescriptor
+                                        Collection="AiCurve2"
+                                        Maximum="10"
+                                        BarWidth="80"
+                                        Step="0.01"/>
+                                </Button.CommandParameter>
+                            </Button>
+                            <Button
+                                Command="{Binding EditDoubleCurveCommand, Mode=OneWay}"
+                                Content="AI curve 3...">
+                                <Button.CommandParameter>
+                                    <models:CollectionDescriptor
+                                        Collection="AiCurve3"
+                                        Maximum="10"
+                                        BarWidth="80"
+                                        Step="0.01"/>
+                                </Button.CommandParameter>
+                            </Button>
+                            <Button
+                                Command="{Binding EditDoubleCurveCommand, Mode=OneWay}"
+                                Content="AI curve 4...">
+                                <Button.CommandParameter>
+                                    <models:CollectionDescriptor
+                                        Collection="AiCurve4"
+                                        Maximum="10"
+                                        BarWidth="80"
+                                        Step="0.01"/>
+                                </Button.CommandParameter>
+                            </Button>
+                            <Button
+                                Command="{Binding EditDoubleCurveCommand, Mode=OneWay}"
+                                Content="AI curve 5...">
+                                <Button.CommandParameter>
+                                    <models:CollectionDescriptor
+                                        Collection="AiCurve5"
+                                        Maximum="10"
+                                        BarWidth="80"
+                                        Step="0.01"/>
+                                </Button.CommandParameter>
+                            </Button>
+                            <Button
+                                Command="{Binding EditDoubleCurveCommand, Mode=OneWay}"
+                                Content="AI curve 6...">
+                                <Button.CommandParameter>
+                                    <models:CollectionDescriptor
+                                        Collection="AiCurve6"
+                                        Maximum="10"
+                                        BarWidth="80"
+                                        Step="0.01"/>
+                                </Button.CommandParameter>
+                            </Button>
+                            <Button
+                                Command="{Binding EditDoubleCurveCommand, Mode=OneWay}"
+                                Content="AI curve 7...">
+                                <Button.CommandParameter>
+                                    <models:CollectionDescriptor
+                                        Collection="AiCurve7"
+                                        Maximum="10"
+                                        BarWidth="80"
+                                        Step="0.01"/>
+                                </Button.CommandParameter>
+                            </Button>
+                        </UniformGrid>
+                    </GroupBox>
+                    <GroupBox>
+                        <GroupBox.Header>
+                            <CheckBox x:Name="chkMiscCarp" Content="Miscellaneous carp data (affects car tuning in game, edit at your own risk)"/>
+                        </GroupBox.Header>
+                        <UniformGrid IsEnabled="{Binding IsChecked, ElementName=chkMiscCarp}">
+                            <gn:DoubleTextBox
+                                Value="{Binding State.TireWear}"
+                                Label="Tire wear" Minimum="0" Maximum="1" Step="0.1" Icon="%"/>
+                            <gn:DoubleTextBox
+                                Value="{Binding State.BodyDamage}"
+                                Label="Body damage" Minimum="0" Maximum="1" Step="0.1" Icon="%"/>
+                            <gn:DoubleTextBox
+                                Value="{Binding State.EngineDamage}"
+                                Label="Engine damage" Minimum="0" Maximum="1" Step="0.1" Icon="%"/>
+                            <gn:DoubleTextBox
+                                Value="{Binding State.SuspensionDamage}"
+                                Label="Suspension damage" Minimum="0" Maximum="1" Step="0.1" Icon="%"/>
+                            <gn:DoubleTextBox
+                                Value="{Binding State.EngineTuning}"
+                                Label="Engine tuning" Icon="%"/>
+                            <gn:DoubleTextBox
+                                Value="{Binding State.BrakeBalance}"
+                                Label="Brake balance" Icon="%"/>
+                            <gn:DoubleTextBox
+                                Value="{Binding State.SteeringSpeed}"
+                                Label="Steering speed" Icon="%"/>
+                            <gn:DoubleTextBox
+                                Value="{Binding State.BrakeBalance}"
+                                Label="Brake balance" Icon="%"/>
+                            <gn:DoubleTextBox
+                                Value="{Binding State.GearRatFactor}"
+                                Label="Gear ratio factor" Icon="%"/>
+                            <gn:DoubleTextBox
+                                Value="{Binding State.SuspensionStiffness}"
+                                Label="Suspension stiffness" Icon="%"/>
+                            <gn:DoubleTextBox
+                                Value="{Binding State.AeroFactor}"
+                                Label="Aero factor" Icon="%"/>
+                            <gn:DoubleTextBox
+                                Value="{Binding State.TireFactor}"
+                                Label="Tire factor" Icon="%"/>
+                        </UniformGrid>
+                    </GroupBox>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </DockPanel>
+</UserControl>

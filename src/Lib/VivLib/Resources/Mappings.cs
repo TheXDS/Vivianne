@@ -7,7 +7,10 @@ using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.Formats.Tga;
 using SixLabors.ImageSharp.PixelFormats;
 using System.Globalization;
+using System.Reflection.Metadata;
+using TheXDS.MCART.Helpers;
 using TheXDS.MCART.Types.Extensions;
+using TheXDS.Vivianne.Extensions;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Serializers;
 using TheXDS.Vivianne.Tools;
@@ -44,6 +47,21 @@ public static class Mappings
     }.AsReadOnly();
 
     /// <summary>
+    /// Gets a string that describes the specified <see cref="FshBlobFormat"/>.
+    /// </summary>
+    /// <param name="format">Format to describe.</param>
+    /// <returns>
+    /// A string that describes the specified <see cref="FshBlobFormat"/>, or
+    /// "Unknown" followed by a hex string for the format value.
+    /// </returns>
+    public static string GetFshBlobLabel(FshBlobFormat format)
+    {
+        return FshBlobToLabel.TryGetValue(format, out var label) 
+            ? label 
+            : string.Format(Strings.Common.UnknownAsHex, format);
+    }
+
+    /// <summary>
     /// Maps a <see cref="FshBlobFormat"/> value to a corresponding label that
     /// describes the GIMX pixel format.
     /// </summary>
@@ -54,6 +72,34 @@ public static class Mappings
         { FshBlobFooterType.ColorPalette,   "Local color palette" },
         { FshBlobFooterType.Padding,        "Padding zeros" },
     }.AsReadOnly();
+
+    /// <summary>
+    /// Gets a string that infers and describes the footer data contained in
+    /// the specified <see cref="FshBlob"/>.
+    /// </summary>
+    /// <param name="blob">
+    /// <see cref="FshBlob"/> from which to read the footer data.
+    /// </param>
+    /// <param name="humanReadable">
+    /// When the footer data cannot be identified, allows the description to
+    /// use a human-readable footer length when set to <see langword="true"/>;
+    /// while <see langword="false"/> would display the raw, unformatted size
+    /// of the footer in bytes.
+    /// </param>
+    /// <returns></returns>
+    public static string GetFshBlobFooterLabel(FshBlob blob, bool humanReadable)
+    {
+        foreach (var j in FshBlobFooterIdentifier)
+        {
+            if (j.Value.Invoke(blob.Footer!))
+            {
+                return FshBlobFooterToLabel.TryGetValue(j.Key, out var label)
+                    ? label
+                    : $"Other ({j.Key})";
+            }
+        }
+        return $"Unknown ({(blob.Footer?.Length ?? 0).GetSize(humanReadable)})";
+    }
 
     /// <summary>
     /// Includes a set of functions that can identify the kind of data in a FSH

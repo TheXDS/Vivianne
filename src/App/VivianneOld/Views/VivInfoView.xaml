@@ -1,0 +1,57 @@
+﻿<UserControl
+    x:Class="TheXDS.Vivianne.Views.VivInfoView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:vc2="clr-namespace:TheXDS.Vivianne.ValueConverters"
+    xmlns:mcart="http://schemas.thexds.local/mcart"
+    xmlns:local="clr-namespace:TheXDS.Vivianne.Views"
+    xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings.Views"
+    xmlns:stc="clr-namespace:TheXDS.Vivianne.Resources.Strings;assembly=Vivianne"
+    xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne"
+    d:DataContext="{d:DesignInstance Type=vm:VivInfoViewModel}"
+    mc:Ignorable="d"
+    Background="{StaticResource DashboardDarkBackground}"
+    TextBlock.Foreground="{StaticResource DarkAreaForeground}"
+    d:DesignHeight="350" d:DesignWidth="600">
+    <UserControl.Resources>
+        <vc2:ByteSizeConverter x:Key="sizeConv"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20">
+            <TextBlock FontSize="16" Text="{Binding State.FriendlyName, Mode=OneWay}"/>
+            <TextBlock Text="{Binding State.FilePath, Mode=OneWay}" TextWrapping="Wrap"/>
+            <Separator/>
+            <TextBlock Text="{Binding State.Viv.Directory.Count, Mode=OneWay, StringFormat={x:Static st:VivInfoView.DirSize}}"/>
+            <TextBlock Text="{Binding State.FileSize, Mode=OneWay, Converter={StaticResource sizeConv}, StringFormat={x:Static st:VivInfoView.FileSize}}"/>
+            <UniformGrid Margin="15">
+                <Button Margin="5" Padding="10,2" Command="{Binding ExportAllCommand, Mode=OneWay}" Content="{x:Static st:VivInfoView.ExportAll}"/>
+            </UniformGrid>
+        </StackPanel>
+        <StackPanel VerticalAlignment="Center" Grid.Column="1" Margin="20">
+            <StackPanel.Resources>
+                <Style TargetType="CheckBox" BasedOn="{StaticResource LedIndicator}">
+                    <Setter Property="Foreground" Value="{StaticResource DarkAreaForeground}"/>
+                </Style>
+            </StackPanel.Resources>
+            <TextBlock FontSize="14" Text="{x:Static st:VivInfoView.Features}"/>
+            <Separator/>
+            <CheckBox Content="{x:Static st:VivInfoView.HasCarFce}" IsChecked="{Binding State.HasCarFce, Mode=OneWay}"/>
+            <CheckBox Content="{x:Static st:VivInfoView.HasBnk}" IsChecked="{Binding State.HasBnk, Mode=OneWay}"/>
+            <CheckBox Content="{x:Static st:VivInfoView.HasDash}" IsChecked="{Binding State.HasDash, Mode=OneWay}"/>
+            <CheckBox Content="{x:Static st:VivInfoView.HasFedataFsh}" IsChecked="{Binding State.HasFedataFsh, Mode=OneWay}"/>
+            <CheckBox Content="{x:Static st:VivInfoView.FeDataBri}" IsChecked="{Binding State.FeDataBri, Mode=OneWay}"/>
+            <CheckBox Content="{x:Static st:VivInfoView.FeDataEng}" IsChecked="{Binding State.FeDataEng, Mode=OneWay}"/>
+            <CheckBox Content="{x:Static st:VivInfoView.FeDataFre}" IsChecked="{Binding State.FeDataFre, Mode=OneWay}"/>
+            <CheckBox Content="{x:Static st:VivInfoView.FeDataGer}" IsChecked="{Binding State.FeDataGer, Mode=OneWay}"/>
+            <CheckBox Content="{x:Static st:VivInfoView.FeDataIta}" IsChecked="{Binding State.FeDataIta, Mode=OneWay}"/>
+            <CheckBox Content="{x:Static st:VivInfoView.FeDataSpa}" IsChecked="{Binding State.FeDataSpa, Mode=OneWay}"/>
+            <CheckBox Content="{x:Static st:VivInfoView.FeDataSwe}" IsChecked="{Binding State.FeDataSwe, Mode=OneWay}"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

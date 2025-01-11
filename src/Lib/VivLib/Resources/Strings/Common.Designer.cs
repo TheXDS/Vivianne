@@ -86,5 +86,14 @@ namespace TheXDS.Vivianne.Resources.Strings {
                 return ResourceManager.GetString("FshBlobIdTooLong", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown (0x{0:X2}).
+        /// </summary>
+        internal static string UnknownAsHex {
+            get {
+                return ResourceManager.GetString("UnknownAsHex", resourceCulture);
+            }
+        }
     }
 }
