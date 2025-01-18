@@ -1,14 +1,15 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using TheXDS.MCART.Exceptions;
 using TheXDS.MCART.Types.Extensions;
+using TheXDS.MCART.ValueConverters.Base;
 using TheXDS.Vivianne.Models;
-using TheXDS.Vivianne.ValueConverters.Base;
 using TheXDS.Vivianne.ViewModels;
 
 namespace TheXDS.Vivianne.ValueConverters;
@@ -20,9 +21,10 @@ namespace TheXDS.Vivianne.ValueConverters;
 public class FcePreviewViewModelToModel3DGroupConverter : IOneWayValueConverter<RenderTreeState?, Model3DGroup?>
 {
     private record VertexUv(Point3D Vertex, Point Uv, Vector3d Normal);
+
     private const double SizeFactor = 10.0;
 
-    private static MeshGeometry3D ToGeometryOld(FcePart value, bool flipU, bool flipV)
+    private static MeshGeometry3D? ToGeometry(FcePart value, bool flipU, bool flipV, TriangleFlags flags)
     {
         /* This convoluted method has a reason for being
          * =============================================
@@ -47,12 +49,15 @@ public class FcePreviewViewModelToModel3DGroupConverter : IOneWayValueConverter<
          * if the FCE model was created using any modern 3D modeling software
          * that uses per-vertex UV.
          */
+
+        var filteredTriangles = value.Triangles.Where(p => p.Flags == flags).ToArray();
+        if (filteredTriangles.Length == 0) return null;
         var vertex = new List<VertexUv?>(new VertexUv[value.Vertices.Length]);
         const double epsilon = 0.0005;
-        var workingCopy = new Triangle[value.Triangles.Length];
-        for (int i = 0; i < value.Triangles.Length; i++)
+        var workingCopy = new Triangle[filteredTriangles.Length];
+        for (int i = 0; i < filteredTriangles.Length; i++)
         {
-            var j = value.Triangles[i];
+            var j = filteredTriangles[i];
             var uFlip = flipU ? -1 : 1;
             var vFlip = flipV ? -1 : 1;
             var v1 = value.Vertices[j.I1];
@@ -79,9 +84,9 @@ public class FcePreviewViewModelToModel3DGroupConverter : IOneWayValueConverter<
                 vertex.Add(new(vert3, new Point(uv3.X, uv3.Y), value.Normals[j.I3]));
                 j.I3 = vertex.Count - 1;
             }
-            vertex[j.I1] = new(vert1, uv1, value.Normals[value.Triangles[i].I1]);
-            vertex[j.I2] = new(vert2, uv2, value.Normals[value.Triangles[i].I2]);
-            vertex[j.I3] = new(vert3, uv3, value.Normals[value.Triangles[i].I3]);
+            vertex[j.I1] = new(vert1, uv1, value.Normals[filteredTriangles[i].I1]);
+            vertex[j.I2] = new(vert2, uv2, value.Normals[filteredTriangles[i].I2]);
+            vertex[j.I3] = new(vert3, uv3, value.Normals[filteredTriangles[i].I3]);
             workingCopy[i] = j;
         }
         return new MeshGeometry3D()
@@ -92,7 +97,7 @@ public class FcePreviewViewModelToModel3DGroupConverter : IOneWayValueConverter<
             TextureCoordinates = new PointCollection(vertex.Select(p => p?.Uv ?? default)),
         };
     }
-    
+
     private static bool IsTextureLikelyTga(RenderTreeState state, [NotNullWhen(true)] out TargaHeader? header)
     {
         var bytes = state.Texture?.Take(18).ToArray() ?? throw new TamperException();
@@ -109,9 +114,9 @@ public class FcePreviewViewModelToModel3DGroupConverter : IOneWayValueConverter<
         return header is not null;
     }
 
-    private static (Brush? brush, bool flipU, bool flipV) CheckUvFlip(RenderTreeState value)
+    private static (Brush brush, bool flipU, bool flipV) CheckUvFlip(RenderTreeState value)
     {
-        Brush? brush;
+        Brush? brush = null;
         bool flipU = false, flipV = true; // NFS3 has the V coordinate flipped by default.
         if (value.Texture is not null)
         {
@@ -122,110 +127,57 @@ public class FcePreviewViewModelToModel3DGroupConverter : IOneWayValueConverter<
                 flipV = tgaHeader.Value.ImageInfo.YOrigin == 0;
             }
         }
-        else
-        {
-            brush = Brushes.Gray;
-        }
+        brush ??= Brushes.Gray;
         return (brush, flipU, flipV);
     }
-    
+
     /// <inheritdoc/>
     public Model3DGroup? Convert(RenderTreeState? value, object? parameter, CultureInfo? culture)
     {
         if (value is null) return null;
+
         var (brush, flipU, flipV) = CheckUvFlip(value);
-        var matte = new DiffuseMaterial(brush);
-        var m1 = new MaterialGroup()
+        var semiBrush = brush.Clone();
+        semiBrush.Opacity = 0.5;
+
+        var materials = new Dictionary<TriangleFlags, Material>
+        {
+            { TriangleFlags.None, CreateMaterialGroup(brush, Brushes.White, 1) },
+            { TriangleFlags.NoBlending, new DiffuseMaterial(brush) },
+            { TriangleFlags.HighBlending, CreateMaterialGroup(brush, Brushes.White, 0.1) },
+            { TriangleFlags.Semitrans, CreateMaterialGroup(semiBrush, Brushes.White, 1) },
+            { TriangleFlags.SemitransNoBlending, new DiffuseMaterial(semiBrush) }
+        };
+
+        var group = new Model3DGroup
         {
             Children =
             {
-                matte,
-                //new SpecularMaterial(Brushes.White, 0.5)
-            }
-        };
-        var group = new Model3DGroup()
-        {
-            Children = {
-                new DirectionalLight() { Color = Colors.White, Direction = new Vector3D(1, 1, 3) },
-                new AmbientLight() { Color = new Color(){ R = 0x20, G = 0x20, B = 0x20 } }
+                new DirectionalLight { Color = Colors.White, Direction = new Vector3D(1, 1, 3) },
+                new AmbientLight { Color = Color.FromRgb(0x40, 0x40, 0x40) }
             }
         };
 
-        foreach (var j in value.Parts)
+        foreach (var (flags, material) in materials.Concat(materials.Select(p => new KeyValuePair<TriangleFlags, Material>(p.Key | TriangleFlags.NoCulling, p.Value))))
         {
-            group.Children.Add(new GeometryModel3D(ToGeometry(j, flipU, flipV), m1) { BackMaterial = m1 });
+            foreach (var part in value.Parts)
+            {
+                group.Children.Add(new GeometryModel3D(ToGeometry(part, flipU, flipV, flags), material) { BackMaterial = flags.HasFlag(TriangleFlags.NoCulling) ? material : null });
+            }
         }
+
         return group;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    private static MeshGeometry3D ToGeometry(FcePart value, bool flipU, bool flipV)
+    private static MaterialGroup CreateMaterialGroup(Brush brush, Brush specularBrush, double specularPower)
     {
-        const double epsilon = 0.0005;
-        var vertexMap = new Dictionary<(int Index, Point Uv), int>();
-        var vertices = new List<VertexUv?>();
-        var workingCopy = new Triangle[value.Triangles.Length];
-
-        for (int i = 0; i < value.Triangles.Length; i++)
+        return new MaterialGroup
         {
-            var triangle = value.Triangles[i];
-            var uFlip = flipU ? -1 : 1;
-            var vFlip = flipV ? -1 : 1;
-
-            foreach ((int index, float u, float v) in new[]
+            Children =
             {
-            (triangle.I1, triangle.U1 * uFlip, triangle.V1 * vFlip),
-            (triangle.I2, triangle.U2 * uFlip, triangle.V2 * vFlip),
-            (triangle.I3, triangle.U3 * uFlip, triangle.V3 * vFlip)
-        })
-            {
-                var vertexIndex = GetOrAddVertex(vertexMap, vertices, value, index, new Point(u, v));
-                if (index == triangle.I1) workingCopy[i].I1 = vertexIndex;
-                else if (index == triangle.I2) workingCopy[i].I2 = vertexIndex;
-                else if (index == triangle.I3) workingCopy[i].I3 = vertexIndex;
+                new DiffuseMaterial(brush),
+                new SpecularMaterial(specularBrush, specularPower)
             }
-        }
-
-        return new MeshGeometry3D()
-        {
-            Positions = new Point3DCollection(vertices.Select(p => p?.Vertex ?? default)),
-            TriangleIndices = new Int32Collection(workingCopy.SelectMany(p => (int[])[p.I1, p.I2, p.I3])),
-            Normals = new Vector3DCollection(vertices.Select(p => p?.Normal ?? default).Select(p => new Vector3D(-p.Z, p.X, -p.Y))),
-            TextureCoordinates = new PointCollection(vertices.Select(p => p?.Uv ?? default)),
         };
-    }
-
-    private static int GetOrAddVertex(Dictionary<(int Index, Point Uv), int> vertexMap, List<VertexUv?> vertices, FcePart value, int index, Point uv)
-    {
-        var key = (index, uv);
-        if (vertexMap.TryGetValue(key, out int existingIndex))
-            return existingIndex;
-
-        var vertex = new VertexUv(
-            new Point3D(SizeFactor * (value.Vertices[index].Z + value.Origin.Z), SizeFactor * (-value.Vertices[index].X + -value.Origin.X), SizeFactor *
-    (value.Vertices[index].Y + value.Origin.Y)),
-            uv,
-            value.Normals[index]
-        );
-
-        vertices.Add(vertex);
-        vertexMap[key] = vertices.Count - 1;
-        return vertices.Count - 1;
     }
 }

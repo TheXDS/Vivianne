@@ -117,184 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Accel0To100" xml:space="preserve">
-    <value>0 to 100 MPH</value>
+  <data name="HeaderDamage_Arts_Title" xml:space="preserve">
+    <value>Damaged header: Unexpected number of arts</value>
   </data>
-  <data name="Accel0To60" xml:space="preserve">
-    <value>0 to 60 MPH</value>
+  <data name="HeaderDamage_Arts_Details" xml:space="preserve">
+    <value>The header indicates that there's mode than one art defined in the FCE file. This is not consistent with FCE parsing in NFS3</value>
   </data>
-  <data name="Acceleration" xml:space="preserve">
-    <value>Acceleration</value>
+  <data name="StrayPartNames_1_Title" xml:space="preserve">
+    <value>{0} stray part name(s)</value>
   </data>
-  <data name="BasicFeData" xml:space="preserve">
-    <value>Basic FeData</value>
+  <data name="StrayPartNames_1_Details" xml:space="preserve">
+    <value>There's more car part names than car parts in the FCE file. These unused names can be removed safely.</value>
   </data>
-  <data name="BasicProperties" xml:space="preserve">
-    <value>Basic properties</value>
+  <data name="StrayPartNames_2_Title" xml:space="preserve">
+    <value>{0} unnamed part(s)</value>
   </data>
-  <data name="Brakes" xml:space="preserve">
-    <value>Brakes</value>
+  <data name="StrayPartNames_2_Details" xml:space="preserve">
+    <value>There's mode car parts than car part names in the FCE File. A name for these parts will be inferred and set. Please verify that the part is in the proper location and has the appropriate name.</value>
   </data>
-  <data name="Braking" xml:space="preserve">
-    <value>Braking</value>
+  <data name="HeaderDamage_DummyCount_Details" xml:space="preserve">
+    <value>The header declares more Dummy parts than supported by the FCE file format, suggesting an overrun of dummy part definitions. The number of parts will be truncated to 16.</value>
   </data>
-  <data name="CarClass" xml:space="preserve">
-    <value>Car class</value>
-  </data>
-  <data name="CarId" xml:space="preserve">
-    <value>Car ID</value>
-  </data>
-  <data name="CarName" xml:space="preserve">
-    <value>Car name</value>
-  </data>
-  <data name="Color1" xml:space="preserve">
-    <value>Color 1</value>
-  </data>
-  <data name="Color10" xml:space="preserve">
-    <value>Color 10</value>
-  </data>
-  <data name="Color2" xml:space="preserve">
-    <value>Color 2</value>
-  </data>
-  <data name="Color3" xml:space="preserve">
-    <value>Color 3</value>
-  </data>
-  <data name="Color4" xml:space="preserve">
-    <value>Color 4</value>
-  </data>
-  <data name="Color5" xml:space="preserve">
-    <value>Color 5</value>
-  </data>
-  <data name="Color6" xml:space="preserve">
-    <value>Color 6</value>
-  </data>
-  <data name="Color7" xml:space="preserve">
-    <value>Color 7</value>
-  </data>
-  <data name="Color8" xml:space="preserve">
-    <value>Color 8</value>
-  </data>
-  <data name="Color9" xml:space="preserve">
-    <value>Color 9</value>
-  </data>
-  <data name="Colors" xml:space="preserve">
-    <value>Colors</value>
-  </data>
-  <data name="Compare" xml:space="preserve">
-    <value>Compare</value>
-  </data>
-  <data name="Displacement" xml:space="preserve">
-    <value>Displacement</value>
-  </data>
-  <data name="DriverSeat" xml:space="preserve">
-    <value>Driver seat</value>
-  </data>
-  <data name="Engine" xml:space="preserve">
-    <value>Engine</value>
-  </data>
-  <data name="Gearbox" xml:space="preserve">
-    <value>Gearbox</value>
-  </data>
-  <data name="General" xml:space="preserve">
-    <value>General</value>
-  </data>
-  <data name="Handling" xml:space="preserve">
-    <value>Handling</value>
-  </data>
-  <data name="Height" xml:space="preserve">
-    <value>Height</value>
-  </data>
-  <data name="History" xml:space="preserve">
-    <value>History</value>
-  </data>
-  <data name="History1" xml:space="preserve">
-    <value>History 1</value>
-  </data>
-  <data name="History2" xml:space="preserve">
-    <value>History 2</value>
-  </data>
-  <data name="History3" xml:space="preserve">
-    <value>History 3</value>
-  </data>
-  <data name="History4" xml:space="preserve">
-    <value>History 4</value>
-  </data>
-  <data name="History5" xml:space="preserve">
-    <value>History 5</value>
-  </data>
-  <data name="History6" xml:space="preserve">
-    <value>History 6</value>
-  </data>
-  <data name="History7" xml:space="preserve">
-    <value>History 7</value>
-  </data>
-  <data name="History8" xml:space="preserve">
-    <value>History 8</value>
-  </data>
-  <data name="IsAvailableToAI" xml:space="preserve">
-    <value>Is available to AI drivers</value>
-  </data>
-  <data name="IsBonus" xml:space="preserve">
-    <value>Is bonus car</value>
-  </data>
-  <data name="IsDlcCar" xml:space="preserve">
-    <value>Is a DLC car</value>
-  </data>
-  <data name="IsPolice" xml:space="preserve">
-    <value>Is police car</value>
-  </data>
-  <data name="Length" xml:space="preserve">
-    <value>Length</value>
-  </data>
-  <data name="LinkEdits" xml:space="preserve">
-    <value>Sync edits on other FeData files / Carp</value>
-  </data>
-  <data name="LinkEditsNote" xml:space="preserve">
-    <value>Currently, only non-localized fields are supported (basic props, compare and unknown values).</value>
-  </data>
-  <data name="Manufacturer" xml:space="preserve">
-    <value>Manufacturer</value>
-  </data>
-  <data name="MaxRpm" xml:space="preserve">
-    <value>Maximum RPM</value>
-  </data>
-  <data name="Model" xml:space="preserve">
-    <value>Model</value>
-  </data>
-  <data name="Performance" xml:space="preserve">
-    <value>Performance</value>
-  </data>
-  <data name="Power" xml:space="preserve">
-    <value>Power</value>
-  </data>
-  <data name="Price" xml:space="preserve">
-    <value>Price</value>
-  </data>
-  <data name="SerialNumber" xml:space="preserve">
-    <value>Serial number</value>
-  </data>
-  <data name="Status" xml:space="preserve">
-    <value>Status</value>
-  </data>
-  <data name="Tires" xml:space="preserve">
-    <value>Tires</value>
-  </data>
-  <data name="TopSpeed" xml:space="preserve">
-    <value>Top speed</value>
-  </data>
-  <data name="Torque" xml:space="preserve">
-    <value>Torque</value>
-  </data>
-  <data name="Transmission" xml:space="preserve">
-    <value>Transmission</value>
-  </data>
-  <data name="Weight" xml:space="preserve">
-    <value>Weight</value>
-  </data>
-  <data name="WeightDistr" xml:space="preserve">
-    <value>Weight distribution</value>
-  </data>
-  <data name="Width" xml:space="preserve">
-    <value>Width</value>
+  <data name="HeaderDamage_DummyCount_Title" xml:space="preserve">
+    <value>Damaged header: Invalid number of Dummies</value>
   </data>
 </root>

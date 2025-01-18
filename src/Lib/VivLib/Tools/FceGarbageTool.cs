@@ -1,5 +1,7 @@
-﻿using TheXDS.MCART.Types.Extensions;
+﻿using TheXDS.MCART.Helpers;
+using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models;
+using St = TheXDS.Vivianne.Resources.Strings.Tools.FceCleanupTool;
 
 namespace TheXDS.Vivianne.Tools;
 
@@ -49,15 +51,70 @@ internal static class FceCleanupAnalyzers
         var strayPartNameCount = actualPartList.Length - fce.Header.CarPartCount;
 
         void RemoveBadNames(FceFile f) => _ = Enumerable.Range(strayPartNameCount, 64 - strayPartNameCount).Select<int, object>(i => f.Header.PartNames[i] = FceAsciiBlob.Empty);
-        void NameUnnamed(FceFile f) => _ = Enumerable.Range(fce.Header.CarPartCount + strayPartNameCount, -strayPartNameCount).Select<int, object>(i => f.Header.PartNames[i] = Guid.NewGuid().ToString());
+        void NameUnnamed(FceFile f) => _ = Enumerable.Range(fce.Header.CarPartCount + strayPartNameCount, -strayPartNameCount).Select<int, object>(i => f.Header.PartNames[i] = i < FceAsciiBlob.CommonPartNames.Length ? FceAsciiBlob.CommonPartNames[i] : Guid.NewGuid().ToString());
 
 
         return strayPartNameCount switch
         {
-            _ when strayPartNameCount > 0 => new FceCleanupResult($"{strayPartNameCount} stray part name(s)", "", RemoveBadNames),
-            _ when strayPartNameCount < 0 => new FceCleanupResult($"{-strayPartNameCount} unnamed part(s)", "", NameUnnamed),
+            _ when strayPartNameCount > 0 => new FceCleanupResult(string.Format(St.StrayPartNames_1_Title, strayPartNameCount), St.StrayPartNames_1_Details, RemoveBadNames),
+            _ when strayPartNameCount < 0 => new FceCleanupResult(string.Format(St.StrayPartNames_2_Title, -strayPartNameCount), St.StrayPartNames_2_Details, NameUnnamed),
             _ => null
         };
+    }
+
+    public static FceCleanupResult? HeaderDamage_Arts(FceFile f)
+    {
+        return f.Header.Arts != 1 ? new FceCleanupResult(
+            St.HeaderDamage_Arts_Title,
+            St.HeaderDamage_Arts_Details,
+            f => {
+                var h = f.Header;
+                h.Arts = 1;
+            }) : null;
+    }
+
+    public static FceCleanupResult? HeaderDamage_DummyCount(FceFile f)
+    {
+        return f.Header.DummyCount.IsBetween(0, 16) ? null : new FceCleanupResult(
+            St.HeaderDamage_DummyCount_Title,
+            St.HeaderDamage_DummyCount_Details, f =>
+            {
+                var h = f.Header;
+                h.DummyCount = 16;
+            });
+    }
+
+    public static FceCleanupResult? HeaderDamage_CarPartCount(FceFile f)
+    {
+        return f.Header.CarPartCount.IsBetween(0, 64) ? null : new FceCleanupResult(
+            "",
+            "", f =>
+            {
+                var h = f.Header;
+                h.CarPartCount = 64;
+            });
+    }
+
+    public static FceCleanupResult? HeaderDamage_ColorCount(FceFile f)
+    {
+        return f.Header.PrimaryColors.IsBetween(0, 16) ? null : new FceCleanupResult(
+            "",
+            "", f =>
+            {
+                var h = f.Header;
+                h.PrimaryColors = 16;
+            });
+    }
+
+    public static FceCleanupResult? HeaderDamage_ColorMismatch(FceFile f)
+    {
+        return f.Header.PrimaryColors == f.Header.SecondaryColors ? null : new FceCleanupResult(
+            "",
+            "", f =>
+            {
+                var h = f.Header;                
+                h.SecondaryColors = h.PrimaryColors;
+            });
     }
 
     public static FceCleanupResult? OrphanVertices(FceFile fce)
@@ -87,7 +144,13 @@ internal static class FceCleanupAnalyzers
 public static class FceCleanupTool
 {
     private static readonly FceCleanupAnalyzer[] _analyzers = [
-        new(FceCleanupAnalyzers.StrayPartNames)
+        new(FceCleanupAnalyzers.HeaderDamage_Arts),
+        new(FceCleanupAnalyzers.HeaderDamage_CarPartCount),
+        new(FceCleanupAnalyzers.HeaderDamage_DummyCount),
+        new(FceCleanupAnalyzers.HeaderDamage_ColorCount),
+        new(FceCleanupAnalyzers.HeaderDamage_ColorMismatch),
+
+        new(FceCleanupAnalyzers.StrayPartNames),
     ];
 
     /// <summary>

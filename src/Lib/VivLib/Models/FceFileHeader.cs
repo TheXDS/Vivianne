@@ -237,10 +237,10 @@ public struct FceFileHeader
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)] public FceAsciiBlob[] DummyNames;
 
     /// <summary>
-    /// Gets a 16-element table containing the names for all the car parts.
+    /// Gets a 64-element table containing the names for all the car parts.
     /// </summary>
     /// <remarks>
-    /// This table will contain a static size of 16 <see cref="FceAsciiBlob"/>
+    /// This table will contain a static size of 64 <see cref="FceAsciiBlob"/>
     /// elements, each representing a null-terminated string with the name for
     /// each existing car part. The correct number of existing car parts is
     /// indicated by <see cref="CarPartCount"/>.

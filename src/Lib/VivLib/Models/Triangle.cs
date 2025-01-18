@@ -2,6 +2,18 @@
 
 namespace TheXDS.Vivianne.Models;
 
+[Flags]
+public enum TriangleFlags : int
+{
+    None,
+    NoBlending = 1,
+    HighBlending = 2,
+    NoCulling = 4,
+    Semitrans = 8,
+    SemitransNoBlending = 9,
+    SemitransHighBlending = 10,
+}
+
 /// <summary>
 /// Represents a single triangle as defined in the FCE format.
 /// </summary>
@@ -37,7 +49,7 @@ public struct Triangle
     /// <summary>
     /// Gets a 32-bit flagset that indicates properties for the triangle.
     /// </summary>
-    public int Smoothing;
+    public TriangleFlags Flags;
 
     /// <summary>
     /// Gets the U component of the UV coordinates for the first vertex of this triangle.

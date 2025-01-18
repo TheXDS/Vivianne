@@ -61,13 +61,41 @@ namespace TheXDS.Vivianne.Models;
 /// </item>
 /// <item>
 /// <term>:TB</term>
-/// <description>Car with wheels (super low detail, used for long distance)</description>
+/// <description>Car with wheels (super low detail, used for long distance and model collision)</description>
+/// </item>
+/// <item>
+/// <term>:HH</term>
+/// <description>Pop-up headlights (high detail)</description>
+/// </item>
+/// <item>
+/// <term>:MH</term>
+/// <description>Pop-up headlights (medium detail)</description>
 /// </item>
 /// </list>
 /// </remarks>
 [StructLayout(LayoutKind.Sequential)]
 public struct FceAsciiBlob
 {
+    /// <summary>
+    /// Enumerates common part names, ordered in such a way that NFS3 would map them accordingly.
+    /// </summary>
+    public static readonly string[] CommonPartNames = [
+        ":HB",
+        ":HLFW",
+        ":HRFW",
+        ":HLRW",
+        ":HRRW",
+        ":MB",
+        ":MLFW",
+        ":MRFW",
+        ":MLRW",
+        ":MRRW",
+        ":LB",
+        ":TB",
+        ":HH",
+        ":MH"
+        ];
+
     /// <summary>
     /// Gets the Raw 64-byte array from where to extract the name.
     /// </summary>

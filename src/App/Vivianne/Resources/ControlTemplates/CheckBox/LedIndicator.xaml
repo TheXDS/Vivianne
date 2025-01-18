@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+     xmlns:local="clr-namespace:TheXDS.Vivianne.Controls">
     <Style x:Key="LedIndicator" TargetType="{x:Type CheckBox}">
         <Setter Property="IsEnabled" Value="False"/>
         <Setter Property="IsHitTestVisible" Value="False"/>

@@ -57,10 +57,14 @@ public class FcePreviewViewModel : ViewModel
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="FcePreviewViewModel"/> class.
+    /// Initializes a new instance of the <see cref="FcePreviewViewModel"/>
+    /// class.
     /// </summary>
     /// <param name="fce">Model to preview.</param>
-    /// <param name="vivDirectory">Reference to the VIV file from which to enumerate the available textures.</param>
+    /// <param name="vivDirectory">
+    /// Reference to the VIV file from which to enumerate the available
+    /// textures.
+    /// </param>
     /// <param name="saveCallback">
     /// Optional save callback to use when trying to save FCE files.
     /// </param>
@@ -73,7 +77,8 @@ public class FcePreviewViewModel : ViewModel
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="FcePreviewViewModel"/> class.
+    /// Initializes a new instance of the <see cref="FcePreviewViewModel"/>
+    /// class.
     /// </summary>
     /// <param name="fce">Model to preview.</param>
     /// <param name="saveCallback">

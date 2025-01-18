@@ -1,0 +1,129 @@
+﻿<UserControl
+    x:Class="TheXDS.Vivianne.Views.VivMainView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:gn="http://schemas.thexds.local/ganymede"
+    xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
+    xmlns:vc2="clr-namespace:TheXDS.Vivianne.ValueConverters"
+    xmlns:mcart="http://schemas.thexds.local/mcart"
+    x:Name="ucRoot"
+    d:DataContext="{d:DesignInstance Type=vm:VivMainViewModel}"
+    mc:Ignorable="d" 
+    d:DesignHeight="450" d:DesignWidth="400">
+    <UserControl.Resources>
+        <vc2:ByteCountConverter x:Key="sizeConv"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <DockPanel>
+            <RadioButton Margin="0,0,0,5" HorizontalAlignment="Stretch" Height="40" GroupName="VivDirectory" Command="{Binding OpenFileCommand, Mode=OneWay}" DockPanel.Dock="Top" IsChecked="True">
+                <RadioButton.Template>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border CornerRadius="10,0,0,10" x:Name="PART_SelectionBg">
+                            <TextBlock x:Name="PART_title" VerticalAlignment="Center" HorizontalAlignment="Center" Text="VIV information" FontSize="16" Foreground="{StaticResource MidBackground}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="true">
+                                <Setter TargetName="PART_SelectionBg" Property="Background" Value="{StaticResource MidBackground}"/>
+                                <Setter TargetName="PART_SelectionBg" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect/>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="PART_title" Property="Foreground" Value="{StaticResource DarkAreaForeground}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </RadioButton.Template>
+            </RadioButton>
+            <mcart:StretchyWrapPanel Margin="5" Orientation="Horizontal" DockPanel.Dock="Bottom">
+                <Button HorizontalAlignment="Stretch" Margin="5" Command="{Binding ImportFileCommand}">➕</Button>
+                <Button HorizontalAlignment="Stretch" Margin="5" Command="{Binding NewFromTemplateCommand}">📄</Button>
+            </mcart:StretchyWrapPanel>
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <ItemsControl Margin="0,0,0,0" MinWidth="150" ItemsSource="{Binding State.Directory}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <RadioButton
+                                HorizontalAlignment="Stretch"
+                                Margin="0,0,0,5"
+                                GroupName="VivDirectory"
+                                Command="{Binding DataContext.OpenFileCommand, ElementName=ucRoot, Mode=OneWay}"
+                                CommandParameter="{Binding Mode=OneWay}">
+                                <RadioButton.Template>
+                                    <ControlTemplate TargetType="RadioButton">
+                                        <Border CornerRadius="10,0,0,10" x:Name="PART_SelectionBg" >
+                                            <DockPanel Margin="10,5">
+                                                <Button
+                                                    x:Name="PART_btnRemove"
+                                                    DockPanel.Dock="Right"
+                                                    Background="Transparent"
+                                                    BorderThickness="0"
+                                                    VerticalAlignment="Center"
+                                                    Foreground="{StaticResource MidBackground}"
+                                                    Command="{Binding DataContext.RemoveFileCommand, ElementName=ucRoot, Mode=OneWay}"
+                                                    CommandParameter="{Binding Mode=OneWay}" Content="❌"/>
+                                                <Button
+                                                    x:Name="PART_btnExport"
+                                                    DockPanel.Dock="Right"
+                                                    Background="Transparent"
+                                                    BorderThickness="0"
+                                                    Foreground="{StaticResource MidBackground}"
+                                                    VerticalAlignment="Center"
+                                                    Command="{Binding DataContext.ExportFileCommand, ElementName=ucRoot, Mode=OneWay}"
+                                                    CommandParameter="{Binding Mode=OneWay}" Content="💾"/>
+                                                <StackPanel>
+                                                    <TextBlock x:Name="PART_filename" Text="{Binding Key, Mode=OneWay}" FontSize="16" Foreground="{StaticResource MidBackground}"/>
+                                                    <TextBlock x:Name="PART_filesize" FontSize="9" Foreground="{StaticResource MidBackground}">
+                                                        Size: <Run Text="{Binding Value, Mode=OneWay, Converter={StaticResource sizeConv}}"/>
+                                                    </TextBlock>
+                                                </StackPanel>                                    
+                                            </DockPanel>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsChecked" Value="true">
+                                                <Setter TargetName="PART_SelectionBg" Property="Effect">
+                                                    <Setter.Value>
+                                                        <DropShadowEffect/>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Setter TargetName="PART_SelectionBg" Property="Background">
+                                                    <Setter.Value>
+                                                        <LinearGradientBrush>
+                                                            <GradientStop Color="{StaticResource MidBackgroundColor}"/>
+                                                            <GradientStop Color="Transparent" Offset="0.8"/>
+                                                        </LinearGradientBrush>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                        
+                                                <Setter TargetName="PART_btnRemove" Property="Foreground" Value="{StaticResource DarkAreaForeground}"/>
+                                                <Setter TargetName="PART_btnExport" Property="Foreground" Value="{StaticResource DarkAreaForeground}"/>
+                                                <Setter TargetName="PART_filename" Property="Foreground" Value="{StaticResource DarkAreaForeground}"/>
+                                                <Setter TargetName="PART_filesize" Property="Foreground" Value="{StaticResource DarkAreaForeground}"/>
+                                            </Trigger>
+                                            <Trigger Property="IsEnabled" Value="False">
+                                                <Setter TargetName="PART_btnRemove" Property="Visibility" Value="Hidden"/>
+                                                <Setter TargetName="PART_btnExport" Property="Visibility" Value="Hidden"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </RadioButton.Template>
+                            </RadioButton>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </DockPanel>
+        <gn:NavigationHost
+            Grid.Column="1"
+            UseLayoutRounding="True"
+            SnapsToDevicePixels="True"
+            VisualResolver="{gn:ConventionResolver}"
+            Navigator="{Binding ChildNavService}"/>
+    </Grid>
+</UserControl>

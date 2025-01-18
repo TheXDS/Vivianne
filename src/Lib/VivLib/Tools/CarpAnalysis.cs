@@ -63,7 +63,7 @@ public class CarpAnalysis
         var rpmStep = (carp.EngineMaxRpm / carp.TorqueCurve.Count).Clamp(256, carp.EngineMaxRpm);
         return carp.TorqueCurve
             .Zip(Enumerable.Range(0, carp.TorqueCurve.Count).Select(p => (p * rpmStep) + carp.EngineMinRpm))
-            .Where(p=> p.Second <= carp.EngineMaxRpm)
+            .Where(p => p.Second <= carp.EngineMaxRpm)
             .ToArray();
     }
 }

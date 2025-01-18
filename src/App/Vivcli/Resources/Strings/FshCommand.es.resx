@@ -117,184 +117,43 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Accel0To100" xml:space="preserve">
-    <value>0 to 100 MPH</value>
+  <data name="Arg1" xml:space="preserve">
+    <value>archivo fsh/qfs</value>
   </data>
-  <data name="Accel0To60" xml:space="preserve">
-    <value>0 to 60 MPH</value>
+  <data name="Arg1Description" xml:space="preserve">
+    <value>Ruta al archivo FSH/QFS</value>
   </data>
-  <data name="Acceleration" xml:space="preserve">
-    <value>Acceleration</value>
+  <data name="BlobInfo_Arg1Help" xml:space="preserve">
+    <value>Especifica el nombre del blob del cual obtener información. Si se omite, esta herramienta obtendrá la información de todo el archivo FSH</value>
   </data>
-  <data name="BasicFeData" xml:space="preserve">
-    <value>Basic FeData</value>
+  <data name="BlobInfo_Arg1" xml:space="preserve">
+    <value>nombre de blob</value>
   </data>
-  <data name="BasicProperties" xml:space="preserve">
-    <value>Basic properties</value>
+  <data name="BlobInfo_Help" xml:space="preserve">
+    <value>Muestra información sobre el blob FSH especificado.</value>
   </data>
-  <data name="Brakes" xml:space="preserve">
-    <value>Brakes</value>
+  <data name="BlobInfo_BlobName" xml:space="preserve">
+    <value>Nombre del blob: {0}</value>
   </data>
-  <data name="Braking" xml:space="preserve">
-    <value>Braking</value>
+  <data name="BlobInfo_Fail" xml:space="preserve">
+    <value>No se ha encontrado un blob con el nombre especificado dentro del archivo FSH.</value>
   </data>
-  <data name="CarClass" xml:space="preserve">
-    <value>Car class</value>
+  <data name="BlobInfo_PrintBlobInfo1" xml:space="preserve">
+    <value>Resolución del blob: {0}x{1}</value>
   </data>
-  <data name="CarId" xml:space="preserve">
-    <value>Car ID</value>
+  <data name="BlobInfo_PrintBlobInfo2" xml:space="preserve">
+    <value>Formato de pixel: {0}</value>
   </data>
-  <data name="CarName" xml:space="preserve">
-    <value>Car name</value>
+  <data name="BlobInfo_PrintBlobInfo3" xml:space="preserve">
+    <value>Eje de rotación: X:{0}, Y:{1}</value>
   </data>
-  <data name="Color1" xml:space="preserve">
-    <value>Color 1</value>
+  <data name="BlobInfo_PrintBlobInfo4" xml:space="preserve">
+    <value>Desplazamiento de la imagen: X:{0}, Y: {1}</value>
   </data>
-  <data name="Color10" xml:space="preserve">
-    <value>Color 10</value>
+  <data name="BlobInfo_PrintBlobInfo5" xml:space="preserve">
+    <value>Tamaño de datos de pixel: {0}</value>
   </data>
-  <data name="Color2" xml:space="preserve">
-    <value>Color 2</value>
-  </data>
-  <data name="Color3" xml:space="preserve">
-    <value>Color 3</value>
-  </data>
-  <data name="Color4" xml:space="preserve">
-    <value>Color 4</value>
-  </data>
-  <data name="Color5" xml:space="preserve">
-    <value>Color 5</value>
-  </data>
-  <data name="Color6" xml:space="preserve">
-    <value>Color 6</value>
-  </data>
-  <data name="Color7" xml:space="preserve">
-    <value>Color 7</value>
-  </data>
-  <data name="Color8" xml:space="preserve">
-    <value>Color 8</value>
-  </data>
-  <data name="Color9" xml:space="preserve">
-    <value>Color 9</value>
-  </data>
-  <data name="Colors" xml:space="preserve">
-    <value>Colors</value>
-  </data>
-  <data name="Compare" xml:space="preserve">
-    <value>Compare</value>
-  </data>
-  <data name="Displacement" xml:space="preserve">
-    <value>Displacement</value>
-  </data>
-  <data name="DriverSeat" xml:space="preserve">
-    <value>Driver seat</value>
-  </data>
-  <data name="Engine" xml:space="preserve">
-    <value>Engine</value>
-  </data>
-  <data name="Gearbox" xml:space="preserve">
-    <value>Gearbox</value>
-  </data>
-  <data name="General" xml:space="preserve">
-    <value>General</value>
-  </data>
-  <data name="Handling" xml:space="preserve">
-    <value>Handling</value>
-  </data>
-  <data name="Height" xml:space="preserve">
-    <value>Height</value>
-  </data>
-  <data name="History" xml:space="preserve">
-    <value>History</value>
-  </data>
-  <data name="History1" xml:space="preserve">
-    <value>History 1</value>
-  </data>
-  <data name="History2" xml:space="preserve">
-    <value>History 2</value>
-  </data>
-  <data name="History3" xml:space="preserve">
-    <value>History 3</value>
-  </data>
-  <data name="History4" xml:space="preserve">
-    <value>History 4</value>
-  </data>
-  <data name="History5" xml:space="preserve">
-    <value>History 5</value>
-  </data>
-  <data name="History6" xml:space="preserve">
-    <value>History 6</value>
-  </data>
-  <data name="History7" xml:space="preserve">
-    <value>History 7</value>
-  </data>
-  <data name="History8" xml:space="preserve">
-    <value>History 8</value>
-  </data>
-  <data name="IsAvailableToAI" xml:space="preserve">
-    <value>Is available to AI drivers</value>
-  </data>
-  <data name="IsBonus" xml:space="preserve">
-    <value>Is bonus car</value>
-  </data>
-  <data name="IsDlcCar" xml:space="preserve">
-    <value>Is a DLC car</value>
-  </data>
-  <data name="IsPolice" xml:space="preserve">
-    <value>Is police car</value>
-  </data>
-  <data name="Length" xml:space="preserve">
-    <value>Length</value>
-  </data>
-  <data name="LinkEdits" xml:space="preserve">
-    <value>Sync edits on other FeData files / Carp</value>
-  </data>
-  <data name="LinkEditsNote" xml:space="preserve">
-    <value>Currently, only non-localized fields are supported (basic props, compare and unknown values).</value>
-  </data>
-  <data name="Manufacturer" xml:space="preserve">
-    <value>Manufacturer</value>
-  </data>
-  <data name="MaxRpm" xml:space="preserve">
-    <value>Maximum RPM</value>
-  </data>
-  <data name="Model" xml:space="preserve">
-    <value>Model</value>
-  </data>
-  <data name="Performance" xml:space="preserve">
-    <value>Performance</value>
-  </data>
-  <data name="Power" xml:space="preserve">
-    <value>Power</value>
-  </data>
-  <data name="Price" xml:space="preserve">
-    <value>Price</value>
-  </data>
-  <data name="SerialNumber" xml:space="preserve">
-    <value>Serial number</value>
-  </data>
-  <data name="Status" xml:space="preserve">
-    <value>Status</value>
-  </data>
-  <data name="Tires" xml:space="preserve">
-    <value>Tires</value>
-  </data>
-  <data name="TopSpeed" xml:space="preserve">
-    <value>Top speed</value>
-  </data>
-  <data name="Torque" xml:space="preserve">
-    <value>Torque</value>
-  </data>
-  <data name="Transmission" xml:space="preserve">
-    <value>Transmission</value>
-  </data>
-  <data name="Weight" xml:space="preserve">
-    <value>Weight</value>
-  </data>
-  <data name="WeightDistr" xml:space="preserve">
-    <value>Weight distribution</value>
-  </data>
-  <data name="Width" xml:space="preserve">
-    <value>Width</value>
+  <data name="BlobInfo_PrintBlobInfo6" xml:space="preserve">
+    <value>Datos del footer: {0}</value>
   </data>
 </root>

@@ -1,8 +1,8 @@
 ﻿using System.Globalization;
 using TheXDS.MCART.Helpers;
+using TheXDS.MCART.ValueConverters.Base;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Resources;
-using TheXDS.Vivianne.ValueConverters.Base;
 
 namespace TheXDS.Vivianne.ValueConverters;
 

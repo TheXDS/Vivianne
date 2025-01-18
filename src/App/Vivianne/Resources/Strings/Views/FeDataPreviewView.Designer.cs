@@ -376,7 +376,7 @@ namespace TheXDS.Vivianne.Resources.Strings.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to History6.
+        ///   Looks up a localized string similar to History 6.
         /// </summary>
         public static string History6 {
             get {
