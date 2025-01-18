@@ -15,8 +15,8 @@ public class CarpSerializer : ISerializer<Carp>
     public Carp Deserialize(Stream stream)
     {
         Dictionary<int, string> dic = [];
-        int TryInt(string value) => int.TryParse(value, out var s) ? s : 0;
-        double TryDouble(string value) => double.TryParse(value, out var s) ? s : 0.0;
+        int TryInt(string value) => int.TryParse(value, System.Globalization.CultureInfo.InvariantCulture, out var s) ? s : 0;
+        double TryDouble(string value) => double.TryParse(value, System.Globalization.CultureInfo.InvariantCulture, out var s) ? s : 0.0;
         int TryIntKey(int key) => TryInt(dic[key]);
         double TryDoubleKey(int key) => TryDouble(dic[key]);
         IEnumerable<T> TryArray<T>(int key, Func<string, T> parse) => dic[key].Split(",").Where(p => !p.IsEmpty()).Select(parse);
@@ -94,8 +94,8 @@ public class CarpSerializer : ISerializer<Carp>
             TireFactor = TryDoubleKey(66),
         };
 
-        carp.ShiftBlip.AddRange(TryIntArray(5));
-        carp.BrakeBlip.AddRange(TryIntArray(6));
+        carp.ShiftBlip.AddRange(TryDoubleArray(5));
+        carp.BrakeBlip.AddRange(TryDoubleArray(6));
         carp.VelocityToRpmManual.AddRange(TryDoubleArray(7));
         carp.VelocityToRpmAuto.AddRange(TryDoubleArray(76));
         carp.GearRatioManual.AddRange(TryDoubleArray(8));
@@ -103,8 +103,8 @@ public class CarpSerializer : ISerializer<Carp>
         carp.GearEfficiencyManual.AddRange(TryDoubleArray(9));
         carp.GearEfficiencyAuto.AddRange(TryDoubleArray(78));
         carp.TorqueCurve.AddRange(TryDoubleArray(10));
-        carp.GasIncreaseCurve.AddRange(TryIntArray(20));
-        carp.GasDecreaseCurve.AddRange(TryIntArray(21));
+        carp.GasIncreaseCurve.AddRange(TryDoubleArray(20));
+        carp.GasDecreaseCurve.AddRange(TryDoubleArray(21));
         carp.BrakeIncreaseCurve.AddRange(TryDoubleArray(22));
         carp.BrakeDecreaseCurve.AddRange(TryDoubleArray(23));
         carp.AiCurve0.AddRange(TryDoubleArray(67));

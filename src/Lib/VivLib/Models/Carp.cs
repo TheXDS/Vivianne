@@ -51,7 +51,7 @@ public class Carp : ISerialNumberModel
     /// <remarks>
     /// The number of elements in this array should idealy remain at 8.
     /// </remarks>
-    public ICollection<int> ShiftBlip { get; } = [];
+    public ICollection<double> ShiftBlip { get; } = [];
 
     /// <summary>
     /// Gets a collection of values that indicate the RPM blip to be applied
@@ -60,7 +60,7 @@ public class Carp : ISerialNumberModel
     /// <remarks>
     /// The number of elements in this array should idealy remain at 8.
     /// </remarks>
-    public ICollection<int> BrakeBlip { get; } = [];
+    public ICollection<double> BrakeBlip { get; } = [];
 
     /// <summary>
     /// Gets a collection of values that indicate a factor to divide the RPM by
@@ -187,13 +187,13 @@ public class Carp : ISerialNumberModel
     /// Gets a collection of values taht indicates how the gas increases when
     /// applied.
     /// </summary>
-    public ICollection<int> GasIncreaseCurve { get; } = [];
+    public ICollection<double> GasIncreaseCurve { get; } = [];
 
     /// <summary>
     /// Gets a collection of values taht indicates how the gas decreases when
     /// released.
     /// </summary>
-    public ICollection<int> GasDecreaseCurve { get; } = [];
+    public ICollection<double> GasDecreaseCurve { get; } = [];
 
     /// <summary>
     /// Gets a collection of values taht indicates how the brakes increase when

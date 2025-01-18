@@ -78,7 +78,7 @@ public partial class CarpEditorState : EditorViewModelStateBase
     /// <remarks>
     /// The number of elements in this array should idealy remain at 8.
     /// </remarks>
-    public ICollection<int> ShiftBlip { get; } = new ObservableCollection<int>();
+    public ICollection<double> ShiftBlip { get; } = new ObservableCollection<double>();
 
     /// <summary>
     /// Gets a collection of values that indicate the RPM blip to be applied
@@ -87,7 +87,7 @@ public partial class CarpEditorState : EditorViewModelStateBase
     /// <remarks>
     /// The number of elements in this array should idealy remain at 8.
     /// </remarks>
-    public ICollection<int> BrakeBlip { get; } = new ObservableCollection<int>();
+    public ICollection<double> BrakeBlip { get; } = new ObservableCollection<double>();
 
     /// <summary>
     /// Gets a collection of values that indicate a factor to divide the RPM by
@@ -258,13 +258,13 @@ public partial class CarpEditorState : EditorViewModelStateBase
     /// Gets a collection of values taht indicates how the gas increases when
     /// applied.
     /// </summary>
-    public ICollection<int> GasIncreaseCurve { get; } = new ObservableCollection<int>();
+    public ICollection<double> GasIncreaseCurve { get; } = new ObservableCollection<double>();
 
     /// <summary>
     /// Gets a collection of values taht indicates how the gas decreases when
     /// released.
     /// </summary>
-    public ICollection<int> GasDecreaseCurve { get; } = new ObservableCollection<int>();
+    public ICollection<double> GasDecreaseCurve { get; } = new ObservableCollection<double>();
 
     /// <summary>
     /// Gets a collection of values taht indicates how the brakes increase when
