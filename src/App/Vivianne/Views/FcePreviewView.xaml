@@ -77,11 +77,7 @@
         <Border Grid.Row="1" Grid.Column="1" Background="{StaticResource DarkBackground}">
             <Viewport3D>
                 <Viewport3D.Camera>
-                    <PerspectiveCamera
-                        x:Name="ptcMain"
-                        UpDirection="1,0,0"
-                    LookDirection="40,-40,-40"
-                    Position="-40,40,40"/>
+                    <PerspectiveCamera x:Name="ptcMain" UpDirection="1,0,0" LookDirection="-20,40,40" Position="20,-40,-40"/>
                 </Viewport3D.Camera>
                 <ModelVisual3D Content="{Binding RenderTree, Converter={StaticResource fcevm2mesh}}"/>
             </Viewport3D>

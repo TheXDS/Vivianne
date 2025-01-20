@@ -22,12 +22,12 @@ public class FcePreviewViewModelToModel3DGroupConverter : IOneWayValueConverter<
 
     private const double SizeFactor = 10.0;
 
-    private static Point3D FromVertex(Vector3d vertex, Vector3d partOrigin)
+    private static Point3D Vector3dToPoint3D(Vector3d vertex, Vector3d partOrigin)
     {
         return new Point3D(SizeFactor * (vertex.Y + partOrigin.Y), SizeFactor * (-vertex.Z + -partOrigin.Z), SizeFactor * (vertex.X + partOrigin.X));
     }
 
-    private static MeshGeometry3D? ToGeometry(FcePart value, bool flipU, bool flipV, TriangleFlags flags)
+    private static MeshGeometry3D? FcePartToGeometry(FcePart value, bool flipU, bool flipV, TriangleFlags flags)
     {
         /* This convoluted method has a reason for being
          * =============================================
@@ -63,9 +63,9 @@ public class FcePreviewViewModelToModel3DGroupConverter : IOneWayValueConverter<
             var j = filteredTriangles[i];
             var uFlip = flipU ? -1 : 1;
             var vFlip = flipV ? -1 : 1;
-            var vert1 = FromVertex(value.Vertices[j.I1], value.Origin);
-            var vert2 = FromVertex(value.Vertices[j.I2], value.Origin);
-            var vert3 = FromVertex(value.Vertices[j.I3], value.Origin);
+            var vert1 = Vector3dToPoint3D(value.Vertices[j.I1], value.Origin);
+            var vert2 = Vector3dToPoint3D(value.Vertices[j.I2], value.Origin);
+            var vert3 = Vector3dToPoint3D(value.Vertices[j.I3], value.Origin);
             var uv1 = new Point(uFlip * j.U1, vFlip * j.V1);
             var uv2 = new Point(uFlip * j.U2, vFlip * j.V2);
             var uv3 = new Point(uFlip * j.U3, vFlip * j.V3);
@@ -131,6 +131,18 @@ public class FcePreviewViewModelToModel3DGroupConverter : IOneWayValueConverter<
         return (brush, flipU, flipV);
     }
 
+    private static MaterialGroup CreateMaterialGroup(Brush brush, Brush specularBrush, double specularPower)
+    {
+        return new MaterialGroup
+        {
+            Children =
+            {
+                new DiffuseMaterial(brush),
+                new SpecularMaterial(specularBrush, specularPower)
+            }
+        };
+    }
+
     /// <inheritdoc/>
     public Model3DGroup? Convert(RenderTreeState? value, object? parameter, CultureInfo? culture)
     {
@@ -142,11 +154,13 @@ public class FcePreviewViewModelToModel3DGroupConverter : IOneWayValueConverter<
 
         var materials = new Dictionary<TriangleFlags, Material>
         {
-            { TriangleFlags.None, CreateMaterialGroup(brush, Brushes.White, 1) },
+            { TriangleFlags.None, CreateMaterialGroup(brush, Brushes.White, 10) },
             { TriangleFlags.NoBlending, new DiffuseMaterial(brush) },
-            { TriangleFlags.HighBlending, CreateMaterialGroup(brush, Brushes.White, 0.1) },
-            { TriangleFlags.Semitrans, CreateMaterialGroup(semiBrush, Brushes.White, 1) },
-            { TriangleFlags.SemitransNoBlending, new DiffuseMaterial(semiBrush) }
+            { TriangleFlags.HighBlending, CreateMaterialGroup(brush, Brushes.White, 1) },
+            { TriangleFlags.Semitrans, CreateMaterialGroup(semiBrush, Brushes.White, 10) },
+            { TriangleFlags.SemitransNoBlending, new DiffuseMaterial(semiBrush) },
+            { TriangleFlags.SemitransHighBlending, CreateMaterialGroup(semiBrush, Brushes.White, 1) },
+
         };
 
         var group = new Model3DGroup
@@ -162,22 +176,10 @@ public class FcePreviewViewModelToModel3DGroupConverter : IOneWayValueConverter<
         {
             foreach (var part in value.Parts)
             {
-                group.Children.Add(new GeometryModel3D(ToGeometry(part, flipU, flipV, flags), material) { BackMaterial = flags.HasFlag(TriangleFlags.NoCulling) ? material : null });
+                group.Children.Add(new GeometryModel3D(FcePartToGeometry(part, flipU, flipV, flags), material) { BackMaterial = flags.HasFlag(TriangleFlags.NoCulling) ? material : null });
             }
         }
 
         return group;
-    }
-
-    private static MaterialGroup CreateMaterialGroup(Brush brush, Brush specularBrush, double specularPower)
-    {
-        return new MaterialGroup
-        {
-            Children =
-            {
-                new DiffuseMaterial(brush),
-                new SpecularMaterial(specularBrush, specularPower)
-            }
-        };
     }
 }
