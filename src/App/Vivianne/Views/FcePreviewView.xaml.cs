@@ -25,8 +25,8 @@ public partial class FcePreviewView : UserControl
     private void Window_PreviewMouseMove(object sender, MouseEventArgs e)
     {
         var till = e.GetPosition(sender as IInputElement);
-        double dy = till.X - from.X;
-        double dx = till.Y - from.Y;
+        double dx = (till.X - from.X)*-1;
+        double dy = till.Y - from.Y;
         from = till;
 
         var distance = dx * dx + dy * dy;
@@ -34,7 +34,7 @@ public partial class FcePreviewView : UserControl
         if (e.MouseDevice.LeftButton is MouseButtonState.Pressed)
         {
             var angle = (distance / ptcMain.FieldOfView) % 45d;
-            ptcMain.Rotate(new(dx * 2, dy * 3, 0d), angle);
+            ptcMain.Rotate(new(dx * 3, dy * 2, 0d), angle);
         }
     }
 }

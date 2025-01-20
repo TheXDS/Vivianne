@@ -1,9 +1,7 @@
-﻿using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using TheXDS.MCART.Exceptions;
@@ -23,6 +21,11 @@ public class FcePreviewViewModelToModel3DGroupConverter : IOneWayValueConverter<
     private record VertexUv(Point3D Vertex, Point Uv, Vector3d Normal);
 
     private const double SizeFactor = 10.0;
+
+    private static Point3D FromVertex(Vector3d vertex, Vector3d partOrigin)
+    {
+        return new Point3D(SizeFactor * (vertex.Y + partOrigin.Y), SizeFactor * (-vertex.Z + -partOrigin.Z), SizeFactor * (vertex.X + partOrigin.X));
+    }
 
     private static MeshGeometry3D? ToGeometry(FcePart value, bool flipU, bool flipV, TriangleFlags flags)
     {
@@ -60,12 +63,9 @@ public class FcePreviewViewModelToModel3DGroupConverter : IOneWayValueConverter<
             var j = filteredTriangles[i];
             var uFlip = flipU ? -1 : 1;
             var vFlip = flipV ? -1 : 1;
-            var v1 = value.Vertices[j.I1];
-            var v2 = value.Vertices[j.I2];
-            var v3 = value.Vertices[j.I3];
-            var vert1 = new Point3D(SizeFactor * (v1.Z + value.Origin.Z), SizeFactor * (-v1.X + -value.Origin.X), SizeFactor * (v1.Y + value.Origin.Y));
-            var vert2 = new Point3D(SizeFactor * (v2.Z + value.Origin.Z), SizeFactor * (-v2.X + -value.Origin.X), SizeFactor * (v2.Y + value.Origin.Y));
-            var vert3 = new Point3D(SizeFactor * (v3.Z + value.Origin.Z), SizeFactor * (-v3.X + -value.Origin.X), SizeFactor * (v3.Y + value.Origin.Y));
+            var vert1 = FromVertex(value.Vertices[j.I1], value.Origin);
+            var vert2 = FromVertex(value.Vertices[j.I2], value.Origin);
+            var vert3 = FromVertex(value.Vertices[j.I3], value.Origin);
             var uv1 = new Point(uFlip * j.U1, vFlip * j.V1);
             var uv2 = new Point(uFlip * j.U2, vFlip * j.V2);
             var uv3 = new Point(uFlip * j.U3, vFlip * j.V3);

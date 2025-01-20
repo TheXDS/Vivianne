@@ -12,7 +12,6 @@
     d:DesignHeight="250" d:DesignWidth="500">
     <UserControl.Resources>
         <valueconverters:FcePreviewViewModelToModel3DGroupConverter x:Key="fcevm2mesh"/>
-        <valueconverters:LookBackConverter x:Key="lbc"/>
         <valueconverters:DrawingColorToBrushConverter x:Key="dc2bc"/>
     </UserControl.Resources>
     <Grid>
@@ -80,7 +79,7 @@
                 <Viewport3D.Camera>
                     <PerspectiveCamera
                         x:Name="ptcMain"
-                        UpDirection="0,0,1"
+                        UpDirection="1,0,0"
                     LookDirection="40,-40,-40"
                     Position="-40,40,40"/>
                 </Viewport3D.Camera>
