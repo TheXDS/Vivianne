@@ -72,6 +72,7 @@ public class FcePreviewViewModel : ViewModel
         : this(fce, saveCallback)
     {
         CarTextures = GetTextures(vivDirectory);
+        if (CarTextures.Any()) SelectedCarTexture = CarTextures.First();
         CarColors = new ObservableCollection<CarColorItem>(CreateColors(vivDirectory, fce.Header));
         this.vivDirectory = vivDirectory;
     }
@@ -90,6 +91,10 @@ public class FcePreviewViewModel : ViewModel
         Parts = fce.Select(p => new FcePartListItem(p)).ToArray();
         CarTextures = [];
         CarColors = new ObservableCollection<CarColorItem>(CreateColors(null, fce.Header));
+        foreach (var j in Parts.Take(5))
+        { 
+            j.IsVisible = true;
+        }
         foreach (var j in Parts)
         {
             j.Subscribe(() => j.IsVisible, OnPartToggle);
@@ -182,9 +187,13 @@ public class FcePreviewViewModel : ViewModel
     {
         var state = new FceColorTableEditorState(fce);
         var vm = new FceColorEditorViewModel(state);
+        vm.StateSaved += (sender, e) =>
+        {
+            CarColors.Clear();
+            CarColors.AddRange(CreateColors(vivDirectory, fce.Header));
+            SelectedColorIndex = 0;
+        };
         await DialogService!.Show(vm);
-        CarColors.Clear();
-        CarColors.AddRange(CreateColors(vivDirectory, fce.Header));
     }
 
     private async Task OnSaveChanges()

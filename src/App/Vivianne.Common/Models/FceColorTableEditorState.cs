@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection;
+using TheXDS.MCART.Types;
+using TheXDS.MCART.Types.Base;
 using TheXDS.Vivianne.ViewModels;
 
 namespace TheXDS.Vivianne.Models;
@@ -19,9 +22,9 @@ public class FceColorTableEditorState(FceFile fce) : EditorViewModelStateBase
     /// <summary>
     /// Gets the collection of colors that are being edited on the FCE file.
     /// </summary>
-    public ICollection<MutableFceColorItem> Colors { get; } = CreateFromFce(fce);
+    public ObservableListWrap<MutableFceColorItem> Colors { get; } = CreateFromFce(fce);
 
-    private static ObservableCollection<MutableFceColorItem> CreateFromFce(FceFile fce)
+    private static ObservableListWrap<MutableFceColorItem> CreateFromFce(FceFile fce)
     {
         var primary = fce.Header.PrimaryColorTable
             .Take(fce.Header.PrimaryColors)
@@ -31,7 +34,33 @@ public class FceColorTableEditorState(FceFile fce) : EditorViewModelStateBase
             .Select(MutableFceColor.From);
         var joint = primary
             .Zip(secondary)
-            .Select(p => new MutableFceColorItem(p.First, p.Second));
-        return new ObservableCollection<MutableFceColorItem>(joint);
+            .Select(p => new MutableFceColorItem(p.First, p.Second)).ToList();
+        var obsc = new ObservableListWrap<MutableFceColorItem>(joint);
+        foreach (var item in joint)
+        {
+            HookItemRefresh(obsc, item);
+
+            void OnColorChanged(object instance, PropertyInfo property, PropertyChangeNotificationType notificationType) => obsc.RefreshItem(item);
+            item.PrimaryColor.Subscribe(OnColorChanged);
+            item.SecondaryColor.Subscribe(OnColorChanged);
+        }
+        return obsc;
+    }
+
+    /// <summary>
+    /// Adds a new color to the color collection.
+    /// </summary>
+    /// <param name="newColor">Color to be added.</param>
+    public void AddColor(MutableFceColorItem newColor)
+    {
+        Colors.Add(newColor);
+        HookItemRefresh(Colors, newColor);
+    }
+
+    private static void HookItemRefresh(ObservableListWrap<MutableFceColorItem> colorCollection, MutableFceColorItem color)
+    {
+        void OnColorChanged(object instance, PropertyInfo property, PropertyChangeNotificationType notificationType) => colorCollection.RefreshItem(color);
+        color.PrimaryColor.Subscribe(OnColorChanged);
+        color.SecondaryColor.Subscribe(OnColorChanged);
     }
 }

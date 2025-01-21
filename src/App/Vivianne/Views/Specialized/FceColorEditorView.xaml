@@ -6,7 +6,10 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:local="clr-namespace:TheXDS.Vivianne.Views.Specialized"
     xmlns:viewmodels="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
-    xmlns:gn="http://schemas.thexds.local/ganymede" xmlns:valueconverters="clr-namespace:TheXDS.Vivianne.ValueConverters" xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:gn="http://schemas.thexds.local/ganymede"
+    xmlns:valueconverters="clr-namespace:TheXDS.Vivianne.ValueConverters"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:hlp="clr-namespace:TheXDS.Vivianne.Helpers"
     d:DataContext="{d:DesignInstance Type=viewmodels:FceColorEditorViewModel}"
     mc:Ignorable="d" 
     x:Name="ucRoot"
@@ -30,82 +33,49 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <Grid.Resources>
+                                <Style TargetType="ui:NumberBox" BasedOn="{StaticResource {x:Type ui:NumberBox}}">
+                                    <Setter Property="Width" Value="150"/>
+                                    <Setter Property="HorizontalContentAlignment" Value="Right"/>
+                                    <Setter Property="Minimum" Value="0"/>
+                                    <Setter Property="Maximum" Value="255"/>
+                                    <Setter Property="MaxDecimalPlaces" Value="0"/>
+                                </Style>
                                 <valueconverters:FceColorToBrushConverter x:Key="mfc2bv"/>
                             </Grid.Resources>
                             <ui:NumberBox
-                                Width="80"
-                                HorizontalContentAlignment="Right"
-                                Icon="H"
-                                Minimum="0"
-                                MaxDecimalPlaces="0"
-                                Maximum="255"
+                                hlp:Form.Label="H"
                                 Value="{Binding PrimaryColor.Hue}"/>
                             <ui:NumberBox
                                 Grid.Column="1"
-                                Width="80"
-                                HorizontalContentAlignment="Right"
-                                Icon="S"
-                                Minimum="0"
-                                MaxDecimalPlaces="0"
-                                Maximum="255"
+                                hlp:Form.Label="S"
                                 Value="{Binding PrimaryColor.Saturation}"/>
                             <ui:NumberBox
                                 Grid.Column="2"
-                                Width="80"
-                                HorizontalContentAlignment="Right"
-                                Icon="B"
-                                Minimum="0"
-                                MaxDecimalPlaces="0"
-                                Maximum="255"
+                                hlp:Form.Label="B"
                                 Value="{Binding PrimaryColor.Brightness}"/>
                             <ui:NumberBox
                                 Grid.Column="3"
-                                Width="80"
-                                HorizontalContentAlignment="Right"
-                                Icon="A"
-                                Minimum="0"
-                                MaxDecimalPlaces="0"
-                                Maximum="255"
+                                hlp:Form.Label="A"
                                 Value="{Binding PrimaryColor.Alpha}"/>
                             <Rectangle Fill="{Binding PrimaryColor.Preview, Mode=OneWay, Converter={StaticResource mfc2bv}}" Grid.Column="4"/>
                             <ui:NumberBox
                                 Grid.Row="1"
-                                Width="80"
-                                HorizontalContentAlignment="Right"
-                                Icon="H"
-                                Minimum="0"
-                                MaxDecimalPlaces="0"
-                                Maximum="255"
+                                hlp:Form.Label="H"
                                 Value="{Binding SecondaryColor.Hue}"/>
                             <ui:NumberBox
                                 Grid.Row="1"
                                 Grid.Column="1"
-                                Width="80"
-                                HorizontalContentAlignment="Right"
-                                Icon="S"
-                                Minimum="0"
-                                MaxDecimalPlaces="0"
-                                Maximum="255"
+                                hlp:Form.Label="S"
                                 Value="{Binding SecondaryColor.Saturation}"/>
                             <ui:NumberBox
                                 Grid.Row="1"
                                 Grid.Column="2"
-                                Width="80"
-                                HorizontalContentAlignment="Right"
-                                Icon="B"
-                                Minimum="0"
-                                MaxDecimalPlaces="0"
-                                Maximum="255"
+                                hlp:Form.Label="B"
                                 Value="{Binding SecondaryColor.Brightness}"/>
                             <ui:NumberBox
                                 Grid.Row="1"
                                 Grid.Column="3"
-                                Width="80"
-                                HorizontalContentAlignment="Right"
-                                Icon="A"
-                                Minimum="0"
-                                MaxDecimalPlaces="0"
-                                Maximum="255"
+                                hlp:Form.Label="A"
                                 Value="{Binding SecondaryColor.Alpha}"/>
                             <Rectangle Fill="{Binding SecondaryColor.Preview, Mode=OneWay, Converter={StaticResource mfc2bv}}" Grid.Row="1" Grid.Column="4"/>
                             <Button
