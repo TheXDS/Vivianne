@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Windows.Input;
 using TheXDS.Ganymede.Types.Base;
 using TheXDS.MCART.Component;
@@ -43,7 +44,23 @@ public class FeDataPreviewViewModel : ViewModel
         this.fedataName = fedataName;
         Data = serializer.Deserialize(data);
         SaveCommand = new SimpleCommand(OnSave);
+
+        PreviewFceColorTable = LoadColorsFromFce(viv?.Viv);
+
     }
+
+    private static FceColorItem[]? LoadColorsFromFce(VivFile? viv)
+    {
+        if (viv is null || !viv.TryGetValue("car.fce", out var data)) return null;
+        ISerializer<FceFile> s = new FceSerializer();
+        var header = s.Deserialize(data).Header;
+        return header.PrimaryColorTable.Zip(header.SecondaryColorTable).Select(p=>new FceColorItem(p.First, p.Second)).ToArray();
+    }
+
+    /// <summary>
+    /// Gets a table of the colors defined in the FCE file.
+    /// </summary>
+    public FceColorItem[]? PreviewFceColorTable { get; }
 
     /// <summary>
     /// Gets the <see cref="FeData"/> instance to view/edit.

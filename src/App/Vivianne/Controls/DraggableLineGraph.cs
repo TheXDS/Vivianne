@@ -16,13 +16,13 @@ namespace TheXDS.Vivianne.Controls;
 /// Implements a control that allows the user to edit collections of numeric
 /// values with a line graph layout.
 /// </summary>
-[ContentProperty(nameof(Data))]
+[ContentProperty(nameof(DataCollection))]
 public class DraggableLineGraph : Control
 {
     /// <summary>
-    /// Identifies the <see cref="Data"/> dependency property.
+    /// Identifies the <see cref="DataCollection"/> dependency property.
     /// </summary>
-    public static readonly DependencyProperty DataProperty;
+    public static readonly DependencyProperty DataCollectionProperty;
 
     /// <summary>
     /// Identifies the <see cref="MinValue"/> dependency property.
@@ -52,7 +52,7 @@ public class DraggableLineGraph : Control
     static DraggableLineGraph()
     {
         SetControlStyle<DraggableLineGraph>(DefaultStyleKeyProperty);
-        DataProperty = NewDp<IList<double>, DraggableLineGraph>(nameof(Data), FrameworkPropertyMetadataOptions.AffectsRender, [], OnDataChanged);
+        DataCollectionProperty = NewDp<IList<double>, DraggableLineGraph>(nameof(DataCollection), FrameworkPropertyMetadataOptions.AffectsRender, [], OnDataChanged);
         MinValueProperty = NewDp2Way<double, DraggableLineGraph>(nameof(MinValue), FrameworkPropertyMetadataOptions.AffectsRender, double.NaN, OnUpdateVisuals);
         MaxValueProperty = NewDp2Way<double, DraggableLineGraph>(nameof(MaxValue), FrameworkPropertyMetadataOptions.AffectsRender, double.NaN, OnUpdateVisuals);
         ForegroundProperty.OverrideMetadata<DraggableLineGraph>(Brushes.Red);
@@ -105,10 +105,10 @@ public class DraggableLineGraph : Control
     /// <summary>
     /// Gets or sets the list to be displayed and updated through this control.
     /// </summary>
-    public IList<double> Data
+    public IList<double> DataCollection
     {
-        get => (IList<double>)GetValue(DataProperty);
-        set => SetValue(DataProperty, value);
+        get => (IList<double>)GetValue(DataCollectionProperty);
+        set => SetValue(DataCollectionProperty, value);
     }
 
     /// <summary>
@@ -173,15 +173,15 @@ public class DraggableLineGraph : Control
 
     private Point CalculatePosition(int index, double value)
     {
-        double x = (canvasWidth * index / (Data.Count - 1)) + 5;
+        double x = (canvasWidth * index / (DataCollection.Count - 1)) + 5;
         double y = ScaleValueToCanvas(value);
         return new Point(x, y);
     }
 
     private double ScaleValueToCanvas(double value)
     {
-        double minValue = MinValue.OrIfInvalid(Data.Min());
-        double maxValue = MaxValue.OrIfInvalid(Data.Max());
+        double minValue = MinValue.OrIfInvalid(DataCollection.Min());
+        double maxValue = MaxValue.OrIfInvalid(DataCollection.Max());
         double scaledY = (canvasHeight - (value - minValue) / (maxValue - minValue) * canvasHeight) + 5;
         return scaledY;
     }
@@ -195,7 +195,7 @@ public class DraggableLineGraph : Control
 
     private void UpdateVisuals()
     {
-        if (canvas == null || Data == null || !Data.Any()) return;
+        if (canvas == null || DataCollection == null || !DataCollection.Any()) return;
         canvasWidth = canvas.ActualWidth - 10;
         canvasHeight = canvas.ActualHeight - 10;
         canvas.Children.Clear();
@@ -204,7 +204,7 @@ public class DraggableLineGraph : Control
             e.MouseDown -= PointTick_MouseDown;
         }
         pointTicks.Clear();
-        Point[] points = Data.WithIndex().Select(p => CalculatePosition(p.index, p.element)).ToArray();
+        Point[] points = DataCollection.WithIndex().Select(p => CalculatePosition(p.index, p.element)).ToArray();
         Polyline polyline = new()
         {
             Stroke = Brushes.Gray,
@@ -212,9 +212,10 @@ public class DraggableLineGraph : Control
             Points = new PointCollection(points)
         };
         canvas.Children.Add(polyline);
-        foreach (var position in points)
+        foreach ((var position, var value) in points.Zip(DataCollection))
         {
             var pointTick = CreatePointTick();
+            pointTick.ToolTip = value;
             Canvas.SetLeft(pointTick, position.X - pointTick.Width / 2);
             Canvas.SetTop(pointTick, position.Y - pointTick.Height / 2);
             canvas.Children.Add(pointTick);
@@ -246,7 +247,7 @@ public class DraggableLineGraph : Control
             if (draggingIndex.HasValue && draggingIndex.Value != -1)
             {
                 initialMouseDownPosition = e.GetPosition(canvas);
-                initialValue = Data[draggingIndex.Value];
+                initialValue = DataCollection[draggingIndex.Value];
                 canvas?.CaptureMouse();
                 isDragging = true;
             }
@@ -260,7 +261,7 @@ public class DraggableLineGraph : Control
             Point currentPos = e.GetPosition(canvas);
             double deltaY = currentPos.Y - initialMouseDownPosition.Y;
             double newValue = initialValue - (deltaY / canvasHeight) * (MaxValue - MinValue);
-            Data[draggingIndex.Value] = newValue;
+            DataCollection[draggingIndex.Value] = newValue;
             UpdateVisuals();
         }
     }

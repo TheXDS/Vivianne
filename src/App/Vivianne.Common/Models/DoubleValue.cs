@@ -1,6 +1,6 @@
 ﻿using TheXDS.MCART.Types.Base;
 
-namespace TheXDS.Vivianne.Controls;
+namespace TheXDS.Vivianne.Models;
 
 public class DoubleValue : NotifyPropertyChanged
 {

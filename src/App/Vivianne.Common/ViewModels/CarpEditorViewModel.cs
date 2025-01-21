@@ -113,8 +113,7 @@ public class CarpEditorViewModel : EditorViewModelBase<CarpEditorState>
     {
         return parameter switch
         {
-            CollectionDescriptor d when GetCollection<double>(d.Collection) is { } c => RunCurveEditor(c, d),
-            ICollection<double> c => RunCurveEditor(c, new() { Minimum = 0, Maximum = 100, Step = 10, BarWidth = 40 }),
+            ICollection<double> c => RunCurveEditor(c),
             _ => Task.CompletedTask
         };
     }
@@ -125,10 +124,6 @@ public class CarpEditorViewModel : EditorViewModelBase<CarpEditorState>
         ICollection<double>? doubleCollection = null;
         switch (parameter)
         {
-            case CollectionDescriptor d when GetCollection<int>(d.Collection) is { } c:
-                collection = c;
-                doubleCollection = await RunCurveEditor(c.Select(p => (double)p).ToList(), d);
-                break;
             case ICollection<int> c:
                 collection = c;
                 doubleCollection = await RunCurveEditor(c.Select(p => (double)p).ToList());
@@ -193,21 +188,9 @@ public class CarpEditorViewModel : EditorViewModelBase<CarpEditorState>
         State.UnsavedChanges = true;
     }
 
-    private async Task<ICollection<double>> RunCurveEditor(ICollection<double> c, CollectionDescriptor? d = null)
+    private async Task<ICollection<double>> RunCurveEditor(ICollection<double> c)
     {
-        Range<double> rng;
-        d ??= new() { Minimum = 0, Maximum = 100, Step = 10, BarWidth = 40 };
-        if (KeyboardProxy.IsShiftKeyDown)
-        {
-            var result = await DialogService!.GetInputRange<double>(CommonDialogTemplates.Input with { Title = "Edit curve", Text = "Select a value range to edit this curve" }, d.Minimum, d.Maximum);
-            if (!result) return [];
-            rng = new(result.Result.Min, result.Result.Max);
-        }
-        else
-        {
-            rng = new(d.Minimum, d.Maximum);
-        }
-        var vm = new CurveEditorDialogViewModel(new(c) { Minimum = rng.Minimum, Maximum = rng.Maximum, Step = d.Step, BarWidth = d.BarWidth }) { Message = d.Message };
+        var vm = new CurveEditorDialogViewModel(new(c)) { Message = "Edit curve" };
         vm.StateSaved += Vm_StateSaved;
         await DialogService!.Show(vm);
         vm.StateSaved -= Vm_StateSaved;
@@ -228,10 +211,5 @@ public class CarpEditorViewModel : EditorViewModelBase<CarpEditorState>
             0 to 60 MPH: {a.Accel0To60}
             0 to 100 MPH: {a.Accel0To100}
             """);
-    }
-
-    private ICollection<T>? GetCollection<T>(string name) where T : unmanaged
-    {
-        return typeof(CarpEditorState).GetProperty(name)?.GetValue(State) as ICollection<T>;
     }
 }
