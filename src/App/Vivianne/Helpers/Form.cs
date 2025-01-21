@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Media;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Controls;
 using TheXDS.Vivianne.Models;
@@ -24,6 +25,14 @@ public static class Form
     /// </summary>
     public static readonly DependencyProperty FceColorPreviewProperty =
         DependencyProperty.RegisterAttached("FceColorPreview", typeof(FceColorItem), typeof(Form), new FrameworkPropertyMetadata(default(FceColorItem), FrameworkPropertyMetadataOptions.AffectsRender, OnFceColorPreviewChanged));
+
+
+    /// <summary>
+    /// Identifies the "<c>MouseTrackingOverlay</c>" attached property.
+    /// </summary>
+    public static readonly DependencyProperty MouseTrackingOverlayProperty =
+        DependencyProperty.RegisterAttached("MouseTrackingOverlay", typeof(bool), typeof(Form), new FrameworkPropertyMetadata(default(bool), FrameworkPropertyMetadataOptions.AffectsRender, OnMouseTrackingOverlayChanged));
+
 
     /// <summary>
     /// Gets the value of the "<c>Label</c>" attached property.
@@ -50,7 +59,6 @@ public static class Form
         obj.SetValue(LabelProperty, value);
     }
 
-
     /// <summary>
     /// Gets the value of the "<c>FceColorPreview</c>" attached property.
     /// </summary>
@@ -76,19 +84,50 @@ public static class Form
         obj.SetValue(FceColorPreviewProperty, value);
     }
 
+    /// <summary>
+    /// Gets the value of the "<c>FceColorPreview</c>" attached property.
+    /// </summary>
+    /// <param name="obj">
+    /// Object for which to get the value of the attached property.
+    /// </param>
+    /// <returns>The value of the "<c>FceColorPreview</c>" attached property.
+    /// </returns>
+    public static bool GetMouseTrackingOverlay(DependencyObject obj)
+    {
+        return (bool)obj.GetValue(MouseTrackingOverlayProperty);
+    }
+
+    /// <summary>
+    /// Sets the value of the "<c>FceColorPreview</c>" attached property.
+    /// </summary>
+    /// <param name="obj">
+    /// Object onto which to set the value of the attached property.
+    /// </param>
+    /// <param name="value">Value of the attached property.</param>
+    public static void SetMouseTrackingOverlay(DependencyObject obj, bool value)
+    {
+        obj.SetValue(MouseTrackingOverlayProperty, value);
+    }
+
+    private static void OnMouseTrackingOverlayChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if ((bool)e.NewValue) AttachAdorner<MouseTrackingAdorner, bool>(d, e, (control, _) => new MouseTrackingAdorner(control));
+        else RemoveAdorner<MouseTrackingAdorner>((FrameworkElement)d);
+    }
+
     private static void OnLabelChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
     {
-        AttachAdorner<FormLabelAdorner, string>(obj, e, (control, text) => new FormLabelAdorner(control, text));
+        AttachAdorner<FormLabelAdorner, string>(obj, e, (control, text) => new FormLabelAdorner((Control)control, text));
     }
 
     private static void OnFceColorPreviewChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
     {
-        AttachAdorner<FceColorPreviewAdorner, FceColorItem>(obj, e, (control, color) => new FceColorPreviewAdorner(control, color));
+        AttachAdorner<FceColorPreviewAdorner, FceColorItem>(obj, e, (control, color) => new FceColorPreviewAdorner((Control)control, color));
     }
 
-    private static void AttachAdorner<TAdorner, TValue>(DependencyObject obj, DependencyPropertyChangedEventArgs e, Func<Control, TValue, TAdorner> adornerFactory) where TAdorner : Adorner
+    private static void AttachAdorner<TAdorner, TValue>(DependencyObject obj, DependencyPropertyChangedEventArgs e, Func<FrameworkElement, TValue, TAdorner> adornerFactory) where TAdorner : Adorner
     {
-        if (obj is not Control control) return;
+        if (obj is not FrameworkElement control) return;
 
         void OnControlLoaded(object sender, RoutedEventArgs _)
         {
@@ -113,13 +152,13 @@ public static class Form
         }
     }
 
-    private static void AddAdorner<TAdorner>(Control control, TAdorner adorner) where TAdorner : Adorner
+    private static void AddAdorner<TAdorner>(Visual control, TAdorner adorner) where TAdorner : Adorner
     {
         if (!(AdornerLayer.GetAdornerLayer(control) is { } adornerLayer)) return;
         adornerLayer.Add(adorner);
     }
 
-    private static void RemoveAdorner<TAdorner>(Control control) where TAdorner : Adorner
+    private static void RemoveAdorner<TAdorner>(UIElement control) where TAdorner : Adorner
     {
         if (!(AdornerLayer.GetAdornerLayer(control) is { } adornerLayer)) return;
         foreach (var adorner in adornerLayer.GetAdorners(control).NotNull())

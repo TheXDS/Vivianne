@@ -5,13 +5,14 @@
     <Color x:Key="MainBackgroundColor">White</Color>
     <Color x:Key="MidBackgroundColor">Gray</Color>
     <Color x:Key="DarkBackgroundColor">#404040</Color>
+    <Color x:Key="TransparentDarkBackgroundColor">#00404040</Color>
 
     <SolidColorBrush x:Key="MidBackground" Color="{StaticResource MidBackgroundColor}"/>
     <SolidColorBrush x:Key="DarkBackground" Color="{StaticResource DarkBackgroundColor}"/>
     <SolidColorBrush x:Key="DarkAreaForeground" Color="{StaticResource MainBackgroundColor}"/>
     <DrawingBrush x:Key="CheckerboardBrush" Stretch="None" TileMode="Tile" Viewport="0,0,20,20" ViewportUnits="Absolute">
         <DrawingBrush.Drawing>
-            <GeometryDrawing Brush="{StaticResource DarkBackground}">
+            <GeometryDrawing Brush="{StaticResource MidBackground}">
                 <GeometryDrawing.Geometry>
                     <GeometryGroup>
                         <RectangleGeometry Rect="0,0,50,50" />
@@ -21,6 +22,10 @@
             </GeometryDrawing>
         </DrawingBrush.Drawing>
     </DrawingBrush>
+    <LinearGradientBrush x:Key="FadeInBackground" EndPoint="1,0">
+        <GradientStop Color="{DynamicResource TransparentDarkBackgroundColor}"/>
+        <GradientStop Color="{DynamicResource DarkBackgroundColor}" Offset="1"/>
+    </LinearGradientBrush>
     <LinearGradientBrush x:Key="MainAreaBackground" EndPoint="1,0">
         <LinearGradientBrush.GradientStops>
             <GradientStop Color="{StaticResource MidBackgroundColor}" Offset="0.2"/>

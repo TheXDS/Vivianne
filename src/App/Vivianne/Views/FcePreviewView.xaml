@@ -26,13 +26,8 @@
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
             <ItemsControl
                 Padding="10"                
-                ItemsSource="{Binding Parts, Mode=OneWay}">
-                <ItemsControl.Background>
-                    <LinearGradientBrush EndPoint="1,0">
-                        <GradientStop Color="#00404040"/>
-                        <GradientStop Color="{DynamicResource DarkBackgroundColor}" Offset="1"/>
-                    </LinearGradientBrush>
-                </ItemsControl.Background>
+                ItemsSource="{Binding Parts, Mode=OneWay}"
+                Background="{StaticResource FadeInBackground}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <CheckBox IsChecked="{Binding IsVisible}" Style="{StaticResource ToggleSwitch}">

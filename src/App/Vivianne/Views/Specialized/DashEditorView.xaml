@@ -5,10 +5,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:vc="clr-namespace:TheXDS.Vivianne.ValueConverters"
-    xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne"
+    xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
     xmlns:mcart="http://schemas.thexds.local/mcart"
     xmlns:gn="http://schemas.thexds.local/ganymede"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings.Views"
+    xmlns:hlp="clr-namespace:TheXDS.Vivianne.Helpers"
     Background="{StaticResource DarkBackground}"
     d:DataContext="{d:DesignInstance Type=vm:DashEditorViewModel}"
     mc:Ignorable="d">
@@ -19,25 +21,7 @@
     <DockPanel>
         <ScrollViewer Width="430" Height="520" VerticalScrollBarVisibility="Auto">
             <StackPanel>
-                <StackPanel.Resources>
-                    <Style TargetType="gn:Int32TextBox">
-                        <Setter Property="Minimum" Value="0"/>
-                        <Setter Property="Margin" Value="5"/>
-                        <Setter Property="HorizontalContentAlignment" Value="Right"/>
-                    </Style>
-                    <Style TargetType="Expander">
-                        <Setter Property="Margin" Value="5"/>
-                        <Setter Property="Foreground" Value="White"/>
-                        <Setter Property="Background" Value="#40808080"/>
-                        <Setter Property="Padding" Value="5"/>
-                    </Style>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="Foreground" Value="White"/>
-                        <Setter Property="Margin" Value="5"/>
-                        <Setter Property="VerticalAlignment" Value="Center"/>
-                    </Style>                    
-                </StackPanel.Resources>
-                <Expander Header="{x:Static st:DashEditorView.Basics}">
+                <Expander Header="{x:Static st:DashEditorView.Basics}" IsExpanded="True">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="2*"/>
@@ -48,32 +32,36 @@
                             <RowDefinition/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
-                        <TextBlock Text="{x:Static st:DashEditorView.DialColor}"/>
-                        <gn:Int32TextBox
+                        <TextBlock Text="{x:Static st:DashEditorView.DialColor}" VerticalAlignment="Center"/>
+                        <ui:NumberBox
+                            VerticalAlignment="Center"
                             Grid.Column="1"
-                            Label="X"
+                            hlp:Form.Label="X"
+                            Minimum="0"
                             Value="{Binding State.DialColorX}"
                             Maximum="{Binding State.Cabin.Width, Mode=OneWay}"/>
-                        <gn:Int32TextBox
+                        <ui:NumberBox
+                            VerticalAlignment="Center"
                             Grid.Column="2"     
-                            Label="Y"
+                            Minimum="0"
+                            hlp:Form.Label="Y"
                             Value="{Binding State.DialColorY}"
                             Maximum="{Binding State.Cabin.Height, Mode=OneWay}"/>
-                        <gn:Int32TextBox
+                        <ui:NumberBox
                             Grid.Row="1"
-                            Label="{x:Static st:DashEditorView.DialWidthBase}"
+                            hlp:Form.Label="{x:Static st:DashEditorView.DialWidthBase}"
                             Value="{Binding State.DialWidthBase}"
                             Maximum="30"/>
-                        <gn:Int32TextBox
+                        <ui:NumberBox
                             Grid.Row="1"
                             Grid.Column="1"
                             Grid.ColumnSpan="2"
-                            Label="{x:Static st:DashEditorView.DialWidthTip}"
+                            hlp:Form.Label="{x:Static st:DashEditorView.DialWidthTip}"
                             Value="{Binding State.DialWidthTip}"
                             Maximum="30"/>
                     </Grid>
                 </Expander>
-                <Expander IsEnabled="{Binding State.Steering, Mode=OneWay, Converter={StaticResource nn2bc}}" Header="{x:Static st:DashEditorView.SteeringWheelProps}">
+                <Expander IsEnabled="{Binding State.Steering, Mode=OneWay, Converter={StaticResource nn2bc}}" Header="{x:Static st:DashEditorView.SteeringWheelProps}" IsExpanded="True">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="2*"/>
@@ -84,33 +72,37 @@
                             <RowDefinition/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
-                        <TextBlock Text="{x:Static st:DashEditorView.Position}"/>
-                        <TextBlock Grid.Row="1" Text="{x:Static st:DashEditorView.Rotation}"/>
-                        <gn:Int32TextBox
+                        <TextBlock VerticalAlignment="Center" Text="{x:Static st:DashEditorView.Position}"/>
+                        <TextBlock VerticalAlignment="Center" Grid.Row="1" Text="{x:Static st:DashEditorView.Rotation}"/>
+                        <ui:NumberBox
+                            Minimum="0"
                             Grid.Column="1"
-                            Label="X"
+                            hlp:Form.Label="X"
                             Value="{Binding State.SteeringXPosition}"
                             Maximum="{Binding State.Cabin.Width, Mode=OneWay}"/>
-                        <gn:Int32TextBox
+                        <ui:NumberBox
+                            Minimum="0"
                             Grid.Column="2"
-                            Label="Y"
+                            hlp:Form.Label="Y"
                             Value="{Binding State.SteeringYPosition}"
                             Maximum="{Binding State.Cabin.Height, Mode=OneWay}"/>
-                        <gn:Int32TextBox
+                        <ui:NumberBox
+                            Minimum="0"
                             Grid.Column="1"
                             Grid.Row="1"
-                            Label="X"
+                            hlp:Form.Label="X"
                             Value="{Binding State.SteeringXRotation}"
                             Maximum="{Binding State.Steering.Width, Mode=OneWay}"/>
-                        <gn:Int32TextBox
+                        <ui:NumberBox
+                            Minimum="0"
                             Grid.Column="2"
                             Grid.Row="1"
-                            Label="Y"
+                            hlp:Form.Label="Y"
                             Value="{Binding State.SteeringYRotation}"
                             Maximum="{Binding State.Steering.Height, Mode=OneWay}"/>
                     </Grid>
                 </Expander>
-                <Expander Header="{x:Static st:DashEditorView.Speedometer}">
+                <Expander Header="{x:Static st:DashEditorView.Speedometer}" IsExpanded="True">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="2*"/>
@@ -124,64 +116,73 @@
                             <RowDefinition/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
-                        <gn:Int32TextBox
-                            Label="{x:Static st:DashEditorView.Min}"
+                        <ui:NumberBox
+                            Minimum="0"
+                            hlp:Form.Label="{x:Static st:DashEditorView.Min}"
                             Value="{Binding State.SpeedometerMin}"
                             Maximum="{Binding State.SpeedometerMax, Mode=OneWay}"/>
-                        <gn:Int32TextBox
-                            Label="{x:Static st:DashEditorView.Max}"
+                        <ui:NumberBox
+                            hlp:Form.Label="{x:Static st:DashEditorView.Max}"
                             Grid.Column="1"
                             Grid.ColumnSpan="2"
                             Value="{Binding State.SpeedometerMax}"
                             Minimum="{Binding State.SpeedometerMin, Mode=OneWay}"
                             Maximum="32767"/>
-                        <TextBlock Grid.Row="1" Text="{x:Static st:DashEditorView.Center}"/>
-                        <gn:Int32TextBox
-                            Label="X"
+                        <TextBlock VerticalAlignment="Center" Grid.Row="1" Text="{x:Static st:DashEditorView.Center}"/>
+                        <ui:NumberBox
+                            Minimum="0"
+                            hlp:Form.Label="X"
                             Grid.Column="1"
                             Grid.Row="1"
                             Value="{Binding State.SpeedometerCenterX}"
                             Maximum="{Binding State.Cabin.Width, Mode=OneWay}"/>
-                        <gn:Int32TextBox
-                            Label="Y"
+                        <ui:NumberBox
+                            Minimum="0"
+                            hlp:Form.Label="Y"
                             Grid.Column="2"
                             Grid.Row="1"
                             Value="{Binding State.SpeedometerCenterY}"
                             Maximum="{Binding State.Cabin.Height, Mode=OneWay}"/>
-                        <gn:Int32TextBox
+                        <ui:NumberBox
+                            Minimum="0"
                             Grid.Row="2"
-                            Label="{x:Static st:DashEditorView.CenterOff}"
+                            hlp:Form.Label="{x:Static st:DashEditorView.CenterOff}"
                             Value="{Binding State.SpeedometerCenterOffset}"
                             Maximum="50"/>
-                        <gn:Int32TextBox
+                        <ui:NumberBox
+                            Minimum="0"
                             Grid.Row="2"
                             Grid.Column="1"
                             Grid.ColumnSpan="2"
-                            Label="{x:Static st:DashEditorView.TipOff}"
+                            hlp:Form.Label="{x:Static st:DashEditorView.TipOff}"
                             Value="{Binding State.SpeedometerEdgeOffset}"
                             Maximum="50"/>
-                        <TextBlock Grid.Row="3" Text="{x:Static st:DashEditorView.MinCoords}"/>
-                        <gn:Int32TextBox
-                            Label="X"
+                        <TextBlock VerticalAlignment="Center" Grid.Row="3" Text="{x:Static st:DashEditorView.MinCoords}"/>
+                        <ui:NumberBox
+                            Minimum="0"
+                            hlp:Form.Label="X"
                             Grid.Column="1"
                             Grid.Row="3"
                             Value="{Binding State.SpeedometerMinX}"
                             Maximum="{Binding State.Cabin.Width, Mode=OneWay}"/>
-                        <gn:Int32TextBox
-                            Label="Y"
+                        <ui:NumberBox
+                            Minimum="0"
+                            hlp:Form.Label="Y"
                             Grid.Column="2"
                             Grid.Row="3"
                             Value="{Binding State.SpeedometerMinY}"
                             Maximum="{Binding State.Cabin.Height, Mode=OneWay}"/>
-                        <TextBlock Grid.Row="4" Text="{x:Static st:DashEditorView.MaxCoords}"/>
-                        <gn:Int32TextBox
-                            Label="X"
+                        <TextBlock VerticalAlignment="Center" Grid.Row="4" Text="{x:Static st:DashEditorView.MaxCoords}"/>
+                        <ui:NumberBox
+                            Minimum="0"
+                            hlp:Form.Label="X"
                             Grid.Column="1"
                             Grid.Row="4"
                             Value="{Binding State.SpeedometerMaxX}"
                             Maximum="{Binding State.Cabin.Width, Mode=OneWay}"/>
-                        <gn:Int32TextBox
-                            Label="Y"
+                        <ui:NumberBox
+                            Minimum="0"
+                            hlp:Form.Label="Y"
                             Grid.Column="2"
                             Grid.Row="4"
                             Value="{Binding State.SpeedometerMaxY}"
@@ -202,64 +203,73 @@
                             <RowDefinition/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
-                        <gn:Int32TextBox
-                            Label="{x:Static st:DashEditorView.Min}"
+                        <ui:NumberBox
+                            Minimum="0"
+                            hlp:Form.Label="{x:Static st:DashEditorView.Min}"
                             Value="{Binding State.TachometerMin}"
                             Maximum="{Binding State.TachometerMax, Mode=OneWay}"/>
-                        <gn:Int32TextBox
-                            Label="{x:Static st:DashEditorView.Max}"
+                        <ui:NumberBox
+                            hlp:Form.Label="{x:Static st:DashEditorView.Max}"
                             Grid.Column="1"
                             Grid.ColumnSpan="2"
                             Value="{Binding State.TachometerMax}"
                             Minimum="{Binding State.TachometerMin, Mode=OneWay}"
                             Maximum="32767"/>
-                        <TextBlock Grid.Row="1" Text="{x:Static st:DashEditorView.Center}"/>
-                        <gn:Int32TextBox
-                            Label="X"
+                        <TextBlock VerticalAlignment="Center" Grid.Row="1" Text="{x:Static st:DashEditorView.Center}"/>
+                        <ui:NumberBox
+                            Minimum="0"
+                            hlp:Form.Label="X"
                             Grid.Column="1"
                             Grid.Row="1"
                             Value="{Binding State.TachometerCenterX}"
                             Maximum="{Binding State.Cabin.Width, Mode=OneWay}"/>
-                        <gn:Int32TextBox
-                            Label="Y"
+                        <ui:NumberBox
+                            Minimum="0"
+                            hlp:Form.Label="Y"
                             Grid.Column="2"
                             Grid.Row="1"
                             Value="{Binding State.TachometerCenterY}"
                             Maximum="{Binding State.Cabin.Height, Mode=OneWay}"/>
-                        <gn:Int32TextBox
+                        <ui:NumberBox
+                            Minimum="0"
                             Grid.Row="2"
-                            Label="{x:Static st:DashEditorView.CenterOff}"
+                            hlp:Form.Label="{x:Static st:DashEditorView.CenterOff}"
                             Value="{Binding State.TachometerCenterOffset}"
                             Maximum="50"/>
-                        <gn:Int32TextBox
+                        <ui:NumberBox
+                            Minimum="0"
                             Grid.Row="2"
                             Grid.Column="1"
                             Grid.ColumnSpan="2"
-                            Label="{x:Static st:DashEditorView.TipOff}"
+                            hlp:Form.Label="{x:Static st:DashEditorView.TipOff}"
                             Value="{Binding State.TachometerEdgeOffset}"
                             Maximum="50"/>
-                        <TextBlock Grid.Row="3" Text="{x:Static st:DashEditorView.MinCoords}"/>
-                        <gn:Int32TextBox
-                            Label="X"
+                        <TextBlock VerticalAlignment="Center" Grid.Row="3" Text="{x:Static st:DashEditorView.MinCoords}"/>
+                        <ui:NumberBox
+                            Minimum="0"
+                            hlp:Form.Label="X"
                             Grid.Column="1"
                             Grid.Row="3"
                             Value="{Binding State.TachometerMinX}"
                             Maximum="{Binding State.Cabin.Width, Mode=OneWay}"/>
-                        <gn:Int32TextBox
-                            Label="Y"
+                        <ui:NumberBox
+                            Minimum="0"
+                            hlp:Form.Label="Y"
                             Grid.Column="2"
                             Grid.Row="3"
                             Value="{Binding State.TachometerMinY}"
                             Maximum="{Binding State.Cabin.Height, Mode=OneWay}"/>
-                        <TextBlock Grid.Row="4" Text="{x:Static st:DashEditorView.MaxCoords}"/>
-                        <gn:Int32TextBox
-                            Label="X"
+                        <TextBlock VerticalAlignment="Center" Grid.Row="4" Text="{x:Static st:DashEditorView.MaxCoords}"/>
+                        <ui:NumberBox
+                            Minimum="0"
+                            hlp:Form.Label="X"
                             Grid.Column="1"
                             Grid.Row="4"
                             Value="{Binding State.TachometerMaxX}"
                             Maximum="{Binding State.Cabin.Width, Mode=OneWay}"/>
-                        <gn:Int32TextBox
-                            Label="Y"
+                        <ui:NumberBox
+                            Minimum="0"
+                            hlp:Form.Label="Y"
                             Grid.Column="2"
                             Grid.Row="4"
                             Value="{Binding State.TachometerMaxY}"
@@ -274,14 +284,16 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Row="4" Text="{x:Static st:DashEditorView.GearCoords}"/>
-                        <gn:Int32TextBox
-                            Label="X"
+                        <ui:NumberBox
+                            Minimum="0"
+                            hlp:Form.Label="X"
                             Grid.Column="1"
                             Grid.Row="4"
                             Value="{Binding State.GearXPosition}"
                             Maximum="{Binding State.Cabin.Width, Mode=OneWay}"/>
-                        <gn:Int32TextBox
-                            Label="Y"
+                        <ui:NumberBox
+                            Minimum="0"
+                            hlp:Form.Label="Y"
                             Grid.Column="2"
                             Grid.Row="4"
                             Value="{Binding State.GearYPosition}"
@@ -295,13 +307,19 @@
                 <RowDefinition/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <Grid Grid.Row="1">
-                <Slider Minimum="-180" Maximum="180" Value="{Binding State.PreviewSteerAngle}" Width="180" LargeChange="30" TickFrequency="30" TickPlacement="TopLeft"/>
-                <!--<TextBlock Text="TODO: implement mouse coords tracker"/>-->
-            </Grid>
-            <Border BorderBrush="{StaticResource MainAreaAdaptiveBackground}" BorderThickness="1">
+            <Slider Grid.Row="1" Minimum="-180" Maximum="180" Value="{Binding State.PreviewSteerAngle}" Width="180" LargeChange="30" TickFrequency="30" TickPlacement="TopLeft"/>
+            <Border BorderBrush="{StaticResource MainAreaAdaptiveBackground}" BorderThickness="1" hlp:Form.MouseTrackingOverlay="True">
                 <Canvas Width="640" Height="480" ClipToBounds="True">
-                    <!--background-->
+                    <Rectangle Width="640" Height="480">
+                        <Rectangle.Fill>
+                            <LinearGradientBrush EndPoint="0,1">
+                                <GradientStop Color="White"/>
+                                <GradientStop Color="SkyBlue" Offset="0.55"/>
+                                <GradientStop Color="ForestGreen" Offset="0.6"/>
+                                <GradientStop Color="DarkGreen" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>                    
                     <Image Width="640" Height="480" Stretch="None">
                         <Image.Source>
                             <MultiBinding>

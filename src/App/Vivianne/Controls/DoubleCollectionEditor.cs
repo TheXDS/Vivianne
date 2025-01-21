@@ -1,4 +1,6 @@
 ﻿using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using TheXDS.MCART.Helpers;
@@ -15,35 +17,37 @@ namespace TheXDS.Vivianne.Controls;
 public class DoubleCollectionEditor : ItemsControl
 {
     /// <summary>
-    /// Identifies the <see cref="DataCollection"/> dependency property.
+    /// Identifies the <see cref="ItemsSource"/> dependency property.
     /// </summary>
-    public static readonly DependencyProperty DataCollectionProperty;
+    public static readonly new DependencyProperty ItemsSourceProperty;
 
     /// <summary>
     /// Gets or sets the list to be displayed and updated through this control.
     /// </summary>
-    public IList<double> DataCollection
+    public new IList<double> ItemsSource
     {
-        get => (IList<double>)GetValue(DataCollectionProperty);
-        set => SetValue(DataCollectionProperty, value);
+        get => (IList<double>)GetValue(ItemsSourceProperty);
+        set => SetValue(ItemsSourceProperty, value);
     }
     static DoubleCollectionEditor()
     {
-        DataCollectionProperty = NewDp<IList<double>, DoubleCollectionEditor>(nameof(DataCollection), [], OnCollectionChanged);
+        ItemsSourceProperty = NewDp<IList<double>, DoubleCollectionEditor>(nameof(ItemsSource), [], OnItemsSourceChanged);
     }
 
-    private static void OnCollectionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnItemsSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         var control = (DoubleCollectionEditor)d;
-        if (e.NewValue is ObservableCollection<double> c)
+
+        void OnCollectionChanged(object? _, NotifyCollectionChangedEventArgs e)
         {
-            c.CollectionChanged += (sender, e) =>
-            {
-                var nud = control.Items.Cast<NumberBox>().First(p => (int)p.Tag == e.NewStartingIndex);
-                var value = (double?)e.NewItems?[0];
-                if (nud.Value != value) nud.Value = value;
-            };
+            var nud = control.Items.Cast<NumberBox>().First(p => (int)p.Tag == e.NewStartingIndex);
+            var value = (double?)e.NewItems?[0];
+            if (nud.Value != value) nud.Value = value;
         }
+
+        if (e.OldValue is ObservableCollection<double> oldC) oldC.CollectionChanged -= OnCollectionChanged;
+        if (e.NewValue is ObservableCollection<double> c) c.CollectionChanged += OnCollectionChanged;
+        
         control.Items.Clear();
         foreach ((var index, var value) in (e.NewValue as IEnumerable<double> ?? []).WithIndex())
         {
@@ -54,9 +58,9 @@ public class DoubleCollectionEditor : ItemsControl
             };
             nud.ValueChanged += (sender, e) =>
             {
-                if (control.DataCollection[(int)nud.Tag] != nud.Value)
+                if (control.ItemsSource[(int)nud.Tag] != nud.Value)
                 {
-                    control.DataCollection[(int)nud.Tag] = nud.Value ?? 0.0;
+                    control.ItemsSource[(int)nud.Tag] = nud.Value ?? 0.0;
                 }
             };
             control.Items.Add(nud);
