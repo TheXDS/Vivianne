@@ -182,7 +182,7 @@ public class DraggableLineGraph : Control
     {
         double minValue = MinValue.OrIfInvalid(ItemsSource.Min());
         double maxValue = MaxValue.OrIfInvalid(ItemsSource.Max());
-        double scaledY = (canvasHeight - (value - minValue) / (maxValue - minValue) * canvasHeight) + 5;
+        double scaledY = canvasHeight - ((value - minValue) / (maxValue - minValue) * canvasHeight) + 5;
         return scaledY;
     }
 
@@ -216,8 +216,8 @@ public class DraggableLineGraph : Control
         {
             var pointTick = CreatePointTick();
             pointTick.ToolTip = value;
-            Canvas.SetLeft(pointTick, position.X - pointTick.Width / 2);
-            Canvas.SetTop(pointTick, position.Y - pointTick.Height / 2);
+            Canvas.SetLeft(pointTick, position.X - (pointTick.Width / 2));
+            Canvas.SetTop(pointTick, position.Y - (pointTick.Height / 2));
             canvas.Children.Add(pointTick);
             pointTicks.Add(pointTick);
             pointTick.MouseDown += PointTick_MouseDown;
@@ -260,7 +260,7 @@ public class DraggableLineGraph : Control
         {
             Point currentPos = e.GetPosition(canvas);
             double deltaY = currentPos.Y - initialMouseDownPosition.Y;
-            double newValue = initialValue - (deltaY / canvasHeight) * (MaxValue - MinValue);
+            double newValue = initialValue - (deltaY / canvasHeight * (MaxValue - MinValue));
             ItemsSource[draggingIndex.Value] = newValue;
             UpdateVisuals();
         }

@@ -13,7 +13,7 @@ using TheXDS.Vivianne.ViewModels;
 namespace TheXDS.Vivianne.ValueConverters;
 
 /// <summary>
-/// Implements a value converter that converts a <see cref="RenderTreeState"/>
+/// Implements a part converter that converts a <see cref="RenderTreeState"/>
 /// into a <see cref="Model3DGroup"/> that can be rendered by WPF.
 /// </summary>
 public class FcePreviewViewModelToModel3DGroupConverter : IOneWayValueConverter<RenderTreeState?, Model3DGroup?>
@@ -53,7 +53,7 @@ public class FcePreviewViewModelToModel3DGroupConverter : IOneWayValueConverter<
          * that uses per-vertex UV.
          */
 
-        var filteredTriangles = value.Triangles.Where(p => p.Flags == flags).ToArray();
+        var filteredTriangles = value.Triangles.Where(p => (p.Flags & (TriangleFlags)15) == flags).ToArray();
         if (filteredTriangles.Length == 0) return null;
         var vertex = new List<VertexUv?>(new VertexUv[value.Vertices.Length]);
         const double epsilon = 0.0005;
@@ -69,21 +69,9 @@ public class FcePreviewViewModelToModel3DGroupConverter : IOneWayValueConverter<
             var uv1 = new Point(uFlip * j.U1, vFlip * j.V1);
             var uv2 = new Point(uFlip * j.U2, vFlip * j.V2);
             var uv3 = new Point(uFlip * j.U3, vFlip * j.V3);
-            if (vertex[j.I1] is { Uv: { } testUv1 } && (Math.Abs(testUv1.X - uv1.X) > epsilon || Math.Abs(testUv1.Y - uv1.Y) > epsilon))
-            {
-                vertex.Add(new(vert1, new Point(uv1.X, uv1.Y), value.Normals[j.I1]));
-                j.I1 = vertex.Count - 1;
-            }
-            if (vertex[j.I2] is { Uv: { } testUv2 } && (Math.Abs(testUv2.X - uv2.X) > epsilon || Math.Abs(testUv2.Y - uv2.Y) > epsilon))
-            {
-                vertex.Add(new(vert2, new Point(uv2.X, uv2.Y), value.Normals[j.I2]));
-                j.I2 = vertex.Count - 1;
-            }
-            if (vertex[j.I3] is { Uv: { } testUv3 } && (Math.Abs(testUv3.X - uv3.X) > epsilon || Math.Abs(testUv3.Y - uv3.Y) > epsilon))
-            {
-                vertex.Add(new(vert3, new Point(uv3.X, uv3.Y), value.Normals[j.I3]));
-                j.I3 = vertex.Count - 1;
-            }
+            TryCloneVertex(vertex, vert1, j.I1, uv1, value, p => j.I1 = p);
+            TryCloneVertex(vertex, vert2, j.I2, uv2, value, p => j.I2 = p);
+            TryCloneVertex(vertex, vert3, j.I3, uv3, value, p => j.I3 = p);
             vertex[j.I1] = new(vert1, uv1, value.Normals[filteredTriangles[i].I1]);
             vertex[j.I2] = new(vert2, uv2, value.Normals[filteredTriangles[i].I2]);
             vertex[j.I3] = new(vert3, uv3, value.Normals[filteredTriangles[i].I3]);
@@ -96,6 +84,16 @@ public class FcePreviewViewModelToModel3DGroupConverter : IOneWayValueConverter<
             Normals = new Vector3DCollection(vertex.Select(p => p?.Normal ?? default).Select(p => new Vector3D(-p.Z, p.X, -p.Y))),
             TextureCoordinates = new PointCollection(vertex.Select(p => p?.Uv ?? default)),
         };
+    }
+
+    private static void TryCloneVertex(List<VertexUv?> vertex, Point3D vert, int vertIndex, Point uv, FcePart part, Action<int> vertexSetCallback)
+    {
+        const double epsilon = 0.0005;
+        if (vertex[vertIndex] is { Uv: { } testUv1 } && (Math.Abs(testUv1.X - uv.X) > epsilon || Math.Abs(testUv1.Y - uv.Y) > epsilon))
+        {
+            vertex.Add(new(vert, new Point(uv.X, uv.Y), part.Normals[vertIndex]));
+            vertexSetCallback.Invoke(vertex.Count - 1);
+        }
     }
 
     private static bool IsTextureLikelyTga(RenderTreeState state, [NotNullWhen(true)] out TargaHeader? header)
@@ -160,7 +158,6 @@ public class FcePreviewViewModelToModel3DGroupConverter : IOneWayValueConverter<
             { TriangleFlags.Semitrans, CreateMaterialGroup(semiBrush, Brushes.White, 10) },
             { TriangleFlags.SemitransNoBlending, new DiffuseMaterial(semiBrush) },
             { TriangleFlags.SemitransHighBlending, CreateMaterialGroup(semiBrush, Brushes.White, 1) },
-
         };
 
         var group = new Model3DGroup

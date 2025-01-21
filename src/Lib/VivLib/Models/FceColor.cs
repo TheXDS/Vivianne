@@ -47,8 +47,8 @@ public record struct FceColor(int Hue, int Saturation, int Brightness, int Alpha
             int i = (int)Math.Floor(h);
             double f = h - i;
             double p = b * (1.0 - s);
-            double q = b * (1.0 - s * f);
-            double t = b * (1.0 - s * (1.0 - f));
+            double q = b * (1.0 - (s * f));
+            double t = b * (1.0 - (s * (1.0 - f)));
             (red, green, blue) = i switch
             {
                 0 => (b, t, p),

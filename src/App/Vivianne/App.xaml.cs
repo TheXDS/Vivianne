@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using System.Windows.Input;
 using TheXDS.Ganymede.Helpers;
 using TheXDS.Ganymede.Services;
 using TheXDS.Vivianne.Component;
@@ -20,8 +19,4 @@ namespace Vivianne
             KeyboardProxy.SetProxy(new WpfKeyboardProxy());
         }
     }
-}
-internal class WpfKeyboardProxy : IKeyboardProxy
-{
-    public bool IsShiftKeyDown => Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
 }

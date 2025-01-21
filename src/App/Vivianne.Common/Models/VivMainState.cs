@@ -28,7 +28,7 @@ public class VivMainState : VivInfo
             if (Change(ref _Viv, value))
             {
                 Directory = new(_Viv.Directory);
-            };
+            }
         }
     }
 

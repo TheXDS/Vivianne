@@ -39,10 +39,6 @@ public class FceColorTableEditorState(FceFile fce) : EditorViewModelStateBase
         foreach (var item in joint)
         {
             HookItemRefresh(obsc, item);
-
-            void OnColorChanged(object instance, PropertyInfo property, PropertyChangeNotificationType notificationType) => obsc.RefreshItem(item);
-            item.PrimaryColor.Subscribe(OnColorChanged);
-            item.SecondaryColor.Subscribe(OnColorChanged);
         }
         return obsc;
     }

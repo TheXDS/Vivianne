@@ -34,10 +34,22 @@ public static class FileFilters
     public static IEnumerable<FileFilterItem> FceFileFilter { get; } = [new FileFilterItem("FCE 3D model", "*.fce"), FileFilterItem.AllFiles];
 
     /// <summary>
+    /// Gets a set of file filters to be used on file dialogs for opening and
+    /// saving BNK files.
+    /// </summary>
+    public static IEnumerable<FileFilterItem> BnkFileFilter { get; } = [new FileFilterItem("BNK audio file", "*.bnk"), FileFilterItem.AllFiles];
+
+    /// <summary>
+    /// Gets a set of file filters to be used on file dialogs for opening and
+    /// saving FeData files.
+    /// </summary>
+    public static IEnumerable<FileFilterItem> FeDataFileFilter { get; } = [new FileFilterItem("Localized car FeData", ["*.bri", "*.eng", "*.fre", "*.ger", "*.ita", "*.spa", "*.swe"]), FileFilterItem.AllFiles];
+
+    /// <summary>
     /// Gets a set of file filters to be used on file dialogs for opening
     /// either FSH or QFS files.
     /// </summary>
-    public static IEnumerable<FileFilterItem> FshQfsOpenFileFilter { get; } = [new FileFilterItem("FSH/QFS texture", [ "*.fsh", "*.qfs"]), FileFilterItem.AllFiles];
+    public static IEnumerable<FileFilterItem> FshQfsOpenFileFilter { get; } = [new FileFilterItem("FSH/QFS texture", ["*.fsh", "*.qfs"]), FileFilterItem.AllFiles];
 
     /// <summary>
     /// Gets a set of file filters to be used on file dialogs for saving either

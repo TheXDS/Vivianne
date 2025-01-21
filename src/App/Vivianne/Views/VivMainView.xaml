@@ -65,7 +65,6 @@
                                                     Background="Transparent"
                                                     BorderThickness="0"
                                                     VerticalAlignment="Center"
-                                                    Foreground="{StaticResource MidBackground}"
                                                     Command="{Binding DataContext.RemoveFileCommand, ElementName=ucRoot, Mode=OneWay}"
                                                     CommandParameter="{Binding Mode=OneWay}" Content="❌"/>
                                                 <Button
@@ -73,13 +72,12 @@
                                                     DockPanel.Dock="Right"
                                                     Background="Transparent"
                                                     BorderThickness="0"
-                                                    Foreground="{StaticResource MidBackground}"
                                                     VerticalAlignment="Center"
                                                     Command="{Binding DataContext.ExportFileCommand, ElementName=ucRoot, Mode=OneWay}"
                                                     CommandParameter="{Binding Mode=OneWay}" Content="💾"/>
                                                 <StackPanel>
-                                                    <TextBlock x:Name="PART_filename" Text="{Binding Key, Mode=OneWay}" FontSize="16" Foreground="{StaticResource MidBackground}"/>
-                                                    <TextBlock x:Name="PART_filesize" FontSize="9" Foreground="{StaticResource MidBackground}">
+                                                    <TextBlock x:Name="PART_filename" Text="{Binding Key, Mode=OneWay}" FontSize="16"/>
+                                                    <TextBlock x:Name="PART_filesize" FontSize="9">
                                                         Size: <Run Text="{Binding Value, Mode=OneWay, Converter={StaticResource sizeConv}}"/>
                                                     </TextBlock>
                                                 </StackPanel>                                    

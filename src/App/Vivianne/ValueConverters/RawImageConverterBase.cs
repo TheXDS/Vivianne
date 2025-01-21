@@ -63,7 +63,7 @@ public abstract class RawImageConverterBase
         {
             for (int x = 0; x < width; x++)
             {
-                var offset = (y * width + x) * 4;
+                var offset = ((y * width) + x) * 4;
                 var pixel = image[x, y];
                 bw.Write(writer.Invoke(pixel, textureColor));
             }

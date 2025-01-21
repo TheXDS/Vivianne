@@ -29,7 +29,7 @@ public partial class FcePreviewView : UserControl
         double dy = (till.Y - from.Y) * -3;
         from = till;
 
-        var distance = dx * dx + dy * dy;
+        var distance = (dx * dx) + (dy * dy);
         if (distance <= 0d) return;
         if (e.MouseDevice.LeftButton is MouseButtonState.Pressed)
         {

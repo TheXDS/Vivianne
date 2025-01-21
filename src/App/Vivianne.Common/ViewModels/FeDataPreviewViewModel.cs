@@ -44,9 +44,7 @@ public class FeDataPreviewViewModel : ViewModel
         this.fedataName = fedataName;
         Data = serializer.Deserialize(data);
         SaveCommand = new SimpleCommand(OnSave);
-
         PreviewFceColorTable = LoadColorsFromFce(viv?.Viv);
-
     }
 
     private static FceColorItem[]? LoadColorsFromFce(VivFile? viv)
