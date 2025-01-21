@@ -16,7 +16,6 @@ namespace TheXDS.Vivianne.Views
         {
             InitializeComponent();
             _ = new ScrollHookHelper(brdContent, scvContent, sldZoom);
-
         }
     }
 }
