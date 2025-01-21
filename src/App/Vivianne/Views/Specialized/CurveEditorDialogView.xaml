@@ -13,11 +13,11 @@ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
         <DockPanel>
             <ScrollViewer Height="600" VerticalScrollBarVisibility="Auto">
-                <controls:DoubleCollectionEditor DataCollection="{Binding State.Collection}" Width="200" Margin="0,36,20,0"/>
+                <controls:DoubleCollectionEditor ItemsSource="{Binding State.Collection}" Width="200" Margin="0,36,20,0"/>
             </ScrollViewer>
             <controls:DraggableLineGraph
                 Style="{StaticResource DraggableLineGraphBig}"
-                DataCollection="{Binding State.Collection}"
+                ItemsSource="{Binding State.Collection}"
                 BorderThickness="1"
                 CornerRadius="5"
                 Margin="5"

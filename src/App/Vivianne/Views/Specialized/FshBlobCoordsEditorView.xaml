@@ -5,22 +5,37 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:vc="clr-namespace:TheXDS.Vivianne.ValueConverters"
-    xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne"
+    xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
     xmlns:mcart="http://schemas.thexds.local/mcart"
     xmlns:gn="http://schemas.thexds.local/ganymede"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:hlp="clr-namespace:TheXDS.Vivianne.Helpers"
     mc:Ignorable="d" 
     d:DataContext="{d:DesignInstance Type=vm:FshBlobCoordsEditorViewModel}">
     <UniformGrid Columns="2" Margin="5">
         <UniformGrid.Resources>
-            <Style TargetType="gn:Int32TextBox">
+            <Style TargetType="ui:NumberBox" BasedOn="{StaticResource {x:Type ui:NumberBox}}">
                 <Setter Property="Minimum" Value="0"/>
                 <Setter Property="Margin" Value="5"/>
                 <Setter Property="HorizontalContentAlignment" Value="Right"/>
+                <Setter Property="Width" Value="200"/>
             </Style>
         </UniformGrid.Resources>
-        <gn:Int32TextBox Label="Rotation axis X" Value="{Binding State.XRotation}" Maximum="{Binding State.Blob.Width, Mode=OneWay}"/>
-        <gn:Int32TextBox Label="Rotation axis Y" Value="{Binding State.YRotation}" Maximum="{Binding State.Blob.Height, Mode=OneWay}"/>
-        <gn:Int32TextBox Label="Position X" Value="{Binding State.XPosition}" Maximum="{Binding State.Blob.Width, Mode=OneWay}"/>
-        <gn:Int32TextBox Label="Position Y" Value="{Binding State.YPosition}" Maximum="{Binding State.Blob.Height, Mode=OneWay}"/>
+        <ui:NumberBox
+            hlp:Form.Label="Rotation axis X"
+            Value="{Binding State.XRotation}"
+            Maximum="{Binding State.Blob.Width, Mode=OneWay}"/>
+        <ui:NumberBox
+            hlp:Form.Label="Rotation axis Y"
+            Value="{Binding State.YRotation}"
+            Maximum="{Binding State.Blob.Height, Mode=OneWay}"/>
+        <ui:NumberBox
+            hlp:Form.Label="Position X"
+            Value="{Binding State.XPosition}"
+            Maximum="{Binding State.Blob.Width, Mode=OneWay}"/>
+        <ui:NumberBox
+            hlp:Form.Label="Position Y"
+            Value="{Binding State.YPosition}"
+            Maximum="{Binding State.Blob.Height, Mode=OneWay}"/>
     </UniformGrid>
 </UserControl>

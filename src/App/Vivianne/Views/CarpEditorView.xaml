@@ -87,8 +87,8 @@
                                 Minimum="0"
                                 Value="{Binding State.GearShiftDelay}"/>
                         </StackPanel>
-                        <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" DataCollection="{Binding State.ShiftBlip}" Title="Shift blip" />
-                        <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" DataCollection="{Binding State.BrakeBlip}" Title="Brake blip" />
+                        <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" ItemsSource="{Binding State.ShiftBlip}" Title="Shift blip" />
+                        <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" ItemsSource="{Binding State.BrakeBlip}" Title="Brake blip" />
                     </UniformGrid>
                 </Expander>
                 <Grid>
@@ -114,9 +114,9 @@
                                     Value="{Binding State.FinalGearManual}"/>
                             </UniformGrid>
                             <UniformGrid Columns="1">
-                                <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="Velocity to RPM" DataCollection="{Binding State.VelocityToRpmManual}"/>
-                                <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="Gear ratios" DataCollection="{Binding State.GearRatioManual}"/>
-                                <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="Gear efficiency" DataCollection="{Binding State.GearEfficiencyManual}"/>
+                                <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="Velocity to RPM" ItemsSource="{Binding State.VelocityToRpmManual}"/>
+                                <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="Gear ratios" ItemsSource="{Binding State.GearRatioManual}"/>
+                                <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="Gear efficiency" ItemsSource="{Binding State.GearEfficiencyManual}"/>
                             </UniformGrid>
                         </StackPanel>
                     </Expander>
@@ -137,9 +137,9 @@
                                     Value="{Binding State.FinalGearAuto}"/>
                             </UniformGrid>
                             <UniformGrid Columns="1">
-                                <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="Velocity to RPM" DataCollection="{Binding State.VelocityToRpmAuto}"/>
-                                <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="Gear ratios" DataCollection="{Binding State.GearRatioAuto}"/>
-                                <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="Gear efficiency" DataCollection="{Binding State.GearEfficiencyAuto}"/>
+                                <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="Velocity to RPM" ItemsSource="{Binding State.VelocityToRpmAuto}"/>
+                                <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="Gear ratios" ItemsSource="{Binding State.GearRatioAuto}"/>
+                                <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="Gear efficiency" ItemsSource="{Binding State.GearEfficiencyAuto}"/>
                             </UniformGrid>
                         </StackPanel>
                     </Expander>
@@ -163,7 +163,7 @@
                         </UniformGrid>
                         <controls:DraggableLineGraph
                             Title="Torque curve"
-                            DataCollection="{Binding State.TorqueCurve}"
+                            ItemsSource="{Binding State.TorqueCurve}"
                             Height="200"
                             MinValue="0"
                             OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}"/>
@@ -172,10 +172,10 @@
                 <Expander Header="Drive dynamics" IsExpanded="True">
                     <StackPanel>
                         <UniformGrid Columns="2">
-                            <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="Gas increase curve" DataCollection="{Binding State.GasIncreaseCurve}" Height="{StaticResource gearGraphHeight}" MinValue="0"/>
-                            <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="Gas decrease curve" DataCollection="{Binding State.GasDecreaseCurve}" Height="{StaticResource gearGraphHeight}" MinValue="0"/>
-                            <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="Brake increase curve" DataCollection="{Binding State.BrakeIncreaseCurve}" Height="{StaticResource gearGraphHeight}" MinValue="0"/>
-                            <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="Brake decrease curve" DataCollection="{Binding State.BrakeDecreaseCurve}" Height="{StaticResource gearGraphHeight}" MinValue="0"/>
+                            <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="Gas increase curve" ItemsSource="{Binding State.GasIncreaseCurve}" Height="{StaticResource gearGraphHeight}" MinValue="0"/>
+                            <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="Gas decrease curve" ItemsSource="{Binding State.GasDecreaseCurve}" Height="{StaticResource gearGraphHeight}" MinValue="0"/>
+                            <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="Brake increase curve" ItemsSource="{Binding State.BrakeIncreaseCurve}" Height="{StaticResource gearGraphHeight}" MinValue="0"/>
+                            <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="Brake decrease curve" ItemsSource="{Binding State.BrakeDecreaseCurve}" Height="{StaticResource gearGraphHeight}" MinValue="0"/>
                         </UniformGrid>
                         <UniformGrid Columns="3">
                             <CheckBox Margin="5" IsChecked="{Binding State.Abs}" Content="Antilock Brake System"/>
@@ -241,14 +241,14 @@
                 </Grid>
                 <Expander Header="AI curves" IsExpanded="True">
                     <UniformGrid Rows="2">
-                        <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" CornerRadius="5,0,0,5" Margin="0" Title="AI Curve 0" DataCollection="{Binding State.AiCurve0}" MinValue="0" MaxValue="10"/>
-                        <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" CornerRadius="0" Margin="0" Title="AI Curve 1" DataCollection="{Binding State.AiCurve1}" MinValue="0" MaxValue="10"/>
-                        <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" CornerRadius="0" Margin="0" Title="AI Curve 2" DataCollection="{Binding State.AiCurve2}" MinValue="0" MaxValue="10"/>
-                        <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" CornerRadius="0,5,5,0" Margin="0" Title="AI Curve 3" DataCollection="{Binding State.AiCurve3}" MinValue="0" MaxValue="10"/>
-                        <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" CornerRadius="5,0,0,5" Margin="0" Title="AI Curve 4" DataCollection="{Binding State.AiCurve4}" MinValue="0" MaxValue="10"/>
-                        <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" CornerRadius="0" Margin="0" Title="AI Curve 5" DataCollection="{Binding State.AiCurve5}" MinValue="0" MaxValue="10"/>
-                        <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" CornerRadius="0" Margin="0" Title="AI Curve 6" DataCollection="{Binding State.AiCurve6}" MinValue="0" MaxValue="10"/>
-                        <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" CornerRadius="0,5,5,0" Margin="0" Title="AI Curve 7" DataCollection="{Binding State.AiCurve7}" MinValue="0" MaxValue="10"/>
+                        <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" CornerRadius="5,0,0,5" Margin="0" Title="AI Curve 0" ItemsSource="{Binding State.AiCurve0}" MinValue="0" MaxValue="10"/>
+                        <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" CornerRadius="0" Margin="0" Title="AI Curve 1" ItemsSource="{Binding State.AiCurve1}" MinValue="0" MaxValue="10"/>
+                        <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" CornerRadius="0" Margin="0" Title="AI Curve 2" ItemsSource="{Binding State.AiCurve2}" MinValue="0" MaxValue="10"/>
+                        <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" CornerRadius="0,5,5,0" Margin="0" Title="AI Curve 3" ItemsSource="{Binding State.AiCurve3}" MinValue="0" MaxValue="10"/>
+                        <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" CornerRadius="5,0,0,5" Margin="0" Title="AI Curve 4" ItemsSource="{Binding State.AiCurve4}" MinValue="0" MaxValue="10"/>
+                        <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" CornerRadius="0" Margin="0" Title="AI Curve 5" ItemsSource="{Binding State.AiCurve5}" MinValue="0" MaxValue="10"/>
+                        <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" CornerRadius="0" Margin="0" Title="AI Curve 6" ItemsSource="{Binding State.AiCurve6}" MinValue="0" MaxValue="10"/>
+                        <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" CornerRadius="0,5,5,0" Margin="0" Title="AI Curve 7" ItemsSource="{Binding State.AiCurve7}" MinValue="0" MaxValue="10"/>
                     </UniformGrid>
                 </Expander>
                 <Expander>

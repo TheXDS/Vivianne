@@ -12,14 +12,34 @@
     d:DesignWidth="400" d:DesignHeight="300">
     <UserControl.Resources>
         <vc:RawImageConverter x:Key="r2img"/>
-        <vc:ByteCountConverter x:Key="bc2str"/>
         <vc:BackgroundToBrushConverter x:Key="bg2b"/>
     </UserControl.Resources>
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="160"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Rectangle Grid.Column="0" Grid.Row="1" Fill="{StaticResource FadeInBackground}"/>
+        <Rectangle Grid.Column="1" Grid.Row="1" Fill="{StaticResource DarkBackground}"/>
+        <StackPanel Margin="10" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <TextBlock VerticalAlignment="Center" Margin="0,0,10,0">Zoom: <Run Text="{Binding ZoomLevel, Mode=OneWay}"/></TextBlock>
+            <Slider x:Name="sldZoom" Minimum="1.0" Maximum="10.0" Value="{Binding ZoomLevel}" Margin="5" Width="100"/>
+            <TextBlock VerticalAlignment="Center" Margin="10,0">Background:</TextBlock>
+            <ComboBox
+                Width="180"
+                IsEditable="False"
+                SelectedItem="{Binding Background, FallbackValue={x:Static vm:BackgroundType.Checkerboard}}"
+                ItemsSource="{controls:EnumValProvider EnumType={x:Type vm:BackgroundType}}"/>
+        </StackPanel>
         <ScrollViewer
             x:Name="scvContent"
             VerticalScrollBarVisibility="Auto"
             HorizontalScrollBarVisibility="Auto"
+            Grid.ColumnSpan="2"
             Grid.Row="1"
             Margin="0,0,0,24">
             <Border
@@ -34,53 +54,5 @@
                 </Image>
             </Border>
         </ScrollViewer>
-        <StackPanel HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top">
-            <StackPanel.Resources>
-                <Style TargetType="Expander">
-                    <Setter Property="ExpandDirection" Value="Down"/>
-                    <Setter Property="TextBlock.Foreground" Value="White"/>
-                    <Setter Property="HorizontalAlignment" Value="Left"/>
-                    <Setter Property="VerticalAlignment" Value="Top"/>
-                </Style>
-                <Style TargetType="Border">
-                    <Setter Property="Background" Value="#B0000000"/>
-                    <Setter Property="HorizontalAlignment" Value="Left"/>
-                    <Setter Property="Margin" Value="10"/>
-                </Style>
-                <Style TargetType="StackPanel">
-                    <Setter Property="Margin" Value="5"/>
-                    <Setter Property="TextBlock.Foreground" Value="White"/>
-                </Style>
-                <Style TargetType="TextBlock">
-                    <Setter Property="VerticalAlignment" Value="Center"/>
-                    <Setter Property="Foreground" Value="White"/>
-                </Style>
-                <Style TargetType="Button">
-                    <Setter Property="Padding" Value="10,2"/>
-                    <Setter Property="Margin" Value="5"/>
-                </Style>
-            </StackPanel.Resources>
-            <Expander>
-                <Expander.Header>
-                    <TextBlock Text="View options">
-                        <TextBlock.Effect>
-                            <DropShadowEffect/>
-                        </TextBlock.Effect>
-                    </TextBlock>
-                </Expander.Header>
-                <Border>
-                    <StackPanel Margin="5">
-                        <TextBlock>Zoom: <Run Text="{Binding ZoomLevel, Mode=OneWay}"/></TextBlock>
-                        <Slider x:Name="sldZoom" Minimum="1.0" Maximum="10.0" Value="{Binding ZoomLevel}" Margin="5" Width="100"/>
-                        <TextBlock>Background:</TextBlock>
-                        <ComboBox
-                                TextBlock.Foreground="Black"
-                                IsEditable="False"
-                                SelectedItem="{Binding Background, FallbackValue={x:Static vm:BackgroundType.Checkerboard}}"
-                                ItemsSource="{controls:EnumValProvider EnumType={x:Type vm:BackgroundType}}"/>
-                    </StackPanel>
-                </Border>
-            </Expander>
-        </StackPanel>
     </Grid>
 </UserControl>

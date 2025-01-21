@@ -13,18 +13,21 @@
                     <DockPanel>
                         <Expander Padding="0" DockPanel.Dock="Top">
                             <Expander.Header>
-                                <TextBlock Margin="5,0" VerticalAlignment="Center" Text="{TemplateBinding Title}"/>
+                                <DockPanel>
+                                    <Button
+                                        DockPanel.Dock="Right"
+                                        Content="..."
+                                        ToolTip="Edit in full screen"
+                                        Padding="0"
+                                        Command="{TemplateBinding OpenEditorDialogCommand}"
+                                        CommandParameter="{TemplateBinding ItemsSource}"/>
+                                    <TextBlock Margin="5,0" VerticalAlignment="Center" Text="{TemplateBinding Title}"/>
+                                </DockPanel>
                             </Expander.Header>
-                            <Grid Margin="5">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <ui:NumberBox Grid.Column="0" hlp:Form.Label="Min" Value="{Binding MinValue, RelativeSource={RelativeSource TemplatedParent}}"/>
-                                <ui:NumberBox Grid.Column="1" hlp:Form.Label="Max" Value="{Binding MaxValue, RelativeSource={RelativeSource TemplatedParent}}"/>
-                                <Button Grid.Column="2" Content="..." ToolTip="Edit in full screen" Margin="2" Command="{TemplateBinding OpenEditorDialogCommand}" CommandParameter="{TemplateBinding DataCollection}"/>
-                            </Grid>
+                            <UniformGrid Margin="5" Rows="1">
+                                <ui:NumberBox hlp:Form.Label="Min" Value="{Binding MinValue, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                <ui:NumberBox hlp:Form.Label="Max" Value="{Binding MaxValue, RelativeSource={RelativeSource TemplatedParent}}"/>
+                            </UniformGrid>
                         </Expander>
                         <Border MinHeight="20" MaxHeight="300"
 							x:Name="PART_Container"
