@@ -36,7 +36,7 @@ public class FceColorEditorViewModel : EditorViewModelBase<FceColorTableEditorSt
     protected override Task OnSaveChanges()
     {
         var newHeader = State.Fce.Header;
-        var newColors = State.Colors.Select<FceColorItem,(FceColor Primary, FceColor Secondary)>(p => (p.PrimaryColor.ToColor(), p.SecondaryColor.ToColor())).ToArray();
+        var newColors = State.Colors.Select<MutableFceColorItem,(FceColor Primary, FceColor Secondary)>(p => (p.PrimaryColor.ToColor(), p.SecondaryColor.ToColor())).ToArray();
         newHeader.PrimaryColors = newColors.Length;
         newHeader.SecondaryColors = newColors.Length;
         for (int i = 0; i < State.Colors.Count; i++)
@@ -50,14 +50,14 @@ public class FceColorEditorViewModel : EditorViewModelBase<FceColorTableEditorSt
 
     private void OnAddNewColor()
     {
-        State.Colors.Add(new FceColorItem(new(),new()));
+        State.Colors.Add(new MutableFceColorItem(new(),new()));
         State.UnsavedChanges = true;
         UpdateCommands();
     }
 
     private void OnRemoveColor(object? parameter)
     {
-        if (parameter is not FceColorItem fc) return;
+        if (parameter is not MutableFceColorItem fc) return;
         State.Colors.Remove(fc);
         State.UnsavedChanges = true;
         UpdateCommands();

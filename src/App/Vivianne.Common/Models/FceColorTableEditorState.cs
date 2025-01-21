@@ -19,9 +19,9 @@ public class FceColorTableEditorState(FceFile fce) : EditorViewModelStateBase
     /// <summary>
     /// Gets the collection of colors that are being edited on the FCE file.
     /// </summary>
-    public ICollection<FceColorItem> Colors { get; } = CreateFromFce(fce);
+    public ICollection<MutableFceColorItem> Colors { get; } = CreateFromFce(fce);
 
-    private static ObservableCollection<FceColorItem> CreateFromFce(FceFile fce)
+    private static ObservableCollection<MutableFceColorItem> CreateFromFce(FceFile fce)
     {
         var primary = fce.Header.PrimaryColorTable
             .Take(fce.Header.PrimaryColors)
@@ -31,7 +31,7 @@ public class FceColorTableEditorState(FceFile fce) : EditorViewModelStateBase
             .Select(MutableFceColor.From);
         var joint = primary
             .Zip(secondary)
-            .Select(p => new FceColorItem(p.First, p.Second));
-        return new ObservableCollection<FceColorItem>(joint);
+            .Select(p => new MutableFceColorItem(p.First, p.Second));
+        return new ObservableCollection<MutableFceColorItem>(joint);
     }
 }

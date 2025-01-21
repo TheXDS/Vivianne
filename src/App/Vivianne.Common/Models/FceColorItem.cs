@@ -1,9 +1,8 @@
 ﻿namespace TheXDS.Vivianne.Models;
 
 /// <summary>
-/// Represents a mutable class equivalent to a car color set, including the
-/// primary and secondary colors.
+/// Represents an inmutable FCE color set.
 /// </summary>
-/// <param name="PrimaryColor">Reference to the primary color.</param>
-/// <param name="SecondaryColor">Reference to the secondary color.</param>
-public record class FceColorItem(MutableFceColor PrimaryColor, MutableFceColor SecondaryColor);
+/// <param name="PrimaryColor">Value of the primary color.</param>
+/// <param name="SecondaryColor">Value of the secondary color.</param>
+public readonly record struct FceColorItem(FceColor PrimaryColor, FceColor SecondaryColor);

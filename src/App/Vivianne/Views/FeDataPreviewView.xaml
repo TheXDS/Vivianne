@@ -20,6 +20,7 @@
     xmlns:sys="clr-namespace:System;assembly=netstandard"
     xmlns:hlp="clr-namespace:TheXDS.Vivianne.Helpers"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:valueconverters="clr-namespace:TheXDS.Vivianne.ValueConverters"
     d:DataContext="{d:DesignInstance Type=vm:FeDataPreviewViewModel}"
     mc:Ignorable="d"
     d:DesignWidth="600">
@@ -178,16 +179,19 @@
                     </Expander>
                     <Expander Header="{x:Static st:FeDataPreviewView.Colors}" IsExpanded="True" VerticalAlignment="Stretch">
                         <UniformGrid Columns="2">
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataPreviewView.Color1}" Text="{Binding Data.Color1}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataPreviewView.Color2}" Text="{Binding Data.Color2}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataPreviewView.Color3}" Text="{Binding Data.Color3}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataPreviewView.Color4}" Text="{Binding Data.Color4}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataPreviewView.Color5}" Text="{Binding Data.Color5}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataPreviewView.Color6}" Text="{Binding Data.Color6}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataPreviewView.Color7}" Text="{Binding Data.Color7}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataPreviewView.Color8}" Text="{Binding Data.Color8}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataPreviewView.Color9}" Text="{Binding Data.Color9}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataPreviewView.Color10}" Text="{Binding Data.Color10}"/>
+                            <UniformGrid.Resources>
+                                <valueconverters:DrawingColorToBrushConverter x:Key="dc2bc"/>
+                            </UniformGrid.Resources>
+                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataPreviewView.Color1}" hlp:Form.FceColorPreview="{Binding PreviewFceColorTable[0], Mode=OneWay}" Text="{Binding Data.Color1}"/>
+                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataPreviewView.Color2}" hlp:Form.FceColorPreview="{Binding PreviewFceColorTable[1], Mode=OneWay}" Text="{Binding Data.Color2}"/>
+                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataPreviewView.Color3}" hlp:Form.FceColorPreview="{Binding PreviewFceColorTable[2], Mode=OneWay}" Text="{Binding Data.Color3}"/>
+                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataPreviewView.Color4}" hlp:Form.FceColorPreview="{Binding PreviewFceColorTable[3], Mode=OneWay}" Text="{Binding Data.Color4}"/>
+                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataPreviewView.Color5}" hlp:Form.FceColorPreview="{Binding PreviewFceColorTable[4], Mode=OneWay}" Text="{Binding Data.Color5}"/>
+                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataPreviewView.Color6}" hlp:Form.FceColorPreview="{Binding PreviewFceColorTable[5], Mode=OneWay}" Text="{Binding Data.Color6}"/>
+                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataPreviewView.Color7}" hlp:Form.FceColorPreview="{Binding PreviewFceColorTable[6], Mode=OneWay}" Text="{Binding Data.Color7}"/>
+                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataPreviewView.Color8}" hlp:Form.FceColorPreview="{Binding PreviewFceColorTable[7], Mode=OneWay}" Text="{Binding Data.Color8}"/>
+                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataPreviewView.Color9}" hlp:Form.FceColorPreview="{Binding PreviewFceColorTable[8], Mode=OneWay}" Text="{Binding Data.Color9}"/>
+                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataPreviewView.Color10}" hlp:Form.FceColorPreview="{Binding PreviewFceColorTable[9], Mode=OneWay}" Text="{Binding Data.Color10}"/>
                         </UniformGrid>
                     </Expander>
                 </UniformGrid>
