@@ -347,31 +347,61 @@ public partial class CarpEditorState : EditorViewModelStateBase
         get => _TurnCircleRadius;
         set => Change(ref _TurnCircleRadius, value);
     }
+
+    /// <summary>
+    /// Gets or sets a value that indicates the tire width for the front
+    /// wheels in millimeters.
+    /// </summary>
     public int TireWidthFront
     {
         get => _TireWidthFront;
         set => Change(ref _TireWidthFront, value);
     }
+
+    /// <summary>
+    /// Gets or sets a value that indicates the proportion of sidewall/width
+    /// for the front tires expressed as an integer percentage.
+    /// </summary>
     public int TireSidewallFront
     {
         get => _TireSidewallFront;
         set => Change(ref _TireSidewallFront, value);
     }
+
+    /// <summary>
+    /// Gets or sets a value that indicates the rim diameter for the front
+    /// wheels in inches.
+    /// </summary>
     public int TireRimFront
     {
         get => _TireRimFront;
         set => Change(ref _TireRimFront, value);
     }
+
+    /// <summary>
+    /// Gets or sets a value that indicates the tire width for the rear
+    /// wheels in millimeters.
+    /// </summary>
     public int TireWidthRear
     {
         get => _TireWidthRear;
         set => Change(ref _TireWidthRear, value);
     }
+
+    /// <summary>
+    /// Gets or sets a value that indicates the proportion of sidewall/width
+    /// for the rear tires expressed as an integer percentage.
+    /// </summary>
     public int TireSidewallRear
     {
         get => _TireSidewallRear;
         set => Change(ref _TireSidewallRear, value);
     }
+
+    /// <summary>
+    /// Gets or sets a value that indicates the rim diameter for the rear
+    /// wheels in inches.
+    /// </summary>
     public int TireRimRear
     {
         get => _TireRimRear;

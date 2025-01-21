@@ -25,16 +25,3 @@ public class BackgroundToBrushConverter : IOneWayValueConverter<BackgroundType, 
         };
     }
 }
-
-public class CollectionToObservableWrapConverter : IValueConverter<ICollection<double>, ObservableCollection<double>>
-{
-    public ObservableCollection<double> Convert(ICollection<double> value, object? parameter, CultureInfo? culture)
-    {
-        return value is ObservableCollection<double> collection ? collection : new ObservableCollection<double>(value);
-    }
-
-    public ICollection<double> ConvertBack(ObservableCollection<double> value, object? parameter, CultureInfo culture)
-    {
-        return value;
-    }
-}

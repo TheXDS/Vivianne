@@ -1,21 +1,17 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading.Tasks;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models;
 
 namespace TheXDS.Vivianne.ViewModels;
 
+/// <summary>
+/// Implements a ViewModel for a dialog that allows the user to edit a
+/// collection of <see cref="double"/> values.
+/// </summary>
+/// <param name="state">Current state of the dialog.</param>
 public class CurveEditorDialogViewModel(CurveEditorState state) : EditorViewModelBase<CurveEditorState>(state)
 {
-    public CurveEditorDialogViewModel() : this(new(new ObservableCollection<double>([1, 2, 3, 4, 5])))
-    {
-        
-    }
-
-
-
     /// <inheritdoc/>
     protected override Task OnSaveChanges()
     {
