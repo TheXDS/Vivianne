@@ -25,7 +25,7 @@
                 <RadioButton.Template>
                     <ControlTemplate TargetType="RadioButton">
                         <Border CornerRadius="10,0,0,10" x:Name="PART_SelectionBg">
-                            <TextBlock x:Name="PART_title" VerticalAlignment="Center" HorizontalAlignment="Center" Text="VIV information" FontSize="16" Foreground="{StaticResource MidBackground}"/>
+                            <TextBlock x:Name="PART_title" VerticalAlignment="Center" HorizontalAlignment="Center" Text="VIV information" FontSize="16" Foreground="{StaticResource DarkAreaForeground}"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsChecked" Value="true">
@@ -35,7 +35,6 @@
                                         <DropShadowEffect/>
                                     </Setter.Value>
                                 </Setter>
-                                <Setter TargetName="PART_title" Property="Foreground" Value="{StaticResource DarkAreaForeground}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
