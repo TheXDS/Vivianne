@@ -24,12 +24,11 @@
                         <Setter.Value>
                             <ControlTemplate TargetType="TabItem">
                                 <Border CornerRadius="10,0,0,10" Padding="10" x:Name="PART_SelectionBg">
-                                    <ContentControl x:Name="PART_title" VerticalAlignment="Center" HorizontalAlignment="Center" Content="{TemplateBinding Header}" Foreground="{StaticResource MidBackground}"/>
+                                    <ContentControl x:Name="PART_title" VerticalAlignment="Center" HorizontalAlignment="Center" Content="{TemplateBinding Header}" Foreground="{StaticResource DarkAreaForeground}"/>
                                 </Border>
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsSelected" Value="true">
                                         <Setter TargetName="PART_SelectionBg" Property="Background" Value="{StaticResource DarkBackground}"/>
-                                        <Setter TargetName="PART_title" Property="Foreground" Value="{StaticResource DarkAreaForeground}"/>
                                     </Trigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
