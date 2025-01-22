@@ -29,5 +29,5 @@ public class RenderTreeState(FcePreviewViewModel source)
     /// <summary>
     /// Gets the selected car color to be used to paint over the texture.
     /// </summary>
-    public CarColorItem? SelectedColor => source.SelectedColorIndex > -1 ? source.CarColors.ToArray()[source.SelectedColorIndex] : null;
+    public CarColorItem? SelectedColor => source.CarColors.Count > 0 && source.SelectedColorIndex > -1 ? source.CarColors.ToArray()[source.SelectedColorIndex] : null;
 }

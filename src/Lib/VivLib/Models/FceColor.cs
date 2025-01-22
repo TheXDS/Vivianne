@@ -56,8 +56,7 @@ public record struct FceColor(int Hue, int Saturation, int Brightness, int Alpha
                 2 => (p, b, t),
                 3 => (p, q, b),
                 4 => (t, p, b),
-                5 => (b, p, q),
-                _ => throw new InvalidOperationException()
+                _ => (b, p, q),
             };
         }
         return ((int)(red * 255), (int)(green * 255), (int)(blue * 255));
