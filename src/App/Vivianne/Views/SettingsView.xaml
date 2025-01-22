@@ -1,0 +1,118 @@
+﻿<UserControl
+    x:Class="TheXDS.Vivianne.Views.SettingsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:local="clr-namespace:TheXDS.Vivianne.Views"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:viewmodels="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
+    d:DataContext="{d:DesignInstance Type=viewmodels:SettingsViewModel}"
+    mc:Ignorable="d" 
+    Height="450" Width="800">
+    <TabControl Grid.Row="1" Margin="10">
+        <TabItem Header="NFS3 settings">
+            <StackPanel>
+                <ui:CardControl Icon="{ui:SymbolIcon Symbol=Folder16}">
+                    <ui:CardControl.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <ui:TextBlock
+                                Grid.Row="0"
+                                FontTypography="Body"
+                                Text="NFS3 Root directory" />
+                            <ui:TextBlock
+                                Grid.Row="1"
+                                Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                Text="{Binding State.Nfs3Path, Mode=OneWay}" />
+                        </Grid>
+                    </ui:CardControl.Header>
+                    <ui:Button Content="Browse..." Command="{Binding BrowseNfs3PathCommand, Mode=OneWay}"/>
+                </ui:CardControl>
+                <ui:CardControl Icon="{ui:SymbolIcon Symbol=Window16}">
+                    <ui:CardControl.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <ui:TextBlock
+                                Grid.Row="0"
+                                FontTypography="Body"
+                                Text="nfs3.exe launch arguments" />
+                            <ui:TextBox Grid.Row="1" Margin="0,5,0,0" Text="{Binding State.Nfs3LaunchArgs}"/>
+                        </Grid>
+                    </ui:CardControl.Header>
+                </ui:CardControl>
+            </StackPanel>
+        </TabItem>
+        <TabItem Header="General">
+            <StackPanel>
+                <ui:CardControl Icon="{ui:SymbolIcon Symbol=Document16}">
+                    <ui:CardControl.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <ui:TextBlock
+                                Grid.Row="0"
+                                FontTypography="Body"
+                                Text="File backup" />
+                            <ui:TextBlock
+                                Grid.Row="1"
+                                Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                Text="Backup files upon saving" />
+                        </Grid>
+                    </ui:CardControl.Header>
+                    <ui:ToggleSwitch IsChecked="{Binding State.AutoBackup}"/>
+                </ui:CardControl>
+            </StackPanel>
+        </TabItem>
+        <TabItem Header="VIV editor">
+            <StackPanel>
+                <ui:CardControl Icon="{ui:SymbolIcon Symbol=Document16}">
+                    <ui:CardControl.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <ui:TextBlock
+                                Grid.Row="0"
+                                FontTypography="Body"
+                                Text="Check Serial numbers" />
+                            <ui:TextBlock
+                                Grid.Row="1"
+                                Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                Text="Enable serial number checkup when saving a VIV file" />
+                        </Grid>
+                    </ui:CardControl.Header>
+                    <ui:ToggleSwitch IsChecked="{Binding State.VivCheckSnOnSave}"/>
+                </ui:CardControl>
+                <ui:CardControl Icon="{ui:SymbolIcon Symbol=Document16}">
+                    <ui:CardControl.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <ui:TextBlock
+                                Grid.Row="0"
+                                FontTypography="Body"
+                                Text="FCE cleanup" />
+                            <ui:TextBlock
+                                Grid.Row="1"
+                                Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                Text="Enable cleanup tasks on FCE files when saving a VIV file" />
+                        </Grid>
+                    </ui:CardControl.Header>
+                    <ui:ToggleSwitch IsChecked="{Binding State.AutoBackup}"/>
+                </ui:CardControl>
+            </StackPanel>
+        </TabItem>
+    </TabControl>
+</UserControl>

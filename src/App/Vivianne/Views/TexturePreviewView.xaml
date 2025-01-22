@@ -9,7 +9,7 @@
     xmlns:vc="clr-namespace:TheXDS.Vivianne.ValueConverters"
     d:DataContext="{d:DesignInstance Type=vm:TexturePreviewViewModel}"
     mc:Ignorable="d"
-    d:DesignWidth="400" d:DesignHeight="300">
+    d:DesignWidth="600" d:DesignHeight="300">
     <UserControl.Resources>
         <vc:RawImageConverter x:Key="r2img"/>
         <vc:BackgroundToBrushConverter x:Key="bg2b"/>
@@ -27,7 +27,7 @@
         <Rectangle Grid.Column="1" Grid.Row="1" Fill="{StaticResource DarkBackground}"/>
         <StackPanel Margin="10" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
             <TextBlock VerticalAlignment="Center" Margin="0,0,10,0">Zoom: <Run Text="{Binding ZoomLevel, Mode=OneWay}"/></TextBlock>
-            <Slider x:Name="sldZoom" Minimum="1.0" Maximum="10.0" Value="{Binding ZoomLevel}" Margin="5" Width="100"/>
+            <Slider x:Name="sldZoom" Minimum="1.0" Maximum="10.0" Value="{Binding ZoomLevel}" Margin="5" Width="100" SmallChange="0.5" LargeChange="1" TickFrequency="0.125" IsSnapToTickEnabled="True"/>
             <TextBlock VerticalAlignment="Center" Margin="10,0">Background:</TextBlock>
             <ComboBox
                 Width="180"

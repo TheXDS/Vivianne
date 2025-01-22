@@ -56,7 +56,6 @@ public class FcePreviewViewModelToModel3DGroupConverter : IOneWayValueConverter<
         var filteredTriangles = value.Triangles.Where(p => (p.Flags & (TriangleFlags)15) == flags).ToArray();
         if (filteredTriangles.Length == 0) return null;
         var vertex = new List<VertexUv?>(new VertexUv[value.Vertices.Length]);
-        const double epsilon = 0.0005;
         var workingCopy = new Triangle[filteredTriangles.Length];
         for (int i = 0; i < filteredTriangles.Length; i++)
         {

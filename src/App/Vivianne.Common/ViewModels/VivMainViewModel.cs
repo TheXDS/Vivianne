@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TheXDS.Ganymede.Helpers;
@@ -11,9 +10,10 @@ using TheXDS.Ganymede.Resources;
 using TheXDS.Ganymede.Types.Base;
 using TheXDS.Ganymede.Types.Extensions;
 using TheXDS.Ganymede.ViewModels;
-using TheXDS.MCART.Types.Base;
 using TheXDS.Vivianne.Component;
+using TheXDS.Vivianne.Helpers;
 using TheXDS.Vivianne.Models;
+using TheXDS.Vivianne.Properties;
 using TheXDS.Vivianne.Resources;
 using TheXDS.Vivianne.Serializers;
 
@@ -103,8 +103,11 @@ public class VivMainViewModel : HostViewModelBase, IStatefulViewModel<VivMainSta
             }
         }
         progress.Report("Saving...");
+        if (Settings.Current.AutoBackup)
+        {
+            FileBackup.Create(State.FilePath);
+        }
         var parser = new VivSerializer();
-
         await using var fs = File.Create(State.FilePath);
         await Task.Run(() => parser.SerializeTo(State.Viv, fs));
         return false;

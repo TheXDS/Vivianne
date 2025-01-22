@@ -19,7 +19,7 @@ public abstract class EditorViewModelStateBase : NotifyPropertyChanged
     public bool UnsavedChanges
     {
         get => _unsavedChanges;
-        set => base.Change(ref _unsavedChanges, value);
+        set => Change(ref _unsavedChanges, value);
     }
 
     /// <inheritdoc/>

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -7,6 +8,7 @@ using TheXDS.Ganymede.Types;
 using TheXDS.Ganymede.Types.Base;
 using TheXDS.Ganymede.Types.Extensions;
 using TheXDS.MCART.Helpers;
+using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Properties;
 using TheXDS.Vivianne.Resources;
@@ -20,15 +22,15 @@ namespace TheXDS.Vivianne.ViewModels;
 /// </summary>
 public class StartupViewModel : ViewModel
 {
-    private IEnumerable<VivInfo> recentFiles = [];
+    private IEnumerable<VivInfo> recentVivFiles = [];
 
     /// <summary>
     /// Gets a list of recent files that can be quickly opened from the UI.
     /// </summary>
-    public IEnumerable<VivInfo> RecentFiles
+    public IEnumerable<VivInfo> RecentVivFiles
     {
-        get => recentFiles;
-        private set => Change(ref recentFiles, value);
+        get => recentVivFiles;
+        private set => Change(ref recentVivFiles, value);
     }
 
     /// <summary>
@@ -48,6 +50,11 @@ public class StartupViewModel : ViewModel
     public ICommand OpenVivCommand { get; }
 
     /// <summary>
+    /// Gets a reference to the command used to open the settings page.
+    /// </summary>
+    public ICommand SettingsCommand { get; }
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="StartupViewModel"/> class.
     /// </summary>
     public StartupViewModel()
@@ -56,6 +63,7 @@ public class StartupViewModel : ViewModel
         var cb = CommandBuilder.For(this);
         NewVivCommand = cb.BuildSimple(OnNewViv);
         OpenVivCommand = cb.BuildSimple(OnOpenViv);
+        SettingsCommand = cb.BuildSimple(OnSettings);
         foreach (var x in ReflectionHelpers.FindAllObjects<IVivianneTool>())
         {
             ExtraTools.Add(new(cb.BuildSimple(() => x.Run(DialogService!, NavigationService!)), x.ToolName));
@@ -66,7 +74,24 @@ public class StartupViewModel : ViewModel
     protected override async Task OnCreated()
     {
         await Settings.Load();
-        RecentFiles = Settings.Current.RecentFiles;
+        RecentVivFiles = Settings.Current.RecentVivFiles;
+        if (Environment.GetCommandLineArgs().Length > 1 && !Environment.GetCommandLineArgs()[1].IsEmpty())
+        {
+            await OnOpenViv(Environment.GetCommandLineArgs()[1]!);
+        }
+#if !DEBUG
+        await DialogService!.Warning("Very early alpha application!", """
+            This copy of Vivianne is a very early version. A lot of features will be either incomplete or unstable. Please do not use Vivianne for any mods you plan to release just yet.
+
+            Also, the UX/UI, feature set and tools are all subject to change.
+
+            This preview is for evaluation purposes only... You've been warned!
+
+            Happy modding.
+
+               -- TheXDS --
+            """);
+#endif
     }
 
     private void OnNewViv()
@@ -74,10 +99,17 @@ public class StartupViewModel : ViewModel
         NavigationService!.NavigateAndReset<VivMainViewModel, VivMainState>(new());
     }
 
+    private Task OnSettings()
+    {
+        return DialogService!.Show<SettingsViewModel>(new Ganymede.Models.DialogTemplate() { Title = "Settings" });
+
+        //NavigationService!.NavigateAndReset<SettingsViewModel>();
+    }
+
     private async Task OnOpenViv(object? parameter)
     {
         string? filePath = null;
-        List<VivInfo> l = RecentFiles.ToList();
+        List<VivInfo> l = RecentVivFiles.ToList();
         if (parameter is VivInfo viv)
         {
             if (!System.IO.File.Exists(viv.FilePath))
@@ -87,6 +119,10 @@ public class StartupViewModel : ViewModel
             }
             l.Remove(viv);
             filePath = viv.FilePath;
+        }
+        else if (parameter is string file)
+        {
+            filePath = file;
         }
         else
         {
@@ -99,7 +135,7 @@ public class StartupViewModel : ViewModel
         if (filePath is null) return;
         VivMainState s = await DialogService!.RunOperation(_ => VivMainState.From(filePath));
         l = new VivInfo[] { s }.Concat(l).Take(10).ToList();
-        Settings.Current.RecentFiles = [.. l];
+        Settings.Current.RecentVivFiles = [.. l];
         await Settings.Save();
         NavigationService!.NavigateAndReset<VivMainViewModel, VivMainState>(s);
     }

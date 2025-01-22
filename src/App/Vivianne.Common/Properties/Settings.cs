@@ -56,13 +56,13 @@ public class Settings
     /// </summary>
     public Settings()
     {
-        RecentFiles = [];
+        RecentVivFiles = [];
     }
 
     /// <summary>
     /// Gets or sets the list of recent files.
     /// </summary>
-    public VivInfo[] RecentFiles { get; set; }
+    public VivInfo[] RecentVivFiles { get; set; }
 
     /// <summary>
     /// Gets or sets the path to the NFS3 main directory.
@@ -70,7 +70,22 @@ public class Settings
     public string? Nfs3Path { get; set; }
 
     /// <summary>
+    /// Gets or sets a string with the command line arguments to pass onto nfs3.exe upon invocation.
+    /// </summary>
+    public string? Nfs3LaunchArgs { get; set; }
+
+    /// <summary>
     /// If enabled, generates backups whenever a file is saved.
     /// </summary>
     public bool AutoBackup { get; set; }
+
+    /// <summary>
+    /// If enabled, runs a serial number check before saving a VIV file if any FeData file exists.
+    /// </summary>
+    public bool VivCheckSnOnSave { get; set; }
+
+    /// <summary>
+    /// If enabled, runs cleanup tasks on an FCE file before saving a VIV file.
+    /// </summary>
+    public bool FceCleanupOnSave { get; set; }
 }

@@ -16,7 +16,8 @@ namespace Vivianne
         public App()
         {
             UiThread.SetProxy(new DispatcherUiThreadProxy());
-            KeyboardProxy.SetProxy(new WpfKeyboardProxy());
+            PlatformServices.SetKeyboardProxy(new WpfKeyboardProxy());
+            PlatformServices.SetFceRender(new WpfStaticFceRender());
         }
     }
 }
