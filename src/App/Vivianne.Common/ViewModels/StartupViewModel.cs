@@ -80,7 +80,7 @@ public class StartupViewModel : ViewModel
             await OnOpenViv(Environment.GetCommandLineArgs()[1]!);
         }
 #if !DEBUG
-        await DialogService!.Warning("Very early alpha application!", """
+        await (DialogService?.Warning("Very early alpha application!", """
             This copy of Vivianne is a very early version. A lot of features will be either incomplete or unstable. Please do not use Vivianne for any mods you plan to release just yet.
 
             Also, the UX/UI, feature set and tools are all subject to change.
@@ -90,7 +90,7 @@ public class StartupViewModel : ViewModel
             Happy modding.
 
                -- TheXDS --
-            """);
+            """) ?? Task.CompletedTask);
 #endif
     }
 
