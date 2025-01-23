@@ -102,8 +102,6 @@ public class StartupViewModel : ViewModel
     private Task OnSettings()
     {
         return DialogService!.Show<SettingsViewModel>(new Ganymede.Models.DialogTemplate() { Title = "Settings" });
-
-        //NavigationService!.NavigateAndReset<SettingsViewModel>();
     }
 
     private async Task OnOpenViv(object? parameter)
