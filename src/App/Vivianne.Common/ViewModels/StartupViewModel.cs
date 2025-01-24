@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TheXDS.Ganymede.Helpers;
+using TheXDS.Ganymede.Resources;
 using TheXDS.Ganymede.Types;
 using TheXDS.Ganymede.Types.Base;
 using TheXDS.Ganymede.Types.Extensions;
@@ -83,10 +84,10 @@ public class StartupViewModel : ViewModel
     public ICommand LaunchNfs3Command { get; }
 
     /// <summary>
-    /// Gets a reference to the command used to forcefully end the NFS3
-    /// process if the game can't be exited normally.
+    /// Gets a reference to the command used to forcefully end the game
+    /// process if it can't be exited normally.
     /// </summary>
-    public ICommand KillNfs3ProcessCommand { get; }
+    public ICommand TerminateProcessCommand { get; }
 
     /// <summary>
     /// Gets a value that indicates if NFS3 is running.
@@ -113,7 +114,7 @@ public class StartupViewModel : ViewModel
         OpenVivCommand = cb.BuildSimple(OnOpenViv);
         SettingsCommand = cb.BuildSimple(OnSettings);
         LaunchNfs3Command = cb.BuildSimple(OnLaunchNfs3);
-        KillNfs3ProcessCommand = cb.BuildSimple(() => Nfs3Process?.Kill());
+        TerminateProcessCommand = cb.BuildSimple(proc => (proc as Process)?.Kill());
         foreach (var x in ReflectionHelpers.FindAllObjects<IVivianneTool>())
         {
             ExtraTools.Add(new(cb.BuildSimple(() => x.Run(DialogService!, NavigationService!)), x.ToolName));
@@ -153,7 +154,18 @@ public class StartupViewModel : ViewModel
     {
         try
         {
-            await (WaitForNfs3Process(Process.Start(Path.Combine(Settings.Current.Nfs3Path, "nfs3.exe"), Settings.Current.Nfs3LaunchArgs)));
+            if (Settings.Current.Nfs3Path is not null)
+            {
+                await (WaitForNfs3Process(Process.Start(Path.Combine(Settings.Current.Nfs3Path, "nfs3.exe"), Settings.Current.Nfs3LaunchArgs ?? string.Empty)));
+            }
+            else
+            {
+                await (DialogService?.SelectAction(CommonDialogTemplates.Error with
+                {
+                    Title = "Could not launch NFS3",
+                    Text = "You haven't configured the game path."
+                }, [new(OnSettings, "Launch settings"), new(() => Task.CompletedTask, "Ok")]) ?? Task.CompletedTask);
+            }
         }
         catch (Exception ex)
         {
@@ -207,6 +219,6 @@ public class StartupViewModel : ViewModel
 
     private static Process? SearchForNfs3Process()
     {
-        return Process.GetProcessesByName("nfs3.exe").FirstOrDefault();
+        return Process.GetProcessesByName("nfs3").FirstOrDefault();
     }
 }

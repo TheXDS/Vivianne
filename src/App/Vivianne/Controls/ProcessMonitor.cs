@@ -15,6 +15,7 @@ public class ProcessMonitor : Control
     private static readonly DependencyPropertyKey IsProcessLockedPropertyKey;
     private static readonly DependencyPropertyKey RamUsagePropertyKey;
     private static readonly DependencyPropertyKey CpuUsagePropertyKey;
+    private static readonly DependencyPropertyKey ProcessNamePropertyKey;
 
     /// <summary>
     /// Identifies the <see cref="MonitoredProcess"/> dependency property.
@@ -37,9 +38,20 @@ public class ProcessMonitor : Control
     public static readonly DependencyProperty CpuUsageProperty;
 
     /// <summary>
+    /// Identifies the <see cref="ProcessName"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty ProcessNameProperty;
+
+    /// <summary>
     /// Identifies the <see cref="RefreshInterval"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty RefreshIntervalProperty;
+
+    /// <summary>
+    /// Identifies the <see cref="NotRespondingContent"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty NotRespondingContentProperty;
+
 
     /// <summary>
     /// Initializes the <see cref="ProcessMonitor"/> class.
@@ -50,8 +62,10 @@ public class ProcessMonitor : Control
         (IsProcessLockedPropertyKey, IsProcessLockedProperty) = NewDpRo<bool, ProcessMonitor>(nameof(IsProcessLocked));
         (RamUsagePropertyKey, RamUsageProperty) = NewDpRo<long, ProcessMonitor>(nameof(RamUsage));
         (CpuUsagePropertyKey, CpuUsageProperty) = NewDpRo<double, ProcessMonitor>(nameof(CpuUsage));
+        (ProcessNamePropertyKey, ProcessNameProperty) = NewDpRo<string?, ProcessMonitor>(nameof(ProcessName));
         MonitoredProcessProperty = NewDp<Process, ProcessMonitor>(nameof(MonitoredProcess), changedValue: OnMonitoredProcessChanged);
         RefreshIntervalProperty = NewDp<int, ProcessMonitor>(nameof(RefreshInterval), 1000, OnIntervalChanged, CoerceInterval);
+        NotRespondingContentProperty = NewDp<object?, ProcessMonitor>(nameof(NotRespondingContent), FrameworkPropertyMetadataOptions.AffectsArrange);
     }
 
     private static object CoerceInterval(DependencyObject d, object baseValue)
@@ -78,6 +92,7 @@ public class ProcessMonitor : Control
 
     private static Timer? CreateTimer(ProcessMonitor pm)
     {
+        pm.SetValue(ProcessNamePropertyKey, pm.MonitoredProcess!.ProcessName);
         pm.prevCpuTime = pm.MonitoredProcess!.TotalProcessorTime;
         pm.prevTime = DateTime.Now;
         return new(_ => UiThread.Invoke(() => pm?.Refresh()), null, 1000, pm.RefreshInterval);
@@ -88,15 +103,6 @@ public class ProcessMonitor : Control
     private TimeSpan nextCpuTime;
     private DateTime nextTime;
     private Timer? _timer;
-
-    /// <summary>
-    /// Gets or sets a reference to the process being monitored.
-    /// </summary>
-    public Process? MonitoredProcess
-    {
-        get => UiThread.Invoke(() => (Process?)GetValue(MonitoredProcessProperty));
-        set => UiThread.Invoke(() => SetValue(MonitoredProcessProperty, value));
-    }
 
     /// <summary>
     /// Indicates if the process is locked-up; that is, if it's not responding
@@ -115,12 +121,35 @@ public class ProcessMonitor : Control
     public double CpuUsage => UiThread.Invoke(() => (double)GetValue(CpuUsageProperty));
 
     /// <summary>
+    /// Gets the name of the process being monitored.
+    /// </summary>
+    public string? ProcessName => UiThread.Invoke(() => (string?)GetValue(ProcessNameProperty));
+
+    /// <summary>
+    /// Gets or sets a reference to the process being monitored.
+    /// </summary>
+    public Process? MonitoredProcess
+    {
+        get => UiThread.Invoke(() => (Process?)GetValue(MonitoredProcessProperty));
+        set => UiThread.Invoke(() => SetValue(MonitoredProcessProperty, value));
+    }
+
+    /// <summary>
     /// Gets or sets the desired refresh interval for the process telemetry.
     /// </summary>
     public int RefreshInterval
     {
         get => UiThread.Invoke(() => (int)GetValue(RefreshIntervalProperty));
         set => UiThread.Invoke(() => SetValue(RefreshIntervalProperty, value));
+    }
+
+    /// <summary>
+    /// Gets or sets the content to be displayed if the process stops responding.
+    /// </summary>
+    public object? NotRespondingContent
+    {
+        get => UiThread.Invoke(() => GetValue(NotRespondingContentProperty));
+        set => UiThread.Invoke(() => SetValue(NotRespondingContentProperty, value));
     }
 
     private void Refresh()
