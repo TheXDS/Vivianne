@@ -1,0 +1,38 @@
+<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:hlp="clr-namespace:TheXDS.Vivianne.Helpers"
+    xmlns:sys="clr-namespace:System;assembly=netstandard"
+    xmlns:vc="clr-namespace:TheXDS.Vivianne.ValueConverters"
+    xmlns:local="clr-namespace:TheXDS.Vivianne.Controls">
+    <Style TargetType="local:ProcessMonitor">
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:ProcessMonitor">
+                    <Border Background="{TemplateBinding Background}" CornerRadius="5">
+                        <StackPanel Margin="10">
+                            <StackPanel.Resources>
+                                <BooleanToVisibilityConverter x:Key="bool2vc"/>
+                            </StackPanel.Resources>                        
+                            <TextBlock>
+                                <Run>CPU: </Run>
+                                <Run Text="{Binding CpuUsage, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}, StringFormat='{}{0:F1}'}"/>
+                                <Run>%</Run>
+                            </TextBlock>
+                            <TextBlock>
+                                <TextBlock.Resources>
+                                    <vc:ByteLongSizeConverter x:Key="b2bc"/>
+                                </TextBlock.Resources>
+                                <Run>RAM: </Run>
+                                <Run Text="{Binding RamUsage, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource b2bc}}"/>
+                            </TextBlock>
+                        </StackPanel>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

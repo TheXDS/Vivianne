@@ -8,16 +8,39 @@
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:valueconverters="clr-namespace:TheXDS.Vivianne.ValueConverters"
     xmlns:mcart="http://schemas.thexds.local/mcart"
+    xmlns:specialized="clr-namespace:TheXDS.Vivianne.Views.Specialized"
+    xmlns:controls="clr-namespace:TheXDS.Vivianne.Controls"
     x:Name="pgRoot"
     d:DataContext="{d:DesignInstance Type=vm:StartupViewModel}"
     mc:Ignorable="d"
     d:DesignHeight="450" d:DesignWidth="800">
     <mcart:BusyContainer IsBusy="{Binding IsNfs3Running, Mode=OneWay}">
         <mcart:BusyContainer.BusyContent>
-            <DockPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                <TextBlock HorizontalAlignment="Center" DockPanel.Dock="Bottom" Foreground="White" FontSize="24">NFS3 is running</TextBlock>
-                <mcart:BusyIndicator Radius="100" Thickness="10" Margin="30"/>
-            </DockPanel>
+            <Grid>
+                <Grid.Resources>
+                    <BooleanToVisibilityConverter x:Key="bool2vc" />
+                </Grid.Resources>
+                <DockPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <TextBlock HorizontalAlignment="Center" DockPanel.Dock="Bottom" Foreground="White" FontSize="24">NFS3 is running</TextBlock>
+                    <Grid>
+                        <controls:ProcessMonitor x:Name="pmNfs3" Width="130" Padding="10" Background="#40000000" MonitoredProcess="{Binding Nfs3Process, Mode=OneWay}"/>
+                        <mcart:BusyIndicator Radius="100" Thickness="10" Margin="30"/>
+                        <Border
+                            CornerRadius="5"
+                            Background="Black"
+                            Visibility="{Binding IsProcessLocked, ElementName=pmNfs3, Mode=OneWay, Converter={StaticResource bool2vc}}">
+                            <StackPanel
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Margin="20">
+                                <ui:FontIcon Glyph="⚠️" FontSize="96" Foreground="Orange"/>
+                                <TextBlock Foreground="White" VerticalAlignment="Center" Margin="20">nfs3.exe process has stopped responding.</TextBlock>
+                                <ui:Button HorizontalAlignment="Center" Content="End process" Icon="{ui:FontIcon Glyph='☠️'}" Command="{Binding KillNfs3ProcessCommand, Mode=OneWay}"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </DockPanel>
+            </Grid>
         </mcart:BusyContainer.BusyContent>
         <DockPanel>
             <DockPanel DockPanel.Dock="Top" Margin="5">

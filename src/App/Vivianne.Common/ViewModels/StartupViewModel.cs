@@ -83,6 +83,12 @@ public class StartupViewModel : ViewModel
     public ICommand LaunchNfs3Command { get; }
 
     /// <summary>
+    /// Gets a reference to the command used to forcefully end the NFS3
+    /// process if the game can't be exited normally.
+    /// </summary>
+    public ICommand KillNfs3ProcessCommand { get; }
+
+    /// <summary>
     /// Gets a value that indicates if NFS3 is running.
     /// </summary>
     public bool IsNfs3Running
@@ -90,6 +96,11 @@ public class StartupViewModel : ViewModel
         get => _isNfs3Running;
         private set => Change(ref _isNfs3Running, value);
     }
+
+    /// <summary>
+    /// Gets a reference to the NFS3 process when it's running.
+    /// </summary>
+    public Process? Nfs3Process { get; private set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="StartupViewModel"/> class.
@@ -102,10 +113,17 @@ public class StartupViewModel : ViewModel
         OpenVivCommand = cb.BuildSimple(OnOpenViv);
         SettingsCommand = cb.BuildSimple(OnSettings);
         LaunchNfs3Command = cb.BuildSimple(OnLaunchNfs3);
+        KillNfs3ProcessCommand = cb.BuildSimple(() => Nfs3Process?.Kill());
         foreach (var x in ReflectionHelpers.FindAllObjects<IVivianneTool>())
         {
             ExtraTools.Add(new(cb.BuildSimple(() => x.Run(DialogService!, NavigationService!)), x.ToolName));
         }
+    }
+
+    /// <inheritdoc/>
+    protected override void OnInitialize(IPropertyBroadcastSetup broadcastSetup)
+    {
+        broadcastSetup.RegisterPropertyChangeBroadcast(() => IsNfs3Running, () => Nfs3Process);
     }
 
     /// <inheritdoc/>
@@ -179,8 +197,11 @@ public class StartupViewModel : ViewModel
 
     private async Task WaitForNfs3Process(Process proc)
     {
+        Nfs3Process = proc;
         IsNfs3Running = true;
         await proc.WaitForExitAsync();
+        Nfs3Process.Dispose();
+        Nfs3Process = null;
         IsNfs3Running = false;
     }
 
