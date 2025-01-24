@@ -179,9 +179,9 @@ public class StartupViewModel : ViewModel
 
     private async Task WaitForNfs3Process(Process proc)
     {
-        IsBusy = true;
+        IsNfs3Running = true;
         await proc.WaitForExitAsync();
-        IsBusy = false;
+        IsNfs3Running = false;
     }
 
     private static Process? SearchForNfs3Process()
