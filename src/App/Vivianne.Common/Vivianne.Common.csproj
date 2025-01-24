@@ -3,7 +3,7 @@
 		<TargetFramework>net8.0-windows</TargetFramework>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="TheXDS.Ganymede" Version="0.4.0-alpha.7" />
+		<PackageReference Include="TheXDS.Ganymede" Version="0.4.0-alpha.8" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\..\Lib\VivLib\VivLib.csproj" />

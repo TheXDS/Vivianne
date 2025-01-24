@@ -4,89 +4,100 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-    xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common" xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml" xmlns:valueconverters="clr-namespace:TheXDS.Vivianne.ValueConverters"
+    xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:valueconverters="clr-namespace:TheXDS.Vivianne.ValueConverters"
+    xmlns:mcart="http://schemas.thexds.local/mcart"
     x:Name="pgRoot"
     d:DataContext="{d:DesignInstance Type=vm:StartupViewModel}"
     mc:Ignorable="d"
     d:DesignHeight="450" d:DesignWidth="800">
-    <DockPanel>
-        <DockPanel DockPanel.Dock="Top" Margin="5">
-            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
-                <ui:Button Margin="5" Content="Launch NFS3" Icon="{ui:SymbolIcon Symbol=Play24}"/>
-                <ui:Button Margin="5" Content="Settings" Icon="{ui:SymbolIcon Symbol=Settings32}" Command="{Binding SettingsCommand, Mode=OneWay}"/>
-            </StackPanel>
-            <TextBlock FontSize="36" Foreground="White" FontFamily="{StaticResource nfsFont}">Vivianne</TextBlock>
-        </DockPanel>
-        <TabControl TabStripPlacement="Left" Style="{x:Null}" Background="Transparent" BorderThickness="0" Padding="0,2">
-            <TabControl.Resources>
-                <Style TargetType="TabItem">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="TabItem">
-                                <Border CornerRadius="10,0,0,10" Padding="10" x:Name="PART_SelectionBg">
-                                    <ContentControl x:Name="PART_title" VerticalAlignment="Center" HorizontalAlignment="Center" Content="{TemplateBinding Header}" Foreground="{StaticResource DarkAreaForeground}"/>
-                                </Border>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsSelected" Value="true">
-                                        <Setter TargetName="PART_SelectionBg" Property="Background" Value="{StaticResource DarkBackground}"/>
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </TabControl.Resources>
-            <TabItem Header="VIV editor">
-                <DockPanel Background="{StaticResource DarkBackground}">
-                    <StackPanel Margin="5">
-                        <Button Margin="5" Command="{Binding NewVivCommand}" HorizontalAlignment="Stretch">New VIV</Button>
-                        <Button Margin="5" Command="{Binding OpenVivCommand}" HorizontalAlignment="Stretch">Open VIV...</Button>
-                    </StackPanel>
-                    <DockPanel Grid.Column="1">
-                        <TextBlock
-                            DockPanel.Dock="Top"
-                            Foreground="Gray"
-                            FontSize="18">Recent files</TextBlock>
-                        <ScrollViewer VerticalScrollBarVisibility="Auto">
-                            <ItemsControl ItemsSource="{Binding RecentVivFiles,Mode=OneWay}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Button
-                                                Command="{Binding DataContext.OpenVivCommand, ElementName=pgRoot}"
-                                                CommandParameter="{Binding Mode=OneWay}">
-                                            <StackPanel>
-                                                <TextBlock x:Name="PART_friendlyName" Text="{Binding FriendlyName, Mode=OneWay}" FontSize="16" Foreground="Gray"/>
-                                                <TextBlock x:Name="PART_filePath" FontSize="9" Foreground="Gray" Text="{Binding FilePath, Mode=OneWay}"/>
-                                            </StackPanel>
-                                        </Button>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </ScrollViewer>
+    <mcart:BusyContainer IsBusy="{Binding IsBusy, Mode=OneWay}">
+        <mcart:BusyContainer.BusyContent>
+            <DockPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock HorizontalAlignment="Center" DockPanel.Dock="Bottom" Foreground="White" FontSize="24">NFS3 is running</TextBlock>
+                <mcart:BusyIndicator Radius="100" Thickness="10" Margin="30"/>
+            </DockPanel>
+        </mcart:BusyContainer.BusyContent>
+        <DockPanel>
+            <DockPanel DockPanel.Dock="Top" Margin="5">
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                    <ui:Button Margin="5" Content="Launch NFS3" Icon="{ui:SymbolIcon Symbol=Play24}"/>
+                    <ui:Button Margin="5" Content="Settings" Icon="{ui:SymbolIcon Symbol=Settings32}" Command="{Binding SettingsCommand, Mode=OneWay}"/>
+                </StackPanel>
+                <TextBlock FontSize="36" Foreground="White" FontFamily="{StaticResource nfsFont}">Vivianne</TextBlock>
+            </DockPanel>
+            <TabControl TabStripPlacement="Left" Style="{x:Null}" Background="Transparent" BorderThickness="0" Padding="0,2">
+                <TabControl.Resources>
+                    <Style TargetType="TabItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="TabItem">
+                                    <Border CornerRadius="10,0,0,10" Padding="10" x:Name="PART_SelectionBg">
+                                        <ContentControl x:Name="PART_title" VerticalAlignment="Center" HorizontalAlignment="Center" Content="{TemplateBinding Header}" Foreground="{StaticResource DarkAreaForeground}"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsSelected" Value="true">
+                                            <Setter TargetName="PART_SelectionBg" Property="Background" Value="{StaticResource DarkBackground}"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </TabControl.Resources>
+                <TabItem Header="VIV editor">
+                    <DockPanel Background="{StaticResource DarkBackground}">
+                        <StackPanel Margin="5">
+                            <Button Margin="5" Command="{Binding NewVivCommand}" HorizontalAlignment="Stretch">New VIV</Button>
+                            <Button Margin="5" Command="{Binding OpenVivCommand}" HorizontalAlignment="Stretch">Open VIV...</Button>
+                        </StackPanel>
+                        <DockPanel Grid.Column="1">
+                            <TextBlock
+                                DockPanel.Dock="Top"
+                                Foreground="Gray"
+                                FontSize="18">Recent files</TextBlock>
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <ItemsControl ItemsSource="{Binding RecentVivFiles,Mode=OneWay}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Button
+                                                    Command="{Binding DataContext.OpenVivCommand, ElementName=pgRoot}"
+                                                    CommandParameter="{Binding Mode=OneWay}">
+                                                <StackPanel>
+                                                    <TextBlock x:Name="PART_friendlyName" Text="{Binding FriendlyName, Mode=OneWay}" FontSize="16" Foreground="Gray"/>
+                                                    <TextBlock x:Name="PART_filePath" FontSize="9" Foreground="Gray" Text="{Binding FilePath, Mode=OneWay}"/>
+                                                </StackPanel>
+                                            </Button>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </DockPanel>
                     </DockPanel>
-                </DockPanel>
-            </TabItem>
-            <TabItem Header="FSH/QFS editor">
-            </TabItem>
-            <TabItem Header="Extra tools">
-                <ItemsControl Background="{StaticResource DarkBackground}" ItemsSource="{Binding ExtraTools, Mode=OneWay}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <UniformGrid VerticalAlignment="Top" Margin="20"/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Button HorizontalAlignment="Stretch" Margin="5" Command="{Binding Command, Mode=OneWay}">
-                                <TextBlock
-                                    Foreground="White"
-                                    FontSize="14"
-                                    Text="{Binding Text, Mode=OneWay}"/>
-                            </Button>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </TabItem>
-        </TabControl>
-    </DockPanel>
+                </TabItem>
+                <TabItem Header="FSH/QFS editor">
+                </TabItem>
+                <TabItem Header="Extra tools">
+                    <ItemsControl Background="{StaticResource DarkBackground}" ItemsSource="{Binding ExtraTools, Mode=OneWay}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid VerticalAlignment="Top" Margin="20"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button HorizontalAlignment="Stretch" Margin="5" Command="{Binding Command, Mode=OneWay}">
+                                    <TextBlock
+                                        Foreground="White"
+                                        FontSize="14"
+                                        Text="{Binding Text, Mode=OneWay}"/>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </TabItem>
+            </TabControl>
+        </DockPanel>
+    </mcart:BusyContainer>
 </UserControl>

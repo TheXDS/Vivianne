@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -22,6 +24,26 @@ namespace TheXDS.Vivianne.ViewModels;
 /// </summary>
 public class StartupViewModel : ViewModel
 {
+    private static bool _initialized = false;
+
+    private static readonly IEnumerable<Func<StartupViewModel, Task?>> _InitActions = [
+        vm => Environment.GetCommandLineArgs().Length > 1 && !Environment.GetCommandLineArgs()[1].IsEmpty() ? vm.OnOpenViv(Environment.GetCommandLineArgs()[1]!) : null,
+        #if !DEBUG
+        vm => vm.DialogService?.Warning("Very early alpha application!", """
+            This copy of Vivianne is a very early version. A lot of features will be either incomplete or unstable. Please do not use Vivianne for any mods you plan to release just yet.
+
+            Also, the UX/UI, feature set and tools are all subject to change.
+
+            This preview is for evaluation purposes only... You've been warned!
+
+            Happy modding.
+
+               -- TheXDS --
+            """),
+        #endif
+        vm => (SearchForNfs3Process() is { } proc) ? vm.WaitForNfs3Process(proc) : null,
+    ];
+
     private IEnumerable<VivInfo> recentVivFiles = [];
 
     /// <summary>
@@ -55,6 +77,11 @@ public class StartupViewModel : ViewModel
     public ICommand SettingsCommand { get; }
 
     /// <summary>
+    /// Gets a reference to the command used to launch NFS3.
+    /// </summary>
+    public ICommand LaunchNfs3Command { get; }
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="StartupViewModel"/> class.
     /// </summary>
     public StartupViewModel()
@@ -64,6 +91,7 @@ public class StartupViewModel : ViewModel
         NewVivCommand = cb.BuildSimple(OnNewViv);
         OpenVivCommand = cb.BuildSimple(OnOpenViv);
         SettingsCommand = cb.BuildSimple(OnSettings);
+        LaunchNfs3Command = cb.BuildSimple(OnLaunchNfs3);
         foreach (var x in ReflectionHelpers.FindAllObjects<IVivianneTool>())
         {
             ExtraTools.Add(new(cb.BuildSimple(() => x.Run(DialogService!, NavigationService!)), x.ToolName));
@@ -75,23 +103,12 @@ public class StartupViewModel : ViewModel
     {
         await Settings.Load();
         RecentVivFiles = Settings.Current.RecentVivFiles;
-        if (Environment.GetCommandLineArgs().Length > 1 && !Environment.GetCommandLineArgs()[1].IsEmpty())
+        if (_initialized) return;
+        _initialized = true;
+        foreach (var initAction in _InitActions)
         {
-            await OnOpenViv(Environment.GetCommandLineArgs()[1]!);
+            await (initAction.Invoke(this) ?? Task.CompletedTask);
         }
-#if !DEBUG
-        await (DialogService?.Warning("Very early alpha application!", """
-            This copy of Vivianne is a very early version. A lot of features will be either incomplete or unstable. Please do not use Vivianne for any mods you plan to release just yet.
-
-            Also, the UX/UI, feature set and tools are all subject to change.
-
-            This preview is for evaluation purposes only... You've been warned!
-
-            Happy modding.
-
-               -- TheXDS --
-            """) ?? Task.CompletedTask);
-#endif
     }
 
     private void OnNewViv()
@@ -102,6 +119,18 @@ public class StartupViewModel : ViewModel
     private Task OnSettings()
     {
         return DialogService!.Show<SettingsViewModel>(new Ganymede.Models.DialogTemplate() { Title = "Settings" });
+    }
+
+    private async Task OnLaunchNfs3()
+    {
+        try
+        {
+            await (WaitForNfs3Process(Process.Start(Path.Combine(Settings.Current.Nfs3Path, "nfs3.exe"), Settings.Current.Nfs3LaunchArgs)));
+        }
+        catch (Exception ex)
+        {
+            await (DialogService?.Error("Could not launch NFS3", ex.Message) ?? Task.CompletedTask);
+        }
     }
 
     private async Task OnOpenViv(object? parameter)
@@ -136,5 +165,17 @@ public class StartupViewModel : ViewModel
         Settings.Current.RecentVivFiles = [.. l];
         await Settings.Save();
         NavigationService!.NavigateAndReset<VivMainViewModel, VivMainState>(s);
+    }
+
+    private async Task WaitForNfs3Process(Process proc)
+    {
+        IsBusy = true;
+        await proc.WaitForExitAsync();
+        IsBusy = false;
+    }
+
+    private static Process? SearchForNfs3Process()
+    {
+        return Process.GetProcessesByName("nfs3.exe").FirstOrDefault();
     }
 }
