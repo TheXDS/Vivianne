@@ -26,6 +26,18 @@
         <GradientStop Color="{DynamicResource TransparentDarkBackgroundColor}"/>
         <GradientStop Color="{DynamicResource DarkBackgroundColor}" Offset="1"/>
     </LinearGradientBrush>
+    <LinearGradientBrush x:Key="FadeOutBackground" EndPoint="1,0">
+        <GradientStop Color="{DynamicResource DarkBackgroundColor}"/>
+        <GradientStop Color="{DynamicResource TransparentDarkBackgroundColor}" Offset="1"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="FadeDownBackground" EndPoint="0,1">
+        <GradientStop Color="{DynamicResource TransparentDarkBackgroundColor}"/>
+        <GradientStop Color="{DynamicResource DarkBackgroundColor}" Offset="1"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="FadeUpBackground" EndPoint="0,1">
+        <GradientStop Color="{DynamicResource TransparentDarkBackgroundColor}" Offset="1"/>
+        <GradientStop Color="{DynamicResource DarkBackgroundColor}"/>
+    </LinearGradientBrush>
     <LinearGradientBrush x:Key="MainAreaBackground" EndPoint="1,0">
         <LinearGradientBrush.GradientStops>
             <GradientStop Color="{StaticResource MidBackgroundColor}" Offset="0.2"/>
