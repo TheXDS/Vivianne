@@ -45,6 +45,7 @@ public class StartupViewModel : ViewModel
     ];
 
     private IEnumerable<VivInfo> recentVivFiles = [];
+    private bool _isNfs3Running;
 
     /// <summary>
     /// Gets a list of recent files that can be quickly opened from the UI.
@@ -80,6 +81,15 @@ public class StartupViewModel : ViewModel
     /// Gets a reference to the command used to launch NFS3.
     /// </summary>
     public ICommand LaunchNfs3Command { get; }
+
+    /// <summary>
+    /// Gets a value that indicates if NFS3 is running.
+    /// </summary>
+    public bool IsNfs3Running
+    {
+        get => _isNfs3Running;
+        private set => Change(ref _isNfs3Running, value);
+    }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="StartupViewModel"/> class.
