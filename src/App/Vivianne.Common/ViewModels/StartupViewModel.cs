@@ -21,11 +21,16 @@ namespace TheXDS.Vivianne.ViewModels;
 /// </summary>
 public class StartupViewModel : ViewModel
 {
-    private static bool _initialized = false;
     private static readonly IEnumerable<Func<StartupViewModel, Task?>> _InitActions = [
         TryOpenFileFromCmdArgs,
+        DisplayEarlyAlphaWarning,
         #if !DEBUG
-        vm => vm.DialogService?.Warning("Very early alpha application!", """
+        #endif
+        vm => (SearchForNfs3Process() is { } proc) ? vm.WaitForNfs3Process(proc) : null,
+    ];
+    private static Task? DisplayEarlyAlphaWarning(StartupViewModel vm)
+    {
+        return vm.DialogService?.Warning("Very early alpha application!", """
             This copy of Vivianne is a very early version. A lot of features will be either incomplete or unstable. Please do not use Vivianne for any mods you plan to release just yet.
 
             Also, the UX/UI, feature set and tools are all subject to change.
@@ -35,10 +40,9 @@ public class StartupViewModel : ViewModel
             Happy modding.
 
                -- TheXDS --
-            """),
-        #endif
-        vm => (SearchForNfs3Process() is { } proc) ? vm.WaitForNfs3Process(proc) : null,
-    ];
+            """);
+    }
+
     private static Task? TryOpenFileFromCmdArgs(StartupViewModel vm)
     {
         if (Environment.GetCommandLineArgs().ElementAtOrDefault(1) is not string file || file.IsEmpty()) return null;
@@ -116,14 +120,12 @@ public class StartupViewModel : ViewModel
             j.NavigationService ??= NavigationService;
         }
 
-        if (_initialized) return;
-        _initialized = true;
+        if (IsInitialized) return;
         await Settings.Load();
         foreach (var initAction in _InitActions)
         {
             await (initAction.Invoke(this) ?? Task.CompletedTask);
         }
-        await base.OnCreated();
     }
 
     private Task OnSettings()

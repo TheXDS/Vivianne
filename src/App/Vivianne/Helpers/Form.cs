@@ -19,6 +19,12 @@ public static class Form
     /// </summary>
     public static readonly DependencyProperty LabelProperty =
         DependencyProperty.RegisterAttached("Label", typeof(string), typeof(Form), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender, OnLabelChanged));
+    
+    /// <summary>
+    /// Identifies the "<c>BetaMessage</c>" attached property.
+    /// </summary>
+    public static readonly DependencyProperty BetaMessageProperty =
+        DependencyProperty.RegisterAttached("BetaMessage", typeof(string), typeof(Form), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender, OnBetaMessageChanged));
 
     /// <summary>
     /// Identifies the "<c>FceColorPreview</c>" attached property.
@@ -26,13 +32,11 @@ public static class Form
     public static readonly DependencyProperty FceColorPreviewProperty =
         DependencyProperty.RegisterAttached("FceColorPreview", typeof(FceColorItem), typeof(Form), new FrameworkPropertyMetadata(default(FceColorItem), FrameworkPropertyMetadataOptions.AffectsRender, OnFceColorPreviewChanged));
 
-
     /// <summary>
     /// Identifies the "<c>MouseTrackingOverlay</c>" attached property.
     /// </summary>
     public static readonly DependencyProperty MouseTrackingOverlayProperty =
         DependencyProperty.RegisterAttached("MouseTrackingOverlay", typeof(bool), typeof(Form), new FrameworkPropertyMetadata(default(bool), FrameworkPropertyMetadataOptions.AffectsRender, OnMouseTrackingOverlayChanged));
-
 
     /// <summary>
     /// Gets the value of the "<c>Label</c>" attached property.
@@ -57,6 +61,31 @@ public static class Form
     public static void SetLabel(DependencyObject obj, string value)
     {
         obj.SetValue(LabelProperty, value);
+    }
+
+    /// <summary>
+    /// Gets the value of the "<c>BetaMessage</c>" attached property.
+    /// </summary>
+    /// <param name="obj">
+    /// Object for which to get the value of the attached property.
+    /// </param>
+    /// <returns>The value of the "<c>BetaMessage</c>" attached property.
+    /// </returns>
+    public static string GetBetaMessage(DependencyObject obj)
+    {
+        return (string)obj.GetValue(BetaMessageProperty);
+    }
+
+    /// <summary>
+    /// Sets the value of the "<c>BetaMessage</c>" attached property.
+    /// </summary>
+    /// <param name="obj">
+    /// Object onto which to set the value of the attached property.
+    /// </param>
+    /// <param name="value">Value of the attached property.</param>
+    public static void SetBetaMessage(DependencyObject obj, string value)
+    {
+        obj.SetValue(BetaMessageProperty, value);
     }
 
     /// <summary>
@@ -118,6 +147,11 @@ public static class Form
     private static void OnLabelChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
     {
         AttachAdorner<FormLabelAdorner, string>(obj, e, (control, text) => new FormLabelAdorner((Control)control, text));
+    }
+
+    private static void OnBetaMessageChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
+    {
+        AttachAdorner<BetaIndicator, string>(obj, e, (control, text) => new BetaIndicator(control, text));
     }
 
     private static void OnFceColorPreviewChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)

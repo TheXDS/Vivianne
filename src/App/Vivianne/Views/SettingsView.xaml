@@ -9,7 +9,7 @@
     xmlns:viewmodels="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
     d:DataContext="{d:DesignInstance Type=viewmodels:SettingsViewModel}"
     mc:Ignorable="d" 
-    Height="450" Width="800">
+    Height="350">
     <TabControl Grid.Row="1" Margin="10">
         <TabItem Header="NFS3 settings">
             <StackPanel>
@@ -87,7 +87,7 @@
                                 Text="Number of recent files to keep on the list" />
                         </Grid>
                     </ui:CardControl.Header>
-                        <ui:NumberBox
+                    <ui:NumberBox
                             Width="150"
                             Grid.Row="1"
                             Minimum="0"
