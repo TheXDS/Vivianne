@@ -7,13 +7,10 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using TheXDS.Ganymede.Helpers;
 using TheXDS.Ganymede.Resources;
-using TheXDS.Ganymede.Types;
 using TheXDS.Ganymede.Types.Base;
 using TheXDS.Ganymede.Types.Extensions;
-using TheXDS.MCART.Helpers;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Properties;
-using TheXDS.Vivianne.Tools;
 using TheXDS.Vivianne.ViewModels.Base;
 using St = TheXDS.Vivianne.Resources.Strings.Views.StartupView;
 
@@ -46,20 +43,15 @@ public class StartupViewModel : ViewModel
     {
         if (Environment.GetCommandLineArgs().ElementAtOrDefault(1) is not string file || file.IsEmpty()) return null;
         var extension = Path.GetExtension(file);
-        return vm.Launchers.FirstOrDefault(p => p.CanOpen(extension))?.OnOpen(file);
+        return vm.Launchers.OfType<IFileEditorViewModelLauncher>().FirstOrDefault(p => p.CanOpen(extension))?.OnOpen(file);
     }
 
-    private readonly IEnumerable<IFileEditorViewModelLauncher> _Launchers = [
+    private readonly IEnumerable<IViewModelLauncher> _Launchers = [
         new VivFileEditorLauncher(),
         new FshFileEditorLauncher(),
+        new ExtraToolsViewModelLauncher()
         ];
     private bool _isNfs3Running;
-
-    /// <summary>
-    /// Gets a collection of custom tools that can be launched from the startup
-    /// view.
-    /// </summary>
-    public ICollection<ButtonInteraction> ExtraTools { get; } = [];
 
     /// <summary>
     /// Gets a reference to the command used to open the settings page.
@@ -80,7 +72,7 @@ public class StartupViewModel : ViewModel
     /// <summary>
     /// Enumerates all available file editor launchers.
     /// </summary>
-    public IEnumerable<IFileEditorViewModelLauncher> Launchers => _Launchers;
+    public IEnumerable<IViewModelLauncher> Launchers => _Launchers;
 
     /// <summary>
     /// Gets a value that indicates if NFS3 is running.
@@ -106,10 +98,6 @@ public class StartupViewModel : ViewModel
         SettingsCommand = cb.BuildSimple(OnSettings);
         LaunchNfs3Command = cb.BuildSimple(OnLaunchNfs3);
         TerminateProcessCommand = cb.BuildSimple(proc => (proc as Process)?.Kill());
-        foreach (var x in ReflectionHelpers.FindAllObjects<IVivianneTool>())
-        {
-            ExtraTools.Add(new(cb.BuildSimple(() => x.Run(DialogService!, NavigationService!)), x.ToolName));
-        }
     }
 
     /// <inheritdoc/>

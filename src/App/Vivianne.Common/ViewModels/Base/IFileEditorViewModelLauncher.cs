@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows.Input;
-using TheXDS.Ganymede.Types;
-using TheXDS.Ganymede.Types.Base;
 using TheXDS.Vivianne.Models;
 
 namespace TheXDS.Vivianne.ViewModels.Base;
@@ -11,7 +8,7 @@ namespace TheXDS.Vivianne.ViewModels.Base;
 /// Defines a ser of member to be implemented by a type that creates editor
 /// ViewModels for files with a physical file backing store.
 /// </summary>
-public interface IFileEditorViewModelLauncher : IViewModel
+public interface IFileEditorViewModelLauncher : IViewModelLauncher
 {
     /// <summary>
     /// Determines if this launcher can be used to open files with the
@@ -36,11 +33,6 @@ public interface IFileEditorViewModelLauncher : IViewModel
     Task OnOpen(object parameter);
 
     /// <summary>
-    /// Gets the name for this page on the startup ViewModel.
-    /// </summary>
-    string PageName { get; }
-
-    /// <summary>
     /// Gets a list of recent files to be displayed on the startup ViewModel.
     /// </summary>
     RecentFileInfo[] RecentFiles { get; }
@@ -56,10 +48,4 @@ public interface IFileEditorViewModelLauncher : IViewModel
     /// editor ViewModel created by this instance.
     /// </summary>
     ICommand OpenFileCommand { get; }
-
-    /// <summary>
-    /// Gets a collection of additional interactions to be made available on
-    /// the editor's launcher page.
-    /// </summary>
-    IEnumerable<ButtonInteraction> AdditionalInteractions { get; }
 }

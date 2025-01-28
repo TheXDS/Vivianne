@@ -63,4 +63,7 @@
 			<LastGenOutput>VivInfoView.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Resources\ControlTemplates\FileEditorLauncherView\" />
+	</ItemGroup>
 </Project>
