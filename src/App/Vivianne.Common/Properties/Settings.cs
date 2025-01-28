@@ -68,6 +68,7 @@ public class Settings
     {
         RecentVivFiles = [];
         RecentFshFiles = [];
+        RecentFilesCount = 10;
     }
 
     /// <summary>
@@ -104,4 +105,9 @@ public class Settings
     /// If enabled, runs cleanup tasks on an FCE file before saving a VIV file.
     /// </summary>
     public bool FceCleanupOnSave { get; set; }
+
+    /// <summary>
+    /// Gets or sets the number of recent files to be recalled by Vivianne.
+    /// </summary>
+    public int RecentFilesCount { get; set; }
 }

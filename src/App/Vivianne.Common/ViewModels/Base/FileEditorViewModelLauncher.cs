@@ -92,7 +92,9 @@ public abstract class FileEditorViewModelLauncher<TState, TFile, TSerializer, TE
         var file = await serializer.DeserializeAsync(File.OpenRead(filePath));
         var state = new TState { File = file, FilePath = filePath };
         var recentFile = CreateRecentFileInfo(filePath, file);
-        RecentFiles = [recentFile, .. RecentFiles.Take(9)];
+        RecentFiles = Settings.Current.RecentFilesCount > 0
+            ? ([recentFile, .. RecentFiles.Where(p => p.FilePath != filePath).Take(Settings.Current.RecentFilesCount - 1)])
+            : ([]);
         Notify(nameof(RecentFiles));
         await Settings.Save();
         var vm = new TEditor()
