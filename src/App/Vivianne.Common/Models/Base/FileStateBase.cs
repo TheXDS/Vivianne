@@ -53,7 +53,7 @@ public abstract class FileStateBase<T> : NotifyPropertyChanged, IFileState<T>
     {
         var prop = ReflectionHelpers.GetProperty(propSelector);
         var oldValue = prop.GetValue(File);
-        if (oldValue is TValue v && v.Equals(value) || ((object?[])[oldValue, value]).AreAllNull()) return false;
+        if ((oldValue is TValue v && v.Equals(value)) || ((object?[])[oldValue, value]).AreAllNull()) return false;
         prop.SetValue(File, value, null);
         Notify(prop.Name);
         UnsavedChanges = true;

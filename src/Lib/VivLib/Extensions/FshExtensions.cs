@@ -2,26 +2,8 @@
 using System.Diagnostics.CodeAnalysis;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models;
-using TheXDS.Vivianne.Serializers;
 
 namespace TheXDS.Vivianne.Extensions;
-
-public static class VivExtensions
-{
-    public static string? GetFriendlyName(this VivFile viv)
-    {
-        foreach (var ext in FeData.KnownExtensions)
-        {
-            if (viv.TryGetValue($"fedata{ext}", out var fd)) return GetFromFeData(fd);
-        }
-        return null;
-    }
-
-    private static string GetFromFeData(byte[] feData)
-    {
-        return ((ISerializer<FeData>)new FeDataSerializer()).Deserialize(feData).CarName;
-    }
-}
 
 /// <summary>
 /// Contains a series of extension methods for the <see cref="FshFile"/>
