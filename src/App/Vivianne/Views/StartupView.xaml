@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:vmb="clr-namespace:TheXDS.Vivianne.ViewModels.Base;assembly=Vivianne.Common"
     xmlns:valueconverters="clr-namespace:TheXDS.Vivianne.ValueConverters"
     xmlns:mcart="http://schemas.thexds.local/mcart"
     xmlns:specialized="clr-namespace:TheXDS.Vivianne.Views.Specialized"
@@ -26,14 +27,19 @@
                 </StackPanel>
                 <TextBlock FontSize="36" Foreground="White" FontFamily="{StaticResource nfsFont}">Vivianne</TextBlock>
             </DockPanel>
-            <TabControl TabStripPlacement="Left" Style="{x:Null}" Background="Transparent" BorderThickness="0" Padding="0,2">
+            <TabControl TabStripPlacement="Left" Style="{x:Null}" Background="Transparent" BorderThickness="0" Padding="0,2" ItemsSource="{Binding Launchers, Mode=OneWay}">
                 <TabControl.Resources>
                     <Style TargetType="TabItem">
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="TabItem">
                                     <Border CornerRadius="10,0,0,10" Padding="10" x:Name="PART_SelectionBg">
-                                        <ContentControl x:Name="PART_title" VerticalAlignment="Center" HorizontalAlignment="Center" Content="{TemplateBinding Header}" Foreground="{StaticResource DarkAreaForeground}"/>
+                                        <ContentControl x:Name="PART_title" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource DarkAreaForeground}">
+                                            <TextBlock>
+                                                <Run Text="{Binding DataContext.PageName, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                                editor
+                                            </TextBlock>
+                                        </ContentControl>
                                     </Border>
                                     <ControlTemplate.Triggers>
                                         <Trigger Property="IsSelected" Value="true">
@@ -44,35 +50,63 @@
                             </Setter.Value>
                         </Setter>
                     </Style>
+                    <mcart:CountVisibilityConverter x:Key="a2vc"/>
                 </TabControl.Resources>
-                <TabItem Header="VIV editor">
-                    <DockPanel Background="{StaticResource DarkBackground}">
-                        <StackPanel Margin="5">
-                            <Button Margin="5" Command="{Binding NewVivCommand}" HorizontalAlignment="Stretch">New VIV</Button>
-                            <Button Margin="5" Command="{Binding OpenVivCommand}" HorizontalAlignment="Stretch">Open VIV...</Button>
-                        </StackPanel>
-                        <DockPanel Grid.Column="1">
-                            <TextBlock DockPanel.Dock="Top" Foreground="Gray" FontSize="18">Recent files</TextBlock>
-                            <ScrollViewer VerticalScrollBarVisibility="Auto">
-                                <ItemsControl ItemsSource="{Binding RecentVivFiles, Mode=OneWay}">
+                <TabControl.ContentTemplate>
+                    <DataTemplate DataType="{x:Type vmb:IFileEditorViewModelLauncher}">
+                        <DockPanel Background="{StaticResource DarkBackground}">
+                            <StackPanel>
+                                <StackPanel Margin="5">
+                                    <Button Margin="5" Command="{Binding NewFileCommand}" HorizontalAlignment="Stretch">
+                                        <TextBlock>
+                                            New <Run Text="{Binding PageName, Mode=OneWay}"/>
+                                        </TextBlock>
+                                    </Button>
+                                    <Button Margin="5" Command="{Binding OpenFileCommand}" HorizontalAlignment="Stretch">
+                                        <TextBlock>
+                                            Open <Run Text="{Binding PageName, Mode=OneWay}"/>...
+                                        </TextBlock>
+                                    </Button>
+                                </StackPanel>
+                                <Separator Visibility="{Binding AdditionalInteractions.Count, Mode=OneWay, Converter={StaticResource a2vc}}"/>
+                                <ItemsControl Background="{StaticResource DarkBackground}" ItemsSource="{Binding AdditionalInteractions, Mode=OneWay}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Margin="5"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <Button Command="{Binding DataContext.OpenVivCommand, ElementName=pgRoot}" CommandParameter="{Binding Mode=OneWay}">
-                                                <StackPanel>
-                                                    <TextBlock x:Name="PART_friendlyName" Text="{Binding FriendlyName, Mode=OneWay}" FontSize="16" Foreground="Gray"/>
-                                                    <TextBlock x:Name="PART_filePath" FontSize="9" Foreground="Gray" Text="{Binding FilePath, Mode=OneWay}"/>
-                                                </StackPanel>
-                                            </Button>
+                                            <Button
+                                                HorizontalAlignment="Stretch"
+                                                Margin="5"
+                                                Command="{Binding Command, Mode=OneWay}"
+                                                Content="{Binding Text, Mode=OneWay}"/>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
-                            </ScrollViewer>
+                            </StackPanel>
+                            <DockPanel Grid.Column="1" x:Name="tabRoot">
+                                <TextBlock DockPanel.Dock="Top" Foreground="Gray" FontSize="18">Recent files</TextBlock>
+                                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                    <ItemsControl ItemsSource="{Binding RecentFiles, Mode=OneWay}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Button Command="{Binding DataContext.OpenFileCommand, ElementName=tabRoot}" CommandParameter="{Binding Mode=OneWay}">
+                                                    <StackPanel>
+                                                        <TextBlock x:Name="PART_friendlyName" Text="{Binding FriendlyName, Mode=OneWay}" FontSize="16" Foreground="Gray"/>
+                                                        <TextBlock x:Name="PART_filePath" FontSize="9" Foreground="Gray" Text="{Binding FilePath, Mode=OneWay}"/>
+                                                    </StackPanel>
+                                                </Button>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </ScrollViewer>
+                            </DockPanel>
                         </DockPanel>
-                    </DockPanel>
-                </TabItem>
-                <TabItem Header="FSH/QFS editor">
-                </TabItem>
-                <TabItem Header="Extra tools">
+                    </DataTemplate>
+                </TabControl.ContentTemplate>
+                <!--<TabItem Header="Extra tools">
                     <ItemsControl Background="{StaticResource DarkBackground}" ItemsSource="{Binding ExtraTools, Mode=OneWay}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -87,7 +121,7 @@
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
-                </TabItem>
+                </TabItem>-->
             </TabControl>
         </DockPanel>
     </mcart:BusyContainer>

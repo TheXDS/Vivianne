@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using TheXDS.Vivianne.Models.Base;
 
 namespace TheXDS.Vivianne.Models;
 

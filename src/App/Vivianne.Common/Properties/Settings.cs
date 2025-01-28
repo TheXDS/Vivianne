@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using TheXDS.Ganymede.Configuration;
 using TheXDS.Vivianne.Models;
@@ -32,7 +34,15 @@ public class Settings
     /// </returns>
     public static async Task Load()
     {
-        Current = await _repository.Load() ?? new();
+        try
+        {
+            Current = await _repository.Load() ?? new();
+        }
+        catch (Exception ex)
+        {
+            Debug.Print(TheXDS.MCART.Resources.Strings.Composition.ExDump(ex, MCART.Resources.Strings.ExDumpOptions.All));
+            Current = new();
+        }
     }
 
     /// <summary>
@@ -57,12 +67,18 @@ public class Settings
     public Settings()
     {
         RecentVivFiles = [];
+        RecentFshFiles = [];
     }
 
     /// <summary>
-    /// Gets or sets the list of recent files.
+    /// Gets or sets the list of recent VIV files.
     /// </summary>
-    public VivInfo[] RecentVivFiles { get; set; }
+    public RecentFileInfo[] RecentVivFiles { get; set; }
+
+    /// <summary>
+    /// Gets or sets the list of recent FSH/QFS files.
+    /// </summary>
+    public RecentFileInfo[] RecentFshFiles { get; set; }
 
     /// <summary>
     /// Gets or sets the path to the NFS3 main directory.

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using TheXDS.MCART.Types;
 using TheXDS.MCART.Types.Base;
+using TheXDS.Vivianne.Models.Base;
 using TheXDS.Vivianne.ViewModels;
 
 namespace TheXDS.Vivianne.Models;

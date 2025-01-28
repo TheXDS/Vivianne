@@ -51,24 +51,24 @@
                     Width="180"
                     VerticalAlignment="Center"
                     IsEditable="False"
-                    ItemsSource="{Binding Images, Mode=OneWay}"
+                    ItemsSource="{Binding State.Entries, Mode=OneWay}"
                     DisplayMemberPath="Key"
                     SelectedValuePath="Value"
                     SelectedValue="{Binding CurrentImage}"/>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <UniformGrid Visibility="{Binding UnsavedChanges, Converter={StaticResource b2v}}" Rows="1">
+                    <UniformGrid Visibility="{Binding State.UnsavedChanges, Converter={StaticResource b2v}}" Rows="1">
                         <Button
-                            Command="{Binding SaveChangesCommand}"                           
+                            Command="{Binding SaveCommand}"                           
                             VerticalAlignment="Center"
                             Padding="10,2"
                             Content="{x:Static st2:Common.Save}"/>
                         <Button
-                            Command="{Binding SaveChangesCommand}"
+                            Command="{Binding CloseCommand}"
                             VerticalAlignment="Center"
                             Padding="10,2"
                             Content="{x:Static st2:Common.Discard}"/>
                     </UniformGrid>
-                    <Separator Visibility="{Binding UnsavedChanges, Converter={StaticResource b2v}}"/>
+                    <Separator Visibility="{Binding State.UnsavedChanges, Converter={StaticResource b2v}}"/>
                     <TextBlock><Run Text="{x:Static st:FshEditorView.Zoom}"/><Run Text="{Binding ZoomLevel, Mode=OneWay}"/></TextBlock>
                     <Slider x:Name="sldZoom" Minimum="1.0" Maximum="10.0" Value="{Binding ZoomLevel}" Margin="5" Width="100" SmallChange="0.5" LargeChange="1" TickFrequency="0.125" IsSnapToTickEnabled="True"/>
                     <TextBlock><Run Text="{x:Static st:FshEditorView.Background}"/></TextBlock>
@@ -91,19 +91,16 @@
                 Margin="0">
                 <Expander
                     IsExpanded="True"
-                    Header="{x:Static st:FshEditorView.FshOptions}"
-                    Visibility="{Binding IsReadOnly, Converter={StaticResource b2invV}}">
+                    Header="{x:Static st:FshEditorView.FshOptions}">
                     <StackPanel>
                         <Button
                             HorizontalAlignment="Stretch"
                             Margin="5"
-                            IsEnabled="{Binding IsReadOnly, Converter={StaticResource binv}}" 
                             Command="{Binding AddNewCommand, Mode=OneWay}"
                             Content="{x:Static st:FshEditorView.AddTexture}"/>
                         <Button
                             HorizontalAlignment="Stretch"
                             Margin="5"
-                            IsEnabled="{Binding IsReadOnly, Converter={StaticResource binv}}"
                             Visibility="{Binding IsDash, Converter={StaticResource b2v}}"
                             Command="{Binding DashEditorCommand, Mode=OneWay}"
                             Content="{x:Static st:FshEditorView.DashEditor}"/>
@@ -114,7 +111,6 @@
                         <Button
                             HorizontalAlignment="Stretch"
                             Margin="5"
-                            Visibility="{Binding IsReadOnly, Converter={StaticResource b2invV}}"
                             Command="{Binding CoordsEditorCommand, Mode=OneWay}"
                             Content="{x:Static st:FshEditorView.EditCoords}"/>
                         <Button
@@ -125,19 +121,16 @@
                         <Button
                             HorizontalAlignment="Stretch"
                             Margin="5"
-                            Visibility="{Binding IsReadOnly, Converter={StaticResource b2invV}}"
                             Command="{Binding ReplaceImageCommand, Mode=OneWay}"
                             Content="{x:Static st:FshEditorView.Replace}"/>
                         <Button
                             HorizontalAlignment="Stretch"
                             Margin="5"
-                            Visibility="{Binding IsReadOnly, Converter={StaticResource b2invV}}"
                             Command="{Binding RemoveCurrentCommand, Mode=OneWay}"
                             Content="{x:Static st:FshEditorView.Remove}"/>
                         <Button
                             HorizontalAlignment="Stretch"
                             Margin="5"
-                            Visibility="{Binding IsReadOnly, Converter={StaticResource b2invV}}"
                             Command="{Binding RenameCurrentCommand, Mode=OneWay}"
                             Content="{x:Static st:FshEditorView.Rename}"/>
                     </StackPanel>
@@ -147,7 +140,6 @@
                         <Button
                             HorizontalAlignment="Stretch"
                             Margin="5"
-                            Visibility="{Binding IsReadOnly, Converter={StaticResource b2invV}}"
                             Command="{Binding ImportBlobFooterCommand, Mode=OneWay}"
                             Content="{x:Static st:FshEditorView.Import}"/>
                         <Button
@@ -158,7 +150,6 @@
                         <Button
                             HorizontalAlignment="Stretch"
                             Margin="5"
-                            Visibility="{Binding IsReadOnly, Converter={StaticResource b2invV}}"
                             Command="{Binding RemoveCurrentFooterCommand, Mode=OneWay}"
                             Content="{x:Static st:FshEditorView.Remove}"/>
                     </StackPanel>

@@ -1,5 +1,5 @@
 ﻿<UserControl
-    x:Class="TheXDS.Vivianne.Views.VivMainView"
+    x:Class="TheXDS.Vivianne.Views.VivEditorView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -9,7 +9,7 @@
     xmlns:vc2="clr-namespace:TheXDS.Vivianne.ValueConverters"
     xmlns:mcart="http://schemas.thexds.local/mcart"
     x:Name="ucRoot"
-    d:DataContext="{d:DesignInstance Type=vm:VivMainViewModel}"
+    d:DataContext="{d:DesignInstance Type=vm:VivEditorViewModel}"
     mc:Ignorable="d" 
     d:DesignHeight="450" d:DesignWidth="400">
     <UserControl.Resources>

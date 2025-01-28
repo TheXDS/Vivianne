@@ -27,7 +27,7 @@
             <TextBlock FontSize="16" Text="{Binding State.FriendlyName, Mode=OneWay}"/>
             <TextBlock Text="{Binding State.FilePath, Mode=OneWay}" TextWrapping="Wrap"/>
             <Separator/>
-            <TextBlock Text="{Binding State.Viv.Directory.Count, Mode=OneWay, StringFormat={x:Static st:VivInfoView.DirSize}}"/>
+            <TextBlock Text="{Binding State.File.Directory.Count, Mode=OneWay, StringFormat={x:Static st:VivInfoView.DirSize}}"/>
             <TextBlock Text="{Binding State.FileSize, Mode=OneWay, Converter={StaticResource sizeConv}, StringFormat={x:Static st:VivInfoView.FileSize}}"/>
             <UniformGrid Margin="15">
                 <Button Margin="5" Padding="10,2" Command="{Binding ExportAllCommand, Mode=OneWay}" Content="{x:Static st:VivInfoView.ExportAll}"/>

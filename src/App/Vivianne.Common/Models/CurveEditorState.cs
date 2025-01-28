@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using TheXDS.MCART.Types.Extensions;
+using TheXDS.Vivianne.Models.Base;
 
 namespace TheXDS.Vivianne.Models;
 
