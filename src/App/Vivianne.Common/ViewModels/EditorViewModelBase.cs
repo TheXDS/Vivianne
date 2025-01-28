@@ -5,7 +5,7 @@ using TheXDS.Ganymede.Types.Base;
 using TheXDS.Ganymede.ViewModels;
 using TheXDS.MCART.Component;
 using TheXDS.MCART.Helpers;
-using TheXDS.Vivianne.Models;
+using TheXDS.Vivianne.Models.Base;
 using St = TheXDS.Vivianne.Resources.Strings.Common;
 
 namespace TheXDS.Vivianne.ViewModels;

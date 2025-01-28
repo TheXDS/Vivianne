@@ -14,12 +14,12 @@ namespace TheXDS.Vivianne.ViewModels;
 /// Implements a ViewModel that displays information about the current VIV
 /// file.
 /// </summary>
-public class VivInfoViewModel : ViewModel, IStatefulViewModel<VivMainState>
+public class VivInfoViewModel : ViewModel, IStatefulViewModel<VivEditorState>
 {
-    private VivMainState state = null!;
+    private VivEditorState state = null!;
 
     /// <inheritdoc/>
-    public VivMainState State
+    public VivEditorState State
     {
         get => state;
         set => Change(ref state, value);
@@ -49,9 +49,9 @@ public class VivInfoViewModel : ViewModel, IStatefulViewModel<VivMainState>
         if (!r.Success) return;
         
         var c = 0;
-        foreach (var j in State.Viv.Directory)
+        foreach (var j in State.File.Directory)
         {
-            p.Report(new(c * 100 / State.Viv.Directory.Count, $"Exporting {j.Key}..."));
+            p.Report(new(c * 100 / State.File.Directory.Count, $"Exporting {j.Key}..."));
             await File.WriteAllBytesAsync(Path.Combine(r.Result, j.Key), j.Value);
             c++;
         }

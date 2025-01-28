@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <FontFamily x:Key="nfsFont">pack://application:,,,/VivianneApp;component/Resources/Fonts/#NFS font</FontFamily>
-    <FontFamily x:Key="MuliLight">pack://application:,,,/VivianneApp;component/Resources/Fonts/#Muli</FontFamily>
+    <FontFamily x:Key="nfsFont">pack://application:,,,/Vivianne;component/Resources/Fonts/#NFS font</FontFamily>
+    <FontFamily x:Key="MuliLight">pack://application:,,,/Vivianne;component/Resources/Fonts/#Muli</FontFamily>
 </ResourceDictionary>

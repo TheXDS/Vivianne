@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using TheXDS.Vivianne.Models.Base;
 
 namespace TheXDS.Vivianne.Models;
 

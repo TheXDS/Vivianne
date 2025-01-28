@@ -1,7 +1,7 @@
 ﻿using TheXDS.Ganymede.Types.Base;
 using TheXDS.MCART.Types.Base;
 
-namespace TheXDS.Vivianne.Models;
+namespace TheXDS.Vivianne.Models.Base;
 
 /// <summary>
 /// Base class for all types that represent the state of a

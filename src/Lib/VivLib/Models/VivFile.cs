@@ -77,7 +77,7 @@ public class VivFile : IDictionary<string, byte[]>
     /// <inheritdoc/>
     public bool Remove(string key)
     {
-        return Directory.FirstOrDefault(p => p.Key.Equals(key, StringComparison.InvariantCultureIgnoreCase)) is { } kv ? Remove(kv) : false;
+        return Directory.FirstOrDefault(p => p.Key.Equals(key, StringComparison.InvariantCultureIgnoreCase)) is { } kv && Remove(kv);
     }
 
     /// <inheritdoc/>

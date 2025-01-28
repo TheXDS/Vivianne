@@ -21,7 +21,7 @@ namespace TheXDS.Vivianne.ViewModels;
 public class CarpEditorViewModel : EditorViewModelBase<CarpEditorState>
 {
     private readonly Action<string> _saveCallback;
-    private readonly VivMainState? _vivFileRef;
+    private readonly VivEditorState? _vivFileRef;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="CarpEditorViewModel"/> class.
@@ -33,7 +33,7 @@ public class CarpEditorViewModel : EditorViewModelBase<CarpEditorState>
     /// <param name="vivFileRef">
     /// Reference to the source VIV, for external file sync purposes.
     /// </param>
-    public CarpEditorViewModel(CarpEditorState state, Action<string> saveCallback, VivMainState? vivFileRef = null) : base(state)
+    public CarpEditorViewModel(CarpEditorState state, Action<string> saveCallback, VivEditorState? vivFileRef = null) : base(state)
     {
         _saveCallback = saveCallback;
         _vivFileRef = vivFileRef;

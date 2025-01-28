@@ -5,7 +5,7 @@
     xmlns:hlp="clr-namespace:TheXDS.Vivianne.Helpers"
     xmlns:sys="clr-namespace:System;assembly=netstandard"
     xmlns:local="clr-namespace:TheXDS.Vivianne.Controls">
-    <Style x:Key="DraggableLineGraphDefault" TargetType="{x:Type local:DraggableLineGraph}">
+    <Style TargetType="{x:Type local:DraggableLineGraph}">
         <Setter Property="MinHeight" Value="100"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -42,33 +42,4 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <Style x:Key="DraggableLineGraphBig" TargetType="{x:Type local:DraggableLineGraph}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type local:DraggableLineGraph}">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <UniformGrid Rows="1">
-                            <ui:NumberBox hlp:Form.Label="Min" Value="{Binding MinValue, RelativeSource={RelativeSource TemplatedParent}}"/>
-                            <ui:NumberBox hlp:Form.Label="Max" Value="{Binding MaxValue, RelativeSource={RelativeSource TemplatedParent}}"/>
-                        </UniformGrid>
-                        <Border
-                            x:Name="PART_Container"
-                            MaxHeight="1000" MinHeight="100"
-                            Grid.Row="1"                            
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="{TemplateBinding CornerRadius}">
-                            <Canvas ClipToBounds="True" Margin="5" x:Name="PART_Canvas"/>
-                        </Border>
-                    </Grid>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
 </ResourceDictionary>

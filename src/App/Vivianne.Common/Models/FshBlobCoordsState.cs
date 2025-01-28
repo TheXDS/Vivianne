@@ -1,4 +1,5 @@
-﻿using TheXDS.Vivianne.ViewModels;
+﻿using TheXDS.Vivianne.Models.Base;
+using TheXDS.Vivianne.ViewModels;
 
 namespace TheXDS.Vivianne.Models;
 

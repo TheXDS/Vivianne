@@ -9,7 +9,7 @@
     xmlns:viewmodels="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
     d:DataContext="{d:DesignInstance Type=viewmodels:SettingsViewModel}"
     mc:Ignorable="d" 
-    Height="450" Width="800">
+    Height="350">
     <TabControl Grid.Row="1" Margin="10">
         <TabItem Header="NFS3 settings">
             <StackPanel>
@@ -69,6 +69,31 @@
                         </Grid>
                     </ui:CardControl.Header>
                     <ui:ToggleSwitch IsChecked="{Binding State.AutoBackup}"/>
+                </ui:CardControl>
+                <ui:CardControl Icon="{ui:SymbolIcon Symbol=Document16}">
+                    <ui:CardControl.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <ui:TextBlock
+                                Grid.Row="0"
+                                FontTypography="Body"
+                                Text="Recent files" />
+                            <ui:TextBlock
+                                Grid.Row="1"
+                                Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                Text="Number of recent files to keep on the list" />
+                        </Grid>
+                    </ui:CardControl.Header>
+                    <ui:NumberBox
+                            Width="150"
+                            Grid.Row="1"
+                            Minimum="0"
+                            Maximum="100"
+                            Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                            Value="{Binding State.RecentFilesCount}"/>
                 </ui:CardControl>
             </StackPanel>
         </TabItem>

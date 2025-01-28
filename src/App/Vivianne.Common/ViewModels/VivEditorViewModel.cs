@@ -11,37 +11,29 @@ using TheXDS.Ganymede.Types.Base;
 using TheXDS.Ganymede.Types.Extensions;
 using TheXDS.Ganymede.ViewModels;
 using TheXDS.Vivianne.Component;
-using TheXDS.Vivianne.Helpers;
 using TheXDS.Vivianne.Models;
-using TheXDS.Vivianne.Properties;
 using TheXDS.Vivianne.Resources;
-using TheXDS.Vivianne.Serializers;
+using TheXDS.Vivianne.ViewModels.Base;
 
 namespace TheXDS.Vivianne.ViewModels;
 
 /// <summary>
 /// ViewModel that serves as the main view for interacting with a VIV file.
 /// </summary>
-public class VivMainViewModel : HostViewModelBase, IStatefulViewModel<VivMainState>
+public class VivEditorViewModel : HostViewModelBase, IFileEditorViewModel<VivEditorState, VivFile>
 {
     private static readonly Dictionary<string, ContentVisualizerViewModelFactory> ContentVisualizers = new(ContentVisualizerConfiguration.Get());
     private static readonly Dictionary<string, Func<byte[]>> Templates = new(VivTemplates.Get());
-    private VivMainState state = null!;
+    private ICommand saveCommand = null!;
+    private ICommand? saveAsCommand = null;
 
     /// <inheritdoc/>
-    public VivMainState State
-    {
-        get => state;
-        set
-        {
-            if (Change(ref state, value) && value is not null) Title = value.FriendlyName;
-        }
-    }
+    public VivEditorState State { get; set; } = null!;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="VivMainViewModel"/> class.
+    /// Initializes a new instance of the <see cref="VivEditorViewModel"/> class.
     /// </summary>
-    public VivMainViewModel()
+    public VivEditorViewModel()
     {
         var cb = CommandBuilder.For(this);
         OpenFileCommand = cb.BuildSimple(OnOpenFile);
@@ -50,6 +42,7 @@ public class VivMainViewModel : HostViewModelBase, IStatefulViewModel<VivMainSta
         ExportFileCommand = cb.BuildSimple(OnExportFile);
         RemoveFileCommand = cb.BuildSimple(OnRemoveFile);
         NewFromTemplateCommand = cb.BuildSimple(OnNewFromTemplate);
+        CloseCommand = cb.BuildSimple(OnClose);
     }
 
     /// <summary>
@@ -88,30 +81,22 @@ public class VivMainViewModel : HostViewModelBase, IStatefulViewModel<VivMainSta
     /// </summary>
     public ICommand RemoveFileCommand { get; }
 
-    private async Task<bool> SaveVivAsync(IProgress<ProgressReport> progress)
-    {
-        if (State.FilePath is null)
-        {
-            var r = await DialogService!.GetFileSavePath(FileFilters.VivFileFilter);
-            if (r.Success)
-            {
-                State.FilePath = r.Result;
-            }
-            else
-            {
-                return true;
-            }
-        }
-        progress.Report("Saving...");
-        if (Settings.Current.AutoBackup)
-        {
-            FileBackup.Create(State.FilePath);
-        }
-        var parser = new VivSerializer();
-        await using var fs = File.Create(State.FilePath);
-        await Task.Run(() => parser.SerializeTo(State.Viv, fs));
-        return false;
+    /// <inheritdoc/>
+    public ICommand SaveCommand
+    { 
+        get => saveCommand;
+        set => Change(ref saveCommand, value);
     }
+
+    /// <inheritdoc/>
+    public ICommand? SaveAsCommand
+    {
+        get => saveAsCommand;
+        set => Change(ref saveAsCommand, value);
+    }
+
+    /// <inheritdoc/>
+    public ICommand CloseCommand { get; }
 
     private void OnOpenFile(object? parameter)
     {
@@ -137,7 +122,7 @@ public class VivMainViewModel : HostViewModelBase, IStatefulViewModel<VivMainSta
         }
         else
         {
-            ChildNavService!.NavigateAndReset<VivInfoViewModel, VivMainState>(State);
+            ChildNavService!.NavigateAndReset<VivInfoViewModel, VivEditorState>(State);
         }
     }
 
@@ -207,26 +192,15 @@ public class VivMainViewModel : HostViewModelBase, IStatefulViewModel<VivMainSta
         }
     }
 
-    async Task IViewModel.OnNavigateBack(CancelFlag navigation)
+    private Task OnClose()
     {
-        if (State.UnsavedChanges)
-        {
-            bool ask = false;
-            do
-            {
-                switch (await DialogService!.AskYnc("Unsaved changes", $"Do you want to save {State.FriendlyName}?"))
-                {
-                    case true: ask = await DialogService.RunOperation(SaveVivAsync); break;
-                    case null: navigation.Cancel(); break;
-                }
-            } while (ask);
-        }
+        return NavigationService?.NavigateBack() ?? Task.CompletedTask;
     }
 
     /// <inheritdoc/>
     protected override Task OnCreated()
     {
-        ChildNavService!.NavigateAndReset<VivInfoViewModel, VivMainState>(State);
+        ChildNavService!.NavigateAndReset<VivInfoViewModel, VivEditorState>(State);
         return base.OnCreated();
     }
 }

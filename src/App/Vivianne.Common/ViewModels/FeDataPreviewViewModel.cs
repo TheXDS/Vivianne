@@ -18,7 +18,7 @@ public class FeDataPreviewViewModel : ViewModel
 {
     private static readonly ISerializer<FeData> serializer = new FeDataSerializer();
     private readonly Action<byte[]> saveCallback;
-    private readonly VivMainState? viv;
+    private readonly VivEditorState? viv;
     private readonly string? fedataName;
     private bool _LinkEdits;
 
@@ -37,14 +37,14 @@ public class FeDataPreviewViewModel : ViewModel
     /// <param name="fedataName">
     /// Name of the FeData file being edited, for sync purposes.
     /// </param>
-    public FeDataPreviewViewModel(byte[] data, Action<byte[]> saveCallback, VivMainState? viv = null, string? fedataName = null)
+    public FeDataPreviewViewModel(byte[] data, Action<byte[]> saveCallback, VivEditorState? viv = null, string? fedataName = null)
     {
         this.saveCallback = saveCallback;
         this.viv = viv;
         this.fedataName = fedataName;
         Data = serializer.Deserialize(data);
         SaveCommand = new SimpleCommand(OnSave);
-        PreviewFceColorTable = LoadColorsFromFce(viv?.Viv);
+        PreviewFceColorTable = LoadColorsFromFce(viv?.File);
     }
 
     private static FceColorItem[]? LoadColorsFromFce(VivFile? viv)
