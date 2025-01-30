@@ -1,6 +1,7 @@
 ﻿using SixLabors.ImageSharp;
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Formats.Tar;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -30,6 +31,7 @@ public class FshEditorViewModel : ViewModel, IViewModel, IFileEditorViewModel<Fs
     private BackgroundType _Background;
     private FshBlob? _CurrentImage;
     private double _ZoomLevel = 1.0;
+    private bool _alpha = true;
     private Color[]? _palette;
     private ICommand saveCommand = null!;
     private ICommand? saveAsCommand = null;
@@ -58,6 +60,7 @@ public class FshEditorViewModel : ViewModel, IViewModel, IFileEditorViewModel<Fs
     protected override void OnInitialize(IPropertyBroadcastSetup broadcastSetup)
     {
         broadcastSetup.RegisterPropertyChangeBroadcast(() => CurrentImage, () => Palette, () => CurrentFshBlobId);
+        broadcastSetup.RegisterPropertyChangeTrigger(() => CurrentImage, () => Alpha);
     }
 
     /// <inheritdoc/>
@@ -95,6 +98,15 @@ public class FshEditorViewModel : ViewModel, IViewModel, IFileEditorViewModel<Fs
     {
         get => _ZoomLevel;
         set => Change(ref _ZoomLevel, value);
+    }
+
+    /// <summary>
+    /// Gets or sets a value that indicates if the alpha channel should be enabled.
+    /// </summary>
+    public bool Alpha
+    {
+        get => _alpha;
+        set => Change(ref _alpha, value);
     }
 
     /// <summary>
