@@ -21,18 +21,44 @@ public class FshImageConverter : IMultiValueConverter
     /// <inheritdoc/>
     public object? Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
     {
-        if (values.Length >=1 && values[0] is FshBlob blob)
+        if (values.Length < 1 || values[0] is not FshBlob blob) return null;
+        
+        var p = (values.ElementAtOrDefault(1) as IEnumerable<SixLabors.ImageSharp.Color>)?.ToArray() ?? blob.LocalPalette;
+        var image = blob.ToImage(p);
+        var alpha = values.ElementAtOrDefault(2) as bool? ?? true;
+
+        return image switch
         {
-            var p = values.Length >=2 ? (values[1] as IEnumerable<SixLabors.ImageSharp.Color>)?.ToArray() : blob.LocalPalette;
-            return blob.ToImage(p) switch {
-                Image<Abgr32> i => ConvertImageToBitmapSource(FshBlobFormat.Argb32, i),
-                Image<Bgra32> i => ConvertImageToBitmapSource(FshBlobFormat.Argb32, i),
-                Image<Bgr24> i => ConvertImageToBitmapSource(FshBlobFormat.Rgb24, i),
-                Image<Bgr565> i => ConvertImageToBitmapSource(FshBlobFormat.Rgb565, i),
-                _ => null
-            };
+            Image<Abgr32> i => GetImage(i, FshBlobFormat.Argb32, alpha),
+            Image<Bgra32> i => GetImage(i, FshBlobFormat.Argb32, alpha),
+            Image<Bgr24> i => ConvertImageToBitmapSource(FshBlobFormat.Rgb24, i),
+            Image<Bgr565> i => ConvertImageToBitmapSource(FshBlobFormat.Rgb565, i),
+            _ => null
+        };
+    }
+
+    private static BitmapSource GetImage<T>(Image<T> image, FshBlobFormat format, bool alpha) where T : unmanaged, IPixel, IPixel<T>
+    {
+        return alpha ? ConvertImageToBitmapSource(format, image) : ConvertImageToBitmapSource(FshBlobFormat.Rgb24, RemoveAlpha(image));
+    }
+
+    private static Image<Bgr24> RemoveAlpha<T>(Image<T> image) where T : unmanaged, IPixel, IPixel<T>
+    {
+        var output = new Image<Bgr24>(image.Width, image.Height);
+        for (int x = 0; x < image.Width; x++)
+        {
+            for (int y = 0; y < image.Height; y++)
+            {
+                Rgba32 sourcePixel = default;
+                image[x, y].ToRgba32(ref sourcePixel);
+                output[x, y] = new Bgr24(
+                    sourcePixel.R,
+                    sourcePixel.G,
+                    sourcePixel.B
+                );
+            }
         }
-        return null;
+        return output;
     }
 
     /// <inheritdoc/>
@@ -59,7 +85,6 @@ public class FshImageConverter : IMultiValueConverter
         }
         return BitmapSource.Create(width, height, 96, 96, GetFormat(format), null, ms.ToArray(), width * (image.PixelType.BitsPerPixel / 8));
     }
-
 
     private static PixelFormat GetFormat(FshBlobFormat format)
     {

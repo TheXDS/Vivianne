@@ -61,6 +61,15 @@ namespace TheXDS.Vivianne.Resources.Strings.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Has separate sim-physics car performance data.
+        /// </summary>
+        public static string CarpSim {
+            get {
+                return ResourceManager.GetString("CarpSim", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Directory size: {0} files.
         /// </summary>
         public static string DirSize {

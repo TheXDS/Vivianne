@@ -9,11 +9,15 @@
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>
 	<ItemGroup>
+		<None Remove="Resources\Embedded\EarlyAlphaNote.txt" />
 		<None Remove="Resources\Fonts\Muli-Light.ttf" />
 		<None Remove="Resources\Fonts\NFS_by_JLTV.ttf" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="TheXDS.Ganymede.Wpf" Version="0.4.0-alpha.9" />
+	  <EmbeddedResource Include="Resources\Embedded\EarlyAlphaNote.txt" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="TheXDS.Ganymede.Wpf" Version="0.4.0-alpha.8" />
 		<PackageReference Include="WPF-UI" Version="3.0.5" />
 	</ItemGroup>
 	<ItemGroup>
@@ -62,8 +66,5 @@
 			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>VivInfoView.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-	</ItemGroup>
-	<ItemGroup>
-	  <Folder Include="Resources\ControlTemplates\FileEditorLauncherView\" />
 	</ItemGroup>
 </Project>

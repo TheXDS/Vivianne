@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
+using System.Windows.Data;
 using System.Windows.Media.Imaging;
-using TheXDS.MCART.ValueConverters.Base;
 
 namespace TheXDS.Vivianne.ValueConverters;
 
@@ -8,11 +8,21 @@ namespace TheXDS.Vivianne.ValueConverters;
 /// Loads a raw image file into a <see cref="BitmapSource"/>, determining the
 /// codec to use automatically.
 /// </summary>
-public class RawImageConverter : RawImageConverterBase, IOneWayValueConverter<byte[], BitmapSource>
+public class RawImageConverter : RawImageConverterBase, IMultiValueConverter
 {
     /// <inheritdoc/>
-    public BitmapSource Convert(byte[] value, object? parameter, CultureInfo? culture)
+    public object? Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
     {
-        return GetBitmap(value, null)!;
+        if (values.Length == 2 && values[0] is byte[] rawBytes && values[1] is bool alpha)
+        {
+            return GetBitmap(rawBytes, null, alpha)!;
+        }
+        return null;
+    }
+
+    /// <inheritdoc/>
+    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+    {
+        throw new InvalidOperationException();
     }
 }

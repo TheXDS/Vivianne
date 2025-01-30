@@ -52,6 +52,7 @@
             <CheckBox Content="{x:Static st:VivInfoView.FeDataIta}" IsChecked="{Binding State.FeDataIta, Mode=OneWay}"/>
             <CheckBox Content="{x:Static st:VivInfoView.FeDataSpa}" IsChecked="{Binding State.FeDataSpa, Mode=OneWay}"/>
             <CheckBox Content="{x:Static st:VivInfoView.FeDataSwe}" IsChecked="{Binding State.FeDataSwe, Mode=OneWay}"/>
+            <CheckBox Content="{x:Static st:VivInfoView.CarpSim}" IsChecked="{Binding State.CarpSim, Mode=OneWay}"/>
         </StackPanel>
     </Grid>
 </UserControl>

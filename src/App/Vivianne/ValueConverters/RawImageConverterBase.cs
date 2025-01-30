@@ -1,6 +1,8 @@
 ﻿using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
+using System.Collections.ObjectModel;
 using System.IO;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using TheXDS.MCART.Helpers;
@@ -28,21 +30,22 @@ public abstract class RawImageConverterBase
     /// Gets a color to pain over the semi-transparent areas of the texture. If
     /// set to <see langword="null"/>, the texture will not be painted over.
     /// </param>
+    /// <param name="enableAlpha">If set to <see langword="false"/>, disables the alpha channel.</param>
     /// <returns>
     /// A <see cref="BitmapSource"/> that can be rendered as a texture or
     /// surface, or <see langword="null"/> if the byte array could not be
     /// parsed as an image in any known format.
     /// </returns>
-    protected BitmapSource? GetBitmap(byte[] value, CarColorItem? textureColor)
+    protected static BitmapSource? GetBitmap(byte[] value, CarColorItem? textureColor, bool enableAlpha = true)
     {
         if (value is null) return null;
         try
         {
             return Image.Load(value) switch
             {
-                Image<Rgba32> i => ConvertImageToBitmapSource(FshBlobFormat.Argb32, i, textureColor),
-                Image<Rgb24> i => ConvertImageToBitmapSource(FshBlobFormat.Rgb24, i, textureColor),
-                Image<Bgr565> i => ConvertImageToBitmapSource(FshBlobFormat.Rgb565, i, textureColor),
+                Image<Rgba32> i => ConvertImageToBitmapSource(FshBlobFormat.Argb32, i, textureColor, enableAlpha),
+                Image<Rgb24> i => ConvertImageToBitmapSource(FshBlobFormat.Rgb24, i, textureColor, enableAlpha),
+                Image<Bgr565> i => ConvertImageToBitmapSource(FshBlobFormat.Rgb565, i, textureColor, enableAlpha),
                 _ => null
             };
         }
@@ -52,7 +55,7 @@ public abstract class RawImageConverterBase
         }
     }
 
-    private static BitmapSource ConvertImageToBitmapSource<T>(FshBlobFormat format, Image<T> image, CarColorItem? textureColor) where T : unmanaged, IPixel<T>
+    private static BitmapSource ConvertImageToBitmapSource<T>(FshBlobFormat format, Image<T> image, CarColorItem? textureColor, bool enableAlpha) where T : unmanaged, IPixel<T>
     {
         var width = image.Width;
         var height = image.Height;
@@ -65,40 +68,40 @@ public abstract class RawImageConverterBase
             {
                 var offset = ((y * width) + x) * 4;
                 var pixel = image[x, y];
-                bw.Write(writer.Invoke(pixel, textureColor));
+                bw.Write(writer.Invoke(pixel, textureColor, enableAlpha));
             }
         }
         return BitmapSource.Create(width, height, 96, 96, GetFormat(format), null, ms.ToArray(), width * (image.PixelType.BitsPerPixel / 8));
     }
 
-    private static IReadOnlyDictionary<FshBlobFormat, Func<object, CarColorItem?, byte[]>> FshBlobToPixelWriter { get; } = new Dictionary<FshBlobFormat, Func<object, CarColorItem?, byte[]>>()
+    private static ReadOnlyDictionary<FshBlobFormat, Func<object, CarColorItem?, bool, byte[]>> FshBlobToPixelWriter { get; } = new Dictionary<FshBlobFormat, Func<object, CarColorItem?, bool, byte[]>>()
     {
         { FshBlobFormat.Argb32,         GetColoredPixel  },
-        { FshBlobFormat.Rgb24,          (c, f) => { var x = (Rgb24)c; return [x.B, x.G, x.R]; }},
-        { FshBlobFormat.Rgb565,         (c, f) => { var x = (Bgr565)c; return BitConverter.GetBytes(x.PackedValue); }},
-        { FshBlobFormat.Argb1555,       (c, f) => { var x = (Bgra5551)c; return BitConverter.GetBytes(x.PackedValue); }},
-        { FshBlobFormat.Palette32,      (c, f) => { var x = (Rgba32)c; return [x.B, x.G, x.R, (byte)255]; }},
-        { FshBlobFormat.Palette24Dos,   (c, f) => { var x = (Rgb24)c; return [x.B, x.G, x.R]; }},
-        { FshBlobFormat.Palette24,      (c, f) => { var x = (Rgb24)c; return [x.B, x.G, x.R]; }},
-        { FshBlobFormat.Palette16Nfs5,  (c, f) => { var x = (Bgr565)c; return BitConverter.GetBytes(x.PackedValue); }},
-        { FshBlobFormat.Palette16,      (c, f) => { var x = (Bgr565)c; return BitConverter.GetBytes(x.PackedValue); }},
+        { FshBlobFormat.Rgb24,          (c, f, _) => { var x = (Rgb24)c; return [x.B, x.G, x.R]; }},
+        { FshBlobFormat.Rgb565,         (c, f, _) => { var x = (Bgr565)c; return BitConverter.GetBytes(x.PackedValue); }},
+        { FshBlobFormat.Argb1555,       (c, f, a) => { var x = (Bgra5551)c; return BitConverter.GetBytes(x.PackedValue | (a ? 0 : 1)); }},
+        { FshBlobFormat.Palette32,      (c, f, a) => { var x = (Rgba32)c; return [x.B, x.G, x.R, a ? x.A : (byte)255]; }},
+        { FshBlobFormat.Palette24Dos,   (c, f, _) => { var x = (Rgb24)c; return [x.B, x.G, x.R]; }},
+        { FshBlobFormat.Palette24,      (c, f, _) => { var x = (Rgb24)c; return [x.B, x.G, x.R]; }},
+        { FshBlobFormat.Palette16Nfs5,  (c, f, _) => { var x = (Bgr565)c; return BitConverter.GetBytes(x.PackedValue); }},
+        { FshBlobFormat.Palette16,      (c, f, _) => { var x = (Bgr565)c; return BitConverter.GetBytes(x.PackedValue); }},
     }.AsReadOnly();
 
-    private static byte[] GetColoredPixel(object color, CarColorItem? carColor)
+    private static byte[] GetColoredPixel(object color, CarColorItem? carColor, bool enableAlpha)
     {
         var x = (Rgba32)color;
         if (carColor is not null)
         {
             if (x.A.IsBetween<byte>(30, 120))
             {
-                return [(byte)(x.B * (carColor.Primary.B / 255.0)), (byte)(x.G * (carColor.Primary.G / 255.0)), (byte)(x.R * (carColor.Primary.R / 255.0)), (byte)255];
+                return [(byte)(x.B * (carColor.Primary.B / 255.0)), (byte)(x.G * (carColor.Primary.G / 255.0)), (byte)(x.R * (carColor.Primary.R / 255.0)), 255];
             }
             else if (x.A.IsBetween<byte>(120, 220))
             {
-                return [(byte)(x.B * (carColor.Secondary.B / 255.0)), (byte)(x.G * (carColor.Secondary.G / 255.0)), (byte)(x.R * (carColor.Secondary.R / 255.0)), (byte)255];
+                return [(byte)(x.B * (carColor.Secondary.B / 255.0)), (byte)(x.G * (carColor.Secondary.G / 255.0)), (byte)(x.R * (carColor.Secondary.R / 255.0)), 255];
             }
         }
-        return [x.B, x.G, x.R, x.A];
+        return [x.B, x.G, x.R, enableAlpha ? x.A : (byte)255];
     }
 
     private static PixelFormat GetFormat(FshBlobFormat format)

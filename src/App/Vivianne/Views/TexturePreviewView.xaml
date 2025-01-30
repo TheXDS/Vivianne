@@ -25,11 +25,15 @@
         </Grid.ColumnDefinitions>
         <Rectangle Grid.Column="0" Grid.Row="1" Fill="{StaticResource FadeInBackground}"/>
         <Rectangle Grid.Column="1" Grid.Row="1" Fill="{StaticResource DarkBackground}"/>
-        <StackPanel Margin="10" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+        <StackPanel Margin="10" Orientation="Horizontal" HorizontalAlignment="Right" Grid.ColumnSpan="2">
             <TextBlock VerticalAlignment="Center" Margin="0,0,10,0">Zoom: <Run Text="{Binding ZoomLevel, Mode=OneWay}"/></TextBlock>
             <Slider x:Name="sldZoom" Minimum="1.0" Maximum="10.0" Value="{Binding ZoomLevel}" Margin="5" Width="100" SmallChange="0.5" LargeChange="1" TickFrequency="0.125" IsSnapToTickEnabled="True"/>
+            <CheckBox Style="{StaticResource ToggleSwitch}" Padding="10,0" IsChecked="{Binding Alpha}">
+                <TextBlock>Alpha</TextBlock>
+            </CheckBox>
             <TextBlock VerticalAlignment="Center" Margin="10,0">Background:</TextBlock>
             <ComboBox
+                IsEnabled="{Binding Alpha, Mode=OneWay}"
                 Width="180"
                 IsEditable="False"
                 SelectedItem="{Binding Background, FallbackValue={x:Static vm:BackgroundType.Checkerboard}}"
@@ -47,7 +51,13 @@
                 Cursor="ScrollAll"
                 HorizontalAlignment="Center" VerticalAlignment="Center"
                 Background="{Binding Background, Converter={StaticResource bg2b}, Mode=OneWay}">
-                <Image Stretch="None" Source="{Binding RawFile, Converter={StaticResource r2img}, Mode=OneWay}">
+                <Image Stretch="None">
+                    <Image.Source>
+                        <MultiBinding Converter="{StaticResource r2img}">
+                            <Binding Path="RawFile" Mode="OneWay"/>
+                            <Binding Path="Alpha" Mode="OneWay"/>
+                        </MultiBinding>
+                    </Image.Source>
                     <Image.LayoutTransform>
                         <ScaleTransform ScaleX="{Binding ZoomLevel}" ScaleY="{Binding ZoomLevel}"/>
                     </Image.LayoutTransform>

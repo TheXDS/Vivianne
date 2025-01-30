@@ -31,70 +31,76 @@ public class VivEditorState : FileStateBase<VivFile>
     public string FriendlyName => File.GetFriendlyName() ?? "<unknown>";
 
     /// <summary>
-    /// Gets a value that indicates of the VIV file contains the 'car.fce'
+    /// Gets a value that indicates if the VIV file contains the 'car.fce'
     /// entry.
     /// </summary>
     public bool HasCarFce => HasFile("car.fce");
 
     /// <summary>
-    /// Gets a value that indicates of the VIV file contains the 'car.bnk'
+    /// Gets a value that indicates if the VIV file contains the 'car.bnk'
     /// entry.
     /// </summary>
     public bool HasBnk => HasFile("car.bnk");
 
     /// <summary>
-    /// Gets a value that indicates of the VIV file contains the 'dash.qfs'
+    /// Gets a value that indicates if the VIV file contains the 'dash.qfs'
     /// entry.
     /// </summary>
     public bool HasDash => HasFile("dash.qfs");
 
     /// <summary>
-    /// Gets a value that indicates of the VIV file contains the 'fedata.fsh'
+    /// Gets a value that indicates if the VIV file contains the 'fedata.fsh'
     /// entry.
     /// </summary>
     public bool HasFedataFsh => HasFile("fedata.fsh");
 
     /// <summary>
-    /// Gets a value that indicates of the VIV file contains the 'fedata.bri'
+    /// Gets a value that indicates if the VIV file contains the 'fedata.bri'
     /// entry.
     /// </summary>
     public bool FeDataBri => HasFile("fedata.bri");
 
     /// <summary>
-    /// Gets a value that indicates of the VIV file contains the 'fedata.eng'
+    /// Gets a value that indicates if the VIV file contains the 'fedata.eng'
     /// entry.
     /// </summary>
     public bool FeDataEng => HasFile("fedata.eng");
 
     /// <summary>
-    /// Gets a value that indicates of the VIV file contains the 'fedata.fre'
+    /// Gets a value that indicates if the VIV file contains the 'fedata.fre'
     /// entry.
     /// </summary>
     public bool FeDataFre => HasFile("fedata.fre");
 
     /// <summary>
-    /// Gets a value that indicates of the VIV file contains the 'fedata.ger'
+    /// Gets a value that indicates if the VIV file contains the 'fedata.ger'
     /// entry.
     /// </summary>
     public bool FeDataGer => HasFile("fedata.ger");
 
     /// <summary>
-    /// Gets a value that indicates of the VIV file contains the 'fedata.ita'
+    /// Gets a value that indicates if the VIV file contains the 'fedata.ita'
     /// entry.
     /// </summary>
     public bool FeDataIta => HasFile("fedata.ita");
 
     /// <summary>
-    /// Gets a value that indicates of the VIV file contains the 'fedata.spa'
+    /// Gets a value that indicates if the VIV file contains the 'fedata.spa'
     /// entry.
     /// </summary>
     public bool FeDataSpa => HasFile("fedata.spa");
 
     /// <summary>
-    /// Gets a value that indicates of the VIV file contains the 'fedata.swe'
+    /// Gets a value that indicates if the VIV file contains the 'fedata.swe'
     /// entry.
     /// </summary>
     public bool FeDataSwe => HasFile("fedata.swe");
+
+    /// <summary>
+    /// Gets a value that indicates if the VIV file contains the 'carpsim.txt'
+    /// entry.
+    /// </summary>
+    public bool CarpSim => HasFile("carpsim.txt");
 
     private bool HasFile(string key) => Directory.Keys.Any(p => p.Equals(key, StringComparison.InvariantCultureIgnoreCase));
 
@@ -113,6 +119,7 @@ public class VivEditorState : FileStateBase<VivFile>
             () => FeDataIta,
             () => FeDataSpa,
             () => FeDataSwe,
+            () => CarpSim,
             ]);
     }
 }

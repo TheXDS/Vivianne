@@ -17,4 +17,9 @@ public partial class MainWindow
         Wpf.Ui.Appearance.SystemThemeWatcher.Watch(this);
         InitializeComponent();
     }
+
+    private void GithubButton_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
 }

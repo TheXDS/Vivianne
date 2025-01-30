@@ -46,7 +46,7 @@ public class MutableFceColor : NotifyPropertyChanged
     }
 
     /// <summary>
-    /// Gets or sets the alpha level for this color.
+    /// Gets or sets the _alpha level for this color.
     /// </summary>
     public byte Alpha
     {

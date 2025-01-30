@@ -23,25 +23,8 @@ public class StartupViewModel : ViewModel
 {
     private static readonly IEnumerable<Func<StartupViewModel, Task?>> _InitActions = [
         TryOpenFileFromCmdArgs,
-        DisplayEarlyAlphaWarning,
-        #if !DEBUG
-        #endif
         vm => (SearchForNfs3Process() is { } proc) ? vm.WaitForNfs3Process(proc) : null,
     ];
-    private static Task? DisplayEarlyAlphaWarning(StartupViewModel vm)
-    {
-        return vm.DialogService?.Warning("Very early alpha application!", """
-            This copy of Vivianne is a very early version. A lot of features will be either incomplete or unstable. Please do not use Vivianne for any mods you plan to release just yet.
-
-            Also, the UX/UI, feature set and tools are all subject to change.
-
-            This preview is for evaluation purposes only... You've been warned!
-
-            Happy modding.
-
-               -- TheXDS --
-            """);
-    }
 
     private static Task? TryOpenFileFromCmdArgs(StartupViewModel vm)
     {

@@ -23,29 +23,31 @@
         </Grid.RowDefinitions>
         <ui:TitleBar Height="30" CloseWindowByDoubleClickOnIcon="True" Title="{Binding Navigator.CurrentViewModel.Title, Mode=OneWay, ElementName=vmHost, StringFormat='{}{0} - Vivianne' }">
             <ui:TitleBar.Header>
-                <Button
-                IsTabStop="False"
-                Focusable="False"
-                Margin="0 1 5 0"
-                Command="{Binding Navigator.NavigateBackCommand, Mode=OneWay, ElementName=vmHost}"
-                WindowChrome.IsHitTestVisibleInChrome="True">
-                    <TextBlock Foreground="White">
-                        <TextBlock.Effect>
-                            <DropShadowEffect Color="Black" ShadowDepth="0"/>
-                        </TextBlock.Effect>
-                    ◀
-                    </TextBlock>
-                </Button>
+                <StackPanel Orientation="Horizontal" Margin="0 0 5 0">
+                    <ui:Button
+                        IsTabStop="False"
+                        Focusable="False"                       
+                        Command="{Binding Navigator.NavigateBackCommand, Mode=OneWay, ElementName=vmHost}"
+                        WindowChrome.IsHitTestVisibleInChrome="True"
+                        ToolTip="Save and close"
+                        Background="Transparent"
+                        BorderBrush="{x:Null}"
+                        BorderThickness="0"
+                        Padding="10,7"
+                        Icon="{ui:SymbolIcon Symbol=ArrowLeft32}"/>
+                </StackPanel>
             </ui:TitleBar.Header>
         </ui:TitleBar>
-        <gn:NavigationHost Grid.Row="1"
+        <gn:NavigationHost
+            Grid.Row="1"
+            IsHitTestVisible="True"               
             x:Name="vmHost"
             DialogService="{gn:WpfNavDialogService}"
             Navigator="{gn:NavService Home={x:Type vm:StartupViewModel}}"
             VisualResolver="{gn:ConventionResolver}" Grid.RowSpan="2">
             <gn:NavigationHost.Resources>
                 <Style TargetType="gn:DecoratedBorder">
-                    <Setter Property="Background" Value="{DynamicResource ApplicationBackgroundBrush}"/>                    
+                    <Setter Property="Background" Value="{DynamicResource ApplicationBackgroundBrush}"/>
                 </Style>
             </gn:NavigationHost.Resources>
         </gn:NavigationHost>
