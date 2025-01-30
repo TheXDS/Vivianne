@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TheXDS.Vivianne.Resources.Strings {
+namespace TheXDS.Vivianne.Resources.Strings.Serializers {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace TheXDS.Vivianne.Resources.Strings {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Common {
+    internal class VivSerializer {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Common() {
+        internal VivSerializer() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace TheXDS.Vivianne.Resources.Strings {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("TheXDS.Vivianne.Resources.Strings.Common", typeof(Common).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("TheXDS.Vivianne.Resources.Strings.Serializers.VivSerializer", typeof(VivSerializer).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,56 +61,20 @@ namespace TheXDS.Vivianne.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tried to read a string outside of file bounds (offset 0x{0:X8}). Returning an empty string instead....
+        ///   Looks up a localized string similar to Invalid header..
         /// </summary>
-        internal static string FeDataSerializer_StringOutOfBounds {
+        internal static string InvalidHeader {
             get {
-                return ResourceManager.GetString("FeDataSerializer_StringOutOfBounds", resourceCulture);
+                return ResourceManager.GetString("InvalidHeader", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to FSH blob ID must include letters and/or digits only..
+        ///   Looks up a localized string similar to VIV file length mismatch.
         /// </summary>
-        internal static string FshBlobBadId {
+        internal static string VivFileLengthMismatch {
             get {
-                return ResourceManager.GetString("FshBlobBadId", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to FSH requires blobs to include a 4 character ID..
-        /// </summary>
-        internal static string FshBlobEmptyId {
-            get {
-                return ResourceManager.GetString("FshBlobEmptyId", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to FSH blob ID length mismatch. Please specify a 4 character long ID..
-        /// </summary>
-        internal static string FshBlobIdTooLong {
-            get {
-                return ResourceManager.GetString("FshBlobIdTooLong", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The specified ID is already in use..
-        /// </summary>
-        internal static string FshBlobNewIdInUse {
-            get {
-                return ResourceManager.GetString("FshBlobNewIdInUse", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unknown (0x{0:X2}).
-        /// </summary>
-        internal static string UnknownAsHex {
-            get {
-                return ResourceManager.GetString("UnknownAsHex", resourceCulture);
+                return ResourceManager.GetString("VivFileLengthMismatch", resourceCulture);
             }
         }
     }

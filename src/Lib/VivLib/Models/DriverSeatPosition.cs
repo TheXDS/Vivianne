@@ -9,10 +9,12 @@ public enum DriverSeatPosition : ushort
     /// Driver seat is located on the left.
     /// </summary>
     Left,
+
     /// <summary>
     /// Driver seat is located on the right.
     /// </summary>
     Right,
+
     /// <summary>
     /// Driver seat is located at the center of the vehicle.
     /// </summary>

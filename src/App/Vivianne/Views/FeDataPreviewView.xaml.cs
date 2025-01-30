@@ -1,18 +1,17 @@
 ﻿using System.Windows.Controls;
 
-namespace TheXDS.Vivianne.Views
+namespace TheXDS.Vivianne.Views;
+
+/// <summary>
+/// Business logic for FeDataPreviewView.xaml
+/// </summary>
+public partial class FeDataPreviewView : UserControl
 {
     /// <summary>
-    /// Business logic for FeDataPreviewView.xaml
+    /// Initializes a new instance of the <see cref="FeDataPreviewView"/> class.
     /// </summary>
-    public partial class FeDataPreviewView : UserControl
+    public FeDataPreviewView()
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FeDataPreviewView"/> class.
-        /// </summary>
-        public FeDataPreviewView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

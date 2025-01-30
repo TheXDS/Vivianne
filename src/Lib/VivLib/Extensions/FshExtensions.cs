@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models;
+using St = TheXDS.Vivianne.Resources.Strings.Common;
 
 namespace TheXDS.Vivianne.Extensions;
 
@@ -12,9 +13,9 @@ namespace TheXDS.Vivianne.Extensions;
 public static class FshExtensions
 {
     private static readonly IEnumerable<(Func<string?, bool> FailsValidation, string ErrorMessage)> GimxIdValidationRules = [
-        (p => p.IsEmpty(), Resources.Strings.Common.FshBlobEmptyId),
-        (p => !p!.ToLowerInvariant().All("abcdefghijklmnopqrstuvwxyz1234567890".Contains), Resources.Strings.Common.FshBlobBadId),
-        (p => p!.Length != 4, "FSH blob ID length mismatch. Please specify a 4 character long ID."),
+        (p => p.IsEmpty(), St.FshBlobEmptyId),
+        (p => !p!.ToLowerInvariant().All("abcdefghijklmnopqrstuvwxyz1234567890".Contains), St.FshBlobBadId),
+        (p => p!.Length != 4, St.FshBlobIdTooLong),
     ];
 
     /// <summary>
@@ -78,7 +79,7 @@ public static class FshExtensions
         if (IsGimxIdInvalid(newId, out errorMessage)) return true;
         if (fsh.Entries.ContainsKey(newId!))
         {
-            errorMessage = "The specified ID is already in use.";
+            errorMessage = St.FshBlobNewIdInUse;
         }
         return !errorMessage.IsEmpty();
     }

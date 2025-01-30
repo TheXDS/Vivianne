@@ -9,18 +9,22 @@ public enum ImageFormat : byte
     /// Portable Network Graphics (PNG) file format.
     /// </summary>
     Png,
+
     /// <summary>
     /// Graphics Interchange Format (GIF).
     /// </summary>
     Gif,
+
     /// <summary>
     /// Truevision TGA.
     /// </summary>
     Tga,
+
     /// <summary>
     /// Joint Photographic Experts Group (JPEG) file format.
     /// </summary>
     Jpeg,
+
     /// <summary>
     /// Bitmap Image (BMP) file format.
     /// </summary>

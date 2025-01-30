@@ -141,4 +141,32 @@
   <data name="HeaderDamage_DummyCount_Title" xml:space="preserve">
     <value>Damaged header: Invalid number of Dummies</value>
   </data>
+  <data name="BadTriangleFlags_comp" xml:space="preserve">
+    <value>{0}: {1} triangles with invalid flags</value>
+  </data>
+  <data name="BadTriangleFlags_Title" xml:space="preserve">
+    <value>{0} triangles with invalid flags</value>
+  </data>
+  <data name="BadTriangleFlags_Details" xml:space="preserve">
+    <value>The following parts have triangles with invalid material flags:
+{0}</value>
+  </data>
+  <data name="HeaderDamage_CarPartCount_Title" xml:space="preserve">
+    <value>Invalid car part count</value>
+  </data>
+  <data name="HeaderDamage_CarPartCount_Details" xml:space="preserve">
+    <value>The number of declared car parts is outside the valid range of values.</value>
+  </data>
+  <data name="HeaderDamage_ColorCount_Title" xml:space="preserve">
+    <value>Invalid primary color count</value>
+  </data>
+  <data name="HeaderDamage_ColorCount_Details" xml:space="preserve">
+    <value>The number of declared colors is outside the valid range of values.</value>
+  </data>
+  <data name="HeaderDamage_ColorMismatch_Title" xml:space="preserve">
+    <value>Primary/secondary color mismatch</value>
+  </data>
+  <data name="HeaderDamage_ColorMismatch_Details" xml:space="preserve">
+    <value>The number of declared primary and secondary colors does not match.</value>
+  </data>
 </root>

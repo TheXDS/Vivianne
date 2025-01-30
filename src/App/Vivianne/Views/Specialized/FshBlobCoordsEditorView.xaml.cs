@@ -1,19 +1,18 @@
 ﻿using System.Windows.Controls;
 
-namespace TheXDS.Vivianne.Views.Specialized
+namespace TheXDS.Vivianne.Views.Specialized;
+
+/// <summary>
+/// Business logic for FshBlobCoordsEditorView.xaml
+/// </summary>
+public partial class FshBlobCoordsEditorView : UserControl
 {
     /// <summary>
-    /// Business logic for FshBlobCoordsEditorView.xaml
+    /// Initializes a new instance of the
+    /// <see cref="FshBlobCoordsEditorView"/> class.
     /// </summary>
-    public partial class FshBlobCoordsEditorView : UserControl
+    public FshBlobCoordsEditorView()
     {
-        /// <summary>
-        /// Initializes a new instance of the
-        /// <see cref="FshBlobCoordsEditorView"/> class.
-        /// </summary>
-        public FshBlobCoordsEditorView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

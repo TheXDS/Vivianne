@@ -2,6 +2,7 @@
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models;
 using static System.Text.Encoding;
+using St = TheXDS.Vivianne.Resources.Strings.Serializers.VivSerializer;
 
 namespace TheXDS.Vivianne.Serializers;
 
@@ -20,12 +21,12 @@ public class VivSerializer : ISerializer<VivFile>
         using var reader = new BinaryReader(stream);
         if (!reader.ReadBytes(4).SequenceEqual(Header))
         {
-            throw new InvalidDataException("Invalid header.");
+            throw new InvalidDataException(St.InvalidHeader);
         }
         var vivLength = reader.ReadInt32().FlipEndianness();
         if (stream.CanSeek && stream.Length != vivLength)
         {
-            throw new InvalidDataException("VIV file length mismatch");
+            throw new InvalidDataException(St.VivFileLengthMismatch);
         }
         var entries = reader.ReadInt32().FlipEndianness();
         var blobPool = reader.ReadInt32().FlipEndianness();

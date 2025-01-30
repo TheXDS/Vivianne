@@ -2,7 +2,7 @@
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models;
 using static System.Text.Encoding;
-
+using St = TheXDS.Vivianne.Resources.Strings.Serializers.FshSerializer;
 namespace TheXDS.Vivianne.Serializers;
 
 /// <summary>
@@ -43,17 +43,17 @@ public class FshSerializer : ISerializer<FshFile>
         var dirId = reader.ReadBytes(4);
         if (!DirIds.Any(dirId.SequenceEqual))
         {
-            throw new InvalidDataException("Invalid Directory ID.");
+            throw new InvalidDataException(St.InvalidDirectoryID);
         }
         Dictionary<string, int> fileOffsets = [];
         while (entries-- > 0)
         {
             var name = Latin1.GetString(reader.ReadBytes(4));
             var offset = reader.ReadInt32();
-            
+
             if (!fileOffsets.TryAdd(name, offset))
             {
-                Debug.Print($"duplicated FSH entity entry: {name} at offset 0x{offset:X8}. Skipping...");
+                Debug.Print(string.Format(St.DuplicatedFshEntityEntry, name, offset));
             }
         }
 
@@ -71,7 +71,7 @@ public class FshSerializer : ISerializer<FshFile>
 #if DEBUG
             else
             {
-                Debug.Print($"Could not read '{j.Key}'. Skipping...");
+                Debug.Print(string.Format(St.CouldNotReadX, j.Key));
             }
 #endif
         }
@@ -114,12 +114,12 @@ public class FshSerializer : ISerializer<FshFile>
     {
         if (!reader.ReadBytes(4).SequenceEqual(Header))
         {
-            throw new InvalidDataException("Invalid header.");
+            throw new InvalidDataException(St.InvalidHeader);
         }
         var fshLength = reader.ReadInt32();
         if (reader.BaseStream.CanSeek && reader.BaseStream.Length != fshLength)
         {
-            throw new InvalidDataException("FSH file length mismatch");
+            throw new InvalidDataException(St.FshFileLengthMismatch);
         }
     }
 

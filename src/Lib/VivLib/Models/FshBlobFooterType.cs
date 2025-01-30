@@ -9,15 +9,18 @@ public enum FshBlobFooterType
     /// Indicates that the footer contains no data.
     /// </summary>
     None,
+
     /// <summary>
     /// Indicates that the footer contains car dashboard data.
     /// </summary>
     CarDashboard,
+
     /// <summary>
     /// Indicates that the footer contains a local color palette for FSH blobs
     /// with the <see cref="FshBlobFormat.Indexed8"/> pixel format.
     /// </summary>
     ColorPalette,
+
     /// <summary>
     /// Indicates that the footer contains padding bytes.
     /// </summary>
