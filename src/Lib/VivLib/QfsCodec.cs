@@ -413,7 +413,6 @@ public static class QfsCodec
         SlowMemCopy(cData, cPos, dData, lastwrote, matchLength);
         lastwrote += matchLength;
         cPos += matchLength;
-
     }
 
     private delegate void BlockDecompression(byte[] sourceBytes, ref byte[] destinationBytes, ref int sourcePosition, ref int destinationPosition);
