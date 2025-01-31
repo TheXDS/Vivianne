@@ -11,6 +11,8 @@ using TheXDS.Vivianne.ValueConverters;
 using TheXDS.Vivianne.ViewModels;
 using Image = SixLabors.ImageSharp.Image;
 
+namespace TheXDS.Vivianne;
+
 internal class WpfStaticFceRender : IStaticFceRender
 {
     FshBlob IStaticFceRender.RenderCompare(FceFile fce, byte[] textureData)
@@ -27,7 +29,6 @@ internal class WpfStaticFceRender : IStaticFceRender
                 LookDirection = new Vector3D(0,0,0),
                 Position = new Point3D(0, 0, 0),
             },
-            
         };
         viewPort.Children.Add(new ModelVisual3D { Content = mg });
         using var memoryStream = new MemoryStream();
