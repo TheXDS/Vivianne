@@ -358,7 +358,7 @@ namespace TheXDS.Vivianne.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &apos;{0}&apos; does not exist in the specified VIV file..
+        ///   Looks up a localized string similar to The specified VIV file does not contain &apos;{0}&apos;..
         /// </summary>
         internal static string Rm_Fail {
             get {

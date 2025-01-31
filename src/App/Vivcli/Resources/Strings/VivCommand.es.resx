@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Description" xml:space="preserve">
+    <value>Ejecuta operaciones sobre archivos VIV.</value>
+  </data>
+  <data name="Arg1" xml:space="preserve">
+    <value>archivo viv</value>
+  </data>
+  <data name="Arg1Description" xml:space="preserve">
+    <value>Ruta al archivo VIV.</value>
+  </data>
+  <data name="Add_Help" xml:space="preserve">
+    <value>Agrega un archivo al archivo VIV.</value>
+  </data>
+  <data name="Add_Arg1Help" xml:space="preserve">
+    <value>Indica el archivo a ser agregado.</value>
+  </data>
+  <data name="Add_Arg1" xml:space="preserve">
+    <value>archivo</value>
+  </data>
+  <data name="Add_ForceHelp" xml:space="preserve">
+    <value>Agrega el archivo de forma forzada, incluso si ya existe el mismo dentro del archivo VIV.</value>
+  </data>
+  <data name="Add_NameHelp" xml:space="preserve">
+    <value>Nuevo nombre del archivo. Si se omite, se utilizará el nombre actual.</value>
+  </data>
+  <data name="Add_Fail" xml:space="preserve">
+    <value>El archivo VIV especificado ya contiene '{0}'.</value>
+  </data>
+  <data name="Extract_Help" xml:space="preserve">
+    <value>Extrae un archivo desde el VIV especificado.</value>
+  </data>
+  <data name="Extract_Arg1" xml:space="preserve">
+    <value>regex de archivo(s)</value>
+  </data>
+  <data name="Extract_Arg1Help" xml:space="preserve">
+    <value>Nombre de archivo/regex que indica el o los archivos a extraer desde el VIV especificado. Si se omite, se extraerán todos los archivos.</value>
+  </data>
+  <data name="Extract_DirectoryHelp" xml:space="preserve">
+    <value>Directorio de salida en el cual se escribirán los archivos. Se establece en el directorio actual de forma predeterminada.</value>
+  </data>
+  <data name="Info_Help" xml:space="preserve">
+    <value>Obtiene información básica del archivo VIV.</value>
+  </data>
+  <data name="Info_1" xml:space="preserve">
+    <value>Firma del encabezado: 0x{0} ({1})</value>
+  </data>
+  <data name="Info_2" xml:space="preserve">
+    <value>Tamaño del archivo en el encabezado: {0} ({1})</value>
+  </data>
+  <data name="Info_3" xml:space="preserve">
+    <value>Tamaño de archivo calculado: {0} ({1})</value>
+  </data>
+  <data name="Info_4" xml:space="preserve">
+    <value>Tamaño real del archivo: {0} ({1})</value>
+  </data>
+  <data name="Info_5" xml:space="preserve">
+    <value>Archivos: {0}</value>
+  </data>
+  <data name="Info_6" xml:space="preserve">
+    <value>Desplazamiento de la piscina de datos: {0}</value>
+  </data>
+  <data name="Ls_Help" xml:space="preserve">
+    <value>Enumera todos los archivos dentro del archivo VIV.</value>
+  </data>
+  <data name="Ls_SizeHelp" xml:space="preserve">
+    <value>Incluye el tamaño de cada archivo en el listado.</value>
+  </data>
+  <data name="Ls_OffsetHelp" xml:space="preserve">
+    <value>Incluye el desplazamiento de cada archivo en el listado.</value>
+  </data>
+  <data name="Ls_HumanHelp" xml:space="preserve">
+    <value>Los tamaños de archivo se presentarán en formato legible por humanos.</value>
+  </data>
+  <data name="Ls_DecHelp" xml:space="preserve">
+    <value>El desplazamiento de los archivos será presentado en formato decimal.</value>
+  </data>
+  <data name="Read_Help" xml:space="preserve">
+    <value>Lee un archivo dentro del archivo VIV.</value>
+  </data>
+  <data name="Read_FileHelp" xml:space="preserve">
+    <value>Archivo a leer dentro del VIV.</value>
+  </data>
+  <data name="Read_OutputHelp" xml:space="preserve">
+    <value>Si se especifica, indica la ruta donde se guardará el archivo. Si se omite, el contenido del archivo se volcará en la salida estándar.</value>
+  </data>
+  <data name="Read_Fail1" xml:space="preserve">
+    <value>Debe especificar un nombre de archivo.</value>
+  </data>
+  <data name="Read_Fail2" xml:space="preserve">
+    <value>El VIV especificado no contiene a '{0}'.</value>
+  </data>
+  <data name="Read_Arg1" xml:space="preserve">
+    <value>archivo</value>
+  </data>
+  <data name="Rm_Help" xml:space="preserve">
+    <value>Elimina un archivo dentro del archivo VIV.</value>
+  </data>
+  <data name="Rm_Arg1" xml:space="preserve">
+    <value>archivo</value>
+  </data>
+  <data name="Rm_Arg1Help" xml:space="preserve">
+    <value>Archivo a eliminar.</value>
+  </data>
+  <data name="Rm_Fail" xml:space="preserve">
+    <value>El VIV especificado no contiene a '{0}'.</value>
+  </data>
+</root>

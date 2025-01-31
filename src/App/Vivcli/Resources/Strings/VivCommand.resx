@@ -200,6 +200,6 @@
     <value>File to be removed.</value>
   </data>
   <data name="Rm_Fail" xml:space="preserve">
-    <value>'{0}' does not exist in the specified VIV file.</value>
+    <value>The specified VIV file does not contain '{0}'.</value>
   </data>
 </root>
