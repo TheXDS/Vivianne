@@ -70,7 +70,7 @@ namespace TheXDS.Vivianne.Resources.Strings.Serializers {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to VIV file length mismatch.
+        ///   Looks up a localized string similar to VIV file length mismatch..
         /// </summary>
         internal static string VivFileLengthMismatch {
             get {

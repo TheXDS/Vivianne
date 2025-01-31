@@ -121,7 +121,7 @@
     <value>Damaged header: Unexpected number of arts</value>
   </data>
   <data name="HeaderDamage_Arts_Details" xml:space="preserve">
-    <value>The header indicates that there's mode than one art defined in the FCE file. This is not consistent with FCE parsing in NFS3</value>
+    <value>The header indicates that there's more than one art defined in the FCE file. This is not consistent with FCE parsing in NFS3.</value>
   </data>
   <data name="StrayPartNames_1_Title" xml:space="preserve">
     <value>{0} stray part name(s)</value>
@@ -133,7 +133,7 @@
     <value>{0} unnamed part(s)</value>
   </data>
   <data name="StrayPartNames_2_Details" xml:space="preserve">
-    <value>There's mode car parts than car part names in the FCE File. A name for these parts will be inferred and set. Please verify that the part is in the proper location and has the appropriate name.</value>
+    <value>There's more car parts than car part names in the FCE File. A name for these parts will be inferred and set. Please verify that the part is in the proper location and has the appropriate name.</value>
   </data>
   <data name="HeaderDamage_DummyCount_Details" xml:space="preserve">
     <value>The header declares more Dummy parts than supported by the FCE file format, suggesting an overrun of dummy part definitions. The number of parts will be truncated to 16.</value>

@@ -61,7 +61,7 @@ namespace TheXDS.Vivianne.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error determining proper block size for FSH compression.
+        ///   Looks up a localized string similar to Error determining proper block size for FSH compression..
         /// </summary>
         internal static string CompressionBlockSizeError {
             get {

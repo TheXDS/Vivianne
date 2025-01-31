@@ -89,7 +89,7 @@ namespace TheXDS.Vivianne.Resources.Strings.Tools {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The header indicates that there&apos;s mode than one art defined in the FCE file. This is not consistent with FCE parsing in NFS3.
+        ///   Looks up a localized string similar to The header indicates that there&apos;s more than one art defined in the FCE file. This is not consistent with FCE parsing in NFS3..
         /// </summary>
         internal static string HeaderDamage_Arts_Details {
             get {
@@ -197,7 +197,7 @@ namespace TheXDS.Vivianne.Resources.Strings.Tools {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to There&apos;s mode car parts than car part names in the FCE File. A name for these parts will be inferred and set. Please verify that the part is in the proper location and has the appropriate name..
+        ///   Looks up a localized string similar to There&apos;s more car parts than car part names in the FCE File. A name for these parts will be inferred and set. Please verify that the part is in the proper location and has the appropriate name..
         /// </summary>
         internal static string StrayPartNames_2_Details {
             get {

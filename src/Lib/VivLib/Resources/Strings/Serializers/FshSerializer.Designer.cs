@@ -79,7 +79,7 @@ namespace TheXDS.Vivianne.Resources.Strings.Serializers {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to FSH file length mismatch.
+        ///   Looks up a localized string similar to FSH file length mismatch..
         /// </summary>
         internal static string FshFileLengthMismatch {
             get {

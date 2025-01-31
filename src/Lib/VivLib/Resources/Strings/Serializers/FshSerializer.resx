@@ -110,6 +110,6 @@
     <value>Invalid header.</value>
   </data>
   <data name="FshFileLengthMismatch" xml:space="preserve">
-    <value>FSH file length mismatch</value>
+    <value>FSH file length mismatch.</value>
   </data>
 </root>

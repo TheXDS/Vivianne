@@ -101,6 +101,6 @@
     <value>Invalid header.</value>
   </data>
   <data name="VivFileLengthMismatch" xml:space="preserve">
-    <value>VIV file length mismatch</value>
+    <value>VIV file length mismatch.</value>
   </data>
 </root>

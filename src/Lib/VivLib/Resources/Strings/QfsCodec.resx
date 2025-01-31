@@ -104,6 +104,6 @@
     <value>QFS compression size mismatch.</value>
   </data>
   <data name="CompressionBlockSizeError" xml:space="preserve">
-    <value>Error determining proper block size for FSH compression</value>
+    <value>Error determining proper block size for FSH compression.</value>
   </data>
 </root>

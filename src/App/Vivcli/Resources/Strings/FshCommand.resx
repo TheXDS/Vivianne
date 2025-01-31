@@ -124,7 +124,8 @@
     <value>Path to the FSH/QFS file.</value>
   </data>
   <data name="BlobInfo_Arg1Help" xml:space="preserve">
-    <value>Specifies the name of the blob to get the information about. If omitted, ths tool will print the information of all blobs in the FSH file.</value>
+    <value>Specifies the name of the blob to get the information about. If omitted, thi
+s tool will print the information of all blobs in the FSH file.</value>
   </data>
   <data name="BlobInfo_Arg1" xml:space="preserve">
     <value>blob name</value>
@@ -196,7 +197,7 @@
     <value>Expression/regex that indicates the blob(s) to be extracted from within the specified FSH. If omitted, all blobs will be extracted.</value>
   </data>
   <data name="Info_Help" xml:space="preserve">
-    <value>Displays general information about the FSH/QFS file</value>
+    <value>Displays general information about the FSH/QFS file.</value>
   </data>
   <data name="Info_Info1" xml:space="preserve">
     <value>Blobs in FSH: {0}</value>

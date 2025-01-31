@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,11 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="RootHelp" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="InvalidDirectoryID" xml:space="preserve">
+    <value>ID de directorio inválido.</value>
   </data>
-  <data name="RootHelp" xml:space="preserve">
-    <value>Vivianne CLI - Una herramienta de modding para NFS3.</value>
+  <data name="DuplicatedFshEntityEntry" xml:space="preserve">
+    <value>Entidad duplicada en FSH: {0} en desplazamiento 0x{1:x8}. Saltando...</value>
+  </data>
+  <data name="CouldNotReadX" xml:space="preserve">
+    <value>No fue posible leer '{0}'. Saltando...</value>
+  </data>
+  <data name="InvalidHeader" xml:space="preserve">
+    <value>Encabezado inválido.</value>
+  </data>
+  <data name="FshFileLengthMismatch" xml:space="preserve">
+    <value>Discrepancia en longitud de archivo FSH.</value>
   </data>
 </root>

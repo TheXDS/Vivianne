@@ -132,4 +132,7 @@
   <data name="VivFile" xml:space="preserve">
     <value>Archivo VIV</value>
   </data>
+  <data name="VmTitle" xml:space="preserve">
+    <value>Página de inicio</value>
+  </data>
 </root>
