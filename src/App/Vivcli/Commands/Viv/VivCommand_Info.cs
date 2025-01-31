@@ -2,6 +2,7 @@ using System.CommandLine;
 using TheXDS.MCART.Helpers;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Serializers;
+using St = TheXDS.Vivianne.Resources.Strings.VivCommand;
 
 namespace TheXDS.Vivianne.Commands.Viv;
 
@@ -12,7 +13,7 @@ public partial class VivCommand
 {
     private static Command BuildInfoCommand(Argument<FileInfo> fileArg)
     {
-        var cmd = new Command("info", "Gets basic information on the VIV file.");
+        var cmd = new Command("info", St.Info_Help);
         cmd.SetHandler(InfoCommand, fileArg);
         return cmd;
     }
@@ -23,11 +24,11 @@ public partial class VivCommand
         using var fs = vivFile.OpenRead();
         var viv = await parser.DeserializeAsync(fs);
         var calcFileSize = VivSerializer.GetFileSize(viv.Entries.Select(p => new KeyValuePair<string, int>(p.Key, p.Value.Length)));
-        Console.WriteLine($"Header signature: 0x{string.Join("", viv.Header.Magic.Select(p => p.ToString("X")))} ({System.Text.Encoding.Latin1.GetString(viv.Header.Magic)})");
-        Console.WriteLine($"File size in header: {viv.Header.VivLength} ({((long)viv.Header.VivLength).ByteUnits()})");
-        Console.WriteLine($"Calculated file size: {calcFileSize} ({((long)calcFileSize).ByteUnits()})");
-        Console.WriteLine($"Actual file size: {vivFile.Length} ({vivFile.Length.ByteUnits()})");
-        Console.WriteLine($"Files: {viv.Header.Entries}");
-        Console.WriteLine($"Data pool offset: {viv.Header.PoolOffset}");
+        Console.WriteLine(string.Format(St.Info_1, string.Join("", viv.Header.Magic.Select(p => p.ToString("X"))), System.Text.Encoding.Latin1.GetString(viv.Header.Magic)));
+        Console.WriteLine(string.Format(St.Info_2, viv.Header.VivLength, ((long)viv.Header.VivLength).ByteUnits()));
+        Console.WriteLine(string.Format(St.Info_3, calcFileSize, ((long)calcFileSize).ByteUnits()));
+        Console.WriteLine(string.Format(St.Info_4, vivFile.Length, vivFile.Length.ByteUnits()));
+        Console.WriteLine(string.Format(St.Info_5, viv.Header.Entries));
+        Console.WriteLine(string.Format(St.Info_6, viv.Header.PoolOffset));
     }
 }

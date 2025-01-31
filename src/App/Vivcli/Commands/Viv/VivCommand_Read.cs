@@ -1,5 +1,6 @@
 using System.CommandLine;
 using TheXDS.MCART.Types.Extensions;
+using St = TheXDS.Vivianne.Resources.Strings.VivCommand;
 
 namespace TheXDS.Vivianne.Commands.Viv;
 
@@ -10,9 +11,9 @@ public partial class VivCommand
 {
     private static Command BuildReadCommand(Argument<FileInfo> vivFile)
     {
-        var cmd = new Command("read", "Reads a file from within the specified VIV.");
-        var fileNameArg = new Argument<string>("file", "File to read from within the specified VIV.").LegalFileNamesOnly();
-        var outOption = new Option<FileInfo?>(["--output", "-o"], () => null, "If specified, indicates the path to write the file into. If omitted, the file will be read to standard output.");
+        var cmd = new Command("read", St.Read_Help);
+        var fileNameArg = new Argument<string>(St.Read_Arg1, St.Read_FileHelp).LegalFileNamesOnly();
+        var outOption = new Option<FileInfo?>(["--output", "-o"], () => null, St.Read_OutputHelp);
         cmd.AddArgument(fileNameArg);
         cmd.AddOption(outOption);
         cmd.SetHandler(ReadCommand, vivFile, fileNameArg, outOption);
@@ -21,7 +22,7 @@ public partial class VivCommand
 
     private static Task ReadCommand(FileInfo vivFile, string fileName, FileInfo? outputStream)
     {
-        if (fileName.IsEmpty()) Fail("You must specify a file name.");
+        if (fileName.IsEmpty()) Fail(St.Read_Fail1);
         return FileTransaction(vivFile, viv =>
         {
             if (viv.TryGetValue(fileName, out var contents))
@@ -31,7 +32,7 @@ public partial class VivCommand
             }
             else
             {
-                Fail($"The specified VIV file does not contain '{fileName}'.");
+                Fail(string.Format(St.Read_Fail2, fileName));
             }
         }, true);
     }

@@ -1,5 +1,6 @@
 using System.CommandLine;
 using System.Text.RegularExpressions;
+using St = TheXDS.Vivianne.Resources.Strings.VivCommand;
 
 namespace TheXDS.Vivianne.Commands.Viv;
 
@@ -10,12 +11,13 @@ public partial class VivCommand
 {
     private static Command BuildExtractCommand(Argument<FileInfo> vivFile)
     {
-        var cmd = new Command("extract", "Extracts a file from within the specified VIV.");
-        var regexArg = new Argument<string>("file(s) regex", () => "^.*$", "File name/regex that indicates the file(s) to be extracted from within the specified VIV. If omitted, all files will be extracted.");
-        var outDirOption = new Option<DirectoryInfo>(["--directory", "-d"], () => new DirectoryInfo(Environment.CurrentDirectory), "Output directory to write the file(s) into. Defaults to the current path.");
+        var cmd = new Command("extract", St.Extract_Help);
+        var regexArg = new Argument<string>(St.Extract_Arg1, () => "^.*$", St.Extract_Arg1Help);
+        var outDirOption = new Option<DirectoryInfo>(["--directory", "-d"], () => new DirectoryInfo(Environment.CurrentDirectory), St.Extract_DirectoryHelp);
         cmd.AddArgument(regexArg);
         cmd.AddOption(outDirOption);
         cmd.SetHandler(ExtractCommand, vivFile, regexArg, outDirOption);
+        cmd.AddAlias("xf");
         return cmd;
     }
 
