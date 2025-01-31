@@ -117,22 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="FshFile" xml:space="preserve">
-    <value>Archivo FSH</value>
+  <data name="ExportAll" xml:space="preserve">
+    <value>Exportar todo</value>
   </data>
-  <data name="Open" xml:space="preserve">
-    <value>Abrir</value>
+  <data name="ExportingX" xml:space="preserve">
+    <value>Exportando {0}...</value>
   </data>
-  <data name="OpenMessage" xml:space="preserve">
-    <value>Seleccione un archivo VIV</value>
-  </data>
-  <data name="QfsFile" xml:space="preserve">
-    <value>Archivo QFS</value>
-  </data>
-  <data name="VivFile" xml:space="preserve">
-    <value>Archivo VIV</value>
-  </data>
-  <data name="VmTitle" xml:space="preserve">
-    <value>Página de inicio</value>
+  <data name="SelectAPath" xml:space="preserve">
+    <value>Seleccione una ruta en la cual extraer el contenido del VIV.</value>
   </data>
 </root>

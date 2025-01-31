@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,10 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="OpnMessage" xml:space="preserve">
-    <value>Select the FSH/QFS file to edit</value>
+  <data name="CouldNotLaunchNFS3" xml:space="preserve">
+    <value>No se pudo lanzar NFS3</value>
   </data>
-  <data name="ToolName" xml:space="preserve">
-    <value>FSH/QFS editor</value>
+  <data name="LaunchSettings" xml:space="preserve">
+    <value>Configuración de lanzamiento</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Configuración</value>
+  </data>
+  <data name="StartupPage" xml:space="preserve">
+    <value>Página de inicio</value>
+  </data>
+  <data name="YouHavenTConfiguredTheGamePath" xml:space="preserve">
+    <value>Aún no ha configurado la ruta del juego.</value>
   </data>
 </root>

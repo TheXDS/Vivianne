@@ -13,17 +13,17 @@ using TheXDS.Vivianne.Helpers;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Properties;
 using TheXDS.Vivianne.Serializers;
-
+using St = TheXDS.Vivianne.Resources.Strings.Common;
 namespace TheXDS.Vivianne.ViewModels.Base;
 
 /// <summary>
 /// Base class for all ViewModels that can be used to launch file editors from
 /// the startup page.
 /// </summary>
-/// <typeparam name="TState"></typeparam>
-/// <typeparam name="TFile"></typeparam>
-/// <typeparam name="TSerializer"></typeparam>
-/// <typeparam name="TEditor"></typeparam>
+/// <typeparam name="TState">Type of state represented inside the ViewModel.</typeparam>
+/// <typeparam name="TFile">Type of file on which the state is based on.</typeparam>
+/// <typeparam name="TSerializer">Type of serializer that can be used to read and write file data.</typeparam>
+/// <typeparam name="TEditor">Type of editor to be launched upon invocation.</typeparam>
 public abstract class FileEditorViewModelLauncher<TState, TFile, TSerializer, TEditor> : ViewModel, IFileEditorViewModelLauncher
     where TFile : new()
     where TState : IFileState<TFile>, new()
@@ -63,7 +63,7 @@ public abstract class FileEditorViewModelLauncher<TState, TFile, TSerializer, TE
         this.saveFilter = saveFilter;
         PageName = pageName;
         NewFileCommand = new SimpleCommand(OnNew);
-        OpenFileCommand = new SimpleCommand(p => DialogService.RunOperation(q => OnOpen(p)));
+        OpenFileCommand = new SimpleCommand(p => DialogService?.RunOperation(q => OnOpen(p)) ?? Task.CompletedTask);
     }
 
     /// <summary>
@@ -157,7 +157,7 @@ public abstract class FileEditorViewModelLauncher<TState, TFile, TSerializer, TE
         var state = new TState { File = file };
         var vm = new TEditor()
         {
-            Title = "New file",
+            Title = St.NewFile,
             State = state,
         };
         vm.SaveCommand = GetSaveAsCommand(vm, file);
@@ -200,9 +200,9 @@ public abstract class FileEditorViewModelLauncher<TState, TFile, TSerializer, TE
     private async Task<string?> TryGetFile(RecentFileInfo file, ICollection<RecentFileInfo> recentFiles)
     {
         recentFiles.Remove(file);
-        if (!System.IO.File.Exists(file.FilePath))
+        if (!File.Exists(file.FilePath))
         {
-            await (DialogService?.Error("File not found.", "The file you selected does not exist or it's inaccessible.") ?? Task.CompletedTask);
+            await (DialogService?.Error(St.FileNotFound, St.FileNotFound2) ?? Task.CompletedTask);
             return null;
         }
         return file.FilePath;

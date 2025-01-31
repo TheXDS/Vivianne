@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,34 +117,43 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Discard" xml:space="preserve">
-    <value>Discard</value>
+  <data name="FshFile" xml:space="preserve">
+    <value>Textura FSH</value>
   </data>
-  <data name="Open" xml:space="preserve">
-    <value>Open</value>
+  <data name="VivFile" xml:space="preserve">
+    <value>Archivo VIV</value>
   </data>
-  <data name="Save" xml:space="preserve">
-    <value>Save</value>
+  <data name="QfsFile" xml:space="preserve">
+    <value>Textura QFS</value>
   </data>
-  <data name="SavingX" xml:space="preserve">
-    <value>Saving {0}...</value>
+  <data name="BMPBitmapImage" xml:space="preserve">
+    <value>Imagen de mapa de bits</value>
   </data>
-  <data name="VivEditorState_UnknownFriendlyName" xml:space="preserve">
-    <value>&lt; unknown or non-car VIV file &gt;</value>
+  <data name="BNKAudioFile" xml:space="preserve">
+    <value>Archivo de audio BNK</value>
   </data>
-  <data name="NewFile" xml:space="preserve">
-    <value>New file</value>
+  <data name="CommonImageFiles" xml:space="preserve">
+    <value>Archivos comunes de imagen</value>
   </data>
-  <data name="FileNotFound" xml:space="preserve">
-    <value>File not found.</value>
+  <data name="CommonVIVContentFiles" xml:space="preserve">
+    <value>Archivos comunes de contenido de VIV</value>
   </data>
-  <data name="FileNotFound2" xml:space="preserve">
-    <value>The file you selected does not exist or it's inaccessible.</value>
+  <data name="FCE3DModel" xml:space="preserve">
+    <value>Modelo 3D FCE</value>
   </data>
-  <data name="ExtraTools" xml:space="preserve">
-    <value>Extra tools</value>
+  <data name="FSHQFSTexture" xml:space="preserve">
+    <value>Textura FSH/QFS</value>
   </data>
-  <data name="Ok" xml:space="preserve">
-    <value>Ok</value>
+  <data name="GIFImage" xml:space="preserve">
+    <value>Imagen GIF</value>
+  </data>
+  <data name="JPEGPicture" xml:space="preserve">
+    <value>Imagen JPEG</value>
+  </data>
+  <data name="LocalizedCarFeData" xml:space="preserve">
+    <value>FeData localizada de vehículo</value>
+  </data>
+  <data name="PortableNetworkGraphics" xml:space="preserve">
+    <value>Imagen PNG</value>
   </data>
 </root>

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TheXDS.Vivianne.Resources.Strings.Views {
+namespace TheXDS.Vivianne.Resources.Strings.ViewModels {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace TheXDS.Vivianne.Resources.Strings.Views {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class StartupView {
+    internal class StartupViewModel {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal StartupView() {
+        internal StartupViewModel() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace TheXDS.Vivianne.Resources.Strings.Views {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("TheXDS.Vivianne.Resources.Strings.Views.StartupView", typeof(StartupView).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("TheXDS.Vivianne.Resources.Strings.ViewModels.StartupViewModel", typeof(StartupViewModel).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,56 +61,47 @@ namespace TheXDS.Vivianne.Resources.Strings.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to FSH file.
+        ///   Looks up a localized string similar to Could not launch NFS3.
         /// </summary>
-        internal static string FshFile {
+        internal static string CouldNotLaunchNFS3 {
             get {
-                return ResourceManager.GetString("FshFile", resourceCulture);
+                return ResourceManager.GetString("CouldNotLaunchNFS3", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Open.
+        ///   Looks up a localized string similar to Launch settings.
         /// </summary>
-        internal static string Open {
+        internal static string LaunchSettings {
             get {
-                return ResourceManager.GetString("Open", resourceCulture);
+                return ResourceManager.GetString("LaunchSettings", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select a VIV file.
+        ///   Looks up a localized string similar to Settings.
         /// </summary>
-        internal static string OpenMessage {
+        internal static string Settings {
             get {
-                return ResourceManager.GetString("OpenMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to QFS file.
-        /// </summary>
-        internal static string QfsFile {
-            get {
-                return ResourceManager.GetString("QfsFile", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to VIV file.
-        /// </summary>
-        internal static string VivFile {
-            get {
-                return ResourceManager.GetString("VivFile", resourceCulture);
+                return ResourceManager.GetString("Settings", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Startup page.
         /// </summary>
-        internal static string VmTitle {
+        internal static string StartupPage {
             get {
-                return ResourceManager.GetString("VmTitle", resourceCulture);
+                return ResourceManager.GetString("StartupPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You haven&apos;t configured the game path..
+        /// </summary>
+        internal static string YouHavenTConfiguredTheGamePath {
+            get {
+                return ResourceManager.GetString("YouHavenTConfiguredTheGamePath", resourceCulture);
             }
         }
     }

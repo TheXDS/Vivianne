@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,34 +117,27 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Discard" xml:space="preserve">
-    <value>Discard</value>
+  <data name="EditCurve" xml:space="preserve">
+    <value>Editar curva</value>
   </data>
-  <data name="Open" xml:space="preserve">
-    <value>Open</value>
+  <data name="FeDataSync" xml:space="preserve">
+    <value>Sincronizar con FeData</value>
   </data>
-  <data name="Save" xml:space="preserve">
-    <value>Save</value>
+  <data name="OperationCompletedSuccessfully" xml:space="preserve">
+    <value>La operación se ha completado satisfactoriamente.</value>
   </data>
-  <data name="SavingX" xml:space="preserve">
-    <value>Saving {0}...</value>
+  <data name="PerformanceMetrics" xml:space="preserve">
+    <value>Métricas de rendimiento</value>
   </data>
-  <data name="VivEditorState_UnknownFriendlyName" xml:space="preserve">
-    <value>&lt; unknown or non-car VIV file &gt;</value>
-  </data>
-  <data name="NewFile" xml:space="preserve">
-    <value>New file</value>
-  </data>
-  <data name="FileNotFound" xml:space="preserve">
-    <value>File not found.</value>
-  </data>
-  <data name="FileNotFound2" xml:space="preserve">
-    <value>The file you selected does not exist or it's inaccessible.</value>
-  </data>
-  <data name="ExtraTools" xml:space="preserve">
-    <value>Extra tools</value>
-  </data>
-  <data name="Ok" xml:space="preserve">
-    <value>Ok</value>
+  <data name="PerformanceMetricsDetails" xml:space="preserve">
+    <value>Peso: {0}
+Velocidad punta: {1}
+Potencia: {2}
+Par motor: {3}
+RPM máximas: {4}
+Especificaciones de neumáticos: {5}
+Caja de cambios: {6}
+0 a 100 Km/h: {7}
+0 a 160 Km/h: {8}</value>
   </data>
 </root>

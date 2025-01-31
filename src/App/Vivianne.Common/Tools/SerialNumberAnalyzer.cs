@@ -9,9 +9,12 @@ using System.Threading.Tasks;
 using TheXDS.Ganymede.Models;
 using TheXDS.Ganymede.Resources;
 using TheXDS.Ganymede.Services;
+using TheXDS.Ganymede.Types.Extensions;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Serializers;
+using St = TheXDS.Vivianne.Resources.Strings.Tools.SerialNumberAnalyzer;
+using Stc = TheXDS.Vivianne.Resources.Strings.Common;
 
 namespace TheXDS.Vivianne.Tools;
 
@@ -49,7 +52,7 @@ public class SerialNumberAnalyzer : IVivianneTool
         }
         catch (Exception ex)
         {
-            Debug.Print($"Error loading VIV file '{file.Name}': {ex.Message}. Skipping...");
+            Debug.Print(string.Format(St.ErrorLoadingVIVFile,file.Name ,ex.Message));
             return null;
         }
     }
@@ -65,7 +68,7 @@ public class SerialNumberAnalyzer : IVivianneTool
         }
         catch (Exception ex)
         {
-            Debug.Print($"Error loading FeData '{feName}': {ex.Message}. Skipping...");
+            Debug.Print(string.Format(St.ErrorLoadingFeData, feName,ex.Message));
         }
         return null;
     }
@@ -81,7 +84,7 @@ public class SerialNumberAnalyzer : IVivianneTool
         }
         catch (Exception ex)
         {
-            Debug.Print($"Error loading 'carp.txt': {ex.Message}. Skipping...");
+            Debug.Print(string.Format(St.ErrorLoadingCarpTxt, ex.Message));
         }
         return null;
     }
@@ -112,7 +115,7 @@ public class SerialNumberAnalyzer : IVivianneTool
         var c = 0;
         foreach (var file in files)
         {
-            progress.Report(new(c++ * 100 / files.Length, $"Loading '{file.FullName}'..."));
+            progress.Report(new(c++ * 100 / files.Length, string.Format(St.LoadingX, file.FullName)));
             if (await LoadViv(file) is { } entry)
             {
                 await ParseSnFromViv(entry);
@@ -164,7 +167,7 @@ public class SerialNumberAnalyzer : IVivianneTool
                 entry.VivFile.Directory[fe.Key] = feSerializer.Serialize(fe.Value);
             }
             if (entry.Carp is not null) entry.Carp.SerialNumber = newSerial;
-            progress.Report(new(c++ * 100 / entries.Length, $"Writing '{entry.FilePath}'..."));
+            progress.Report(new(c++ * 100 / entries.Length, string.Format(St.WritingX, entry.FilePath)));
             using var vivF = File.Open(entry.FilePath, FileMode.Truncate);
             await vivSerializer.SerializeToAsync(entry.VivFile, vivF);
         }
@@ -178,32 +181,32 @@ public class SerialNumberAnalyzer : IVivianneTool
     }
 
     /// <inheritdoc/>
-    public string ToolName => "Serial number analyzer";
+    public string ToolName => St.SerialNumberAnalyzer;
 
     /// <inheritdoc/>
     public async Task Run(IDialogService dlg, INavigationService _)
     {
-        var dirSelection = await dlg.GetDirectoryPath(CommonDialogTemplates.DirectorySelect with { Title = "CarModel path", Text = "Select the 'CarModel' directory inside NFS3/Gamedata folder." });
+        var dirSelection = await dlg.GetDirectoryPath(CommonDialogTemplates.DirectorySelect with { Title = St.CarModelPath, Text = St.SelectTheCarModelDirectoryInsideNFS3GamedataFolder });
         if (!dirSelection.Success) return;
 
         var operation = await dlg.RunOperation(ToolName, (c, p) => RunSnAnalysis(p, dirSelection.Result!, c));
         if (!operation.Success) return;
         if (operation.Result.Length == 0)
         {
-            await dlg.Message(ToolName, "No duplicate/conflicting/missing serial numbers found.");
+            await dlg.Message(ToolName, St.NoDuplicateConflictingMissingSerialNumbersFound);
         }
         else
         {
-            static string GetSnEntryMessage(SnEntry p) => $"{p.FilePath}: {p.SerialNumber.ToString().OrNull() ?? "undefined"} -> {p.NewSerial}";
-            await (await dlg.Show<Func<Task>>(CommonDialogTemplates.Success with
+            static string GetSnEntryMessage(SnEntry p) => $"{p.FilePath}: {p.SerialNumber.ToString().OrNull() ?? St.Undefined} -> {p.NewSerial}";
+            await dlg.SelectAction(CommonDialogTemplates.Success with
             {
                 Title = ToolName,
-                Text = $"Operation completed successfully. Number of fixed serial numbers: {operation.Result.Length}"
+                Text = string.Format(St.OperationCompletedSuccessfully,operation.Result.Length)
             },
             [
-                ("Ok", () => Task.CompletedTask),
-                ("Details", () => dlg.Message(ToolName, string.Join(Environment.NewLine, operation.Result.Select(GetSnEntryMessage))))
-            ])).Invoke();
+                (Stc.Ok, () => Task.CompletedTask),
+                (St.Details, () => dlg.Message(ToolName, string.Join(Environment.NewLine, operation.Result.Select(GetSnEntryMessage))))
+            ]);
         }
     }
 }

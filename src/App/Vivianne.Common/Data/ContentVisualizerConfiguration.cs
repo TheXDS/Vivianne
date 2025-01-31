@@ -7,7 +7,7 @@ using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Serializers;
 using TheXDS.Vivianne.ViewModels;
 
-namespace TheXDS.Vivianne.Component;
+namespace TheXDS.Vivianne.Data;
 
 /// <summary>
 /// Defines the signature for a method that can be used to create a ViewModel
@@ -40,40 +40,40 @@ internal static class ContentVisualizerConfiguration
         yield return new(".fsh", CreateFshEditorViewModel);
         yield return new(".qfs", CreateQfsEditorViewModel);
 
-        yield return new("fedata.bri", CreateFeDataPreviewViewModel);
-        yield return new("fedata.eng", CreateFeDataPreviewViewModel);
-        yield return new("fedata.fre", CreateFeDataPreviewViewModel);
-        yield return new("fedata.ger", CreateFeDataPreviewViewModel);
-        yield return new("fedata.ita", CreateFeDataPreviewViewModel);
-        yield return new("fedata.spa", CreateFeDataPreviewViewModel);
-        yield return new("fedata.swe", CreateFeDataPreviewViewModel);
+        yield return new("fedata.bri", CreateFeDataEditorViewModel);
+        yield return new("fedata.eng", CreateFeDataEditorViewModel);
+        yield return new("fedata.fre", CreateFeDataEditorViewModel);
+        yield return new("fedata.ger", CreateFeDataEditorViewModel);
+        yield return new("fedata.ita", CreateFeDataEditorViewModel);
+        yield return new("fedata.spa", CreateFeDataEditorViewModel);
+        yield return new("fedata.swe", CreateFeDataEditorViewModel);
 
         yield return new(".txt", CreateCarpEditorViewModel);
-        yield return new(".fce", CreateFcePreviewViewModel);
+        yield return new(".fce", CreateFceEditorViewModel);
     }
 
-    private static FcePreviewViewModel CreateFcePreviewViewModel(byte[] data, Action<byte[]> _, VivEditorState viv, string __)
+    private static FcePreviewViewModel CreateFceEditorViewModel(byte[] data, Action<byte[]> _, VivEditorState viv, string __)
     {
         ISerializer<FceFile> s = new FceSerializer();
         return new(s.Deserialize(data), viv.Directory);
     }
 
-    private static FeDataPreviewViewModel CreateFeDataPreviewViewModel(byte[] data, Action<byte[]> saveCallback, VivEditorState viv, string name)
+    private static FeDataPreviewViewModel CreateFeDataEditorViewModel(byte[] data, Action<byte[]> saveCallback, VivEditorState viv, string name)
     {
-        return new(data, saveCallback, viv, name);
+        return new(data, saveCallback, viv, name) { Title = name };
     }
 
-    private static CarpEditorViewModel? CreateCarpEditorViewModel(byte[] data, Action<byte[]> saveCallback, VivEditorState viv, string __)
+    private static CarpEditorViewModel? CreateCarpEditorViewModel(byte[] data, Action<byte[]> saveCallback, VivEditorState viv, string name)
     {
         byte[] carpMagic = [0x53, 0x65, 0x72, 0x69, 0x61, 0x6c, 0x20, 0x4e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x28, 0x30, 0x29];
         if (!data[0..16].SequenceEqual(carpMagic)) return null;
         void SaveCarp(string c) => saveCallback.Invoke(System.Text.Encoding.Latin1.GetBytes(c));
-        return new(CarpEditorState.From(System.Text.Encoding.Latin1.GetString(data)), SaveCarp, viv);
+        return new(CarpEditorState.From(System.Text.Encoding.Latin1.GetString(data)), SaveCarp, viv) { Title = name };
     }
 
-    private static TexturePreviewViewModel CreateTexturePreviewViewModel(byte[] data, Action<byte[]> _, VivEditorState __, string ___)
+    private static TexturePreviewViewModel CreateTexturePreviewViewModel(byte[] data, Action<byte[]> _, VivEditorState __, string name)
     {
-        return new(data);
+        return new(data) { Title = name };
     }
 
     private static FshEditorViewModel CreateFshEditorViewModel(byte[] data, Action<byte[]> saveCallback, VivEditorState _, string name)
@@ -84,9 +84,9 @@ internal static class ContentVisualizerConfiguration
         void SaveFsh(FshFile fsh) => saveCallback.Invoke(serializer.Serialize(fsh));
         return new()
         {
-            Title = name, 
+            Title = name,
             State = state,
-            SaveCommand = ObservingCommandBuilder.Create(state, () => SaveFsh(file)).ListensToCanExecute(s => s.UnsavedChanges).Build(),
+            SaveCommand = state.Create(() => SaveFsh(file)).ListensToCanExecute(s => s.UnsavedChanges).Build(),
         };
     }
 

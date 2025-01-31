@@ -22,24 +22,24 @@ namespace TheXDS.Vivianne.Resources.Strings {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Common {
+    internal class FileFilters {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Common() {
+        internal FileFilters() {
         }
         
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
+        internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("TheXDS.Vivianne.Resources.Strings.Common", typeof(Common).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("TheXDS.Vivianne.Resources.Strings.FileFilters", typeof(FileFilters).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,7 +51,7 @@ namespace TheXDS.Vivianne.Resources.Strings {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
+        internal static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,92 +61,119 @@ namespace TheXDS.Vivianne.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Discard.
+        ///   Looks up a localized string similar to BMP bitmap image.
         /// </summary>
-        public static string Discard {
+        internal static string BMPBitmapImage {
             get {
-                return ResourceManager.GetString("Discard", resourceCulture);
+                return ResourceManager.GetString("BMPBitmapImage", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Extra tools.
+        ///   Looks up a localized string similar to BNK audio file.
         /// </summary>
-        public static string ExtraTools {
+        internal static string BNKAudioFile {
             get {
-                return ResourceManager.GetString("ExtraTools", resourceCulture);
+                return ResourceManager.GetString("BNKAudioFile", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File not found..
+        ///   Looks up a localized string similar to Common image files.
         /// </summary>
-        public static string FileNotFound {
+        internal static string CommonImageFiles {
             get {
-                return ResourceManager.GetString("FileNotFound", resourceCulture);
+                return ResourceManager.GetString("CommonImageFiles", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The file you selected does not exist or it&apos;s inaccessible..
+        ///   Looks up a localized string similar to Common VIV content files.
         /// </summary>
-        public static string FileNotFound2 {
+        internal static string CommonVIVContentFiles {
             get {
-                return ResourceManager.GetString("FileNotFound2", resourceCulture);
+                return ResourceManager.GetString("CommonVIVContentFiles", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New file.
+        ///   Looks up a localized string similar to FCE 3D model.
         /// </summary>
-        public static string NewFile {
+        internal static string FCE3DModel {
             get {
-                return ResourceManager.GetString("NewFile", resourceCulture);
+                return ResourceManager.GetString("FCE3DModel", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ok.
+        ///   Looks up a localized string similar to FSH texture.
         /// </summary>
-        public static string Ok {
+        internal static string FshFile {
             get {
-                return ResourceManager.GetString("Ok", resourceCulture);
+                return ResourceManager.GetString("FshFile", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Open.
+        ///   Looks up a localized string similar to FSH/QFS texture.
         /// </summary>
-        public static string Open {
+        internal static string FSHQFSTexture {
             get {
-                return ResourceManager.GetString("Open", resourceCulture);
+                return ResourceManager.GetString("FSHQFSTexture", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Save.
+        ///   Looks up a localized string similar to GIF image.
         /// </summary>
-        public static string Save {
+        internal static string GIFImage {
             get {
-                return ResourceManager.GetString("Save", resourceCulture);
+                return ResourceManager.GetString("GIFImage", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Saving {0}....
+        ///   Looks up a localized string similar to JPEG picture.
         /// </summary>
-        public static string SavingX {
+        internal static string JPEGPicture {
             get {
-                return ResourceManager.GetString("SavingX", resourceCulture);
+                return ResourceManager.GetString("JPEGPicture", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt; unknown or non-car VIV file &gt;.
+        ///   Looks up a localized string similar to Localized car FeData.
         /// </summary>
-        public static string VivEditorState_UnknownFriendlyName {
+        internal static string LocalizedCarFeData {
             get {
-                return ResourceManager.GetString("VivEditorState_UnknownFriendlyName", resourceCulture);
+                return ResourceManager.GetString("LocalizedCarFeData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Portable Network Graphics.
+        /// </summary>
+        internal static string PortableNetworkGraphics {
+            get {
+                return ResourceManager.GetString("PortableNetworkGraphics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to QFS texture.
+        /// </summary>
+        internal static string QfsFile {
+            get {
+                return ResourceManager.GetString("QfsFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to VIV file.
+        /// </summary>
+        internal static string VivFile {
+            get {
+                return ResourceManager.GetString("VivFile", resourceCulture);
             }
         }
     }

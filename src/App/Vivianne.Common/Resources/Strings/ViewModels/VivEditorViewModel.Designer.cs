@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TheXDS.Vivianne.Resources.Strings {
+namespace TheXDS.Vivianne.Resources.Strings.ViewModels {
     using System;
     
     
@@ -22,24 +22,24 @@ namespace TheXDS.Vivianne.Resources.Strings {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Common {
+    internal class VivEditorViewModel {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Common() {
+        internal VivEditorViewModel() {
         }
         
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
+        internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("TheXDS.Vivianne.Resources.Strings.Common", typeof(Common).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("TheXDS.Vivianne.Resources.Strings.ViewModels.VivEditorViewModel", typeof(VivEditorViewModel).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,7 +51,7 @@ namespace TheXDS.Vivianne.Resources.Strings {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
+        internal static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,92 +61,83 @@ namespace TheXDS.Vivianne.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Discard.
+        ///   Looks up a localized string similar to Are you sure you want to remove &apos;{0}&apos;?.
         /// </summary>
-        public static string Discard {
+        internal static string AreYouSureYouWantToRemoveX {
             get {
-                return ResourceManager.GetString("Discard", resourceCulture);
+                return ResourceManager.GetString("AreYouSureYouWantToRemoveX", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Extra tools.
+        ///   Looks up a localized string similar to Import file.
         /// </summary>
-        public static string ExtraTools {
+        internal static string ImportFile {
             get {
-                return ResourceManager.GetString("ExtraTools", resourceCulture);
+                return ResourceManager.GetString("ImportFile", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File not found..
+        ///   Looks up a localized string similar to New from template.
         /// </summary>
-        public static string FileNotFound {
+        internal static string NewFromTemplate {
             get {
-                return ResourceManager.GetString("FileNotFound", resourceCulture);
+                return ResourceManager.GetString("NewFromTemplate", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The file you selected does not exist or it&apos;s inaccessible..
+        ///   Looks up a localized string similar to Remove &apos;{0}&apos;.
         /// </summary>
-        public static string FileNotFound2 {
+        internal static string RemoveX {
             get {
-                return ResourceManager.GetString("FileNotFound2", resourceCulture);
+                return ResourceManager.GetString("RemoveX", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New file.
+        ///   Looks up a localized string similar to Replace file.
         /// </summary>
-        public static string NewFile {
+        internal static string ReplaceFile {
             get {
-                return ResourceManager.GetString("NewFile", resourceCulture);
+                return ResourceManager.GetString("ReplaceFile", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ok.
+        ///   Looks up a localized string similar to Replace &apos;{0}&apos;.
         /// </summary>
-        public static string Ok {
+        internal static string ReplaceX {
             get {
-                return ResourceManager.GetString("Ok", resourceCulture);
+                return ResourceManager.GetString("ReplaceX", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Open.
+        ///   Looks up a localized string similar to Select a file to repace &apos;{0}&apos; with.
         /// </summary>
-        public static string Open {
+        internal static string SelectAFileToRepaceXWith {
             get {
-                return ResourceManager.GetString("Open", resourceCulture);
+                return ResourceManager.GetString("SelectAFileToRepaceXWith", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Save.
+        ///   Looks up a localized string similar to Select a template to create a new file in the VIV directory..
         /// </summary>
-        public static string Save {
+        internal static string SelectATemplate {
             get {
-                return ResourceManager.GetString("Save", resourceCulture);
+                return ResourceManager.GetString("SelectATemplate", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Saving {0}....
+        ///   Looks up a localized string similar to The file &apos;{0}&apos; already exist. Do you want to replace it?.
         /// </summary>
-        public static string SavingX {
+        internal static string TheFileXAlreadyExist {
             get {
-                return ResourceManager.GetString("SavingX", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt; unknown or non-car VIV file &gt;.
-        /// </summary>
-        public static string VivEditorState_UnknownFriendlyName {
-            get {
-                return ResourceManager.GetString("VivEditorState_UnknownFriendlyName", resourceCulture);
+                return ResourceManager.GetString("TheFileXAlreadyExist", resourceCulture);
             }
         }
     }

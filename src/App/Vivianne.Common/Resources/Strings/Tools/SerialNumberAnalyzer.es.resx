@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,22 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="FshFile" xml:space="preserve">
-    <value>FSH file</value>
+  <data name="CarModelPath" xml:space="preserve">
+    <value>Ruta a 'CarModel'</value>
   </data>
-  <data name="Open" xml:space="preserve">
-    <value>Open</value>
+  <data name="Details" xml:space="preserve">
+    <value>Más detalles</value>
   </data>
-  <data name="OpenMessage" xml:space="preserve">
-    <value>Select a VIV file</value>
+  <data name="ErrorLoadingCarpTxt" xml:space="preserve">
+    <value>Error al cargar 'carp.txt': {0}. Saltando...</value>
   </data>
-  <data name="QfsFile" xml:space="preserve">
-    <value>QFS file</value>
+  <data name="ErrorLoadingFeData" xml:space="preserve">
+    <value>Error al cargar FeData '{0}': {1}. Saltando...</value>
   </data>
-  <data name="VivFile" xml:space="preserve">
-    <value>VIV file</value>
+  <data name="ErrorLoadingVIVFile" xml:space="preserve">
+    <value>Error cargando archivo VIV '{0}': {1}. Saltando...</value>
   </data>
-  <data name="VmTitle" xml:space="preserve">
-    <value>Startup page</value>
+  <data name="LoadingX" xml:space="preserve">
+    <value>Cargando '{0}'...</value>
+  </data>
+  <data name="NoDuplicateConflictingMissingSerialNumbersFound" xml:space="preserve">
+    <value>No se han encontrado números de serie duplicados/en conflicto/faltantes.</value>
+  </data>
+  <data name="OperationCompletedSuccessfully" xml:space="preserve">
+    <value>Operación completada satisfactoriamente. Números de serie corregidos: {0}</value>
+  </data>
+  <data name="SelectTheCarModelDirectoryInsideNFS3GamedataFolder" xml:space="preserve">
+    <value>Seleccione el directorio 'CarModel' dentro de la carpeta 'Gamedata' en la raíz de NFS3.</value>
+  </data>
+  <data name="SerialNumberAnalyzer" xml:space="preserve">
+    <value>Analizador de números de serie</value>
+  </data>
+  <data name="Undefined" xml:space="preserve">
+    <value>Indefinido</value>
+  </data>
+  <data name="WritingX" xml:space="preserve">
+    <value>Escribiendo '{0}'...</value>
   </data>
 </root>

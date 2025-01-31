@@ -129,4 +129,22 @@
   <data name="SavingX" xml:space="preserve">
     <value>Guardando {0}...</value>
   </data>
+  <data name="VivEditorState_UnknownFriendlyName" xml:space="preserve">
+    <value>&lt; desconocido o archivo VIV que no es de un vehículo &gt;</value>
+  </data>
+  <data name="ExtraTools" xml:space="preserve">
+    <value>Herramientas adicionales</value>
+  </data>
+  <data name="FileNotFound" xml:space="preserve">
+    <value>Archivo no encontrado.</value>
+  </data>
+  <data name="FileNotFound2" xml:space="preserve">
+    <value>El archivo que ha seleccionado no existe o es inaccesible.</value>
+  </data>
+  <data name="NewFile" xml:space="preserve">
+    <value>Nuevo archivo</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>Aceptar</value>
+  </data>
 </root>

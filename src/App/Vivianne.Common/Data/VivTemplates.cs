@@ -7,7 +7,7 @@ using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Resources;
 using TheXDS.Vivianne.Serializers;
 
-namespace TheXDS.Vivianne.Component;
+namespace TheXDS.Vivianne.Data;
 
 internal static class VivTemplates
 {

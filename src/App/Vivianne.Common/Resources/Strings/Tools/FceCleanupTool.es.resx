@@ -117,10 +117,43 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="OpnMessage" xml:space="preserve">
-    <value>Seleccione el archivo FSH/QFS a editar</value>
+  <data name="FCECleanup" xml:space="preserve">
+    <value>Limpieza de FCE</value>
   </data>
-  <data name="ToolName" xml:space="preserve">
-    <value>Editor FSH/QFS</value>
+  <data name="FCEDataHasBeenCleanedUp" xml:space="preserve">
+    <value>Los datos del FCE han sido limpiados.</value>
+  </data>
+  <data name="FixingX" xml:space="preserve">
+    <value>Reparando: {0}...</value>
+  </data>
+  <data name="MoreDetails" xml:space="preserve">
+    <value>Más detalles</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="NoProblemsFound" xml:space="preserve">
+    <value>No se han encontrado problemas</value>
+  </data>
+  <data name="ParsingFCEFile" xml:space="preserve">
+    <value>Leyendo archivo FCE...</value>
+  </data>
+  <data name="SavingFile" xml:space="preserve">
+    <value>Guardando archivo...</value>
+  </data>
+  <data name="TheFCEFileDataIsValid" xml:space="preserve">
+    <value>Los datos del archivo FCE son válidos.</value>
+  </data>
+  <data name="VerifyingFCEData" xml:space="preserve">
+    <value>Verificando datos FCE...</value>
+  </data>
+  <data name="XProblemsFound" xml:space="preserve">
+    <value>{0} problemas encontrados...</value>
+  </data>
+  <data name="XProblemsFoundQuestion" xml:space="preserve">
+    <value>{0} problemas encontrados. ¿Le gustaría solucionarlos?</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Sí</value>
   </data>
 </root>
