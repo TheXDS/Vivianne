@@ -181,7 +181,7 @@ public class SerialNumberAnalyzer : IVivianneTool
     }
 
     /// <inheritdoc/>
-    public string ToolName => St.SerialNumberAnalyzer;
+    public string ToolName => St.SerialNumberAnalyzerTitle;
 
     /// <inheritdoc/>
     public async Task Run(IDialogService dlg, INavigationService _)

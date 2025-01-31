@@ -144,7 +144,7 @@
   <data name="SelectTheCarModelDirectoryInsideNFS3GamedataFolder" xml:space="preserve">
     <value>Seleccione el directorio 'CarModel' dentro de la carpeta 'Gamedata' en la raíz de NFS3.</value>
   </data>
-  <data name="SerialNumberAnalyzer" xml:space="preserve">
+  <data name="SerialNumberAnalyzerTitle" xml:space="preserve">
     <value>Analizador de números de serie</value>
   </data>
   <data name="Undefined" xml:space="preserve">

@@ -112,7 +112,7 @@
   <data name="WritingX" xml:space="preserve">
     <value>Writing '{0}'...</value>
   </data>
-  <data name="SerialNumberAnalyzer" xml:space="preserve">
+  <data name="SerialNumberAnalyzerTitle" xml:space="preserve">
     <value>Serial number analyzer</value>
   </data>
   <data name="CarModelPath" xml:space="preserve">

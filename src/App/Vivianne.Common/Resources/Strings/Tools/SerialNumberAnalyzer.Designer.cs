@@ -144,9 +144,9 @@ namespace TheXDS.Vivianne.Resources.Strings.Tools {
         /// <summary>
         ///   Looks up a localized string similar to Serial number analyzer.
         /// </summary>
-        internal static string SerialNumberAnalyzer {
+        internal static string SerialNumberAnalyzerTitle {
             get {
-                return ResourceManager.GetString("SerialNumberAnalyzer", resourceCulture);
+                return ResourceManager.GetString("SerialNumberAnalyzerTitle", resourceCulture);
             }
         }
         
