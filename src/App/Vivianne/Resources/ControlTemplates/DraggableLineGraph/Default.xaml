@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:hlp="clr-namespace:TheXDS.Vivianne.Helpers"
+    xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings.Controls"
     xmlns:sys="clr-namespace:System;assembly=netstandard"
     xmlns:local="clr-namespace:TheXDS.Vivianne.Controls">
     <Style TargetType="{x:Type local:DraggableLineGraph}">
@@ -17,7 +18,7 @@
                                     <Button
                                         DockPanel.Dock="Right"
                                         Content="..."
-                                        ToolTip="Edit in full screen"
+                                        ToolTip="{x:Static st:DraggableLineGraph.EditInFullScreen}"
                                         Padding="0"
                                         Command="{TemplateBinding OpenEditorDialogCommand}"
                                         CommandParameter="{TemplateBinding ItemsSource}"/>
@@ -25,8 +26,8 @@
                                 </DockPanel>
                             </Expander.Header>
                             <UniformGrid Margin="5" Rows="1">
-                                <ui:NumberBox hlp:Form.Label="Min" Value="{Binding MinValue, RelativeSource={RelativeSource TemplatedParent}}"/>
-                                <ui:NumberBox hlp:Form.Label="Max" Value="{Binding MaxValue, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:DraggableLineGraph.Min}" Value="{Binding MinValue, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:DraggableLineGraph.Max}" Value="{Binding MaxValue, RelativeSource={RelativeSource TemplatedParent}}"/>
                             </UniformGrid>
                         </Expander>
                         <Border MinHeight="20" MaxHeight="300"

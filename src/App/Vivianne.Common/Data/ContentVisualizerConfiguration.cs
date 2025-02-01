@@ -52,13 +52,13 @@ internal static class ContentVisualizerConfiguration
         yield return new(".fce", CreateFceEditorViewModel);
     }
 
-    private static FcePreviewViewModel CreateFceEditorViewModel(byte[] data, Action<byte[]> _, VivEditorState viv, string __)
+    private static FceEditorViewModel CreateFceEditorViewModel(byte[] data, Action<byte[]> _, VivEditorState viv, string __)
     {
         ISerializer<FceFile> s = new FceSerializer();
         return new(s.Deserialize(data), viv.Directory);
     }
 
-    private static FeDataPreviewViewModel CreateFeDataEditorViewModel(byte[] data, Action<byte[]> saveCallback, VivEditorState viv, string name)
+    private static FeDataEditorViewModel CreateFeDataEditorViewModel(byte[] data, Action<byte[]> saveCallback, VivEditorState viv, string name)
     {
         return new(data, saveCallback, viv, name) { Title = name };
     }

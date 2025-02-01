@@ -72,9 +72,9 @@
                     <TextBlock><Run Text="{x:Static st:FshEditorView.Zoom}"/><Run Text="{Binding ZoomLevel, Mode=OneWay}"/></TextBlock>
                     <Slider x:Name="sldZoom" Minimum="1.0" Maximum="10.0" Value="{Binding ZoomLevel}" Margin="5" Width="100" SmallChange="0.5" LargeChange="1" TickFrequency="0.125" IsSnapToTickEnabled="True"/>
                     <CheckBox Style="{StaticResource ToggleSwitch}" Padding="10,0" IsChecked="{Binding Alpha}">
-                        <TextBlock>Alpha</TextBlock>
+                        <TextBlock Text="{x:Static st:FshEditorView.Alpha}"/>
                     </CheckBox>
-                    <TextBlock><Run Text="{x:Static st:FshEditorView.Background}"/></TextBlock>
+                    <TextBlock Text="{x:Static st:FshEditorView.Background}"/>
                     <ComboBox
                         IsEnabled="{Binding Alpha, Mode=OneWay}"
                         Width="180"

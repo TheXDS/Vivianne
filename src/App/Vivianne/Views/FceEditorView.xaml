@@ -1,18 +1,19 @@
 ﻿<UserControl
-    x:Class="TheXDS.Vivianne.Views.FcePreviewView"
+    x:Class="TheXDS.Vivianne.Views.FceEditorView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:hlp="clr-namespace:TheXDS.Vivianne.Helpers"
-    xmlns:valueconverters="clr-namespace:TheXDS.Vivianne.ValueConverters"
-    xmlns:viewmodels="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
-    d:DataContext="{d:DesignInstance Type=viewmodels:FcePreviewViewModel}"
+    xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings.Views"
+    xmlns:vc="clr-namespace:TheXDS.Vivianne.ValueConverters"
+    xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
+    d:DataContext="{d:DesignInstance Type=vm:FceEditorViewModel}"
     mc:Ignorable="d"     
     d:DesignHeight="250" d:DesignWidth="500">
     <UserControl.Resources>
-        <valueconverters:FcePreviewViewModelToModel3DGroupConverter x:Key="fcevm2mesh"/>
-        <valueconverters:DrawingColorToBrushConverter x:Key="dc2bc"/>
+        <vc:FcePreviewViewModelToModel3DGroupConverter x:Key="fcevm2mesh"/>
+        <vc:DrawingColorToBrushConverter x:Key="dc2bc"/>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -39,7 +40,7 @@
         </ScrollViewer>
         <WrapPanel Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="5">
             <ComboBox
-                hlp:Form.Label="Texture"
+                hlp:Form.Label="{x:Static st:FceEditorView.Texture}"
                 Width="150"
                 Margin="5"
                 ItemsSource="{Binding CarTextures, Mode=OneWay}"
@@ -47,7 +48,7 @@
                 DisplayMemberPath="Name"
                 SelectedValue="{Binding SelectedCarTexture}"/>            
             <ComboBox
-                hlp:Form.Label="Color"
+                hlp:Form.Label="{x:Static st:FceEditorView.Color}"
                 Width="230"
                 Margin="5"
                 SelectedIndex="{Binding SelectedColorIndex}"
@@ -67,7 +68,7 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            <Button Margin="5" VerticalAlignment="Stretch" Command="{Binding ColorEditorCommand, Mode=OneWay}">Edit colors...</Button>
+            <Button Margin="5" VerticalAlignment="Stretch" Command="{Binding ColorEditorCommand, Mode=OneWay}" Content="{x:Static st:FceEditorView.EditColors}"/>
         </WrapPanel>
         <Border Grid.Row="1" Grid.Column="1" Background="{StaticResource DarkBackground}">
             <Viewport3D>

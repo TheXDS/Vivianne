@@ -5,15 +5,15 @@ using TheXDS.Vivianne.Models;
 namespace TheXDS.Vivianne.ViewModels;
 
 /// <summary>
-/// Represents the renderring state for the <see cref="FcePreviewViewModel"/>.
+/// Represents the renderring state for the <see cref="FceEditorViewModel"/>.
 /// </summary>
 /// <remarks>
 /// Initializes a new instance of the <see cref="RenderTreeState"/> class.
 /// </remarks>
 /// <param name="source">Data source for the render tree.</param>
-public class RenderTreeState(FcePreviewViewModel source)
+public class RenderTreeState(FceEditorViewModel source)
 {
-    private readonly FcePreviewViewModel source = source;
+    private readonly FceEditorViewModel source = source;
 
     /// <summary>
     /// Enumerates the visible parts from the source ViewModel.

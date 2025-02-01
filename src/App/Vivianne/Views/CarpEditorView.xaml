@@ -6,8 +6,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mdl="clr-namespace:TheXDS.Vivianne.Models;assembly=VivLib"
     xmlns:gn="http://schemas.thexds.local/ganymede"
-    xmlns:controls="clr-namespace:TheXDS.Vivianne.Controls"
-    xmlns:viewmodels="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
+    xmlns:ct="clr-namespace:TheXDS.Vivianne.Controls"
+    xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
+    xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings.Views"
     xmlns:models="clr-namespace:TheXDS.Vivianne.Models;assembly=Vivianne.Common"
     xmlns:vc="clr-namespace:TheXDS.Vivianne.ValueConverters"
     xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.ObjectModel"
@@ -15,12 +16,12 @@
     xmlns:hlp="clr-namespace:TheXDS.Vivianne.Helpers"
     xmlns:mcart="http://schemas.thexds.local/mcart"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-    d:DataContext="{d:DesignInstance Type=viewmodels:CarpEditorViewModel}"
+    d:DataContext="{d:DesignInstance Type=vm:CarpEditorViewModel}"
     mc:Ignorable="d" 
     d:DesignWidth="800">
     <UserControl.Resources>
         <sys:Double x:Key="gearGraphHeight">100</sys:Double>
-        <Style TargetType="controls:DraggableLineGraph" BasedOn="{StaticResource {x:Type controls:DraggableLineGraph}}">
+        <Style TargetType="ct:DraggableLineGraph" BasedOn="{StaticResource {x:Type ct:DraggableLineGraph}}">
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="CornerRadius" Value="5"/>
             <Setter Property="Margin" Value="5"/>
@@ -37,44 +38,44 @@
     <DockPanel>
         <Border DockPanel.Dock="Top" MinHeight="45">
             <mcart:StretchyWrapPanel HorizontalAlignment="Center" Margin="5">
-                <Button Margin="5" Command="{Binding SaveChangesCommand, Mode=OneWay}">Save</Button>
-                <Button Margin="5">Realistic carp wizard</Button>
-                <Button Margin="5" Command="{Binding PerformanceMetricsCommand}">Performance metrics</Button>
-                <Button Margin="5" Command="{Binding FedataSyncCommand}">Sync with FeData</Button>
+                <Button Margin="5" Command="{Binding SaveChangesCommand, Mode=OneWay}" Content="{x:Static st:CarpEditorView.Save}"/>
+                <Button Margin="5" Content="{x:Static st:CarpEditorView.RealisticCarpWizard}"></Button>
+                <Button Margin="5" Command="{Binding PerformanceMetricsCommand}" Content="{x:Static st:CarpEditorView.PerformanceMetrics}"></Button>
+                <Button Margin="5" Command="{Binding FedataSyncCommand}" Content="{x:Static st:CarpEditorView.SyncWithFeData}"></Button>
             </mcart:StretchyWrapPanel>
         </Border>
         <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
             <StackPanel>
-                <Expander Header="Basic information" IsExpanded="True">
+                <Expander Header="{x:Static st:CarpEditorView.BasicInformation}" IsExpanded="True">
                     <UniformGrid Columns="3">
                         <ui:NumberBox
-                            hlp:Form.Label="Serial number"
+                            hlp:Form.Label="{x:Static st:FeDataEditorView.SerialNumber}"
                             ClearButtonEnabled="False"
                             Value="{Binding State.SerialNumber}"
                             Maximum="65535"/>
                         <ComboBox
                             Margin="5"
                             HorizontalContentAlignment="Right"
-                            hlp:Form.Label="Car class"
+                            hlp:Form.Label="{x:Static st:FeDataEditorView.CarClass}"
                             IsEditable="False"
                             SelectedItem="{Binding State.CarClass}"
-                            ItemsSource="{controls:EnumValProvider EnumType={x:Type mdl:Nfs3CarClass}}"/>
-                        <ui:NumberBox hlp:Form.Label="Mass (Kg)" PlaceholderText="" Minimum="1" Value="{Binding State.Mass}"/>
-                        <ui:NumberBox hlp:Form.Label="Top Speed (m/s)" Minimum="1" Value="{Binding State.TopSpeed}"/>
-                        <ui:NumberBox hlp:Form.Label="Camera arm" Maximum="1" LargeChange="0.5" SmallChange="0.1" Value="{Binding State.CameraArm}"/>
+                            ItemsSource="{ct:EnumValProvider EnumType={x:Type mdl:Nfs3CarClass}}"/>
+                        <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.MassKg}" Minimum="1" Value="{Binding State.Mass}"/>
+                        <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.TopSpeedMS}" Minimum="1" Value="{Binding State.TopSpeed}"/>
+                        <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.CameraArm}" Maximum="1" LargeChange="0.5" SmallChange="0.1" Value="{Binding State.CameraArm}"/>
                     </UniformGrid>
                 </Expander>
-                <Expander Header="Drivetrain" IsExpanded="True">
+                <Expander Header="{x:Static st:CarpEditorView.Drivetrain}" IsExpanded="True">
                     <UniformGrid Columns="3">
                         <StackPanel>
                             <ui:NumberBox
                                 Margin="5"
-                                hlp:Form.Label="Max velocity (m/s)"
+                                hlp:Form.Label="{x:Static st:CarpEditorView.MaxVelocityMS}"
                                 Minimum="0"
                                 Value="{Binding State.MaxVelocity}"/>
                             <ui:NumberBox
                                 Margin="5"
-                                hlp:Form.Label="Front drive ratio"
+                                hlp:Form.Label="{x:Static st:CarpEditorView.FrontDriveRatio}"
                                 Maximum="1"                                
                                 Minimum="0"
                                 SmallChange="0.1"
@@ -83,12 +84,12 @@
                                 Value="{Binding State.FrontDriveRatio}"/>
                             <ui:NumberBox                                
                                 Margin="5"
-                                hlp:Form.Label="Gear shift delay"
+                                hlp:Form.Label="{x:Static st:CarpEditorView.GearShiftDelay}"
                                 Minimum="0"
                                 Value="{Binding State.GearShiftDelay}"/>
                         </StackPanel>
-                        <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" ItemsSource="{Binding State.ShiftBlip}" Title="Shift blip" />
-                        <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" ItemsSource="{Binding State.BrakeBlip}" Title="Brake blip" />
+                        <ct:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" ItemsSource="{Binding State.ShiftBlip}" Title="{x:Static st:CarpEditorView.ShiftBlip}" />
+                        <ct:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" ItemsSource="{Binding State.BrakeBlip}" Title="{x:Static st:CarpEditorView.BrakeBlip}" />
                     </UniformGrid>
                 </Expander>
                 <Grid>
@@ -97,16 +98,16 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Expander Header="Manual gearbox" IsExpanded="True">
+                    <Expander Header="{x:Static st:CarpEditorView.ManualGearbox}" IsExpanded="True">
                         <StackPanel>
                             <UniformGrid Columns="2">
                                 <ui:NumberBox
-                                    hlp:Form.Label="Number of gears"
+                                    hlp:Form.Label="{x:Static st:CarpEditorView.NumberOfGears}"
                                     Minimum="3"
                                     Maximum="8"
                                     Value="{Binding State.NumberOfGearsManual}"/>
                                 <ui:NumberBox
-                                    hlp:Form.Label="Final gear ratio"
+                                    hlp:Form.Label="{x:Static st:CarpEditorView.FinalGearRatio}"
                                     Minimum="0.01"
                                     Maximum="999.99"
                                     SmallChange="0.01"
@@ -114,22 +115,22 @@
                                     Value="{Binding State.FinalGearManual}"/>
                             </UniformGrid>
                             <UniformGrid Columns="1">
-                                <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="Velocity to RPM" ItemsSource="{Binding State.VelocityToRpmManual}"/>
-                                <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="Gear ratios" ItemsSource="{Binding State.GearRatioManual}"/>
-                                <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="Gear efficiency" ItemsSource="{Binding State.GearEfficiencyManual}"/>
+                                <ct:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="{x:Static st:CarpEditorView.VelocityToRPM}" ItemsSource="{Binding State.VelocityToRpmManual}"/>
+                                <ct:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="{x:Static st:CarpEditorView.GearRatios}" ItemsSource="{Binding State.GearRatioManual}"/>
+                                <ct:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="{x:Static st:CarpEditorView.GearEfficiency}" ItemsSource="{Binding State.GearEfficiencyManual}"/>
                             </UniformGrid>
                         </StackPanel>
                     </Expander>
-                    <Expander Grid.Column="2" Header="Automatic gearbox" IsExpanded="True">
+                    <Expander Grid.Column="2" Header="{x:Static st:CarpEditorView.AutomaticGearbox}" IsExpanded="True">
                         <StackPanel>
                             <UniformGrid Columns="2">
                                 <ui:NumberBox
-                                    hlp:Form.Label="Number of gears"
+                                    hlp:Form.Label="{x:Static st:CarpEditorView.NumberOfGears}"
                                     Minimum="3"
                                     Maximum="8"
                                     Value="{Binding State.NumberOfGearsAuto}"/>
                                 <ui:NumberBox
-                                    hlp:Form.Label="Final gear ratio"
+                                    hlp:Form.Label="{x:Static st:CarpEditorView.FinalGearRatio}"
                                     Minimum="0.01"
                                     Maximum="999.99"
                                     SmallChange="0.01"
@@ -137,14 +138,14 @@
                                     Value="{Binding State.FinalGearAuto}"/>
                             </UniformGrid>
                             <UniformGrid Columns="1">
-                                <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="Velocity to RPM" ItemsSource="{Binding State.VelocityToRpmAuto}"/>
-                                <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="Gear ratios" ItemsSource="{Binding State.GearRatioAuto}"/>
-                                <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="Gear efficiency" ItemsSource="{Binding State.GearEfficiencyAuto}"/>
+                                <ct:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="{x:Static st:CarpEditorView.VelocityToRPM}" ItemsSource="{Binding State.VelocityToRpmAuto}"/>
+                                <ct:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="{x:Static st:CarpEditorView.GearRatios}" ItemsSource="{Binding State.GearRatioAuto}"/>
+                                <ct:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="{x:Static st:CarpEditorView.GearEfficiency}" ItemsSource="{Binding State.GearEfficiencyAuto}"/>
                             </UniformGrid>
                         </StackPanel>
                     </Expander>
                     <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5">
-                        <TextBlock TextAlignment="Center">Copy</TextBlock>
+                        <TextBlock TextAlignment="Center" Text="Copy"/>
                         <Button Command="{Binding CopyTransToManualCommand, Mode=OneWay}" Margin="5">◀️</Button>
                         <Button Command="{Binding CopyTransToAutoCommand, Mode=OneWay}" Margin="5">▶️</Button>
                     </StackPanel>
@@ -153,15 +154,15 @@
                     <StackPanel>
                         <UniformGrid Rows="1">
                             <ui:NumberBox
-                                hlp:Form.Label="Minimum RPM"
+                                hlp:Form.Label="{x:Static st:CarpEditorView.MinimumRPM}"
                                 Value="{Binding State.EngineMinRpm}"
                                 Maximum="{Binding State.EngineMaxRpm, Mode=OneWay}"/>
                             <ui:NumberBox
-                                hlp:Form.Label="Maximum RPM"
+                                hlp:Form.Label="{x:Static st:CarpEditorView.MaximumRPM}"
                                 Value="{Binding State.EngineMaxRpm}"
                                 Minimum="{Binding State.EngineMinRpm, Mode=OneWay}"/>
                         </UniformGrid>
-                        <controls:DraggableLineGraph
+                        <ct:DraggableLineGraph
                             Title="Torque curve"
                             ItemsSource="{Binding State.TorqueCurve}"
                             Height="200"
@@ -169,47 +170,47 @@
                             OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}"/>
                     </StackPanel>
                 </Expander>
-                <Expander Header="Drive dynamics" IsExpanded="True">
+                <Expander Header="{x:Static st:CarpEditorView.DriveDynamics}" IsExpanded="True">
                     <StackPanel>
                         <UniformGrid Columns="2">
-                            <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="Gas increase curve" ItemsSource="{Binding State.GasIncreaseCurve}" Height="{StaticResource gearGraphHeight}" MinValue="0"/>
-                            <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="Gas decrease curve" ItemsSource="{Binding State.GasDecreaseCurve}" Height="{StaticResource gearGraphHeight}" MinValue="0"/>
-                            <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="Brake increase curve" ItemsSource="{Binding State.BrakeIncreaseCurve}" Height="{StaticResource gearGraphHeight}" MinValue="0"/>
-                            <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="Brake decrease curve" ItemsSource="{Binding State.BrakeDecreaseCurve}" Height="{StaticResource gearGraphHeight}" MinValue="0"/>
+                            <ct:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="{x:Static st:CarpEditorView.GasIncreaseCurve}" ItemsSource="{Binding State.GasIncreaseCurve}" Height="{StaticResource gearGraphHeight}" MinValue="0"/>
+                            <ct:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="{x:Static st:CarpEditorView.GasDecreaseCurve}" ItemsSource="{Binding State.GasDecreaseCurve}" Height="{StaticResource gearGraphHeight}" MinValue="0"/>
+                            <ct:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="{x:Static st:CarpEditorView.BrakeIncreaseCurve}" ItemsSource="{Binding State.BrakeIncreaseCurve}" Height="{StaticResource gearGraphHeight}" MinValue="0"/>
+                            <ct:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="{x:Static st:CarpEditorView.BrakeDecreaseCurve}" ItemsSource="{Binding State.BrakeDecreaseCurve}" Height="{StaticResource gearGraphHeight}" MinValue="0"/>
                         </UniformGrid>
                         <UniformGrid Columns="3">
-                            <CheckBox Margin="5" IsChecked="{Binding State.Abs}" Content="Antilock Brake System"/>
-                            <ui:NumberBox hlp:Form.Label="Max braking decel" Value="{Binding State.MaxBrakeDecel}"/>
-                            <ui:NumberBox hlp:Form.Label="Front bias brake ratio" Value="{Binding State.FrontBrakeBias}" Minimum="0" Maximum="1" SmallChange="0.05" LargeChange="0.1"/>
-                            <ui:NumberBox hlp:Form.Label="Wheel base" Minimum="0.01" Value="{Binding State.WheelBase}"/>
-                            <ui:NumberBox hlp:Form.Label="Front grip bias" Value="{Binding State.FrontGripBias}" Minimum="0" Maximum="1" SmallChange="0.5" LargeChange="0.1"/>
-                            <CheckBox Margin="5" IsChecked="{Binding State.PowerSteering}" Content="Power steering"/>
-                            <ui:NumberBox hlp:Form.Label="Min steering accel" Value="{Binding State.MinimumSteerAccel}"/>
-                            <ui:NumberBox hlp:Form.Label="Turn in ramp" Value="{Binding State.TurnInRamp}"/>
-                            <ui:NumberBox hlp:Form.Label="Turn out ramp" Value="{Binding State.TurnOutRamp}"/>
-                            <ui:NumberBox hlp:Form.Label="Lateral acc. grip mult." Value="{Binding State.LateralAccGripMult}"/>
-                            <ui:NumberBox hlp:Form.Label="Aero downforce mult." Value="{Binding State.AeroDownMult}"/>
-                            <ui:NumberBox hlp:Form.Label="Gas off factor" Value="{Binding State.GasOffFactor}"/>
-                            <ui:NumberBox hlp:Form.Label="G transfer factor" Value="{Binding State.GTransferFactor}"/>
-                            <ui:NumberBox hlp:Form.Label="Turn circle radius" Value="{Binding State.TurnCircleRadius}"/>
-                            <ui:NumberBox hlp:Form.Label="Slide multiplier" Value="{Binding State.SlideMult}"/>
-                            <ui:NumberBox hlp:Form.Label="Spin velocity cap" Value="{Binding State.SpinVelocityCap}"/>
-                            <ui:NumberBox hlp:Form.Label="Slide velocity cap" Value="{Binding State.SlideVelocityCap}"/>
-                            <ui:NumberBox hlp:Form.Label="Slide assistance factor" Value="{Binding State.SlideAssistanceFactor}"/>
-                            <ui:NumberBox hlp:Form.Label="Push factor" Value="{Binding State.PushFactor}"/>
-                            <ui:NumberBox hlp:Form.Label="Low turn factor" Value="{Binding State.LowTurnFactor}"/>
-                            <ui:NumberBox hlp:Form.Label="High turn factor" Value="{Binding State.HighTurnFactor}"/>
-                            <ui:NumberBox hlp:Form.Label="Pitch roll factor" Value="{Binding State.PitchRollFactor}"/>
-                            <ui:NumberBox hlp:Form.Label="Road bump factor" Value="{Binding State.RoadBumpFactor}"/>
-                            <ui:NumberBox hlp:Form.Label="Spoiler function type" Value="{Binding State.SpoilerFunctionType}"/>
-                            <ui:NumberBox hlp:Form.Label="Spoiler act. speed" Value="{Binding State.SpoilerActivationSpeed}"/>
-                            <ui:NumberBox hlp:Form.Label="Gradual turn cutoff" Value="{Binding State.GradualTurnCutoff}"/>
-                            <ui:NumberBox hlp:Form.Label="Medium turn cutoff" Value="{Binding State.MediumTurnCutoff}"/>
-                            <ui:NumberBox hlp:Form.Label="Sharp turn cutoff" Value="{Binding State.SharpTurnCutoff}"/>
-                            <ui:NumberBox hlp:Form.Label="Med. turn spd. mod." Value="{Binding State.MediumTurnSpdMod}"/>
-                            <ui:NumberBox hlp:Form.Label="Sharp turn spd. mod." Value="{Binding State.SharpTurnSpdMod}"/>
-                            <ui:NumberBox hlp:Form.Label="Extr. turn spd. mod." Value="{Binding State.ExtremeTurnSpdMod}"/>
-                            <ui:NumberBox hlp:Form.Label="Subdivide level" Value="{Binding State.SubdivideLevel}"/>
+                            <CheckBox Margin="5" IsChecked="{Binding State.Abs}" Content="{x:Static st:CarpEditorView.AntilockBrakeSystem}"/>
+                            <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.MaxBrakingDecel}" Value="{Binding State.MaxBrakeDecel}"/>
+                            <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.FrontBiasBrakeRatio}" Value="{Binding State.FrontBrakeBias}" Minimum="0" Maximum="1" SmallChange="0.05" LargeChange="0.1"/>
+                            <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.WheelBase}" Minimum="0.01" Value="{Binding State.WheelBase}"/>
+                            <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.FrontGripBias}" Value="{Binding State.FrontGripBias}" Minimum="0" Maximum="1" SmallChange="0.5" LargeChange="0.1"/>
+                            <CheckBox Margin="5" IsChecked="{Binding State.PowerSteering}" Content="{x:Static st:CarpEditorView.PowerSteering}"/>
+                            <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.MinSteeringAccel}" Value="{Binding State.MinimumSteerAccel}"/>
+                            <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.TurnInRamp}" Value="{Binding State.TurnInRamp}"/>
+                            <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.TurnOutRamp}" Value="{Binding State.TurnOutRamp}"/>
+                            <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.LateralAccGripMult}" Value="{Binding State.LateralAccGripMult}"/>
+                            <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.AeroDownforceMult}" Value="{Binding State.AeroDownMult}"/>
+                            <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.GasOffFactor}" Value="{Binding State.GasOffFactor}"/>
+                            <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.GTransferFactor}" Value="{Binding State.GTransferFactor}"/>
+                            <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.TurnCircleRadius}" Value="{Binding State.TurnCircleRadius}"/>
+                            <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.SlideMultiplier}" Value="{Binding State.SlideMult}"/>
+                            <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.SpinVelocityCap}" Value="{Binding State.SpinVelocityCap}"/>
+                            <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.SlideVelocityCap}" Value="{Binding State.SlideVelocityCap}"/>
+                            <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.SlideAssistanceFactor}" Value="{Binding State.SlideAssistanceFactor}"/>
+                            <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.PushFactor}" Value="{Binding State.PushFactor}"/>
+                            <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.LowTurnFactor}" Value="{Binding State.LowTurnFactor}"/>
+                            <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.HighTurnFactor}" Value="{Binding State.HighTurnFactor}"/>
+                            <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.PitchRollFactor}" Value="{Binding State.PitchRollFactor}"/>
+                            <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.RoadBumpFactor}" Value="{Binding State.RoadBumpFactor}"/>
+                            <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.SpoilerFunctionType}" Value="{Binding State.SpoilerFunctionType}"/>
+                            <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.SpoilerActSpeed}" Value="{Binding State.SpoilerActivationSpeed}"/>
+                            <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.GradualTurnCutoff}" Value="{Binding State.GradualTurnCutoff}"/>
+                            <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.MediumTurnCutoff}" Value="{Binding State.MediumTurnCutoff}"/>
+                            <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.SharpTurnCutoff}" Value="{Binding State.SharpTurnCutoff}"/>
+                            <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.MedTurnSpdMod}" Value="{Binding State.MediumTurnSpdMod}"/>
+                            <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.SharpTurnSpdMod}" Value="{Binding State.SharpTurnSpdMod}"/>
+                            <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.ExtrTurnSpdMod}" Value="{Binding State.ExtremeTurnSpdMod}"/>
+                            <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.SubdivideLevel}" Value="{Binding State.SubdivideLevel}"/>
                         </UniformGrid>
                     </StackPanel>
                 </Expander>
@@ -219,80 +220,80 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Expander Header="Front tires" IsExpanded="True">
+                    <Expander Header="{x:Static st:CarpEditorView.FrontTires}" IsExpanded="True">
                         <UniformGrid Columns="2">
-                            <ui:NumberBox hlp:Form.Label="Tire width" Value="{Binding State.TireWidthFront}"/>
-                            <ui:NumberBox hlp:Form.Label="Tire sidewall" Value="{Binding State.TireSidewallFront}"/>
-                            <ui:NumberBox hlp:Form.Label="Rim size" Value="{Binding State.TireRimFront}"/>
+                            <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.TireWidth}" Value="{Binding State.TireWidthFront}"/>
+                            <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.TireSidewall}" Value="{Binding State.TireSidewallFront}"/>
+                            <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.RimSize}" Value="{Binding State.TireRimFront}"/>
                         </UniformGrid>
                     </Expander>
-                    <Expander Grid.Column="2" Header="Rear tires" IsExpanded="True">
+                    <Expander Grid.Column="2" Header="{x:Static st:CarpEditorView.RearTires}" IsExpanded="True">
                         <UniformGrid Columns="2">
-                            <ui:NumberBox hlp:Form.Label="Tire width" Value="{Binding State.TireWidthRear}"/>
-                            <ui:NumberBox hlp:Form.Label="Tire sidewall" Value="{Binding State.TireSidewallRear}"/>
-                            <ui:NumberBox hlp:Form.Label="Rim size" Value="{Binding State.TireRimRear}"/>
+                            <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.TireWidth}" Value="{Binding State.TireWidthRear}"/>
+                            <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.TireSidewall}" Value="{Binding State.TireSidewallRear}"/>
+                            <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.RimSize}" Value="{Binding State.TireRimRear}"/>
                         </UniformGrid>
                     </Expander>
                     <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5">
-                        <TextBlock TextAlignment="Center">Copy</TextBlock>
+                        <TextBlock TextAlignment="Center" Text="{x:Static st:CarpEditorView.Copy}"></TextBlock>
                         <Button Command="{Binding CopyTiresToFrontCommand}" Margin="5">◀️</Button>
                         <Button Command="{Binding CopyTiresToRearCommand}" Margin="5">▶️</Button>
                     </StackPanel>
                 </Grid>
                 <Expander Header="AI curves" IsExpanded="True">
                     <UniformGrid Rows="2">
-                        <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" CornerRadius="5,0,0,5" Margin="0" Title="AI Curve 0" ItemsSource="{Binding State.AiCurve0}" MinValue="0" MaxValue="10"/>
-                        <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" CornerRadius="0" Margin="0" Title="AI Curve 1" ItemsSource="{Binding State.AiCurve1}" MinValue="0" MaxValue="10"/>
-                        <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" CornerRadius="0" Margin="0" Title="AI Curve 2" ItemsSource="{Binding State.AiCurve2}" MinValue="0" MaxValue="10"/>
-                        <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" CornerRadius="0,5,5,0" Margin="0" Title="AI Curve 3" ItemsSource="{Binding State.AiCurve3}" MinValue="0" MaxValue="10"/>
-                        <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" CornerRadius="5,0,0,5" Margin="0" Title="AI Curve 4" ItemsSource="{Binding State.AiCurve4}" MinValue="0" MaxValue="10"/>
-                        <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" CornerRadius="0" Margin="0" Title="AI Curve 5" ItemsSource="{Binding State.AiCurve5}" MinValue="0" MaxValue="10"/>
-                        <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" CornerRadius="0" Margin="0" Title="AI Curve 6" ItemsSource="{Binding State.AiCurve6}" MinValue="0" MaxValue="10"/>
-                        <controls:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" CornerRadius="0,5,5,0" Margin="0" Title="AI Curve 7" ItemsSource="{Binding State.AiCurve7}" MinValue="0" MaxValue="10"/>
+                        <ct:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" CornerRadius="5,0,0,5" Margin="0" Title="{x:Static st:CarpEditorView.AICurve0}" ItemsSource="{Binding State.AiCurve0}" MinValue="0" MaxValue="10"/>
+                        <ct:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" CornerRadius="0" Margin="0" Title="{x:Static st:CarpEditorView.AICurve1}" ItemsSource="{Binding State.AiCurve1}" MinValue="0" MaxValue="10"/>
+                        <ct:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" CornerRadius="0" Margin="0" Title="{x:Static st:CarpEditorView.AICurve2}" ItemsSource="{Binding State.AiCurve2}" MinValue="0" MaxValue="10"/>
+                        <ct:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" CornerRadius="0,5,5,0" Margin="0" Title="{x:Static st:CarpEditorView.AICurve3}" ItemsSource="{Binding State.AiCurve3}" MinValue="0" MaxValue="10"/>
+                        <ct:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" CornerRadius="5,0,0,5" Margin="0" Title="{x:Static st:CarpEditorView.AICurve4}" ItemsSource="{Binding State.AiCurve4}" MinValue="0" MaxValue="10"/>
+                        <ct:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" CornerRadius="0" Margin="0" Title="{x:Static st:CarpEditorView.AICurve5}" ItemsSource="{Binding State.AiCurve5}" MinValue="0" MaxValue="10"/>
+                        <ct:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" CornerRadius="0" Margin="0" Title="{x:Static st:CarpEditorView.AICurve6}" ItemsSource="{Binding State.AiCurve6}" MinValue="0" MaxValue="10"/>
+                        <ct:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" CornerRadius="0,5,5,0" Margin="0" Title="{x:Static st:CarpEditorView.AICurve7}" ItemsSource="{Binding State.AiCurve7}" MinValue="0" MaxValue="10"/>
                     </UniformGrid>
                 </Expander>
                 <Expander>
                     <Expander.Header>
                         <DockPanel>
-                            <TextBlock>Miscellaneous carp data (affects car tuning in game, edit at your own risk)</TextBlock>
+                            <TextBlock Text="{x:Static st:CarpEditorView.MiscellaneousCarpData}"/>
                             <CheckBox x:Name="chkMiscCarp" Style="{StaticResource ToggleSwitch}" Margin="5"/>
                         </DockPanel>
                     </Expander.Header>
                     <UniformGrid IsEnabled="{Binding IsChecked, ElementName=chkMiscCarp}">
-                        <ui:NumberBox hlp:Form.Label="Tire wear"
+                        <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.TireWear}"
                             Value="{Binding State.TireWear}"
                             Minimum="0" Maximum="1" LargeChange="0.1" SmallChange="0.01" Icon="%"/>
-                        <ui:NumberBox hlp:Form.Label="Body damage" 
+                        <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.BodyDamage}" 
                             Value="{Binding State.BodyDamage}"
                             Minimum="0" Maximum="1" LargeChange="0.1" SmallChange="0.01" Icon="%"/>
-                        <ui:NumberBox hlp:Form.Label="Engine damage" 
+                        <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.EngineDamage}" 
                             Value="{Binding State.EngineDamage}"
                             Minimum="0" Maximum="1" LargeChange="0.1" SmallChange="0.01" Icon="%"/>
-                        <ui:NumberBox hlp:Form.Label="Suspension damage"
+                        <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.SuspensionDamage}"
                             Value="{Binding State.SuspensionDamage}"
                              Minimum="0" Maximum="1" LargeChange="0.1" SmallChange="0.01" Icon="%"/>
-                        <ui:NumberBox hlp:Form.Label="Engine tuning" 
+                        <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.EngineTuning}" 
                             Value="{Binding State.EngineTuning}"
                             Icon="%"/>
-                        <ui:NumberBox hlp:Form.Label="Brake balance" 
+                        <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.BrakeBalance}" 
                             Value="{Binding State.BrakeBalance}"
                             Icon="%"/>
-                        <ui:NumberBox hlp:Form.Label="Steering speed" 
+                        <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.SteeringSpeed}" 
                             Value="{Binding State.SteeringSpeed}"
                             Icon="%"/>
-                        <ui:NumberBox hlp:Form.Label="Brake balance" 
+                        <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.BrakeBalance}" 
                             Value="{Binding State.BrakeBalance}"
                             Icon="%"/>
-                        <ui:NumberBox hlp:Form.Label="Gear ratio factor" 
+                        <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.GearRatioFactor}" 
                             Value="{Binding State.GearRatFactor}"
                             Icon="%"/>
-                        <ui:NumberBox hlp:Form.Label="Suspension stiffness" 
+                        <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.SuspensionStiffness}" 
                             Value="{Binding State.SuspensionStiffness}"
                             Icon="%"/>
-                        <ui:NumberBox hlp:Form.Label="Aero factor" 
+                        <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.AeroFactor}" 
                             Value="{Binding State.AeroFactor}"
                             Icon="%"/>
-                        <ui:NumberBox hlp:Form.Label="Tire factor" 
+                        <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.TireFactor}" 
                             Value="{Binding State.TireFactor}"
                             Icon="%"/>
                     </UniformGrid>

@@ -4,29 +4,28 @@ using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using TheXDS.MCART.Helpers;
-using TheXDS.Vivianne.Component;
 using TheXDS.Vivianne.Extensions;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.ValueConverters;
 using TheXDS.Vivianne.ViewModels;
 using Image = SixLabors.ImageSharp.Image;
 
-namespace TheXDS.Vivianne;
+namespace TheXDS.Vivianne.Component;
 
 internal class WpfStaticFceRender : IStaticFceRender
 {
     FshBlob IStaticFceRender.RenderCompare(FceFile fce, byte[] textureData)
     {
-        var vm = new FcePreviewViewModel(fce, new Dictionary<string, byte[]>() { { "car00.tga", textureData } });
+        var vm = new FceEditorViewModel(fce, new Dictionary<string, byte[]>() { { "car00.tga", textureData } });
         var rts = new RenderTreeState(vm);
         var renderer = new FcePreviewViewModelToModel3DGroupConverter();
         var mg = renderer.Convert(rts, null, null);
         var viewPort = new Viewport3D()
         {
             Camera = new OrthographicCamera
-            { 
-                UpDirection= new Vector3D(1,0,0),
-                LookDirection = new Vector3D(0,0,0),
+            {
+                UpDirection = new Vector3D(1, 0, 0),
+                LookDirection = new Vector3D(0, 0, 0),
                 Position = new Point3D(0, 0, 0),
             },
         };

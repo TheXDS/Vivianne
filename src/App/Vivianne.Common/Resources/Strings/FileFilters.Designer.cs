@@ -22,7 +22,7 @@ namespace TheXDS.Vivianne.Resources.Strings {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class FileFilters {
+    public class FileFilters {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace TheXDS.Vivianne.Resources.Strings {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("TheXDS.Vivianne.Resources.Strings.FileFilters", typeof(FileFilters).Assembly);
@@ -51,7 +51,7 @@ namespace TheXDS.Vivianne.Resources.Strings {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace TheXDS.Vivianne.Resources.Strings {
         /// <summary>
         ///   Looks up a localized string similar to BMP bitmap image.
         /// </summary>
-        internal static string BMPBitmapImage {
+        public static string BMPBitmapImage {
             get {
                 return ResourceManager.GetString("BMPBitmapImage", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace TheXDS.Vivianne.Resources.Strings {
         /// <summary>
         ///   Looks up a localized string similar to BNK audio file.
         /// </summary>
-        internal static string BNKAudioFile {
+        public static string BNKAudioFile {
             get {
                 return ResourceManager.GetString("BNKAudioFile", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace TheXDS.Vivianne.Resources.Strings {
         /// <summary>
         ///   Looks up a localized string similar to Common image files.
         /// </summary>
-        internal static string CommonImageFiles {
+        public static string CommonImageFiles {
             get {
                 return ResourceManager.GetString("CommonImageFiles", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace TheXDS.Vivianne.Resources.Strings {
         /// <summary>
         ///   Looks up a localized string similar to Common VIV content files.
         /// </summary>
-        internal static string CommonVIVContentFiles {
+        public static string CommonVIVContentFiles {
             get {
                 return ResourceManager.GetString("CommonVIVContentFiles", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace TheXDS.Vivianne.Resources.Strings {
         /// <summary>
         ///   Looks up a localized string similar to FCE 3D model.
         /// </summary>
-        internal static string FCE3DModel {
+        public static string FCE3DModel {
             get {
                 return ResourceManager.GetString("FCE3DModel", resourceCulture);
             }
@@ -108,7 +108,7 @@ namespace TheXDS.Vivianne.Resources.Strings {
         /// <summary>
         ///   Looks up a localized string similar to FSH texture.
         /// </summary>
-        internal static string FshFile {
+        public static string FshFile {
             get {
                 return ResourceManager.GetString("FshFile", resourceCulture);
             }
@@ -117,7 +117,7 @@ namespace TheXDS.Vivianne.Resources.Strings {
         /// <summary>
         ///   Looks up a localized string similar to FSH/QFS texture.
         /// </summary>
-        internal static string FSHQFSTexture {
+        public static string FSHQFSTexture {
             get {
                 return ResourceManager.GetString("FSHQFSTexture", resourceCulture);
             }
@@ -126,7 +126,7 @@ namespace TheXDS.Vivianne.Resources.Strings {
         /// <summary>
         ///   Looks up a localized string similar to GIF image.
         /// </summary>
-        internal static string GIFImage {
+        public static string GIFImage {
             get {
                 return ResourceManager.GetString("GIFImage", resourceCulture);
             }
@@ -135,7 +135,7 @@ namespace TheXDS.Vivianne.Resources.Strings {
         /// <summary>
         ///   Looks up a localized string similar to JPEG picture.
         /// </summary>
-        internal static string JPEGPicture {
+        public static string JPEGPicture {
             get {
                 return ResourceManager.GetString("JPEGPicture", resourceCulture);
             }
@@ -144,7 +144,7 @@ namespace TheXDS.Vivianne.Resources.Strings {
         /// <summary>
         ///   Looks up a localized string similar to Localized car FeData.
         /// </summary>
-        internal static string LocalizedCarFeData {
+        public static string LocalizedCarFeData {
             get {
                 return ResourceManager.GetString("LocalizedCarFeData", resourceCulture);
             }
@@ -153,7 +153,7 @@ namespace TheXDS.Vivianne.Resources.Strings {
         /// <summary>
         ///   Looks up a localized string similar to Portable Network Graphics.
         /// </summary>
-        internal static string PortableNetworkGraphics {
+        public static string PortableNetworkGraphics {
             get {
                 return ResourceManager.GetString("PortableNetworkGraphics", resourceCulture);
             }
@@ -162,7 +162,7 @@ namespace TheXDS.Vivianne.Resources.Strings {
         /// <summary>
         ///   Looks up a localized string similar to QFS texture.
         /// </summary>
-        internal static string QfsFile {
+        public static string QfsFile {
             get {
                 return ResourceManager.GetString("QfsFile", resourceCulture);
             }
@@ -171,7 +171,7 @@ namespace TheXDS.Vivianne.Resources.Strings {
         /// <summary>
         ///   Looks up a localized string similar to VIV file.
         /// </summary>
-        internal static string VivFile {
+        public static string VivFile {
             get {
                 return ResourceManager.GetString("VivFile", resourceCulture);
             }

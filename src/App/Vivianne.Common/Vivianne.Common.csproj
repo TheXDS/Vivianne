@@ -44,6 +44,11 @@
 		  <AutoGen>True</AutoGen>
 		  <DependentUpon>CarpEditorViewModel.resx</DependentUpon>
 		</Compile>
+		<Compile Update="Resources\Strings\ViewModels\FceEditorView.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>FceEditorView.resx</DependentUpon>
+		</Compile>
 		<Compile Update="Resources\Strings\ViewModels\FshEditorViewModel.Designer.cs">
 		  <DesignTime>True</DesignTime>
 		  <AutoGen>True</AutoGen>
@@ -76,7 +81,7 @@
 		  <LastGenOutput>Common.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Strings\FileFilters.resx">
-		  <Generator>ResXFileCodeGenerator</Generator>
+		  <Generator>PublicResXFileCodeGenerator</Generator>
 		  <LastGenOutput>FileFilters.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Strings\Tools\FceCleanupTool.resx">
@@ -98,6 +103,10 @@
 		<EmbeddedResource Update="Resources\Strings\ViewModels\CarpEditorViewModel.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>
 		  <LastGenOutput>CarpEditorViewModel.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Strings\ViewModels\FceEditorView.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>FceEditorView.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Strings\ViewModels\FshEditorViewModel.resx">
 		  <Generator>PublicResXFileCodeGenerator</Generator>

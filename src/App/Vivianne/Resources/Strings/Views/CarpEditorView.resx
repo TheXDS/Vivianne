@@ -1,0 +1,358 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+		Microsoft ResX Schema
+
+		Version 1.3
+
+		The primary goals of this format is to allow a simple XML format 
+		that is mostly human readable. The generation and parsing of the 
+		various data types are done through the TypeConverter classes 
+		associated with the data types.
+
+		Example:
+
+		... ado.net/XML headers & schema ...
+		<resheader name="resmimetype">text/microsoft-resx</resheader>
+		<resheader name="version">1.3</resheader>
+		<resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+		<resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+		<data name="Name1">this is my long string</data>
+		<data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+		<data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+			[base64 mime encoded serialized .NET Framework object]
+		</data>
+		<data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+			[base64 mime encoded string representing a byte array form of the .NET Framework object]
+		</data>
+
+		There are any number of "resheader" rows that contain simple 
+		name/value pairs.
+
+		Each data row contains a name, and value. The row also contains a 
+		type or mimetype. Type corresponds to a .NET class that support 
+		text/value conversion through the TypeConverter architecture. 
+		Classes that don't support this are serialized and stored with the 
+		mimetype set.
+
+		The mimetype is used for serialized objects, and tells the 
+		ResXResourceReader how to depersist the object. This is currently not 
+		extensible. For a given mimetype the value must be set accordingly:
+
+		Note - application/x-microsoft.net.object.binary.base64 is the format 
+		that the ResXResourceWriter will generate, however the reader can 
+		read any of the formats listed below.
+
+		mimetype: application/x-microsoft.net.object.binary.base64
+		value   : The object must be serialized with 
+			: System.Serialization.Formatters.Binary.BinaryFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.soap.base64
+		value   : The object must be serialized with 
+			: System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.bytearray.base64
+		value   : The object must be serialized into a byte array 
+			: using a System.ComponentModel.TypeConverter
+			: and then encoded with base64 encoding.
+	-->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>1.3</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Save" xml:space="preserve">
+    <value>Save Carp</value>
+  </data>
+  <data name="RealisticCarpWizard" xml:space="preserve">
+    <value>Realistic carp wizard</value>
+  </data>
+  <data name="SyncWithFeData" xml:space="preserve">
+    <value>Sync with FeData</value>
+  </data>
+  <data name="PerformanceMetrics" xml:space="preserve">
+    <value>Performance metrics</value>
+  </data>
+  <data name="BasicInformation" xml:space="preserve">
+    <value>Basic information</value>
+  </data>
+  <data name="MassKg" xml:space="preserve">
+    <value>Mass (Kg)</value>
+  </data>
+  <data name="TopSpeedMS" xml:space="preserve">
+    <value>Top Speed (m/s)</value>
+  </data>
+  <data name="CameraArm" xml:space="preserve">
+    <value>Camera arm</value>
+  </data>
+  <data name="Drivetrain" xml:space="preserve">
+    <value>Drivetrain</value>
+  </data>
+  <data name="MaxVelocityMS" xml:space="preserve">
+    <value>Max velocity (m/s)</value>
+  </data>
+  <data name="FrontDriveRatio" xml:space="preserve">
+    <value>Front drive ratio</value>
+  </data>
+  <data name="GearShiftDelay" xml:space="preserve">
+    <value>Gear shift delay</value>
+  </data>
+  <data name="ShiftBlip" xml:space="preserve">
+    <value>Shift blip</value>
+  </data>
+  <data name="BrakeBlip" xml:space="preserve">
+    <value>Brake blip</value>
+  </data>
+  <data name="ManualGearbox" xml:space="preserve">
+    <value>Manual gearbox</value>
+  </data>
+  <data name="NumberOfGears" xml:space="preserve">
+    <value>Number of gears</value>
+  </data>
+  <data name="FinalGearRatio" xml:space="preserve">
+    <value>Final gear ratio</value>
+  </data>
+  <data name="VelocityToRPM" xml:space="preserve">
+    <value>Velocity to RPM</value>
+  </data>
+  <data name="GearRatios" xml:space="preserve">
+    <value>Gear ratios</value>
+  </data>
+  <data name="GearEfficiency" xml:space="preserve">
+    <value>Gear efficiency</value>
+  </data>
+  <data name="AutomaticGearbox" xml:space="preserve">
+    <value>Automatic gearbox</value>
+  </data>
+  <data name="MinimumRPM" xml:space="preserve">
+    <value>Minimum RPM</value>
+  </data>
+  <data name="MaximumRPM" xml:space="preserve">
+    <value>Maximum RPM</value>
+  </data>
+  <data name="DriveDynamics" xml:space="preserve">
+    <value>Drive dynamics</value>
+  </data>
+  <data name="GasIncreaseCurve" xml:space="preserve">
+    <value>Gas increase curve</value>
+  </data>
+  <data name="GasDecreaseCurve" xml:space="preserve">
+    <value>Gas decrease curve</value>
+  </data>
+  <data name="BrakeIncreaseCurve" xml:space="preserve">
+    <value>Brake increase curve</value>
+  </data>
+  <data name="BrakeDecreaseCurve" xml:space="preserve">
+    <value>Brake decrease curve</value>
+  </data>
+  <data name="AntilockBrakeSystem" xml:space="preserve">
+    <value>Antilock Brake System</value>
+  </data>
+  <data name="MaxBrakingDecel" xml:space="preserve">
+    <value>Max braking decel</value>
+  </data>
+  <data name="FrontBiasBrakeRatio" xml:space="preserve">
+    <value>Front bias brake ratio</value>
+  </data>
+  <data name="WheelBase" xml:space="preserve">
+    <value>Wheel base</value>
+  </data>
+  <data name="FrontGripBias" xml:space="preserve">
+    <value>Front grip bias</value>
+  </data>
+  <data name="PowerSteering" xml:space="preserve">
+    <value>Power steering</value>
+  </data>
+  <data name="MinSteeringAccel" xml:space="preserve">
+    <value>Min steering accel</value>
+  </data>
+  <data name="TurnInRamp" xml:space="preserve">
+    <value>Turn in ramp</value>
+  </data>
+  <data name="TurnOutRamp" xml:space="preserve">
+    <value>Turn out ramp</value>
+  </data>
+  <data name="LateralAccGripMult" xml:space="preserve">
+    <value>Lateral acc. grip mult.</value>
+  </data>
+  <data name="AeroDownforceMult" xml:space="preserve">
+    <value>Aero downforce mult</value>
+  </data>
+  <data name="GasOffFactor" xml:space="preserve">
+    <value>Gas off factor</value>
+  </data>
+  <data name="GTransferFactor" xml:space="preserve">
+    <value>G transfer factor</value>
+  </data>
+  <data name="TurnCircleRadius" xml:space="preserve">
+    <value>Turn circle radius</value>
+  </data>
+  <data name="SlideMultiplier" xml:space="preserve">
+    <value>Slide multiplier</value>
+  </data>
+  <data name="SpinVelocityCap" xml:space="preserve">
+    <value>Spin velocity cap</value>
+  </data>
+  <data name="SlideVelocityCap" xml:space="preserve">
+    <value>Slide velocity cap</value>
+  </data>
+  <data name="SlideAssistanceFactor" xml:space="preserve">
+    <value>Slide assistance factor</value>
+  </data>
+  <data name="PushFactor" xml:space="preserve">
+    <value>Push factor</value>
+  </data>
+  <data name="LowTurnFactor" xml:space="preserve">
+    <value>Low turn factor</value>
+  </data>
+  <data name="HighTurnFactor" xml:space="preserve">
+    <value>High turn factor</value>
+  </data>
+  <data name="PitchRollFactor" xml:space="preserve">
+    <value>Pitch roll factor</value>
+  </data>
+  <data name="RoadBumpFactor" xml:space="preserve">
+    <value>Road bump factor</value>
+  </data>
+  <data name="SpoilerFunctionType" xml:space="preserve">
+    <value>Spoiler function type</value>
+  </data>
+  <data name="SpoilerActSpeed" xml:space="preserve">
+    <value>Spoiler act. speed</value>
+  </data>
+  <data name="GradualTurnCutoff" xml:space="preserve">
+    <value>Gradual turn cutoff</value>
+  </data>
+  <data name="MediumTurnCutoff" xml:space="preserve">
+    <value>Medium turn cutoff</value>
+  </data>
+  <data name="SharpTurnCutoff" xml:space="preserve">
+    <value>Sharp turn cutoff</value>
+  </data>
+  <data name="MedTurnSpdMod" xml:space="preserve">
+    <value>Med. turn spd. mod.</value>
+  </data>
+  <data name="SharpTurnSpdMod" xml:space="preserve">
+    <value>Sharp turn spd. mod.</value>
+  </data>
+  <data name="ExtrTurnSpdMod" xml:space="preserve">
+    <value>Extr. turn spd. mod.</value>
+  </data>
+  <data name="SubdivideLevel" xml:space="preserve">
+    <value>Subdivide level</value>
+  </data>
+  <data name="FrontTires" xml:space="preserve">
+    <value>Front tires</value>
+  </data>
+  <data name="TireWidth" xml:space="preserve">
+    <value>Tire width</value>
+  </data>
+  <data name="TireSidewall" xml:space="preserve">
+    <value>Tire sidewall</value>
+  </data>
+  <data name="RimSize" xml:space="preserve">
+    <value>Rim size</value>
+  </data>
+  <data name="RearTires" xml:space="preserve">
+    <value>Rear tires</value>
+  </data>
+  <data name="Copy" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="AICurve0" xml:space="preserve">
+    <value>AI Curve 0</value>
+  </data>
+  <data name="AICurve1" xml:space="preserve">
+    <value>AI Curve 1</value>
+  </data>
+  <data name="AICurve2" xml:space="preserve">
+    <value>AI Curve 2</value>
+  </data>
+  <data name="AICurve3" xml:space="preserve">
+    <value>AI Curve 3</value>
+  </data>
+  <data name="AICurve4" xml:space="preserve">
+    <value>AI Curve 4</value>
+  </data>
+  <data name="AICurve5" xml:space="preserve">
+    <value>AI Curve 5</value>
+  </data>
+  <data name="AICurve6" xml:space="preserve">
+    <value>AI Curve 6</value>
+  </data>
+  <data name="AICurve7" xml:space="preserve">
+    <value>AI Curve 7</value>
+  </data>
+  <data name="MiscellaneousCarpData" xml:space="preserve">
+    <value>Miscellaneous carp data (affects car tuning in game, edit at your own risk)</value>
+  </data>
+  <data name="TireWear" xml:space="preserve">
+    <value>Tire wear</value>
+  </data>
+  <data name="BodyDamage" xml:space="preserve">
+    <value>Body damage</value>
+  </data>
+  <data name="EngineDamage" xml:space="preserve">
+    <value>Engine damage</value>
+  </data>
+  <data name="SuspensionDamage" xml:space="preserve">
+    <value>Suspension damage</value>
+  </data>
+  <data name="EngineTuning" xml:space="preserve">
+    <value>Engine tuning</value>
+  </data>
+  <data name="BrakeBalance" xml:space="preserve">
+    <value>Brake balance</value>
+  </data>
+  <data name="SteeringSpeed" xml:space="preserve">
+    <value>Steering speed</value>
+  </data>
+  <data name="GearRatioFactor" xml:space="preserve">
+    <value>Gear ratio factor</value>
+  </data>
+  <data name="SuspensionStiffness" xml:space="preserve">
+    <value>Suspension stiffness</value>
+  </data>
+  <data name="AeroFactor" xml:space="preserve">
+    <value>Aero factor</value>
+  </data>
+  <data name="TireFactor" xml:space="preserve">
+    <value>Tire factor</value>
+  </data>
+</root>

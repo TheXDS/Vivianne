@@ -1,22 +1,21 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media.Media3D;
 using TheXDS.Vivianne.Helpers;
 
 namespace TheXDS.Vivianne.Views;
 
 /// <summary>
-/// Business logic for FcePreviewView.xaml
+/// Business logic for FceEditorView.xaml
 /// </summary>
-public partial class FcePreviewView : UserControl
+public partial class FceEditorView : UserControl
 {
     Point from;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="FcePreviewView"/> class.
+    /// Initializes a new instance of the <see cref="FceEditorView"/> class.
     /// </summary>
-    public FcePreviewView()
+    public FceEditorView()
     {
         InitializeComponent();
         PreviewMouseMove += Window_PreviewMouseMove;

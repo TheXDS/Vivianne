@@ -1,14 +1,14 @@
 This version of Vivianne is an early build, so some features might be incomplete or unstable. Please hold off on using Vivianne for any mods you plan to release just yet.
 
-The UX/UI, feature set, and tools are all subject to change. Keep this in mind, as you might get a bit lost while I work on creating an easy-to-use interface for saving VIV files. You can "close" the current file by clicking the arrow to the left of the Minimize button, but this doesn’t apply to files within VIV files; they generally have their own save buttons. The exception is FCE, which saves automatically whenever you select a different file. Just know that this behavior will change—it's only provisional for now.
+The UX/UI, feature set, and tools are all subject to change. Keep this in mind, as you might get a bit lost while I work on creating an easy-to-use interface for saving VIV files. You can "close" the current file by clicking the arrow to the left of the Minimize button, but this doesn't apply to files within VIV files; they generally have their own save buttons. The exception is FCE, which saves automatically whenever you select a different file. Just know that this behavior will change—it's only provisional for now.
 
-If a file format isn’t supported at the moment (like BNK files), you’ll see a blank screen. That’s expected. I hope to add BNK support soon, but it’ll take some time to get an audio parser up and running.
+If a file format isn't supported at the moment (like BNK files), you'll see a blank screen. That's expected. I hope to add BNK support soon, but it'll take some time to get an audio parser up and running.
 
-Support for NFS4 is currently in the works, but I can’t promise when or if it will be completed. You can open NFS4 VIV files, but there’s not much you can do with them just yet (FSH/QFS editing should still work).
+Support for NFS4 is currently in the works, but I can't promise when or if it will be completed. You can open NFS4 VIV files, but there's not much you can do with them just yet (FSH/QFS editing should still work).
 
-As for <insert your favorite old EA title from the era that still uses simmilar file formats>... That’s probably not going to happen. I might give it a shot, but I can’t guarantee support for them.
+As for <insert your favorite old EA title from the era that still uses simmilar file formats>... That's probably not going to happen. I might give it a shot, but I can't guarantee support for them.
 
-This preview is for evaluation purposes only... You’ve been warned!
+This preview is for evaluation purposes only... You've been warned!
 
 Happy modding.
 

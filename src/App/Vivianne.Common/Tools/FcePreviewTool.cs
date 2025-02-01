@@ -27,8 +27,8 @@ public class FcePreviewTool : IVivianneTool
         return await ((ISerializer<FceFile>)new FceSerializer()).DeserializeAsync(await File.ReadAllBytesAsync(fileName));
     }
 
-    private static FcePreviewViewModel CreateViewModel(FceFile fce, string fileName)
+    private static FceEditorViewModel CreateViewModel(FceFile fce, string fileName)
     {
-        return new FcePreviewViewModel(fce) { Title = fileName };
+        return new FceEditorViewModel(fce) { Title = fileName };
     }
 }

@@ -19,7 +19,7 @@ namespace TheXDS.Vivianne.ViewModels;
 /// <summary>
 /// Implements a ViewModel that allows the user to preview an FCE model.
 /// </summary>
-public class FcePreviewViewModel : ViewModel
+public class FceEditorViewModel : ViewModel
 {
     private byte[]? _SelectedCarTexture;
     private RenderTreeState? _RenderTree;
@@ -57,7 +57,7 @@ public class FcePreviewViewModel : ViewModel
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="FcePreviewViewModel"/>
+    /// Initializes a new instance of the <see cref="FceEditorViewModel"/>
     /// class.
     /// </summary>
     /// <param name="fce">Model to preview.</param>
@@ -68,7 +68,7 @@ public class FcePreviewViewModel : ViewModel
     /// <param name="saveCallback">
     /// Optional save callback to use when trying to save FCE files.
     /// </param>
-    public FcePreviewViewModel(FceFile fce, IDictionary<string, byte[]> vivDirectory, Func<FceFile, Task>? saveCallback = null)
+    public FceEditorViewModel(FceFile fce, IDictionary<string, byte[]> vivDirectory, Func<FceFile, Task>? saveCallback = null)
         : this(fce, saveCallback)
     {
         CarTextures = GetTextures(vivDirectory);
@@ -78,14 +78,14 @@ public class FcePreviewViewModel : ViewModel
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="FcePreviewViewModel"/>
+    /// Initializes a new instance of the <see cref="FceEditorViewModel"/>
     /// class.
     /// </summary>
     /// <param name="fce">Model to preview.</param>
     /// <param name="saveCallback">
     /// Optional save callback to use when trying to save FCE files.
     /// </param>
-    public FcePreviewViewModel(FceFile fce, Func<FceFile, Task>? saveCallback = null)
+    public FceEditorViewModel(FceFile fce, Func<FceFile, Task>? saveCallback = null)
     {
         var cb = CommandBuilder.For(this);
         Parts = fce.Select(p => new FcePartListItem(p)).ToArray();

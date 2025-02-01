@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using TheXDS.Ganymede.Helpers;
 using TheXDS.Ganymede.Services;
+using TheXDS.Vivianne;
 using TheXDS.Vivianne.Component;
 
 namespace Vivianne;

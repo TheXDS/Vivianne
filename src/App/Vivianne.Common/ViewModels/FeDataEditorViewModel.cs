@@ -14,7 +14,7 @@ namespace TheXDS.Vivianne.ViewModels;
 /// Implements a ViewModel that allows the user to see and edit FeData car
 /// information files.
 /// </summary>
-public class FeDataPreviewViewModel : ViewModel
+public class FeDataEditorViewModel : ViewModel
 {
     private static readonly ISerializer<FeData> serializer = new FeDataSerializer();
     private readonly Action<byte[]> saveCallback;
@@ -23,7 +23,7 @@ public class FeDataPreviewViewModel : ViewModel
     private bool _LinkEdits;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="FeDataPreviewViewModel"/>
+    /// Initializes a new instance of the <see cref="FeDataEditorViewModel"/>
     /// class.
     /// </summary>
     /// <param name="data">FeData to manipulate.</param>
@@ -37,7 +37,7 @@ public class FeDataPreviewViewModel : ViewModel
     /// <param name="fedataName">
     /// Name of the FeData file being edited, for sync purposes.
     /// </param>
-    public FeDataPreviewViewModel(byte[] data, Action<byte[]> saveCallback, VivEditorState? viv = null, string? fedataName = null)
+    public FeDataEditorViewModel(byte[] data, Action<byte[]> saveCallback, VivEditorState? viv = null, string? fedataName = null)
     {
         this.saveCallback = saveCallback;
         this.viv = viv;

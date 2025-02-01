@@ -2,6 +2,7 @@
 using TheXDS.MCART.ValueConverters.Base;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Resources;
+using St = TheXDS.Vivianne.Resources.Strings.ValueConverters.FshBlobFormatLabelConverter;
 
 namespace TheXDS.Vivianne.ValueConverters;
 
@@ -16,9 +17,9 @@ public class FshBlobFormatLabelConverter : IOneWayValueConverter<FshBlobFormat, 
     {
         return value switch
         {
-            0x00 => "No image loaded",
+            0x00 => St.NoImageLoaded,
             _ when Mappings.FshBlobToLabel.TryGetValue(value, out var label) => label,
-            _ => $"Unknown (0x{(byte)value:X}"
+            _ => string.Format(St.Unknown, (byte)value)
         };
     }
 }

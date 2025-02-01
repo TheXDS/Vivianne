@@ -180,4 +180,7 @@
   <data name="Zoom" xml:space="preserve">
     <value>Zoom:</value>
   </data>
+  <data name="Alpha" xml:space="preserve">
+    <value>Alfa</value>
+  </data>
 </root>

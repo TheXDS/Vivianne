@@ -4,6 +4,8 @@ using System.Globalization;
 using TheXDS.MCART.Helpers;
 using TheXDS.MCART.ValueConverters.Base;
 using M = System.Windows.Media;
+using St = TheXDS.Vivianne.Resources.Strings.ValueConverters.GraphDrawingContext;
+
 namespace TheXDS.Vivianne.ValueConverters;
 
 /// <summary>
@@ -15,8 +17,7 @@ public class GraphDrawingContext : IOneWayValueConverter<IEnumerable<double>, M.
     public M.ImageSource? Convert(IEnumerable<double> value, object? parameter, CultureInfo? culture)
     {
         parameter ??= new Size(150, 50);
-        if (parameter is not Size sz) throw new ArgumentException($"The specified parameter must be of type {typeof(Size).FullName}");
-
+        if (parameter is not Size sz) throw new ArgumentException(string.Format(St.InvalidParameter, typeof(Size).FullName));
         var values = value.ToArray();
         var min = values.Min();
         var max = values.Max();
