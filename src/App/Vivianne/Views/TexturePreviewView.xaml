@@ -5,7 +5,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
-    xmlns:controls="clr-namespace:TheXDS.Vivianne.Controls"
+                xmlns:properties="clr-namespace:TheXDS.Vivianne.Resources.Strings.Views"
+xmlns:controls="clr-namespace:TheXDS.Vivianne.Controls"
     xmlns:vc="clr-namespace:TheXDS.Vivianne.ValueConverters"
     d:DataContext="{d:DesignInstance Type=vm:TexturePreviewViewModel}"
     mc:Ignorable="d"
@@ -26,12 +27,12 @@
         <Rectangle Grid.Column="0" Grid.Row="1" Fill="{StaticResource FadeInBackground}"/>
         <Rectangle Grid.Column="1" Grid.Row="1" Fill="{StaticResource DarkBackground}"/>
         <StackPanel Margin="10" Orientation="Horizontal" HorizontalAlignment="Right" Grid.ColumnSpan="2">
-            <TextBlock VerticalAlignment="Center" Margin="0,0,10,0">Zoom: <Run Text="{Binding ZoomLevel, Mode=OneWay}"/></TextBlock>
+            <TextBlock VerticalAlignment="Center" Margin="0,0,10,0"><Run Text="{x:Static properties:FshEditorView.Zoom}"/><Run Text="{Binding ZoomLevel, Mode=OneWay}"/></TextBlock>
             <Slider x:Name="sldZoom" Minimum="1.0" Maximum="10.0" Value="{Binding ZoomLevel}" Margin="5" Width="100" SmallChange="0.5" LargeChange="1" TickFrequency="0.125" IsSnapToTickEnabled="True"/>
             <CheckBox Style="{StaticResource ToggleSwitch}" Padding="10,0" IsChecked="{Binding Alpha}">
-                <TextBlock>Alpha</TextBlock>
+                <TextBlock Text="{x:Static properties:FshEditorView.Alpha}"/>
             </CheckBox>
-            <TextBlock VerticalAlignment="Center" Margin="10,0">Background:</TextBlock>
+            <TextBlock VerticalAlignment="Center" Margin="10,0" Text="{x:Static properties:FshEditorView.Background}"/>
             <ComboBox
                 IsEnabled="{Binding Alpha, Mode=OneWay}"
                 Width="180"

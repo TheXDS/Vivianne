@@ -1,6 +1,4 @@
 ﻿using System.Windows;
-using TheXDS.Vivianne.Views;
-using Wpf.Ui.Controls;
 
 namespace Vivianne;
 
@@ -16,10 +14,5 @@ public partial class MainWindow
     {
         Wpf.Ui.Appearance.SystemThemeWatcher.Watch(this);
         InitializeComponent();
-    }
-
-    private void GithubButton_Click(object sender, RoutedEventArgs e)
-    {
-
     }
 }

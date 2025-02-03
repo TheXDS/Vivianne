@@ -20,6 +20,7 @@ public partial class FshCommand
         cmd.AddOption(outDirOption);
         cmd.AddOption(formatOption);
         cmd.SetHandler(ExtractCommand, fshFile, regexArg, outDirOption, formatOption);
+        cmd.AddAlias("xf");
         return cmd;
     }
 

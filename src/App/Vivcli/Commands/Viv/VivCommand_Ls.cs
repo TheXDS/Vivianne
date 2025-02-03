@@ -2,6 +2,7 @@ using System.CommandLine;
 using TheXDS.MCART.Helpers;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Serializers;
+using St = TheXDS.Vivianne.Resources.Strings.VivCommand;
 
 namespace TheXDS.Vivianne.Commands.Viv;
 
@@ -12,11 +13,11 @@ public partial class VivCommand
 {
     private static Command BuildLsCommand(Argument<FileInfo> fileArg)
     {
-        var cmd = new Command("ls", "Enumerates all files on the VIV file.");
-        var sizeOption = new Option<bool>(["--size", "-s"], "Includes the file size in the listing.");
-        var offsetOption = new Option<bool>(["--offset", "-o"], "Includes the file offset in the listing.");
-        var humanOption = new Option<bool>(["--human", "-H"], "File sizes will be formatted in human-readable format.");
-        var decOption = new Option<bool>(["--dec", "-d"], "The file offsets will be presented in decimal format.");
+        var cmd = new Command("ls", St.Ls_Help);
+        var sizeOption = new Option<bool>(["--size", "-s"], St.Ls_SizeHelp);
+        var offsetOption = new Option<bool>(["--offset", "-o"], St.Ls_OffsetHelp);
+        var humanOption = new Option<bool>(["--human", "-H"], St.Ls_HumanHelp);
+        var decOption = new Option<bool>(["--dec", "-d"], St.Ls_DecHelp);
         cmd.AddOption(sizeOption);
         cmd.AddOption(offsetOption);
         cmd.AddOption(humanOption);

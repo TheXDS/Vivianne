@@ -9,10 +9,12 @@ public enum EngineLocation : ushort
     /// The engine is located at the front.
     /// </summary>
     Front,
+
     /// <summary>
     /// The engine is located in the middle.
     /// </summary>
     Mid,
+
     /// <summary>
     /// The engine is located on the rear.
     /// </summary>

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using TheXDS.Ganymede.Models;
-using St = TheXDS.Vivianne.Resources.Strings.Views.StartupView;
+using St = TheXDS.Vivianne.Resources.Strings.FileFilters;
 
 namespace TheXDS.Vivianne.Resources;
 
@@ -31,25 +31,25 @@ public static class FileFilters
     /// Gets a set of file filters to be used on file dialogs for opening and
     /// saving FCE files.
     /// </summary>
-    public static IEnumerable<FileFilterItem> FceFileFilter { get; } = [new FileFilterItem("FCE 3D model", "*.fce"), FileFilterItem.AllFiles];
+    public static IEnumerable<FileFilterItem> FceFileFilter { get; } = [new FileFilterItem(St.FCE3DModel, "*.fce"), FileFilterItem.AllFiles];
 
     /// <summary>
     /// Gets a set of file filters to be used on file dialogs for opening and
     /// saving BNK files.
     /// </summary>
-    public static IEnumerable<FileFilterItem> BnkFileFilter { get; } = [new FileFilterItem("BNK audio file", "*.bnk"), FileFilterItem.AllFiles];
+    public static IEnumerable<FileFilterItem> BnkFileFilter { get; } = [new FileFilterItem(St.BNKAudioFile, "*.bnk"), FileFilterItem.AllFiles];
 
     /// <summary>
     /// Gets a set of file filters to be used on file dialogs for opening and
     /// saving FeData files.
     /// </summary>
-    public static IEnumerable<FileFilterItem> FeDataFileFilter { get; } = [new FileFilterItem("Localized car FeData", ["*.bri", "*.eng", "*.fre", "*.ger", "*.ita", "*.spa", "*.swe"]), FileFilterItem.AllFiles];
+    public static IEnumerable<FileFilterItem> FeDataFileFilter { get; } = [new FileFilterItem(St.LocalizedCarFeData, ["*.bri", "*.eng", "*.fre", "*.ger", "*.ita", "*.spa", "*.swe"]), FileFilterItem.AllFiles];
 
     /// <summary>
     /// Gets a set of file filters to be used on file dialogs for opening
     /// either FSH or QFS files.
     /// </summary>
-    public static IEnumerable<FileFilterItem> FshQfsOpenFileFilter { get; } = [new FileFilterItem("FSH/QFS texture", ["*.fsh", "*.qfs"]), FileFilterItem.AllFiles];
+    public static IEnumerable<FileFilterItem> FshQfsOpenFileFilter { get; } = [new FileFilterItem(St.FSHQFSTexture, ["*.fsh", "*.qfs"]), FileFilterItem.AllFiles];
 
     /// <summary>
     /// Gets a set of file filters to be used on file dialogs for saving either
@@ -61,17 +61,17 @@ public static class FileFilters
     /// Gets a set of file filters to be used on file dialogs for importing any
     /// kind of file commonly hosted inside a VIV.
     /// </summary>
-    public static IEnumerable<FileFilterItem> AnyVivContentFilter { get; } = [new FileFilterItem("Common VIV content files", ["car*.fce", "car*.tga", "car*.fsh", "dash*.qfs", "carp*.txt", "fedata.*", "*.bnk"]), FileFilterItem.AllFiles];
+    public static IEnumerable<FileFilterItem> AnyVivContentFilter { get; } = [new FileFilterItem(St.CommonVIVContentFiles, ["car*.fce", "car*.tga", "car*.fsh", "dash*.qfs", "carp*.txt", "fedata.*", "*.bnk"]), FileFilterItem.AllFiles];
 
     /// <summary>
     /// Gets a set of file filter to be used on file dialogs for saving files
     /// with common bitmap file formats.
     /// </summary>
     public static IEnumerable<FileFilterItem> CommonBitmapSaveFormats { get; } = [
-        new FileFilterItem("Portable Network Graphics", "*.png"),
-        new FileFilterItem("GIF image", "*.gif"),
-        new FileFilterItem("JPEG picture", ["*.jpg", "*.jpeg"]),
-        new FileFilterItem("BMP bitmap image", "*.bmp"),
+        new FileFilterItem(St.PortableNetworkGraphics, "*.png"),
+        new FileFilterItem(St.GIFImage, "*.gif"),
+        new FileFilterItem(St.JPEGPicture, ["*.jpg", "*.jpeg"]),
+        new FileFilterItem(St.BMPBitmapImage, "*.bmp"),
         FileFilterItem.AllFiles
         ];
 
@@ -80,7 +80,7 @@ public static class FileFilters
     /// with common bitmap file formats.
     /// </summary>
     public static IEnumerable<FileFilterItem> CommonBitmapOpenFormats { get; } = [
-        new FileFilterItem("Common image files", ["*.png", "*.gif", "*.jpg", "*.jpeg", "*.bmp"]),
+        new FileFilterItem(St.CommonImageFiles, ["*.png", "*.gif", "*.jpg", "*.jpeg", "*.bmp"]),
         FileFilterItem.AllFiles
     ];
 }

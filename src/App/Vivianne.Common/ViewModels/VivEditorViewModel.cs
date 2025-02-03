@@ -10,10 +10,11 @@ using TheXDS.Ganymede.Resources;
 using TheXDS.Ganymede.Types.Base;
 using TheXDS.Ganymede.Types.Extensions;
 using TheXDS.Ganymede.ViewModels;
-using TheXDS.Vivianne.Component;
+using TheXDS.Vivianne.Data;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Resources;
 using TheXDS.Vivianne.ViewModels.Base;
+using St = TheXDS.Vivianne.Resources.Strings.ViewModels.VivEditorViewModel;
 
 namespace TheXDS.Vivianne.ViewModels;
 
@@ -128,11 +129,11 @@ public class VivEditorViewModel : HostViewModelBase, IFileEditorViewModel<VivEdi
 
     private async Task OnImportFile()
     {
-        var r = await DialogService!.GetFileOpenPath(CommonDialogTemplates.FileOpen with { Title = "Import file" }, FileFilters.AnyVivContentFilter);
+        var r = await DialogService!.GetFileOpenPath(CommonDialogTemplates.FileOpen with { Title = St.ImportFile }, FileFilters.AnyVivContentFilter);
         if (r.Success)
         {
             var keyName = Path.GetFileName(r.Result).ToLower();
-            if (State.Directory.ContainsKey(keyName) && !await DialogService.AskYn("Replace file", $"The file '{keyName}' already exist. Do you want to replace it?"))
+            if (State.Directory.ContainsKey(keyName) && !await DialogService.AskYn(St.ReplaceFile, string.Format(St.TheFileXAlreadyExist,keyName)))
             {
                 return;
             }
@@ -158,7 +159,11 @@ public class VivEditorViewModel : HostViewModelBase, IFileEditorViewModel<VivEdi
         if (parameter is KeyValuePair<string, byte[]> { Key: { } file, Value: { } rawData })
         {
             var ext = Path.GetExtension(file)[1..];
-            var r = await DialogService!.GetFileOpenPath(CommonDialogTemplates.FileOpen with { Title = $"Replace '{file}'", Text = $"Select a file to repace '{file}' with" }, [FileFilterItem.Simple(ext), FileFilterItem.AllFiles]);
+            var r = await DialogService!.GetFileOpenPath(CommonDialogTemplates.FileOpen with
+            { 
+                Title = string.Format(St.ReplaceX,file),
+                Text = string.Format(St.SelectAFileToRepaceXWith, file) },
+                [FileFilterItem.Simple(ext), FileFilterItem.AllFiles]);
             if (r.Success)
             {
                 State.Directory[Path.GetFileName(r.Result).ToLower()] = await DialogService.RunOperation(p => File.ReadAllBytesAsync(r.Result));
@@ -170,7 +175,7 @@ public class VivEditorViewModel : HostViewModelBase, IFileEditorViewModel<VivEdi
     {
         if (parameter is KeyValuePair<string, byte[]> { Key: { } file })
         {
-            if (await DialogService!.AskYn($"Remove '{file}'", $"Are you sure you want to remove '{file}'?"))
+            if (await DialogService!.AskYn(string.Format(St.RemoveX, file), string.Format(St.AreYouSureYouWantToRemoveX, file)))
             {
                 State.Directory.Remove(file);
             }
@@ -181,8 +186,8 @@ public class VivEditorViewModel : HostViewModelBase, IFileEditorViewModel<VivEdi
     {
         var r = await DialogService!.SelectOption(new DialogTemplate 
         { 
-            Title = "New from template",
-            Text = "Select a template to create a new file in the VIV directory.",
+            Title = St.NewFromTemplate,
+            Text = St.SelectATemplate,
             Color = System.Drawing.Color.Aquamarine, Icon = "➕"
         }, [.. Templates.Keys]);
         if (r.Success)

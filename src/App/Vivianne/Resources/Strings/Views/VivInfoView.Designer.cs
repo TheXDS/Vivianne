@@ -203,5 +203,14 @@ namespace TheXDS.Vivianne.Resources.Strings.Views {
                 return ResourceManager.GetString("HasFedataFsh", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to VIV information.
+        /// </summary>
+        public static string VIVInformation {
+            get {
+                return ResourceManager.GetString("VIVInformation", resourceCulture);
+            }
+        }
     }
 }

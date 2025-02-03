@@ -1,4 +1,5 @@
 using System.CommandLine;
+using St = TheXDS.Vivianne.Resources.Strings.VivCommand;
 
 namespace TheXDS.Vivianne.Commands.Viv;
 
@@ -9,10 +10,10 @@ public partial class VivCommand
 {
     private static Command BuildAddCommand(Argument<FileInfo> vivFile)
     {
-        var cmd = new Command("add", "Adds a file to the VIV.");
-        var fileArg = new Argument<FileInfo>("file", "Indicates the file to be added.").ExistingOnly();
-        var forceOption = new Option<bool>(["--force", "-f"], "Force add the file, even if it exists already on the VIV file.");
-        var altName = new Option<string?>(["--name", "-n"], () => null, "New name of the file. If omitted, the current file name wil be used.").LegalFileNamesOnly();
+        var cmd = new Command("add", St.Add_Help);
+        var fileArg = new Argument<FileInfo>(St.Add_Arg1, St.Add_Arg1Help).ExistingOnly();
+        var forceOption = new Option<bool>(["--force", "-f"], St.Add_ForceHelp);
+        var altName = new Option<string?>(["--name", "-n"], () => null, St.Add_NameHelp).LegalFileNamesOnly();
         cmd.AddArgument(fileArg);
         cmd.AddOption(forceOption);
         cmd.AddOption(altName);
@@ -33,7 +34,7 @@ public partial class VivCommand
             }
             else
             {
-                Fail($"The specified VIV file contains '{name}' already.");
+                Fail(string.Format(St.Add_Fail, name));
             }
         });
     }

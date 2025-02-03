@@ -64,6 +64,21 @@ public static class FceCleanupTool
     {
         return analyzers.Select(p => p.Callback(fce)).NotNull();
     }
+
+    /// <summary>
+    /// Asyncronously runs a collection of analyzers on the specified
+    /// <see cref="FceFile"/> and enumerates all the warnings for any issues
+    /// found on it.
+    /// </summary>
+    /// <param name="fce"><see cref="FceFile"/> to analyze.</param>
+    /// <param name="analyzers">
+    /// Collection of analysers to use when analyzing the specified
+    /// <see cref="FceFile"/>.
+    /// </param>
+    /// <returns>
+    /// An async enumeration of all problems found on the specified
+    /// <see cref="FceFile"/>, or an empty enumeration if no issues we found.
+    /// </returns>
     public static async IAsyncEnumerable<FceCleanupResult?> GetWarningsAsync(FceFile fce, params FceCleanupAnalyzer[] analyzers)
     {
         foreach (var j in analyzers)

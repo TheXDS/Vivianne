@@ -12,7 +12,8 @@ using TheXDS.Ganymede.Types.Extensions;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Properties;
 using TheXDS.Vivianne.ViewModels.Base;
-using St = TheXDS.Vivianne.Resources.Strings.Views.StartupView;
+using St = TheXDS.Vivianne.Resources.Strings.ViewModels.StartupViewModel;
+using Stc = TheXDS.Vivianne.Resources.Strings.Common;
 
 namespace TheXDS.Vivianne.ViewModels;
 
@@ -80,7 +81,7 @@ public class StartupViewModel : ViewModel
     /// </summary>
     public StartupViewModel()
     {
-        Title = St.VmTitle;
+        Title = St.StartupPage;
         var cb = CommandBuilder.For(this);
         SettingsCommand = cb.BuildSimple(OnSettings);
         LaunchNfs3Command = cb.BuildSimple(OnLaunchNfs3);
@@ -113,7 +114,7 @@ public class StartupViewModel : ViewModel
 
     private Task OnSettings()
     {
-        return DialogService!.Show<SettingsViewModel>(new Ganymede.Models.DialogTemplate() { Title = "Settings" });
+        return DialogService!.Show<SettingsViewModel>(new Ganymede.Models.DialogTemplate() { Title = St.Settings });
     }
 
     private async Task OnLaunchNfs3()
@@ -128,14 +129,14 @@ public class StartupViewModel : ViewModel
             {
                 await (DialogService?.SelectAction(CommonDialogTemplates.Error with
                 {
-                    Title = "Could not launch NFS3",
-                    Text = "You haven't configured the game path."
-                }, [new(OnSettings, "Launch settings"), new(() => Task.CompletedTask, "Ok")]) ?? Task.CompletedTask);
+                    Title = St.CouldNotLaunchNFS3,
+                    Text = St.YouHavenTConfiguredTheGamePath
+                }, [new(OnSettings, St.LaunchSettings), new(() => Task.CompletedTask, Stc.Ok)]) ?? Task.CompletedTask);
             }
         }
         catch (Exception ex)
         {
-            await (DialogService?.Error("Could not launch NFS3", ex.Message) ?? Task.CompletedTask);
+            await (DialogService?.Error(St.CouldNotLaunchNFS3, ex.Message) ?? Task.CompletedTask);
         }
     }
 

@@ -88,7 +88,8 @@ namespace TheXDS.Vivianne.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Specifies the name of the blob to get the information about. If omitted, ths tool will print the information of all blobs in the FSH file..
+        ///   Looks up a localized string similar to Specifies the name of the blob to get the information about. If omitted, thi
+        ///s tool will print the information of all blobs in the FSH file..
         /// </summary>
         internal static string BlobInfo_Arg1Help {
             get {
@@ -295,7 +296,7 @@ namespace TheXDS.Vivianne.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Displays general information about the FSH/QFS file.
+        ///   Looks up a localized string similar to Displays general information about the FSH/QFS file..
         /// </summary>
         internal static string Info_Help {
             get {

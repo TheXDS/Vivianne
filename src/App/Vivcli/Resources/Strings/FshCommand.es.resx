@@ -121,10 +121,10 @@
     <value>archivo fsh/qfs</value>
   </data>
   <data name="Arg1Description" xml:space="preserve">
-    <value>Ruta al archivo FSH/QFS</value>
+    <value>Ruta al archivo FSH/QFS.</value>
   </data>
   <data name="BlobInfo_Arg1Help" xml:space="preserve">
-    <value>Especifica el nombre del blob del cual obtener información. Si se omite, esta herramienta obtendrá la información de todo el archivo FSH</value>
+    <value>Especifica el nombre del blob del cual obtener información. Si se omite, esta herramienta obtendrá la información de todo el archivo FSH.</value>
   </data>
   <data name="BlobInfo_Arg1" xml:space="preserve">
     <value>nombre de blob</value>
@@ -155,5 +155,80 @@
   </data>
   <data name="BlobInfo_PrintBlobInfo6" xml:space="preserve">
     <value>Datos del footer: {0}</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Ejecuta operaciones en archivos FSH y QFS.</value>
+  </data>
+  <data name="Common_HumanOptionHelp" xml:space="preserve">
+    <value>El tamaño de los blobs binarios se mostrarán en formato legible por humanos.</value>
+  </data>
+  <data name="Compress_Help" xml:space="preserve">
+    <value>Convierte un archivo FSH en un archivo QFS.</value>
+  </data>
+  <data name="Compress_OutputOptionHelp" xml:space="preserve">
+    <value>Especifica un archivo al cual escribir los datos FSH comprimidos. Si se omite, los datos se escribirán a stdout.</value>
+  </data>
+  <data name="Compress_Fail" xml:space="preserve">
+    <value>No fue posible cargar el archivo especificado como un archivo FSH: {0}</value>
+  </data>
+  <data name="Decompress_Help" xml:space="preserve">
+    <value>Convierte un archivo QFS en un archivo FSH.</value>
+  </data>
+  <data name="Decompress_OutputOptionHelp" xml:space="preserve">
+    <value>Especifica un archivo al cual escribir los datos QFS sin comprimir. Si se omite, los datos se escribirán a stdout.</value>
+  </data>
+  <data name="Decompress_Fail" xml:space="preserve">
+    <value>No fue posible cargar el archivo especificado como un archivo QFS: {0}</value>
+  </data>
+  <data name="Extract_FormatOptionHelp" xml:space="preserve">
+    <value>Formato de archivo a utilizar al exportar los blobs a imágenes.</value>
+  </data>
+  <data name="Extract_Help" xml:space="preserve">
+    <value>Extrae una imagen desde el archivo FSH especificado.</value>
+  </data>
+  <data name="Extract_OutdirOptionHelp" xml:space="preserve">
+    <value>Directorio de salida en el cual escribir los archivos extraídos. Se establece en la ruta actual de forma predeterminada.</value>
+  </data>
+  <data name="Extract_RegexArg" xml:space="preserve">
+    <value>regex de los blobs</value>
+  </data>
+  <data name="Extract_RegexArgHelp" xml:space="preserve">
+    <value>Expresión/regex que indica los blobs que serán extraídos desde el archivo FSH especificado. Si se omite, todos los blobs se extraerán.</value>
+  </data>
+  <data name="Info_Help" xml:space="preserve">
+    <value>Muestra información general acerca del archivo FSH/QFS.</value>
+  </data>
+  <data name="Info_Info1" xml:space="preserve">
+    <value>Blobs en el FSH: {0}</value>
+  </data>
+  <data name="Info_Info2" xml:space="preserve">
+    <value>ID de directorio: {0}</value>
+  </data>
+  <data name="Info_Info3" xml:space="preserve">
+    <value>Tamaño de archivo: {0}</value>
+  </data>
+  <data name="Info_Info4" xml:space="preserve">
+    <value>FSH comprimido: sí</value>
+  </data>
+  <data name="Info_Info5" xml:space="preserve">
+    <value>Tamaño de carga útil descomprimida: {0}</value>
+  </data>
+  <data name="Info_Info6" xml:space="preserve">
+    <value>Relación de compresión: {0:f2}:1</value>
+  </data>
+  <data name="Info_Info7" xml:space="preserve">
+    <value>FSH comprimido: no</value>
+  </data>
+  <data name="Ls_DecimalOptionHelp" xml:space="preserve">
+    <value>El desplazamiento de los blobs será presentado en formato decimal.</value>
+  </data>
+  <data name="Ls_Help" xml:space="preserve">
+    <value>Enumera todos los blobs dentro del archivo FSH/QFS.</value>
+  </data>
+  <data name="Ls_OffsetOptionHelp" xml:space="preserve">
+    <value>Incluye el desplazamiento de los blobs en el listado.</value>
+  </data>
+  <data name="Ls_SizeOptionHelp" xml:space="preserve">
+    <value>Incluye el tamaño de los blobs en el listado.</value>
   </data>
 </root>

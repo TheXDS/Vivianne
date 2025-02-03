@@ -28,7 +28,7 @@ public class VivEditorState : FileStateBase<VivFile>
     /// <summary>
     /// Gets a descriptive friendly name inferred from FeData.
     /// </summary>
-    public string FriendlyName => File.GetFriendlyName() ?? "<unknown>";
+    public string FriendlyName => File.GetFriendlyName() ?? TheXDS.Vivianne.Resources.Strings.Common.VivEditorState_UnknownFriendlyName;
 
     /// <summary>
     /// Gets a value that indicates if the VIV file contains the 'car.fce'

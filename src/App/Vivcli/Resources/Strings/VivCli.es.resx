@@ -121,4 +121,7 @@
   <data name="RootHelp" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
+  <data name="RootHelp" xml:space="preserve">
+    <value>Vivianne CLI - Una herramienta de modding para NFS3.</value>
+  </data>
 </root>

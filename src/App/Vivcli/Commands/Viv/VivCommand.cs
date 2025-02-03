@@ -1,6 +1,7 @@
 using TheXDS.Vivianne.Commands.Base;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Serializers;
+using St = TheXDS.Vivianne.Resources.Strings.VivCommand;
 
 namespace TheXDS.Vivianne.Commands.Viv;
 
@@ -9,9 +10,9 @@ namespace TheXDS.Vivianne.Commands.Viv;
 /// </summary>
 public partial class VivCommand() : FileCommandBase<VivFile, VivSerializer>(
     "viv",
-    "Performs operations on VIV files.",
-    "viv file",
-    "Path to the VIV file.",
+    St.Description,
+    St.Arg1,
+    St.Arg1Description,
     [
         BuildAddCommand, 
         BuildExtractCommand,

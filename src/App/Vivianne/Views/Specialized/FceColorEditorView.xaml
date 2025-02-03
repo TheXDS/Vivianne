@@ -4,13 +4,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-    xmlns:local="clr-namespace:TheXDS.Vivianne.Views.Specialized"
-    xmlns:viewmodels="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
     xmlns:gn="http://schemas.thexds.local/ganymede"
-    xmlns:valueconverters="clr-namespace:TheXDS.Vivianne.ValueConverters"
-    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:hlp="clr-namespace:TheXDS.Vivianne.Helpers"
-    d:DataContext="{d:DesignInstance Type=viewmodels:FceColorEditorViewModel}"
+    xmlns:local="clr-namespace:TheXDS.Vivianne.Views.Specialized"
+    xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings.Views.Specialized"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:vc="clr-namespace:TheXDS.Vivianne.ValueConverters"
+    xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
+    d:DataContext="{d:DesignInstance Type=vm:FceColorEditorViewModel}"
     mc:Ignorable="d" 
     x:Name="ucRoot"
     d:DesignHeight="150" d:DesignWidth="400">
@@ -40,7 +41,7 @@
                                     <Setter Property="Maximum" Value="255"/>
                                     <Setter Property="MaxDecimalPlaces" Value="0"/>
                                 </Style>
-                                <valueconverters:FceColorToBrushConverter x:Key="mfc2bv"/>
+                                <vc:FceColorToBrushConverter x:Key="mfc2bv"/>
                             </Grid.Resources>
                             <ui:NumberBox
                                 hlp:Form.Label="H"
@@ -88,7 +89,7 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-            <Button Margin="5" Padding="10,0" HorizontalAlignment="Left" Command="{Binding AddNewColorCommand, Mode=OneWay}">Add new color...</Button>
+            <Button Margin="5" HorizontalAlignment="Left" Command="{Binding AddNewColorCommand, Mode=OneWay}" Content="{x:Static st:FceColorEditorView.AddNewColor}"/>
         </StackPanel>
     </ScrollViewer>
 </UserControl>

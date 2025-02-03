@@ -7,6 +7,7 @@ using TheXDS.Ganymede.Models;
 using TheXDS.Ganymede.Resources;
 using TheXDS.Ganymede.Types.Base;
 using TheXDS.Vivianne.Models;
+using St = TheXDS.Vivianne.Resources.Strings.ViewModels.VivInfoViewModel;
 
 namespace TheXDS.Vivianne.ViewModels;
 
@@ -43,15 +44,15 @@ public class VivInfoViewModel : ViewModel, IStatefulViewModel<VivEditorState>
     {
         var r = await DialogService!.GetDirectoryPath(CommonDialogTemplates.DirectorySelect with
         {
-            Title = "Export all",
-            Text = "Select a path to extract all VIV file contents into."
+            Title = St.ExportAll,
+            Text = St.SelectAPath
         });
         if (!r.Success) return;
         
         var c = 0;
         foreach (var j in State.File.Directory)
         {
-            p.Report(new(c * 100 / State.File.Directory.Count, $"Exporting {j.Key}..."));
+            p.Report(new(c * 100 / State.File.Directory.Count, string.Format(St.ExportingX, j.Key)));
             await File.WriteAllBytesAsync(Path.Combine(r.Result, j.Key), j.Value);
             c++;
         }

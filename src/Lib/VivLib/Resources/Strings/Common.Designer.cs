@@ -61,6 +61,15 @@ namespace TheXDS.Vivianne.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tried to read a string outside of file bounds (offset 0x{0:X8}). Returning an empty string instead....
+        /// </summary>
+        internal static string FeDataSerializer_StringOutOfBounds {
+            get {
+                return ResourceManager.GetString("FeDataSerializer_StringOutOfBounds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to FSH blob ID must include letters and/or digits only..
         /// </summary>
         internal static string FshBlobBadId {
@@ -84,6 +93,15 @@ namespace TheXDS.Vivianne.Resources.Strings {
         internal static string FshBlobIdTooLong {
             get {
                 return ResourceManager.GetString("FshBlobIdTooLong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The specified ID is already in use..
+        /// </summary>
+        internal static string FshBlobNewIdInUse {
+            get {
+                return ResourceManager.GetString("FshBlobNewIdInUse", resourceCulture);
             }
         }
         

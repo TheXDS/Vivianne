@@ -9,14 +9,17 @@ public enum BackgroundType
     /// Checkerboard background.
     /// </summary>
     Checkerboard,
+
     /// <summary>
     /// Black background.
     /// </summary>
     Black,
+
     /// <summary>
     /// White background.
     /// </summary>
     White,
+
     /// <summary>
     /// Magenta background
     /// </summary>

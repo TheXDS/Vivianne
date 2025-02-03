@@ -1,26 +1,25 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace TheXDS.Vivianne.Models
+namespace TheXDS.Vivianne.Models;
+
+/// <summary>
+/// Describes the color map information in a TGA file.
+/// </summary>
+[StructLayout(LayoutKind.Sequential, Pack = 1)]
+public struct ColorMapSpec
 {
     /// <summary>
-    /// Describes the color map information in a TGA file.
+    /// Offset of the color map.
     /// </summary>
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public struct ColorMapSpec
-    {
-        /// <summary>
-        /// Offset of the color map.
-        /// </summary>
-        public ushort ColorMapOffset;
+    public ushort ColorMapOffset;
 
-        /// <summary>
-        /// Number of elements in the color map.
-        /// </summary>
-        public ushort ColorMapSize;
+    /// <summary>
+    /// Number of elements in the color map.
+    /// </summary>
+    public ushort ColorMapSize;
 
-        /// <summary>
-        /// Bits per color for each element of the color map.
-        /// </summary>
-        public byte BitsPerColor;
-    }
+    /// <summary>
+    /// Bits per color for each element of the color map.
+    /// </summary>
+    public byte BitsPerColor;
 }

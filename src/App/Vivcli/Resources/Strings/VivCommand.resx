@@ -1,0 +1,205 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+		Microsoft ResX Schema
+
+		Version 1.3
+
+		The primary goals of this format is to allow a simple XML format 
+		that is mostly human readable. The generation and parsing of the 
+		various data types are done through the TypeConverter classes 
+		associated with the data types.
+
+		Example:
+
+		... ado.net/XML headers & schema ...
+		<resheader name="resmimetype">text/microsoft-resx</resheader>
+		<resheader name="version">1.3</resheader>
+		<resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+		<resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+		<data name="Name1">this is my long string</data>
+		<data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+		<data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+			[base64 mime encoded serialized .NET Framework object]
+		</data>
+		<data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+			[base64 mime encoded string representing a byte array form of the .NET Framework object]
+		</data>
+
+		There are any number of "resheader" rows that contain simple 
+		name/value pairs.
+
+		Each data row contains a name, and value. The row also contains a 
+		type or mimetype. Type corresponds to a .NET class that support 
+		text/value conversion through the TypeConverter architecture. 
+		Classes that don't support this are serialized and stored with the 
+		mimetype set.
+
+		The mimetype is used for serialized objects, and tells the 
+		ResXResourceReader how to depersist the object. This is currently not 
+		extensible. For a given mimetype the value must be set accordingly:
+
+		Note - application/x-microsoft.net.object.binary.base64 is the format 
+		that the ResXResourceWriter will generate, however the reader can 
+		read any of the formats listed below.
+
+		mimetype: application/x-microsoft.net.object.binary.base64
+		value   : The object must be serialized with 
+			: System.Serialization.Formatters.Binary.BinaryFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.soap.base64
+		value   : The object must be serialized with 
+			: System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.bytearray.base64
+		value   : The object must be serialized into a byte array 
+			: using a System.ComponentModel.TypeConverter
+			: and then encoded with base64 encoding.
+	-->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>1.3</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Description" xml:space="preserve">
+    <value>Performs operations on VIV files.</value>
+  </data>
+  <data name="Arg1" xml:space="preserve">
+    <value>viv file</value>
+  </data>
+  <data name="Arg1Description" xml:space="preserve">
+    <value>Path to the VIV file.</value>
+  </data>
+  <data name="Add_Help" xml:space="preserve">
+    <value>Adds a file to the VIV.</value>
+  </data>
+  <data name="Add_Arg1Help" xml:space="preserve">
+    <value>Indicates the file to be added.</value>
+  </data>
+  <data name="Add_Arg1" xml:space="preserve">
+    <value>file</value>
+  </data>
+  <data name="Add_ForceHelp" xml:space="preserve">
+    <value>Force add the file, even if it exists already on the VIV file.</value>
+  </data>
+  <data name="Add_NameHelp" xml:space="preserve">
+    <value>New name of the file. If omitted, the current file name wil be used.</value>
+  </data>
+  <data name="Add_Fail" xml:space="preserve">
+    <value>The specified VIV file contains '{0}' already.</value>
+  </data>
+  <data name="Extract_Help" xml:space="preserve">
+    <value>Extracts a file from within the specified VIV.</value>
+  </data>
+  <data name="Extract_Arg1" xml:space="preserve">
+    <value>file(s) regex</value>
+  </data>
+  <data name="Extract_Arg1Help" xml:space="preserve">
+    <value>File name/regex that indicates the file(s) to be extracted from within the specified VIV. If omitted, all files will be extracted.</value>
+  </data>
+  <data name="Extract_DirectoryHelp" xml:space="preserve">
+    <value>Output directory to write the file(s) into. Defaults to the current path.</value>
+  </data>
+  <data name="Info_Help" xml:space="preserve">
+    <value>Gets basic information on the VIV file.</value>
+  </data>
+  <data name="Info_1" xml:space="preserve">
+    <value>Header signature: 0x{0} ({1})</value>
+  </data>
+  <data name="Info_2" xml:space="preserve">
+    <value>File size in header: {0} ({1})</value>
+  </data>
+  <data name="Info_3" xml:space="preserve">
+    <value>Calculated file size: {0} ({1})</value>
+  </data>
+  <data name="Info_4" xml:space="preserve">
+    <value>Actual file size: {0} ({1})</value>
+  </data>
+  <data name="Info_5" xml:space="preserve">
+    <value>Files: {0}</value>
+  </data>
+  <data name="Info_6" xml:space="preserve">
+    <value>Data pool offset: {0}</value>
+  </data>
+  <data name="Ls_Help" xml:space="preserve">
+    <value>Enumerates all files on the VIV file.</value>
+  </data>
+  <data name="Ls_SizeHelp" xml:space="preserve">
+    <value>Includes the file size in the listing.</value>
+  </data>
+  <data name="Ls_OffsetHelp" xml:space="preserve">
+    <value>Includes the file offset in the listing.</value>
+  </data>
+  <data name="Ls_HumanHelp" xml:space="preserve">
+    <value>File sizes will be formatted in human-readable format.</value>
+  </data>
+  <data name="Ls_DecHelp" xml:space="preserve">
+    <value>The file offsets will be presented in decimal format.</value>
+  </data>
+  <data name="Read_Help" xml:space="preserve">
+    <value>Reads a file from within the specified VIV.</value>
+  </data>
+  <data name="Read_FileHelp" xml:space="preserve">
+    <value>File to read from within the specified VIV.</value>
+  </data>
+  <data name="Read_OutputHelp" xml:space="preserve">
+    <value>If specified, indicates the path to write the file into. If omitted, the file will be read to standard output.</value>
+  </data>
+  <data name="Read_Fail1" xml:space="preserve">
+    <value>You must specify a file name.</value>
+  </data>
+  <data name="Read_Fail2" xml:space="preserve">
+    <value>The specified VIV file does not contain '{0}'.</value>
+  </data>
+  <data name="Read_Arg1" xml:space="preserve">
+    <value>file</value>
+  </data>
+  <data name="Rm_Help" xml:space="preserve">
+    <value>Removes a file from the VIV file.</value>
+  </data>
+  <data name="Rm_Arg1" xml:space="preserve">
+    <value>file</value>
+  </data>
+  <data name="Rm_Arg1Help" xml:space="preserve">
+    <value>File to be removed.</value>
+  </data>
+  <data name="Rm_Fail" xml:space="preserve">
+    <value>The specified VIV file does not contain '{0}'.</value>
+  </data>
+</root>

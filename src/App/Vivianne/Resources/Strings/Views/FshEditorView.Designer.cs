@@ -70,6 +70,15 @@ namespace TheXDS.Vivianne.Resources.Strings.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Alpha.
+        /// </summary>
+        public static string Alpha {
+            get {
+                return ResourceManager.GetString("Alpha", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Background:.
         /// </summary>
         public static string Background {

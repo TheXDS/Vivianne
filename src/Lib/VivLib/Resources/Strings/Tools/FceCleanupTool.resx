@@ -121,7 +121,7 @@
     <value>Damaged header: Unexpected number of arts</value>
   </data>
   <data name="HeaderDamage_Arts_Details" xml:space="preserve">
-    <value>The header indicates that there's mode than one art defined in the FCE file. This is not consistent with FCE parsing in NFS3</value>
+    <value>The header indicates that there's more than one art defined in the FCE file. This is not consistent with FCE parsing in NFS3.</value>
   </data>
   <data name="StrayPartNames_1_Title" xml:space="preserve">
     <value>{0} stray part name(s)</value>
@@ -133,12 +133,40 @@
     <value>{0} unnamed part(s)</value>
   </data>
   <data name="StrayPartNames_2_Details" xml:space="preserve">
-    <value>There's mode car parts than car part names in the FCE File. A name for these parts will be inferred and set. Please verify that the part is in the proper location and has the appropriate name.</value>
+    <value>There's more car parts than car part names in the FCE File. A name for these parts will be inferred and set. Please verify that the part is in the proper location and has the appropriate name.</value>
   </data>
   <data name="HeaderDamage_DummyCount_Details" xml:space="preserve">
     <value>The header declares more Dummy parts than supported by the FCE file format, suggesting an overrun of dummy part definitions. The number of parts will be truncated to 16.</value>
   </data>
   <data name="HeaderDamage_DummyCount_Title" xml:space="preserve">
     <value>Damaged header: Invalid number of Dummies</value>
+  </data>
+  <data name="BadTriangleFlags_comp" xml:space="preserve">
+    <value>{0}: {1} triangles with invalid flags</value>
+  </data>
+  <data name="BadTriangleFlags_Title" xml:space="preserve">
+    <value>{0} triangles with invalid flags</value>
+  </data>
+  <data name="BadTriangleFlags_Details" xml:space="preserve">
+    <value>The following parts have triangles with invalid material flags:
+{0}</value>
+  </data>
+  <data name="HeaderDamage_CarPartCount_Title" xml:space="preserve">
+    <value>Invalid car part count</value>
+  </data>
+  <data name="HeaderDamage_CarPartCount_Details" xml:space="preserve">
+    <value>The number of declared car parts is outside the valid range of values.</value>
+  </data>
+  <data name="HeaderDamage_ColorCount_Title" xml:space="preserve">
+    <value>Invalid primary color count</value>
+  </data>
+  <data name="HeaderDamage_ColorCount_Details" xml:space="preserve">
+    <value>The number of declared colors is outside the valid range of values.</value>
+  </data>
+  <data name="HeaderDamage_ColorMismatch_Title" xml:space="preserve">
+    <value>Primary/secondary color mismatch</value>
+  </data>
+  <data name="HeaderDamage_ColorMismatch_Details" xml:space="preserve">
+    <value>The number of declared primary and secondary colors does not match.</value>
   </data>
 </root>

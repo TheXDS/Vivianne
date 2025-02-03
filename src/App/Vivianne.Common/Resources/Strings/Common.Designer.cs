@@ -70,6 +70,51 @@ namespace TheXDS.Vivianne.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Extra tools.
+        /// </summary>
+        public static string ExtraTools {
+            get {
+                return ResourceManager.GetString("ExtraTools", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File not found..
+        /// </summary>
+        public static string FileNotFound {
+            get {
+                return ResourceManager.GetString("FileNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The file you selected does not exist or it&apos;s inaccessible..
+        /// </summary>
+        public static string FileNotFound2 {
+            get {
+                return ResourceManager.GetString("FileNotFound2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New file.
+        /// </summary>
+        public static string NewFile {
+            get {
+                return ResourceManager.GetString("NewFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ok.
+        /// </summary>
+        public static string Ok {
+            get {
+                return ResourceManager.GetString("Ok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Open.
         /// </summary>
         public static string Open {
@@ -93,6 +138,15 @@ namespace TheXDS.Vivianne.Resources.Strings {
         public static string SavingX {
             get {
                 return ResourceManager.GetString("SavingX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt; unknown or non-car VIV file &gt;.
+        /// </summary>
+        public static string VivEditorState_UnknownFriendlyName {
+            get {
+                return ResourceManager.GetString("VivEditorState_UnknownFriendlyName", resourceCulture);
             }
         }
     }

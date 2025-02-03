@@ -13,6 +13,18 @@
 			<Generator>ResXFileCodeGenerator</Generator>
 			<LastGenOutput>Common.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Strings\QfsCodec.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>QfsCodec.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Strings\Serializers\FshSerializer.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>FshSerializer.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Strings\Serializers\VivSerializer.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>VivSerializer.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Strings\Tools\FceCleanupTool.resx">
 			<Generator>ResXFileCodeGenerator</Generator>
 			<LastGenOutput>FceCleanupTool.Designer.cs</LastGenOutput>
@@ -23,6 +35,21 @@
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
 			<DependentUpon>Common.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\Strings\QfsCodec.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>QfsCodec.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\Strings\Serializers\FshSerializer.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>FshSerializer.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\Strings\Serializers\VivSerializer.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>VivSerializer.resx</DependentUpon>
 		</Compile>
 		<Compile Update="Resources\Strings\Tools\FceCleanupTool.Designer.cs">
 			<DesignTime>True</DesignTime>

@@ -28,20 +28,85 @@
 		<Resource Include="Resources\Fonts\NFS_by_JLTV.ttf" />
 	</ItemGroup>
 	<ItemGroup>
+		<Compile Update="Resources\Strings\Controls\DraggableLineGraph.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>DraggableLineGraph.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\Strings\Controls\FileEditorLauncherView.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>FileEditorLauncherView.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\Strings\Controls\ProcessMonitor.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>ProcessMonitor.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\Strings\MainWindow.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>MainWindow.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\Strings\ValueConverters\FshBlobFooterIdentifierConverter.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>FshBlobFooterIdentifierConverter.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\Strings\ValueConverters\FshBlobFormatLabelConverter.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>FshBlobFormatLabelConverter.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\Strings\ValueConverters\GraphDrawingContext.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>GraphDrawingContext.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\Strings\Views\CarpEditorView.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>CarpEditorView.resx</DependentUpon>
+		</Compile>
 		<Compile Update="Resources\Strings\Views\DashEditorView.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
 			<DependentUpon>DashEditorView.resx</DependentUpon>
 		</Compile>
-		<Compile Update="Resources\Strings\Views\FeDataPreviewView.Designer.cs">
+		<Compile Update="Resources\Strings\Views\FceEditorView.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>FceEditorView.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\Strings\Views\FeDataEditorView.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
-			<DependentUpon>FeDataPreviewView.resx</DependentUpon>
+			<DependentUpon>FeDataEditorView.resx</DependentUpon>
 		</Compile>
 		<Compile Update="Resources\Strings\Views\FshEditorView.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
 			<DependentUpon>FshEditorView.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\Strings\Views\SettingsView.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>SettingsView.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\Strings\Views\Specialized\FceColorEditorView.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>FceColorEditorView.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\Strings\Views\Specialized\FshBlobCoordsEditorView.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>FshBlobCoordsEditorView.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\Strings\Views\StartupView.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>StartupView.resx</DependentUpon>
 		</Compile>
 		<Compile Update="Resources\Strings\Views\VivInfoView.Designer.cs">
 			<DesignTime>True</DesignTime>
@@ -50,17 +115,69 @@
 		</Compile>
 	</ItemGroup>
 	<ItemGroup>
+		<EmbeddedResource Update="Resources\Strings\Controls\DraggableLineGraph.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>DraggableLineGraph.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Strings\Controls\FileEditorLauncherView.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>FileEditorLauncherView.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Strings\Controls\ProcessMonitor.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>ProcessMonitor.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Strings\MainWindow.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>MainWindow.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Strings\ValueConverters\FshBlobFooterIdentifierConverter.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>FshBlobFooterIdentifierConverter.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Strings\ValueConverters\FshBlobFormatLabelConverter.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>FshBlobFormatLabelConverter.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Strings\ValueConverters\GraphDrawingContext.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>GraphDrawingContext.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Strings\Views\CarpEditorView.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>CarpEditorView.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Strings\Views\DashEditorView.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>DashEditorView.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Resources\Strings\Views\FeDataPreviewView.resx">
+		<EmbeddedResource Update="Resources\Strings\Views\FceEditorView.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>FceEditorView.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Strings\Views\FeDataEditorView.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>FeDataPreviewView.Designer.cs</LastGenOutput>
+			<LastGenOutput>FeDataEditorView.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Strings\Views\FshEditorView.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>FshEditorView.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Strings\Views\SettingsView.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>SettingsView.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Strings\Views\Specialized\FceColorEditorView.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>FceColorEditorView.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Strings\Views\Specialized\FshBlobCoordsEditorView.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>FshBlobCoordsEditorView.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Strings\Views\StartupView.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>StartupView.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Strings\Views\VivInfoView.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>

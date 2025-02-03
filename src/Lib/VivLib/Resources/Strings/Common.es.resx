@@ -129,4 +129,10 @@
   <data name="UnknownAsHex" xml:space="preserve">
     <value>Desconocido (0x{0:X2})</value>
   </data>
+  <data name="FshBlobNewIdInUse" xml:space="preserve">
+    <value>El ID especificado ya se encuentra en uso.</value>
+  </data>
+  <data name="FeDataSerializer_StringOutOfBounds" xml:space="preserve">
+    <value>Se ha intentado leer una cadena fuera de los límites del archivo (offset 0x{0:X8}). Retornando una cadena vacía en su lugar...</value>
+  </data>
 </root>

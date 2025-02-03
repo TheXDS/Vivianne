@@ -6,6 +6,7 @@ using TheXDS.MCART.Component;
 using TheXDS.MCART.Helpers;
 using TheXDS.Vivianne.Tools;
 using TheXDS.Vivianne.ViewModels.Base;
+using St = TheXDS.Vivianne.Resources.Strings.Common;
 
 namespace TheXDS.Vivianne.ViewModels;
 
@@ -15,7 +16,7 @@ namespace TheXDS.Vivianne.ViewModels;
 public class ExtraToolsViewModelLauncher : ViewModel, IViewModelLauncher
 {
     /// <inheritdoc/>
-    public string PageName => "Extra tools";
+    public string PageName => St.ExtraTools;
 
     /// <summary>
     /// Gets a collection of custom tools that can be launched from the startup

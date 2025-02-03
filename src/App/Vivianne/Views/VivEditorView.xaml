@@ -5,6 +5,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:gn="http://schemas.thexds.local/ganymede"
+    xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings.Views"
     xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
     xmlns:vc2="clr-namespace:TheXDS.Vivianne.ValueConverters"
     xmlns:mcart="http://schemas.thexds.local/mcart"
@@ -25,7 +26,7 @@
                 <RadioButton.Template>
                     <ControlTemplate TargetType="RadioButton">
                         <Border CornerRadius="10,0,0,10" x:Name="PART_SelectionBg">
-                            <TextBlock x:Name="PART_title" VerticalAlignment="Center" HorizontalAlignment="Center" Text="VIV information" FontSize="16" Foreground="{StaticResource DarkAreaForeground}"/>
+                            <TextBlock x:Name="PART_title" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{x:Static st:VivInfoView.VIVInformation}" FontSize="16" Foreground="{StaticResource DarkAreaForeground}"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsChecked" Value="true">

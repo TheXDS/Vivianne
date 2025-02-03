@@ -3,6 +3,7 @@ using TheXDS.MCART.Helpers;
 using TheXDS.MCART.ValueConverters.Base;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Resources;
+using St = TheXDS.Vivianne.Resources.Strings.ValueConverters.FshBlobFooterIdentifierConverter;
 
 namespace TheXDS.Vivianne.ValueConverters;
 
@@ -21,9 +22,9 @@ public class FshBlobFooterIdentifierConverter : IOneWayValueConverter<FshBlob?, 
             {
                 return Mappings.FshBlobFooterToLabel.TryGetValue(j.Key, out var label)
                     ? label
-                    : $"Other ({j.Key})";
+                    : string.Format(St.Other, j.Key);
             }
         }
-        return $"Unknown ({((long)(value?.Footer?.Length ?? 0)).ByteUnits()})";
+        return string.Format(St.Unknown, ((long)(value?.Footer?.Length ?? 0)).ByteUnits());
     }
 }

@@ -4,14 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TheXDS.Ganymede.Helpers;
-using TheXDS.Ganymede.Resources;
 using TheXDS.MCART.Component;
-using TheXDS.MCART.Types;
 using TheXDS.MCART.Types.Extensions;
-using TheXDS.Vivianne.Component;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Resources;
 using TheXDS.Vivianne.Tools;
+using St = TheXDS.Vivianne.Resources.Strings.ViewModels.CarpEditorViewModel;
 
 namespace TheXDS.Vivianne.ViewModels;
 
@@ -141,7 +139,7 @@ public class CarpEditorViewModel : EditorViewModelBase<CarpEditorState>
         if (_vivFileRef is not null)
         {
             UiThread.Invoke(() => FedataSyncTool.Sync(State.ToCarp(), _vivFileRef.Directory));
-            await DialogService!.Message("FeData Sync", "Operation has been completed successfully");
+            await DialogService!.Message(St.FeDataSync, St.OperationCompletedSuccessfully);
         }
     }
 
@@ -190,7 +188,7 @@ public class CarpEditorViewModel : EditorViewModelBase<CarpEditorState>
 
     private async Task<ICollection<double>> RunCurveEditor(ICollection<double> c)
     {
-        var vm = new CurveEditorDialogViewModel(new(c)) { Message = "Edit curve" };
+        var vm = new CurveEditorDialogViewModel(new(c)) { Message = St.EditCurve };
         vm.StateSaved += Vm_StateSaved;
         await DialogService!.Show(vm);
         vm.StateSaved -= Vm_StateSaved;
@@ -200,16 +198,15 @@ public class CarpEditorViewModel : EditorViewModelBase<CarpEditorState>
     private Task OnPerformanceMetrics()
     {
         var a = Mappings.GetTextProviderFromCulture(State.ToCarp());
-        return DialogService!.Message("Performance metrics", $"""
-            Weight: {a.Weight}
-            Top speed: {a.TopSpeed}
-            Power: {a.Power}
-            Torque: {a.Torque}
-            Max Engine RPM: {a.MaxRpm}
-            Tire specs: {a.Tires}
-            Gearbox: {a.Gearbox}
-            0 to 60 MPH: {a.Accel0To60}
-            0 to 100 MPH: {a.Accel0To100}
-            """);
+        return DialogService!.Message(St.PerformanceMetrics, string.Format(St.PerformanceMetricsDetails,
+            a.Weight,
+            a.TopSpeed,
+            a.Power,
+            a.Torque,
+            a.MaxRpm,
+            a.Tires,
+            a.Gearbox,
+            a.Accel0To60,
+            a.Accel0To100));
     }
 }

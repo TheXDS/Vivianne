@@ -1,23 +1,23 @@
 ﻿using System.Windows;
 using TheXDS.Ganymede.Helpers;
 using TheXDS.Ganymede.Services;
+using TheXDS.Vivianne;
 using TheXDS.Vivianne.Component;
 
-namespace Vivianne
+namespace Vivianne;
+
+/// <summary>
+/// Interaction logic for App.xaml
+/// </summary>
+public partial class App : Application
 {
     /// <summary>
-    /// Interaction logic for App.xaml
+    /// Initializes a new instance of the <see cref="App"/> class.
     /// </summary>
-    public partial class App : Application
+    public App()
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="App"/> class.
-        /// </summary>
-        public App()
-        {
-            UiThread.SetProxy(new DispatcherUiThreadProxy());
-            PlatformServices.SetKeyboardProxy(new WpfKeyboardProxy());
-            PlatformServices.SetFceRender(new WpfStaticFceRender());
-        }
+        UiThread.SetProxy(new DispatcherUiThreadProxy());
+        PlatformServices.SetKeyboardProxy(new WpfKeyboardProxy());
+        PlatformServices.SetFceRender(new WpfStaticFceRender());
     }
 }

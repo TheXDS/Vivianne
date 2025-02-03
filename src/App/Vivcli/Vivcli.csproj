@@ -23,6 +23,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>FshCommand.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\Strings\VivCommand.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>VivCommand.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -33,6 +38,10 @@
     <EmbeddedResource Update="Resources\Strings\FshCommand.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>FshCommand.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Strings\VivCommand.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>VivCommand.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 </Project>

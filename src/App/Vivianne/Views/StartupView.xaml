@@ -5,8 +5,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ct="clr-namespace:TheXDS.Vivianne.Controls"
     xmlns:mcart="http://schemas.thexds.local/mcart"
-    xmlns:controls="clr-namespace:TheXDS.Vivianne.Controls"
+    xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings.Views"
     xmlns:vmb="clr-namespace:TheXDS.Vivianne.ViewModels.Base;assembly=Vivianne.Common"
     xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
     x:Name="pgRoot"
@@ -15,13 +16,13 @@
     d:DesignHeight="450" d:DesignWidth="800">
     <mcart:BusyContainer IsBusy="{Binding IsNfs3Running, Mode=OneWay}" BusyBackground="{StaticResource FadeDownBackground}" BusyOpacity="1">
         <mcart:BusyContainer.BusyContent>
-            <controls:ProcessMonitor MonitoredProcess="{Binding Nfs3Process, Mode=OneWay}"/>
+            <ct:ProcessMonitor MonitoredProcess="{Binding Nfs3Process, Mode=OneWay}"/>
         </mcart:BusyContainer.BusyContent>
         <DockPanel>
             <DockPanel DockPanel.Dock="Top" Margin="5">
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
-                    <ui:Button Margin="5" Content="Launch NFS3" Icon="{ui:SymbolIcon Symbol=Play24}" Command="{Binding LaunchNfs3Command, Mode=OneWay}"/>
-                    <ui:Button Margin="5" Content="Settings" Icon="{ui:SymbolIcon Symbol=Settings32}" Command="{Binding SettingsCommand, Mode=OneWay}"/>
+                    <ui:Button Margin="5" Content="{x:Static st:StartupView.LaunchNFS3}" Icon="{ui:SymbolIcon Symbol=Play24}" Command="{Binding LaunchNfs3Command, Mode=OneWay}"/>
+                    <ui:Button Margin="5" Content="{x:Static st:StartupView.Settings}" Icon="{ui:SymbolIcon Symbol=Settings32}" Command="{Binding SettingsCommand, Mode=OneWay}"/>
                 </StackPanel>
                 <TextBlock FontSize="36" Foreground="White" FontFamily="{StaticResource nfsFont}">Vivianne</TextBlock>
             </DockPanel>
@@ -44,13 +45,13 @@
                         </Setter>
                     </Style>
                 </TabControl.Resources>
-                <TabItem Header="VIV editor">
-                    <controls:FileEditorLauncherView Launcher="{Binding Launchers[0], Mode=OneWay}"/>
+                <TabItem Header="{x:Static st:StartupView.VIVEditor}">
+                    <ct:FileEditorLauncherView Launcher="{Binding Launchers[0], Mode=OneWay}"/>
                 </TabItem>
-                <TabItem  Header="FSH/QFS editor">
-                    <controls:FileEditorLauncherView Launcher="{Binding Launchers[1], Mode=OneWay}"/>
+                <TabItem  Header="{x:Static st:StartupView.FSHQFSEditor}">
+                    <ct:FileEditorLauncherView Launcher="{Binding Launchers[1], Mode=OneWay}"/>
                 </TabItem>
-                <TabItem Header="Extra tools">
+                <TabItem Header="{x:Static st:StartupView.ExtraTools}">
                     <ItemsControl Background="{StaticResource DarkBackground}" ItemsSource="{Binding Launchers[2].AdditionalInteractions, Mode=OneWay}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>

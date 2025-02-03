@@ -1,4 +1,5 @@
 using System.CommandLine;
+using St = TheXDS.Vivianne.Resources.Strings.VivCommand;
 
 namespace TheXDS.Vivianne.Commands.Viv;
 
@@ -9,19 +10,20 @@ public partial class VivCommand
 {
     private static Command BuildRmCommand(Argument<FileInfo> vivFile)
     {
-        var cmd = new Command("rm", "Removes a file from the VIV file.");
-        var name = new Argument<string>("file", "File to be removed.").LegalFileNamesOnly();
+        var cmd = new Command("rm", St.Rm_Help);
+        var name = new Argument<string>(St.Rm_Arg1, St.Rm_Arg1Help).LegalFileNamesOnly();
         cmd.AddArgument(name);
-        cmd.SetHandler(RmCommand, vivFile,name);
+        cmd.SetHandler(RmCommand, vivFile, name);
         return cmd;
     }
 
     private static Task RmCommand(FileInfo vivFile, string name)
     {
-        return FileTransaction(vivFile, viv => {
+        return FileTransaction(vivFile, viv =>
+        {
             if (!viv.Remove(name))
             {
-                Fail($"'{name}' does not exist in the specified VIV file.");
+                Fail(string.Format(St.Rm_Fail, name));
             }
         });
     }

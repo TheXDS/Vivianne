@@ -4,6 +4,7 @@ using System.Text;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Attributes;
 using TheXDS.Vivianne.Models;
+using St = TheXDS.Vivianne.Resources.Strings.Common;
 
 namespace TheXDS.Vivianne.Serializers;
 
@@ -56,7 +57,7 @@ public class FeDataSerializer : ISerializer<FeData>
         {
             if (offset > stream.Length)
             {
-                Debug.Print($"Tried to read a string outside of file bounds (offset 0x{offset:X8}). Returning an empty string instead...");
+                Debug.Print(string.Format(St.FeDataSerializer_StringOutOfBounds, offset));
                 return string.Empty;
             }
             stream.Seek(offset, SeekOrigin.Begin);

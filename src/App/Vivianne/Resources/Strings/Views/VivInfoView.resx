@@ -165,4 +165,7 @@
   <data name="HasFedataFsh" xml:space="preserve">
     <value>Has in-menu FSH car logo</value>
   </data>
+  <data name="VIVInformation" xml:space="preserve">
+    <value>VIV information</value>
+  </data>
 </root>

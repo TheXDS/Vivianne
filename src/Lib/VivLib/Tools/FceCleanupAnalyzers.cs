@@ -61,10 +61,12 @@ internal static class FceCleanupAnalyzers
             badTrisCount += badFlagsCount;
             if (badFlagsCount > 0)
             {
-                badPartNames.Add($"{name}: {badFlagsCount} triangles with invalid flags");
+                badPartNames.Add(string.Format(St.BadTriangleFlags_comp,name, badFlagsCount));
             }
         }
-        return badPartNames.Count != 0 ? new FceCleanupResult($"{badTrisCount} triangles with invalid flags", $"The following parts have triangles with invalid material flags:{Environment.NewLine}{string.Join(Environment.NewLine, badPartNames)}", CorrectFlags) : null;
+        return badPartNames.Count != 0 ? new FceCleanupResult(
+            string.Format(St.BadTriangleFlags_Title, badTrisCount),
+            string.Format(St.BadTriangleFlags_Details,string.Join(Environment.NewLine, badPartNames)), CorrectFlags) : null;
     }
 
     public static FceCleanupResult? HeaderDamage_Arts(FceFile f)
@@ -95,8 +97,8 @@ internal static class FceCleanupAnalyzers
     public static FceCleanupResult? HeaderDamage_CarPartCount(FceFile f)
     {
         return f.Header.CarPartCount.IsBetween(0, 64) ? null : new FceCleanupResult(
-            "Invalid car part count",
-            "The number of declared car parts is outside the valid range of values.", f =>
+            St.HeaderDamage_CarPartCount_Title,
+            St.HeaderDamage_CarPartCount_Details, f =>
             {
                 var h = f.Header;
                 h.CarPartCount = 64;
@@ -107,8 +109,8 @@ internal static class FceCleanupAnalyzers
     public static FceCleanupResult? HeaderDamage_ColorCount(FceFile f)
     {
         return f.Header.PrimaryColors.IsBetween(0, 16) ? null : new FceCleanupResult(
-            "Invalid primary color count",
-            "The number of declared colors is outside the valid range of values.", f =>
+            St.HeaderDamage_ColorCount_Title,
+            St.HeaderDamage_ColorCount_Details, f =>
             {
                 var h = f.Header;
                 h.PrimaryColors = 16;
@@ -119,8 +121,8 @@ internal static class FceCleanupAnalyzers
     public static FceCleanupResult? HeaderDamage_ColorMismatch(FceFile f)
     {
         return f.Header.PrimaryColors == f.Header.SecondaryColors ? null : new FceCleanupResult(
-            "Primary/secondary color mismatch",
-            "The number of declared primary and secondary colors does not match.", f =>
+            St.HeaderDamage_ColorMismatch_Title,
+            St.HeaderDamage_ColorMismatch_Details, f =>
             {
                 var h = f.Header;
                 h.SecondaryColors = h.PrimaryColors;

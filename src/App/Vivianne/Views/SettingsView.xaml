@@ -5,13 +5,14 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:local="clr-namespace:TheXDS.Vivianne.Views"
+    xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings.Views"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:viewmodels="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
     d:DataContext="{d:DesignInstance Type=viewmodels:SettingsViewModel}"
     mc:Ignorable="d" 
     Height="350">
     <TabControl Grid.Row="1" Margin="10">
-        <TabItem Header="NFS3 settings">
+        <TabItem Header="{x:Static st:SettingsView.NFS3Settings}">
             <StackPanel>
                 <ui:CardControl Icon="{ui:SymbolIcon Symbol=Folder16}">
                     <ui:CardControl.Header>
@@ -23,14 +24,14 @@
                             <ui:TextBlock
                                 Grid.Row="0"
                                 FontTypography="Body"
-                                Text="NFS3 Root directory" />
+                                Text="{x:Static st:SettingsView.NFS3RootDirectory}" />
                             <ui:TextBlock
                                 Grid.Row="1"
                                 Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
                                 Text="{Binding State.Nfs3Path, Mode=OneWay}" />
                         </Grid>
                     </ui:CardControl.Header>
-                    <ui:Button Content="Browse..." Command="{Binding BrowseNfs3PathCommand, Mode=OneWay}"/>
+                    <ui:Button Content="{x:Static st:SettingsView.Browse}" Command="{Binding BrowseNfs3PathCommand, Mode=OneWay}"/>
                 </ui:CardControl>
                 <ui:CardControl Icon="{ui:SymbolIcon Symbol=Window16}">
                     <ui:CardControl.Header>
@@ -42,14 +43,14 @@
                             <ui:TextBlock
                                 Grid.Row="0"
                                 FontTypography="Body"
-                                Text="nfs3.exe launch arguments" />
+                                Text="{x:Static st:SettingsView.Nfs3ExeLaunchArguments}" />
                             <ui:TextBox Grid.Row="1" Margin="0,5,0,0" Text="{Binding State.Nfs3LaunchArgs}"/>
                         </Grid>
                     </ui:CardControl.Header>
                 </ui:CardControl>
             </StackPanel>
         </TabItem>
-        <TabItem Header="General">
+        <TabItem Header="{x:Static st:SettingsView.General}">
             <StackPanel>
                 <ui:CardControl Icon="{ui:SymbolIcon Symbol=Document16}">
                     <ui:CardControl.Header>
@@ -61,11 +62,11 @@
                             <ui:TextBlock
                                 Grid.Row="0"
                                 FontTypography="Body"
-                                Text="File backup" />
+                                Text="{x:Static st:SettingsView.FileBackup}" />
                             <ui:TextBlock
                                 Grid.Row="1"
                                 Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                                Text="Backup files upon saving" />
+                                Text="{x:Static st:SettingsView.BackupFilesUponSaving}" />
                         </Grid>
                     </ui:CardControl.Header>
                     <ui:ToggleSwitch IsChecked="{Binding State.AutoBackup}"/>
@@ -80,11 +81,11 @@
                             <ui:TextBlock
                                 Grid.Row="0"
                                 FontTypography="Body"
-                                Text="Recent files" />
+                                Text="{x:Static st:SettingsView.RecentFiles}" />
                             <ui:TextBlock
                                 Grid.Row="1"
                                 Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                                Text="Number of recent files to keep on the list" />
+                                Text="{x:Static st:SettingsView.NumberOfRecentFilesToKeepOnTheList}" />
                         </Grid>
                     </ui:CardControl.Header>
                     <ui:NumberBox
@@ -97,7 +98,7 @@
                 </ui:CardControl>
             </StackPanel>
         </TabItem>
-        <TabItem Header="VIV editor">
+        <TabItem Header="{x:Static st:SettingsView.VIVEditor}">
             <StackPanel>
                 <ui:CardControl Icon="{ui:SymbolIcon Symbol=Document16}">
                     <ui:CardControl.Header>
@@ -109,11 +110,11 @@
                             <ui:TextBlock
                                 Grid.Row="0"
                                 FontTypography="Body"
-                                Text="Check Serial numbers" />
+                                Text="{x:Static st:SettingsView.CheckSerialNumbers}" />
                             <ui:TextBlock
                                 Grid.Row="1"
                                 Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                                Text="Enable serial number checkup when saving a VIV file" />
+                                Text="{x:Static st:SettingsView.EnableSerialNumberCheckupWhenSavingAVIVFile}" />
                         </Grid>
                     </ui:CardControl.Header>
                     <ui:ToggleSwitch IsChecked="{Binding State.VivCheckSnOnSave}"/>
@@ -128,11 +129,11 @@
                             <ui:TextBlock
                                 Grid.Row="0"
                                 FontTypography="Body"
-                                Text="FCE cleanup" />
+                                Text="{x:Static st:SettingsView.FCECleanup}" />
                             <ui:TextBlock
                                 Grid.Row="1"
                                 Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                                Text="Enable cleanup tasks on FCE files when saving a VIV file" />
+                                Text="{x:Static st:SettingsView.EnableCleanupTasksOnFCEFilesWhenSavingAVIVFile}" />
                         </Grid>
                     </ui:CardControl.Header>
                     <ui:ToggleSwitch IsChecked="{Binding State.AutoBackup}"/>
