@@ -3,25 +3,25 @@
 /// <summary>
 /// Enumerates the available car classes that exist in Need For Speed 4.
 /// </summary>
-public enum Nfs4CarClass : ushort
+public enum Nfs4CarClass : byte
 {
     /// <summary>
     /// Car class 'AAA'.
     /// </summary>
-    AAA,
+    AAA = 0x0,
 
     /// <summary>
     /// Car class 'AA'.
     /// </summary>
-    AA,
+    AA = 0x1,
 
     /// <summary>
     /// Car class 'A'.
     /// </summary>
-    A,
+    A = 0x2,
 
     /// <summary>
     /// Car class 'B'.
     /// </summary>
-    B
+    B = 0x3
 }

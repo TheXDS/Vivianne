@@ -4,25 +4,25 @@
 /// Indicates the possible values for the pursuit flag of a car in Need For
 /// Speed 4.
 /// </summary>
-public enum Nfs4PursuitFlag : ushort
+public enum Nfs4PursuitFlag : byte
 {
     /// <summary>
     /// The car is not a police car.
     /// </summary>
-    No,
+    No = 0x00,
     
     /// <summary>
     /// The car is a police car.
     /// </summary>
-    Police,
+    Police = 0x10,
 
     /// <summary>
     /// The car is not a police car (custom flag version for Mercedes Benz).
     /// </summary>
-    NoMercedes,
+    NoMercedes = 0x20,
 
     /// <summary>
     /// The car is not a police car (custom flag version for Ferrari).
     /// </summary>
-    NoFerrari,
+    NoFerrari = 0xa0,
 }

@@ -36,11 +36,13 @@ public class FeData4Serializer : ISerializer<FeData4>
         public ushort SerialNumber;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 0x5a)]
         public byte[] Padding_0x320;
-        public ushort Unk_0x37a;
+        public byte PoliceFlag_IsBonus;
+        public byte Upgradable_Convertible;
         public ushort Unk_0x37c;
         public ushort Unk_0x37e;
         public ushort Unk_0x380;
-        public ushort Unk_0x382;
+        public Nfs4CarClass CarClass;
+        public byte Unk_0x383;
         public ushort Unk_0x384;
         public ushort Unk_0x386;
         public byte CompareCount; // x2, this seems to indicate the number of ushort values that form the compare tables (actual table values are 1 byte each), always = 0x0a
@@ -58,6 +60,11 @@ public class FeData4Serializer : ISerializer<FeData4>
         public byte[] Unk_0x3ae;
         public ushort StringEntries;
     }
+
+    private const byte Nfs4PursuitFlag_Mask = 0x1c;
+    private const byte IsBonus_Mask = 0x01;
+    private const byte Upgradable_Mask = 0x40;
+    private const byte Convertible_Mask = 0x01;
 
     /// <inheritdoc/>
     public FeData4 Deserialize(Stream stream)
@@ -78,11 +85,11 @@ public class FeData4Serializer : ISerializer<FeData4>
         {
             CarId = fedataHeader.CarId,
             SerialNumber = fedataHeader.SerialNumber,
-            //PoliceFlag = fedataHeader.,
-            //VehicleClass = (Nfs4CarClass)fedataHeader.CarClass,
-            //IsBonus = fedataHeader.IsBonus != 0,
-            //Upgradable = fedataHeader.Upgradable != 0,
-            //Convertible = fedataHeader.Convertible != 0,
+            PoliceFlag = (Nfs4PursuitFlag)(fedataHeader.PoliceFlag_IsBonus & Nfs4PursuitFlag_Mask),
+            VehicleClass = fedataHeader.CarClass,
+            IsBonus = (fedataHeader.PoliceFlag_IsBonus & IsBonus_Mask) != 0,
+            Upgradable = (fedataHeader.Upgradable_Convertible & Upgradable_Mask) != 0,
+            Convertible = (fedataHeader.Upgradable_Convertible & Convertible_Mask) != 0,
             StringEntries = fedataHeader.StringEntries,
             DefaultCompare = new Nfs4CompareTable()
             {
