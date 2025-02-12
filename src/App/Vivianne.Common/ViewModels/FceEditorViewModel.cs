@@ -89,6 +89,7 @@ public class FceEditorViewModel : ViewModel
     {
         var cb = CommandBuilder.For(this);
         Parts = fce.Select(p => new FcePartListItem(p)).ToArray();
+        Dummies = fce.Dummies.Select(p => new FceDummyListItem(p)).ToArray();
         CarTextures = [];
         CarColors = new ObservableCollection<CarColorItem>(CreateColors(null, fce.Header));
         foreach (var j in Parts.Take(5))
@@ -128,6 +129,11 @@ public class FceEditorViewModel : ViewModel
     /// Gets a collection of the FCE parts contained in the model.
     /// </summary>
     public IEnumerable<FcePartListItem> Parts { get; }
+
+    /// <summary>
+    /// Gets a collection of the dummy objects contained in the FCE model.
+    /// </summary>
+    public IEnumerable<FceDummyListItem> Dummies { get; }
 
     /// <summary>
     /// Gets a collection of the available textures from the VIV file.

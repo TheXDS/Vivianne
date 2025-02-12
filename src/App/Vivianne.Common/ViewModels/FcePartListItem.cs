@@ -31,3 +31,10 @@ public class FcePartListItem(KeyValuePair<string, FcePart> part) : NotifyPropert
         set => Change(ref _IsVisible, value);
     }
 }
+
+public class FceDummyListItem(KeyValuePair<string, Vector3d> dummy)
+{
+    public Vector3d Dummy { get; } = dummy.Value;
+
+    public string DummyName { get; } = dummy.Key;
+}

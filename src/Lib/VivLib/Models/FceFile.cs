@@ -99,9 +99,26 @@ public class FceFile : IReadOnlyDictionary<string, FcePart>
         }
     }
 
+    /// <summary>
+    /// Gets the collection of dummy objects contained in this FCE.
+    /// </summary>
+    public IReadOnlyDictionary<string, Vector3d> Dummies => GetDummies().ToDictionary();
+
     private IEnumerable<KeyValuePair<string, FcePart>> GetParts()
     {
-        return Header.PartNames.Take(Header.CarPartCount).Where(p => !string.IsNullOrWhiteSpace(p.ToString())).Select<FceAsciiBlob, KeyValuePair<string, FcePart>>(p => new(p.ToString(), this[p]!));
+        return Header.PartNames
+            .Take(Header.CarPartCount)
+            .Where(p => !string.IsNullOrWhiteSpace(p.ToString()))
+            .Select<FceAsciiBlob, KeyValuePair<string, FcePart>>(p => new(p.ToString(), this[p]!));
+    }
+
+    private IEnumerable<KeyValuePair<string, Vector3d>> GetDummies()
+    {
+        return Header.DummyNames
+            .Zip(Header.Dummies)
+            .Take(Header.DummyCount)
+            .Select(p => new KeyValuePair<string, Vector3d>(p.First.ToString(), p.Second));
+
     }
 
     /// <summary>
