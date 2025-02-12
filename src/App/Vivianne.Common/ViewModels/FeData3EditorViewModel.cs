@@ -12,18 +12,18 @@ namespace TheXDS.Vivianne.ViewModels;
 
 /// <summary>
 /// Implements a ViewModel that allows the user to see and edit FeData car
-/// information files.
+/// information files for Need For Speed 3.
 /// </summary>
-public class FeDataEditorViewModel : ViewModel
+public class FeData3EditorViewModel : ViewModel
 {
-    private static readonly ISerializer<FeData> serializer = new FeDataSerializer();
+    private static readonly ISerializer<FeData3> serializer = new FeData3Serializer();
     private readonly Action<byte[]> saveCallback;
     private readonly VivEditorState? viv;
     private readonly string? fedataName;
     private bool _LinkEdits;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="FeDataEditorViewModel"/>
+    /// Initializes a new instance of the <see cref="FeData3EditorViewModel"/>
     /// class.
     /// </summary>
     /// <param name="data">FeData to manipulate.</param>
@@ -37,7 +37,7 @@ public class FeDataEditorViewModel : ViewModel
     /// <param name="fedataName">
     /// Name of the FeData file being edited, for sync purposes.
     /// </param>
-    public FeDataEditorViewModel(byte[] data, Action<byte[]> saveCallback, VivEditorState? viv = null, string? fedataName = null)
+    public FeData3EditorViewModel(byte[] data, Action<byte[]> saveCallback, VivEditorState? viv = null, string? fedataName = null)
     {
         this.saveCallback = saveCallback;
         this.viv = viv;
@@ -47,23 +47,23 @@ public class FeDataEditorViewModel : ViewModel
         PreviewFceColorTable = LoadColorsFromFce(viv?.File);
     }
 
-    private static FceColorItem[]? LoadColorsFromFce(VivFile? viv)
+    private static Fce3ColorItem[]? LoadColorsFromFce(VivFile? viv)
     {
         if (viv is null || !viv.TryGetValue("car.fce", out var data)) return null;
         ISerializer<FceFile> s = new FceSerializer();
         var header = s.Deserialize(data).Header;
-        return header.PrimaryColorTable.Zip(header.SecondaryColorTable).Select(p=>new FceColorItem(p.First, p.Second)).ToArray();
+        return header.PrimaryColorTable.Zip(header.SecondaryColorTable).Select(p=>new Fce3ColorItem(p.First, p.Second)).ToArray();
     }
 
     /// <summary>
     /// Gets a table of the colors defined in the FCE file.
     /// </summary>
-    public FceColorItem[]? PreviewFceColorTable { get; }
+    public Fce3ColorItem[]? PreviewFceColorTable { get; }
 
     /// <summary>
-    /// Gets the <see cref="FeData"/> instance to view/edit.
+    /// Gets the <see cref="FeData3"/> instance to view/edit.
     /// </summary>
-    public FeData Data { get; }
+    public FeData3 Data { get; }
 
     /// <summary>
     /// Gets a reference to the command used to save the changes made to the
@@ -90,6 +90,6 @@ public class FeDataEditorViewModel : ViewModel
     private void OnSyncChanges()
     {
         if (viv is null || fedataName is null || Path.GetExtension(fedataName) is not { } ext) return;
-        FedataSyncTool.Sync(Data, ext, viv.Directory);        
+        FeData3SyncTool.Sync(Data, ext, viv.Directory);        
     }
 }

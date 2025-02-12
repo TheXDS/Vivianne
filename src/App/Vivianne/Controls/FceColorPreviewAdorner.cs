@@ -12,7 +12,7 @@ namespace TheXDS.Vivianne.Controls;
 /// </summary>
 /// <param name="control">Control to draw the adorner onto.</param>
 /// <param name="color">Reference to the FCE color to draw.</param>
-public class FceColorPreviewAdorner(Control control, FceColorItem color) : Adorner(control)
+public class FceColorPreviewAdorner(Control control, Fce3ColorItem color) : Adorner(control)
 {
     private static readonly FceColorToBrushConverter _converter = new();
     private readonly Control _control = control;

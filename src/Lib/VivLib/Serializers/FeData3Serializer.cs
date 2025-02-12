@@ -9,12 +9,12 @@ using St = TheXDS.Vivianne.Resources.Strings.Common;
 namespace TheXDS.Vivianne.Serializers;
 
 /// <summary>
-/// Implements a serializer that can read and write <see cref="FeData"/>
+/// Implements a serializer that can read and write <see cref="FeData3"/>
 /// entities.
 /// </summary>
-public class FeDataSerializer : ISerializer<FeData>
+public class FeData3Serializer : ISerializer<FeData3>
 {
-    [StructLayout(LayoutKind.Sequential)]
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
     private struct FeDataHeader
     {
         public static FeDataHeader Empty = new()
@@ -22,7 +22,8 @@ public class FeDataSerializer : ISerializer<FeData>
             FlagCount = 0x0009,
             StringEntries = 0x0028
         };
-
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+        public string CarId;
         public ushort FlagCount;
         public ushort IsBonus;
         public ushort AvailableToAi;
@@ -50,7 +51,7 @@ public class FeDataSerializer : ISerializer<FeData>
     }
 
     /// <inheritdoc/>
-    public FeData Deserialize(Stream stream)
+    public FeData3 Deserialize(Stream stream)
     {
         using var reader = new BinaryReader(stream);
         string SeekAndRead(uint offset)
@@ -63,11 +64,10 @@ public class FeDataSerializer : ISerializer<FeData>
             stream.Seek(offset, SeekOrigin.Begin);
             return reader.ReadNullTerminatedString(Encoding.Latin1);
         }
-        var carId = Encoding.ASCII.GetString(reader.ReadBytes(4));
-        var fedataHeader = reader.ReadStruct<FeDataHeader>();
-        var data = new FeData
+        var fedataHeader = reader.MarshalReadStruct<FeDataHeader>();
+        var data = new FeData3
         {
-            CarId = carId,
+            CarId = fedataHeader.CarId,
             IsBonus = fedataHeader.IsBonus != 0,
             AvailableToAi = fedataHeader.AvailableToAi != 0,
             VehicleClass = (Nfs3CarClass)fedataHeader.CarClass,
@@ -99,7 +99,7 @@ public class FeDataSerializer : ISerializer<FeData>
         {
             offsets[i] = reader.ReadUInt32();
         }
-        foreach (var j in typeof(FeData).GetProperties())
+        foreach (var j in typeof(FeData3).GetProperties())
         {
             if (j.GetAttribute<OffsetTableIndexAttribute>() is { Value: int offset })
             {
@@ -110,12 +110,12 @@ public class FeDataSerializer : ISerializer<FeData>
     }
 
     /// <inheritdoc/>
-    public void SerializeTo(FeData entity, Stream stream)
+    public void SerializeTo(FeData3 entity, Stream stream)
     {
         using var writer = new BinaryWriter(stream);
-        writer.Write(Encoding.ASCII.GetBytes(entity.CarId));
         writer.WriteStruct(FeDataHeader.Empty with
         {
+            CarId = entity.CarId,
             IsBonus = entity.IsBonus ? (ushort)1 : (ushort)0,
             AvailableToAi = entity.AvailableToAi ? (ushort)1 : (ushort)0,
             CarClass = (ushort)entity.VehicleClass,
@@ -146,7 +146,7 @@ public class FeDataSerializer : ISerializer<FeData>
         using var ms2 = new MemoryStream();
         using (var writer2 = new BinaryWriter(ms2))
         {
-            foreach (var j in typeof(FeData).GetProperties())
+            foreach (var j in typeof(FeData3).GetProperties())
             {
                 if (j.GetAttribute<OffsetTableIndexAttribute>() is not { Value: int offset }) continue;                
                 string value = j.GetValue(entity)?.ToString() ?? string.Empty;

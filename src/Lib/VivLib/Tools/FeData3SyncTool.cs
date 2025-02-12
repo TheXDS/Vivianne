@@ -9,13 +9,13 @@ namespace TheXDS.Vivianne.Tools;
 /// Includes a set of methods used to sync changes between FeData files and
 /// Carp.
 /// </summary>
-public static class FedataSyncTool
+public static class FeData3SyncTool
 {
     /// <summary>
     /// Syncs changes between FeData files and Carp.
     /// </summary>
     /// <param name="source">
-    /// Source <see cref="FeData"/> to sync all supported values from.
+    /// Source <see cref="FeData3"/> to sync all supported values from.
     /// </param>
     /// <param name="sourceExt">
     /// File extension of <paramref name="source"/>. Used to exclude it from
@@ -25,9 +25,9 @@ public static class FedataSyncTool
     /// Directory of the VIV file. Changes will be synced on all supported
     /// files inside the directory.
     /// </param>
-    public static void Sync(FeData source, string sourceExt, IDictionary<string, byte[]> vivDirectory)
+    public static void Sync(FeData3 source, string sourceExt, IDictionary<string, byte[]> vivDirectory)
     {
-        ISerializer<FeData> fs = new FeDataSerializer();
+        ISerializer<FeData3> fs = new FeData3Serializer();
         ISerializer<Carp> cs = new CarpSerializer();
         foreach (var j in FeData.KnownExtensions.ExceptFor(sourceExt))
         {
@@ -78,7 +78,7 @@ public static class FedataSyncTool
     /// <param name="vivDirectory">VIV Directory to modify.</param>
     public static void Sync(Carp source, IDictionary<string, byte[]> vivDirectory)
     {
-        ISerializer<FeData> fedataSerializer = new FeDataSerializer();        
+        ISerializer<FeData3> fedataSerializer = new FeData3Serializer();        
         foreach (var j in Mappings.FeDataToTextProvider)
         {
             if (vivDirectory.TryGetValue($"fedata{j.Key}", out var content))

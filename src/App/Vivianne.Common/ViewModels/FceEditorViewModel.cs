@@ -12,7 +12,7 @@ using TheXDS.MCART.Types;
 using TheXDS.MCART.Types.Base;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models;
-using TheXDS.Vivianne.Serializers;
+using TheXDS.Vivianne.Extensions;
 
 namespace TheXDS.Vivianne.ViewModels;
 
@@ -38,11 +38,11 @@ public class FceEditorViewModel : ViewModel
         }
         static string[] ReadColors(byte[] fd)
         {
-            var fe = ((ISerializer<FeData>)new FeDataSerializer()).Deserialize(fd);
+            var fe = FeData.GetFeData(fd);
             return [fe.Color1, fe.Color2, fe.Color3, fe.Color4, fe.Color5, fe.Color6, fe.Color7, fe.Color8, fe.Color9, fe.Color10];
         }
 
-        var names = vivDirectory is not null && vivDirectory.TryGetValue("fedata.eng", out var fd)
+        var names = vivDirectory is not null && vivDirectory.GetAnyFeData() is byte[] fd
             ? ReadColors(fd)
             : header.PrimaryColorTable.Select(p => p.ToString());
 

@@ -112,9 +112,9 @@ public class FeDataSerializerTests
             .."Color10"u8.ToArray(), 0x00]);
     }
 
-    private static FeData CreateTestFeData()
+    private static FeData3 CreateTestFeData()
     {
-        var feData = new FeData
+        var feData = new FeData3
         {
             CarId = "TEST",
             SerialNumber = 0xabcd,
@@ -127,46 +127,46 @@ public class FeDataSerializerTests
             CarTopSpeed = 19,
             CarHandling = 18,
             CarBraking = 17,
-            Manufacturer = nameof(FeData.Manufacturer),
-            Model = nameof(FeData.Model),
-            CarName = nameof(FeData.CarName),
-            Price = nameof(FeData.Price),
-            Status = nameof(FeData.Status),
-            Weight = nameof(FeData.Weight),
-            WeightDistribution = nameof(FeData.WeightDistribution),
-            Length = nameof(FeData.Length),
-            Width = nameof(FeData.Width),
-            Height = nameof(FeData.Height),
-            Engine = nameof(FeData.Engine),
-            Displacement = nameof(FeData.Displacement),
-            Hp = nameof(FeData.Hp),
-            Torque = nameof(FeData.Torque),
-            MaxEngineSpeed = nameof(FeData.MaxEngineSpeed),
-            Brakes = nameof(FeData.Brakes),
-            Tires = nameof(FeData.Tires),
-            TopSpeed = nameof(FeData.TopSpeed),
-            Accel0To60 = nameof(FeData.Accel0To60),
-            Accel0To100 = nameof(FeData.Accel0To100),
-            Transmission = nameof(FeData.Transmission),
-            Gearbox = nameof(FeData.Gearbox),
-            History1 = nameof(FeData.History1),
-            History2 = nameof(FeData.History2),
-            History3 = nameof(FeData.History3),
-            History4 = nameof(FeData.History4),
-            History5 = nameof(FeData.History5),
-            History6 = nameof(FeData.History6),
-            History7 = nameof(FeData.History7),
-            History8 = nameof(FeData.History8),
-            Color1 = nameof(FeData.Color1),
-            Color2 = nameof(FeData.Color2),
-            Color3 = nameof(FeData.Color3),
-            Color4 = nameof(FeData.Color4),
-            Color5 = nameof(FeData.Color5),
-            Color6 = nameof(FeData.Color6),
-            Color7 = nameof(FeData.Color7),
-            Color8 = nameof(FeData.Color8),
-            Color9 = nameof(FeData.Color9),
-            Color10 = nameof(FeData.Color10)
+            Manufacturer = nameof(FeData3.Manufacturer),
+            Model = nameof(FeData3.Model),
+            CarName = nameof(FeData3.CarName),
+            Price = nameof(FeData3.Price),
+            Status = nameof(FeData3.Status),
+            Weight = nameof(FeData3.Weight),
+            WeightDistribution = nameof(FeData3.WeightDistribution),
+            Length = nameof(FeData3.Length),
+            Width = nameof(FeData3.Width),
+            Height = nameof(FeData3.Height),
+            Engine = nameof(FeData3.Engine),
+            Displacement = nameof(FeData3.Displacement),
+            Hp = nameof(FeData3.Hp),
+            Torque = nameof(FeData3.Torque),
+            MaxEngineSpeed = nameof(FeData3.MaxEngineSpeed),
+            Brakes = nameof(FeData3.Brakes),
+            Tires = nameof(FeData3.Tires),
+            TopSpeed = nameof(FeData3.TopSpeed),
+            Accel0To60 = nameof(FeData3.Accel0To60),
+            Accel0To100 = nameof(FeData3.Accel0To100),
+            Transmission = nameof(FeData3.Transmission),
+            Gearbox = nameof(FeData3.Gearbox),
+            History1 = nameof(FeData3.History1),
+            History2 = nameof(FeData3.History2),
+            History3 = nameof(FeData3.History3),
+            History4 = nameof(FeData3.History4),
+            History5 = nameof(FeData3.History5),
+            History6 = nameof(FeData3.History6),
+            History7 = nameof(FeData3.History7),
+            History8 = nameof(FeData3.History8),
+            Color1 = nameof(FeData3.Color1),
+            Color2 = nameof(FeData3.Color2),
+            Color3 = nameof(FeData3.Color3),
+            Color4 = nameof(FeData3.Color4),
+            Color5 = nameof(FeData3.Color5),
+            Color6 = nameof(FeData3.Color6),
+            Color7 = nameof(FeData3.Color7),
+            Color8 = nameof(FeData3.Color8),
+            Color9 = nameof(FeData3.Color9),
+            Color10 = nameof(FeData3.Color10)
         };
         return feData;
     }
@@ -174,11 +174,11 @@ public class FeDataSerializerTests
     [Test]
     public void Serializer_can_read_FeData()
     {
-        FeData expected = CreateTestFeData();
+        FeData3 expected = CreateTestFeData();
         using var ms = CreateTestFeDataStream();
-        ISerializer<FeData> serializer = new FeDataSerializer();
+        ISerializer<FeData3> serializer = new FeData3Serializer();
 
-        FeData feData = serializer.Deserialize(ms);
+        FeData3 feData = serializer.Deserialize(ms);
 
         Assert.That(feData, Is.Not.Null);
         Assert.Multiple(() =>
@@ -242,7 +242,7 @@ public class FeDataSerializerTests
     {
         var expected = CreateTestFeDataStream().ToArray();
         using var ms = new MemoryStream();
-        ISerializer<FeData> s = new FeDataSerializer();
+        ISerializer<FeData3> s = new FeData3Serializer();
 
         s.SerializeTo(CreateTestFeData(), ms);
 

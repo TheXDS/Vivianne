@@ -30,7 +30,7 @@ public static class Form
     /// Identifies the "<c>FceColorPreview</c>" attached property.
     /// </summary>
     public static readonly DependencyProperty FceColorPreviewProperty =
-        DependencyProperty.RegisterAttached("FceColorPreview", typeof(FceColorItem), typeof(Form), new FrameworkPropertyMetadata(default(FceColorItem), FrameworkPropertyMetadataOptions.AffectsRender, OnFceColorPreviewChanged));
+        DependencyProperty.RegisterAttached("FceColorPreview", typeof(Fce3ColorItem), typeof(Form), new FrameworkPropertyMetadata(default(Fce3ColorItem), FrameworkPropertyMetadataOptions.AffectsRender, OnFceColorPreviewChanged));
 
     /// <summary>
     /// Identifies the "<c>MouseTrackingOverlay</c>" attached property.
@@ -96,9 +96,9 @@ public static class Form
     /// </param>
     /// <returns>The value of the "<c>FceColorPreview</c>" attached property.
     /// </returns>
-    public static FceColorItem GetFceColorPreview(DependencyObject obj)
+    public static Fce3ColorItem GetFceColorPreview(DependencyObject obj)
     {
-        return (FceColorItem)obj.GetValue(FceColorPreviewProperty);
+        return (Fce3ColorItem)obj.GetValue(FceColorPreviewProperty);
     }
 
     /// <summary>
@@ -108,7 +108,7 @@ public static class Form
     /// Object onto which to set the value of the attached property.
     /// </param>
     /// <param name="value">Value of the attached property.</param>
-    public static void SetFceColorPreview(DependencyObject obj, FceColorItem value)
+    public static void SetFceColorPreview(DependencyObject obj, Fce3ColorItem value)
     {
         obj.SetValue(FceColorPreviewProperty, value);
     }
@@ -156,7 +156,7 @@ public static class Form
 
     private static void OnFceColorPreviewChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
     {
-        AttachAdorner<FceColorPreviewAdorner, FceColorItem>(obj, e, (control, color) => new FceColorPreviewAdorner((Control)control, color));
+        AttachAdorner<FceColorPreviewAdorner, Fce3ColorItem>(obj, e, (control, color) => new FceColorPreviewAdorner((Control)control, color));
     }
 
     private static void AttachAdorner<TAdorner, TValue>(DependencyObject obj, DependencyPropertyChangedEventArgs e, Func<FrameworkElement, TValue, TAdorner> adornerFactory) where TAdorner : Adorner
