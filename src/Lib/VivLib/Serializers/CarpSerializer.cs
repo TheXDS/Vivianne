@@ -11,19 +11,51 @@ namespace TheXDS.Vivianne.Serializers;
 /// </summary>
 public class CarpSerializer : ISerializer<Carp>
 {
+
+    private static int TryInt(string value)
+    {
+        return int.TryParse(value, System.Globalization.CultureInfo.InvariantCulture, out var s) ? s : 0;
+    }
+
+    private static double TryDouble(string value)
+    {
+        return double.TryParse(value, System.Globalization.CultureInfo.InvariantCulture, out var s) ? s : 0.0;
+    }
+
+    private static int TryIntKey(Dictionary<int, string> dic, int key)
+    {
+        return TryInt(dic[key]);
+    }
+
+    private static double TryDoubleKey(Dictionary<int, string> dic, int key)
+    {
+        return TryDouble(dic[key]);
+    }
+
+    private static IEnumerable<T> TryArray<T>(Dictionary<int, string> dic, int key, Func<string, T> parse)
+    {
+        return dic[key].Split(",").Where(p => !p.IsEmpty()).Select(parse);
+    }
+
+    private static IEnumerable<int> TryIntArray(Dictionary<int, string> dic, int key)
+    {
+        return TryArray(dic, key, TryInt);
+    }
+
+    private static IEnumerable<double> TryDoubleArray(Dictionary<int, string> dic, int key)
+    {
+        return TryArray(dic, key, TryDouble);
+    }
+
+    private static int GetKey(string line)
+    {
+        return int.TryParse(line.Split('(')[^1].ChopEnd(")"), out var k) ? k : -1;
+    }
+
     /// <inheritdoc/>
     public Carp Deserialize(Stream stream)
     {
         Dictionary<int, string> dic = [];
-        int TryInt(string value) => int.TryParse(value, System.Globalization.CultureInfo.InvariantCulture, out var s) ? s : 0;
-        double TryDouble(string value) => double.TryParse(value, System.Globalization.CultureInfo.InvariantCulture, out var s) ? s : 0.0;
-        int TryIntKey(int key) => TryInt(dic[key]);
-        double TryDoubleKey(int key) => TryDouble(dic[key]);
-        IEnumerable<T> TryArray<T>(int key, Func<string, T> parse) => dic[key].Split(",").Where(p => !p.IsEmpty()).Select(parse);
-        IEnumerable<int> TryIntArray(int key) => TryArray(key, TryInt);
-        IEnumerable<double> TryDoubleArray(int key) => TryArray(key, TryDouble);
-        int GetKey(string line) => int.TryParse(line.Split('(')[^1].ChopEnd(")"), out var k) ? k : -1;
-
         using (var r = new StreamReader(stream))
         {
             while (!r.EndOfStream)
@@ -35,94 +67,94 @@ public class CarpSerializer : ISerializer<Carp>
         }
         var carp = new Carp
         {
-            SerialNumber = (ushort)TryIntKey(0),
-            CarClass = (Nfs3CarClass)TryIntKey(1),
-            Mass = TryDoubleKey(2),
-            NumberOfGearsManual = TryIntKey(3),
-            NumberOfGearsAuto = TryIntKey(75),
-            GearShiftDelay = TryIntKey(4),
-            FinalGearManual = TryDoubleKey(11),
-            FinalGearAuto = TryDoubleKey(79),
-            EngineMinRpm = TryIntKey(12),
-            EngineMaxRpm = TryIntKey(13),
-            MaxVelocity = TryDoubleKey(14),
-            TopSpeed = TryDoubleKey(15),
-            FrontDriveRatio = TryDoubleKey(16),
-            Abs = TryIntKey(17) != 0,
-            MaxBrakeDecel = TryDoubleKey(18),
-            FrontBrakeBias = TryDoubleKey(19),
-            WheelBase = TryDoubleKey(24),
-            FrontGripBias = TryDoubleKey(25),
-            PowerSteering = TryIntKey(26) != 0,
-            MinimumSteerAccel = TryDoubleKey(27),
-            TurnInRamp = TryDoubleKey(28),
-            TurnOutRamp = TryDoubleKey(29),
-            LateralAccGripMult = TryDoubleKey(30),
-            AeroDownMult = TryDoubleKey(31),
-            GasOffFactor = TryDoubleKey(32),
-            GTransferFactor = TryDoubleKey(33),
-            TurnCircleRadius = TryDoubleKey(34),
-            TireWear = TryDoubleKey(37),
-            SlideMult = TryDoubleKey(38),
-            SpinVelocityCap = TryDoubleKey(39),
-            SlideVelocityCap = TryDoubleKey(40),
-            SlideAssistanceFactor = TryDoubleKey(41),
-            PushFactor = TryDoubleKey(42),
-            LowTurnFactor = TryDoubleKey(43),
-            HighTurnFactor = TryDoubleKey(44),
-            PitchRollFactor = TryDoubleKey(45),
-            RoadBumpFactor = TryDoubleKey(46),
-            SpoilerFunctionType = TryIntKey(47),
-            SpoilerActivationSpeed = TryDoubleKey(48),
-            GradualTurnCutoff = TryDoubleKey(49),
-            MediumTurnCutoff = TryDoubleKey(50),
-            SharpTurnCutoff = TryDoubleKey(51),
-            MediumTurnSpdMod = TryDoubleKey(52),
-            SharpTurnSpdMod = TryDoubleKey(53),
-            ExtremeTurnSpdMod = TryDoubleKey(54),
-            SubdivideLevel = TryDoubleKey(55),
-            CameraArm = TryDoubleKey(56),
-            BodyDamage = TryDoubleKey(57),
-            EngineDamage = TryDoubleKey(58),
-            SuspensionDamage = TryDoubleKey(59),
-            EngineTuning = TryDoubleKey(60),
-            BrakeBalance = TryDoubleKey(61),
-            SteeringSpeed = TryDoubleKey(62),
-            GearRatFactor = TryDoubleKey(63),
-            SuspensionStiffness = TryDoubleKey(64),
-            AeroFactor = TryDoubleKey(65),
-            TireFactor = TryDoubleKey(66),
+            SerialNumber = (ushort)TryIntKey(dic, 0),
+            CarClass = (Nfs3CarClass)TryIntKey(dic, 1),
+            Mass = TryDoubleKey(dic, 2),
+            NumberOfGearsManual = TryIntKey(dic, 3),
+            NumberOfGearsAuto = TryIntKey(dic, 75),
+            GearShiftDelay = TryIntKey(dic, 4),
+            FinalGearManual = TryDoubleKey(dic, 11),
+            FinalGearAuto = TryDoubleKey(dic, 79),
+            EngineMinRpm = TryIntKey(dic, 12),
+            EngineMaxRpm = TryIntKey(dic, 13),
+            MaxVelocity = TryDoubleKey(dic, 14),
+            TopSpeed = TryDoubleKey(dic, 15),
+            FrontDriveRatio = TryDoubleKey(dic, 16),
+            Abs = TryIntKey(dic, 17) != 0,
+            MaxBrakeDecel = TryDoubleKey(dic, 18),
+            FrontBrakeBias = TryDoubleKey(dic, 19),
+            WheelBase = TryDoubleKey(dic, 24),
+            FrontGripBias = TryDoubleKey(dic, 25),
+            PowerSteering = TryIntKey(dic, 26) != 0,
+            MinimumSteerAccel = TryDoubleKey(dic, 27),
+            TurnInRamp = TryDoubleKey(dic, 28),
+            TurnOutRamp = TryDoubleKey(dic, 29),
+            LateralAccGripMult = TryDoubleKey(dic, 30),
+            AeroDownMult = TryDoubleKey(dic, 31),
+            GasOffFactor = TryDoubleKey(dic, 32),
+            GTransferFactor = TryDoubleKey(dic, 33),
+            TurnCircleRadius = TryDoubleKey(dic, 34),
+            TireWear = TryDoubleKey(dic, 37),
+            SlideMult = TryDoubleKey(dic, 38),
+            SpinVelocityCap = TryDoubleKey(dic, 39),
+            SlideVelocityCap = TryDoubleKey(dic, 40),
+            SlideAssistanceFactor = TryDoubleKey(dic, 41),
+            PushFactor = TryDoubleKey(dic, 42),
+            LowTurnFactor = TryDoubleKey(dic, 43),
+            HighTurnFactor = TryDoubleKey(dic, 44),
+            PitchRollFactor = TryDoubleKey(dic, 45),
+            RoadBumpFactor = TryDoubleKey(dic, 46),
+            SpoilerFunctionType = TryIntKey(dic, 47),
+            SpoilerActivationSpeed = TryDoubleKey(dic, 48),
+            GradualTurnCutoff = TryDoubleKey(dic, 49),
+            MediumTurnCutoff = TryDoubleKey(dic, 50),
+            SharpTurnCutoff = TryDoubleKey(dic, 51),
+            MediumTurnSpdMod = TryDoubleKey(dic, 52),
+            SharpTurnSpdMod = TryDoubleKey(dic, 53),
+            ExtremeTurnSpdMod = TryDoubleKey(dic, 54),
+            SubdivideLevel = TryDoubleKey(dic, 55),
+            CameraArm = TryDoubleKey(dic, 56),
+            BodyDamage = TryDoubleKey(dic, 57),
+            EngineDamage = TryDoubleKey(dic, 58),
+            SuspensionDamage = TryDoubleKey(dic, 59),
+            EngineTuning = TryDoubleKey(dic, 60),
+            BrakeBalance = TryDoubleKey(dic, 61),
+            SteeringSpeed = TryDoubleKey(dic, 62),
+            GearRatFactor = TryDoubleKey(dic, 63),
+            SuspensionStiffness = TryDoubleKey(dic, 64),
+            AeroFactor = TryDoubleKey(dic, 65),
+            TireFactor = TryDoubleKey(dic, 66),
         };
 
-        carp.ShiftBlip.AddRange(TryDoubleArray(5));
-        carp.BrakeBlip.AddRange(TryDoubleArray(6));
-        carp.VelocityToRpmManual.AddRange(TryDoubleArray(7));
-        carp.VelocityToRpmAuto.AddRange(TryDoubleArray(76));
-        carp.GearRatioManual.AddRange(TryDoubleArray(8));
-        carp.GearRatioAuto.AddRange(TryDoubleArray(77));
-        carp.GearEfficiencyManual.AddRange(TryDoubleArray(9));
-        carp.GearEfficiencyAuto.AddRange(TryDoubleArray(78));
-        carp.TorqueCurve.AddRange(TryDoubleArray(10));
-        carp.GasIncreaseCurve.AddRange(TryDoubleArray(20));
-        carp.GasDecreaseCurve.AddRange(TryDoubleArray(21));
-        carp.BrakeIncreaseCurve.AddRange(TryDoubleArray(22));
-        carp.BrakeDecreaseCurve.AddRange(TryDoubleArray(23));
-        carp.AiCurve0.AddRange(TryDoubleArray(67));
-        carp.AiCurve1.AddRange(TryDoubleArray(68));
-        carp.AiCurve2.AddRange(TryDoubleArray(69));
-        carp.AiCurve3.AddRange(TryDoubleArray(70));
-        carp.AiCurve4.AddRange(TryDoubleArray(71));
-        carp.AiCurve5.AddRange(TryDoubleArray(72));
-        carp.AiCurve6.AddRange(TryDoubleArray(73));
-        carp.AiCurve7.AddRange(TryDoubleArray(74));
-        var tirespecs = TryIntArray(35).ToArray();
+        carp.ShiftBlip.AddRange(TryDoubleArray(dic, 5));
+        carp.BrakeBlip.AddRange(TryDoubleArray(dic, 6));
+        carp.VelocityToRpmManual.AddRange(TryDoubleArray(dic, 7));
+        carp.VelocityToRpmAuto.AddRange(TryDoubleArray(dic, 76));
+        carp.GearRatioManual.AddRange(TryDoubleArray(dic, 8));
+        carp.GearRatioAuto.AddRange(TryDoubleArray(dic, 77));
+        carp.GearEfficiencyManual.AddRange(TryDoubleArray(dic, 9));
+        carp.GearEfficiencyAuto.AddRange(TryDoubleArray(dic, 78));
+        carp.TorqueCurve.AddRange(TryDoubleArray(dic, 10));
+        carp.GasIncreaseCurve.AddRange(TryDoubleArray(dic, 20));
+        carp.GasDecreaseCurve.AddRange(TryDoubleArray(dic, 21));
+        carp.BrakeIncreaseCurve.AddRange(TryDoubleArray(dic, 22));
+        carp.BrakeDecreaseCurve.AddRange(TryDoubleArray(dic, 23));
+        carp.AiCurve0.AddRange(TryDoubleArray(dic, 67));
+        carp.AiCurve1.AddRange(TryDoubleArray(dic, 68));
+        carp.AiCurve2.AddRange(TryDoubleArray(dic, 69));
+        carp.AiCurve3.AddRange(TryDoubleArray(dic, 70));
+        carp.AiCurve4.AddRange(TryDoubleArray(dic, 71));
+        carp.AiCurve5.AddRange(TryDoubleArray(dic, 72));
+        carp.AiCurve6.AddRange(TryDoubleArray(dic, 73));
+        carp.AiCurve7.AddRange(TryDoubleArray(dic, 74));
+        var tirespecs = TryIntArray(dic, 35).ToArray();
         if (tirespecs.Length == 3)
         {
             carp.TireWidthFront = tirespecs[0];
             carp.TireSidewallFront = tirespecs[1];
             carp.TireRimFront = tirespecs[2];
         }
-        tirespecs = TryIntArray(36).ToArray();
+        tirespecs = TryIntArray(dic, 36).ToArray();
         if (tirespecs.Length == 3)
         {
             carp.TireWidthRear = tirespecs[0];
