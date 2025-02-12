@@ -7,8 +7,6 @@ using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.Formats.Tga;
 using SixLabors.ImageSharp.PixelFormats;
 using System.Globalization;
-using System.Reflection.Metadata;
-using TheXDS.MCART.Helpers;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Extensions;
 using TheXDS.Vivianne.Models;
@@ -219,16 +217,38 @@ public static class Mappings
     /// </remarks>
     public static IReadOnlyDictionary<FshBlobFormat, Func<object, byte[]>> FshBlobToPixelWriter { get; } = new Dictionary<FshBlobFormat, Func<object, byte[]>>()
     {
-        { FshBlobFormat.Argb32,         c => { var x = (Bgra32)c; return [x.B, x.G, x.R, x.A]; }},
-        { FshBlobFormat.Rgb24,          c => { var x = (Bgr24)c; return [x.B, x.G, x.R]; }},
+        { FshBlobFormat.Argb32,         Convert32bitColor },
+        { FshBlobFormat.Rgb24,          Convert24bitColor },
         { FshBlobFormat.Rgb565,         c => { var x = (Bgr565)c; return BitConverter.GetBytes(x.PackedValue); }},
         { FshBlobFormat.Argb1555,       c => { var x = (Bgra5551)c; return BitConverter.GetBytes(x.PackedValue); }},
-        { FshBlobFormat.Palette32,      c => { var x = (Bgra32)c; return [x.B, x.G, x.R, x.A]; }},
-        { FshBlobFormat.Palette24Dos,   c => { var x = (Bgr24)c; return [x.B, x.G, x.R]; }},
-        { FshBlobFormat.Palette24,      c => { var x = (Bgr24)c; return [x.B, x.G, x.R]; }},
+        { FshBlobFormat.Palette32,      Convert32bitColor },
+        { FshBlobFormat.Palette24Dos,   Convert24bitColor },
+        { FshBlobFormat.Palette24,      Convert24bitColor },
         { FshBlobFormat.Palette16Nfs5,  c => { var x = (Bgr565)c; return BitConverter.GetBytes(x.PackedValue); }},
         { FshBlobFormat.Palette16,      c => { var x = (Bgr565)c; return BitConverter.GetBytes(x.PackedValue); }},
     }.AsReadOnly();
+
+    private static byte[] Convert32bitColor(object c)
+    {
+        return c switch
+        {
+            Abgr32 x => [x.A, x.B, x.G, x.R],
+            Argb32 x => [x.A, x.R, x.G, x.B],
+            Bgra32 x => [x.B, x.G, x.R, x.A],
+            Rgba32 x => [x.R, x.G, x.B, x.A],
+            _ => throw new NotImplementedException(),
+        };
+    }
+
+    private static byte[] Convert24bitColor(object c)
+    {
+        return c switch
+        {
+            Bgr24 x => [x.B, x.G, x.R],
+            Rgb24 x => [x.R, x.G, x.B],
+            _ => throw new NotImplementedException(),
+        };
+    }
 
     /// <summary>
     /// Gets the bytes representing a single pixel on the specified coords on
@@ -340,7 +360,7 @@ public static class Mappings
     /// </returns>
     public static Func<FshBlob, Color[]> ReadPalette<T>(int size) where T : unmanaged, IPixel<T>
     {
-        return ReadPalette(size, p => (T)Activator.CreateInstance(typeof(T), p)!);
+        return ReadPalette(size, p => (T)Activator.CreateInstance(typeof(T), p.Cast<object>().ToArray())!);
     }
 
     /// <summary>
