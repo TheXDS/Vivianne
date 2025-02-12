@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using TheXDS.Ganymede.Types.Base;
 using TheXDS.MCART.Helpers;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Serializers;
 using TheXDS.Vivianne.ViewModels;
+using TheXDS.Vivianne.ViewModels.Base;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TheXDS.Vivianne.Data;
 
@@ -58,9 +61,16 @@ internal static class ContentVisualizerConfiguration
         return new(s.Deserialize(data), viv.Directory);
     }
 
-    private static FeDataEditorViewModel CreateFeDataEditorViewModel(byte[] data, Action<byte[]> saveCallback, VivEditorState viv, string name)
+    private static IViewModel CreateFeDataEditorViewModel(byte[] data, Action<byte[]> saveCallback, VivEditorState viv, string name)
     {
-        return new(data, saveCallback, viv, name) { Title = name };
+        if (data[0] == 4)
+        {
+            return CreateEditorViewModel<FeData4EditorViewModel, FeData4EditorState, FeData4, FeData4Serializer>(data, saveCallback, name);
+        }
+        else
+        {
+            return new FeData3EditorViewModel(data, saveCallback, viv, name) { Title = name };
+        }
     }
 
     private static CarpEditorViewModel? CreateCarpEditorViewModel(byte[] data, Action<byte[]> saveCallback, VivEditorState viv, string name)
@@ -78,21 +88,29 @@ internal static class ContentVisualizerConfiguration
 
     private static FshEditorViewModel CreateFshEditorViewModel(byte[] data, Action<byte[]> saveCallback, VivEditorState _, string name)
     {
-        ISerializer<FshFile> serializer = new FshSerializer();
-        var file = serializer.Deserialize(data);
-        var state = new FshEditorState() { File = file };
-        void SaveFsh(FshFile fsh) => saveCallback.Invoke(serializer.Serialize(fsh));
-        return new()
-        {
-            Title = name,
-            State = state,
-            SaveCommand = state.Create(() => SaveFsh(file)).ListensToCanExecute(s => s.UnsavedChanges).Build(),
-        };
+        return CreateEditorViewModel<FshEditorViewModel, FshEditorState, FshFile, FshSerializer>(data, saveCallback, name);
     }
 
     private static FshEditorViewModel CreateQfsEditorViewModel(byte[] data, Action<byte[]> saveCallback, VivEditorState viv, string name)
     {
         void CompressBack(byte[] data) => saveCallback.Invoke(QfsCodec.Compress(data));
         return CreateFshEditorViewModel(QfsCodec.Decompress(data), CompressBack, viv, name);
+    }
+
+    private static TViewModel CreateEditorViewModel<TViewModel, TState, TFile, TSerializer>(byte[] data, Action<byte[]> saveCallback, string name)
+        where TViewModel : IFileEditorViewModel<TState, TFile>, new()
+        where TState : IFileState<TFile>, new()
+        where TSerializer : ISerializer<TFile>, new()
+    {
+        TSerializer serializer = new();
+        var file = serializer.Deserialize(data);
+        var state = new TState() { File = file };
+        void Save(TFile fd) => saveCallback.Invoke(serializer.Serialize(fd));
+        return new TViewModel()
+        {
+            Title = name,
+            State = state,
+            SaveCommand = state.Create(() => Save(file)).ListensToCanExecute(s => s.UnsavedChanges).Build(),
+        };
     }
 }

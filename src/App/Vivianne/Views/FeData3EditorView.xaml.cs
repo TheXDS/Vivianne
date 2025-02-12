@@ -5,12 +5,12 @@ namespace TheXDS.Vivianne.Views;
 /// <summary>
 /// Business logic for FeDataEditorView.xaml
 /// </summary>
-public partial class FeDataEditorView : UserControl
+public partial class FeData3EditorView : UserControl
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="FeDataEditorView"/> class.
+    /// Initializes a new instance of the <see cref="FeData3EditorView"/> class.
     /// </summary>
-    public FeDataEditorView()
+    public FeData3EditorView()
     {
         InitializeComponent();
     }

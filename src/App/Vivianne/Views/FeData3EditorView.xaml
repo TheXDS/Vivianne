@@ -1,5 +1,5 @@
 ﻿<UserControl
-    x:Class="TheXDS.Vivianne.Views.FeDataEditorView"
+    x:Class="TheXDS.Vivianne.Views.FeData3EditorView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -21,7 +21,7 @@
     xmlns:hlp="clr-namespace:TheXDS.Vivianne.Helpers"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:valueconverters="clr-namespace:TheXDS.Vivianne.ValueConverters"
-    d:DataContext="{d:DesignInstance Type=vm:FeDataEditorViewModel}"
+    d:DataContext="{d:DesignInstance Type=vm:FeData3EditorViewModel}"
     mc:Ignorable="d"
     d:DesignWidth="600">
     <Grid>

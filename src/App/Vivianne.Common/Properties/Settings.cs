@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TheXDS.Ganymede.Configuration;
 using TheXDS.Vivianne.Models;
+using TheXDS.MCART.Resources.Strings;
 
 namespace TheXDS.Vivianne.Properties;
 
@@ -40,7 +41,7 @@ public class Settings
         }
         catch (Exception ex)
         {
-            Debug.Print(TheXDS.MCART.Resources.Strings.Composition.ExDump(ex, MCART.Resources.Strings.ExDumpOptions.All));
+            Debug.Print(Composition.ExDump(ex, ExDumpOptions.All));
             Current = new();
         }
     }

@@ -26,7 +26,7 @@ public class SerialNumberAnalyzer : IVivianneTool
 {
     private class SnEntry
     {
-        public readonly Dictionary<string, FeData> FeDatas = [];
+        public readonly Dictionary<string, FeData3> FeDatas = [];
         public Carp? Carp;
         public string FilePath = null!;
         public VivFile VivFile = null!;
@@ -35,7 +35,7 @@ public class SerialNumberAnalyzer : IVivianneTool
     }
 
     private static readonly EnumerationOptions EnumOpts = new() { MatchCasing = MatchCasing.CaseInsensitive };
-    private static readonly ISerializer<FeData> feSerializer = new FeDataSerializer();
+    private static readonly ISerializer<FeData3> feSerializer = new FeData3Serializer();
     private static readonly ISerializer<VivFile> vivSerializer = new VivSerializer();
     private static readonly ISerializer<Carp> carpSerializer = new CarpSerializer();
 
@@ -57,7 +57,7 @@ public class SerialNumberAnalyzer : IVivianneTool
         }
     }
 
-    private static async Task<FeData?> LoadFeData(VivFile viv, string feName)
+    private static async Task<FeData3?> LoadFeData(VivFile viv, string feName)
     {
         try
         {
