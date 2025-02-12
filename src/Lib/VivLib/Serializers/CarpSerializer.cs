@@ -11,7 +11,6 @@ namespace TheXDS.Vivianne.Serializers;
 /// </summary>
 public class CarpSerializer : ISerializer<Carp>
 {
-
     private static int TryInt(string value)
     {
         return int.TryParse(value, System.Globalization.CultureInfo.InvariantCulture, out var s) ? s : 0;
