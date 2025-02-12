@@ -1,7 +1,6 @@
 ﻿using SixLabors.ImageSharp;
 using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Formats.Tar;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,7 +8,6 @@ using System.Windows.Input;
 using TheXDS.Ganymede.Helpers;
 using TheXDS.Ganymede.Models;
 using TheXDS.Ganymede.Resources;
-using TheXDS.Ganymede.Types.Base;
 using TheXDS.Ganymede.Types.Extensions;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Extensions;
@@ -26,15 +24,13 @@ namespace TheXDS.Vivianne.ViewModels;
 /// <remarks>
 /// QFS files can be decompressed and shown as FSH files with this ViewModel.
 /// </remarks>
-public class FshEditorViewModel : ViewModel, IViewModel, IFileEditorViewModel<FshEditorState, FshFile>
+public class FshEditorViewModel : FileEditorViewModelBase<FshEditorState, FshFile>
 {
     private BackgroundType _Background;
     private FshBlob? _CurrentImage;
     private double _ZoomLevel = 1.0;
     private bool _alpha = true;
     private Color[]? _palette;
-    private ICommand saveCommand = null!;
-    private ICommand? saveAsCommand = null;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="FshEditorViewModel"/>
@@ -53,7 +49,6 @@ public class FshEditorViewModel : ViewModel, IViewModel, IFileEditorViewModel<Fs
         RemoveCurrentFooterCommand = cb.BuildObserving(OnRemoveBlobFooter).CanExecuteIfNotNull(p => p.CurrentImage).Build();
         DashEditorCommand = cb.BuildObserving(OnDashEditor).ListensToCanExecute(p => p.IsDash).Build();
         CoordsEditorCommand = cb.BuildObserving(OnCoordsEditor).CanExecuteIfNotNull(p => p.CurrentImage).Build();
-        CloseCommand = cb.BuildSimple(OnClose);
     }
 
     /// <inheritdoc/>
@@ -69,9 +64,6 @@ public class FshEditorViewModel : ViewModel, IViewModel, IFileEditorViewModel<Fs
         CurrentImage = State.Entries.Values.FirstOrDefault();
         return base.OnCreated();
     }
-
-    /// <inheritdoc/>
-    public FshEditorState State { get; set; } = null!;
 
     /// <summary>
     /// Gets or sets the desired background to use when previewing textures.
@@ -135,23 +127,6 @@ public class FshEditorViewModel : ViewModel, IViewModel, IFileEditorViewModel<Fs
     /// Gets the ID of the GIMX texture being displayed.
     /// </summary>
     public string CurrentFshBlobId => State.Entries.FirstOrDefault(p => ReferenceEquals(p.Value, CurrentImage)).Key;
-
-    /// <inheritdoc/>
-    public ICommand SaveCommand
-    {
-        get => saveCommand;
-        set => Change(ref saveCommand, value);
-    }
-
-    /// <inheritdoc/>
-    public ICommand? SaveAsCommand
-    {
-        get => saveAsCommand;
-        set => Change(ref saveAsCommand, value);
-    }
-
-    /// <inheritdoc/>
-    public ICommand CloseCommand { get; }
 
     /// <summary>
     /// Gets a reference to the command used to add a new GIMX to the FSH file.
@@ -232,11 +207,6 @@ public class FshEditorViewModel : ViewModel, IViewModel, IFileEditorViewModel<Fs
         var r = await DialogService!.GetFileSavePath(CommonDialogTemplates.FileSave with { Title = St.SaveTextureAs }, FileFilters.CommonBitmapSaveFormats);
         if (!r.Success) return;
         CurrentImage!.ToImage(Palette)!.Save(r.Result, Mappings.ExportEnconder[Path.GetExtension(r.Result)]);
-    }
-
-    private Task OnClose()
-    {
-        return NavigationService?.NavigateBack() ?? Task.CompletedTask;
     }
 
     private async Task OnExportBlobFooter()
@@ -379,17 +349,5 @@ public class FshEditorViewModel : ViewModel, IViewModel, IFileEditorViewModel<Fs
             if (!State.Entries.ContainsKey(n)) return n;
         }
         return string.Empty;
-    }
-
-    async Task IViewModel.OnNavigateBack(CancelFlag navigation)
-    {
-        if (State.UnsavedChanges)
-        {
-            switch (await DialogService!.AskYnc(St.Unsaved, string.Format(St.SaveConfirm, Title)))
-            {
-                case true: SaveCommand.Execute(State); break;
-                case null: navigation.Cancel(); break;
-            }
-        }
     }
 }

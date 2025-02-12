@@ -31,7 +31,7 @@ public static class FshBlobExtensions
         }
         if (blob.Magic != FshBlobFormat.Indexed8) return null;
         palette ??= LoadPalette(blob.Footer) ?? CreatePalette();
-        return LoadFromIndexedBlob(blob, palette, p => p.ToPixel<Bgra32>());
+        return LoadFromIndexedBlob(blob, palette, p => p.ToPixel<Rgba32>());
     }
 
     /// <summary>
