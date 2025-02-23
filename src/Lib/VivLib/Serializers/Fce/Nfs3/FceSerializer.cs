@@ -1,4 +1,5 @@
-﻿using TheXDS.MCART.Types.Extensions;
+﻿using System.Runtime.InteropServices;
+using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models.Fce;
 using TheXDS.Vivianne.Models.Fce.Nfs3;
 
@@ -9,6 +10,32 @@ namespace TheXDS.Vivianne.Serializers.Fce.Nfs3;
 /// </summary>
 public partial class FceSerializer : ISerializer<FceFile>
 {
+    /// <summary>
+    /// Tries to read an FCEv3 file.
+    /// </summary>
+    /// <param name="bytes">Byte array from which to read the Fce file.</param>
+    /// <returns>
+    /// An FCE file conforming to the expected file format for NFS3, or
+    /// <see langword="null"/> if a valid FCEv3 file cannot be read from the
+    /// specified bytes.
+    /// </returns>
+    public FceFile? TryGetFce(byte[]? bytes)
+    {
+        try
+        {
+            if (bytes is null || bytes.Length < Marshal.SizeOf<Fce3FileHeader>()) return null;
+            var file = ((ISerializer<FceFile>)this).Deserialize(bytes);
+            return file.PrimaryColors.Count <= 16
+                && file.SecondaryColors.Count <= 16
+                && file.Parts.Count <= 64
+                && file.Dummies.Count <= 16 ? file : null;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
     /// <inheritdoc/>
     public FceFile Deserialize(Stream stream)
     {

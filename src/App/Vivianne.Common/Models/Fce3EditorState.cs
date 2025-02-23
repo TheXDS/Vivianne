@@ -1,22 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using TheXDS.MCART.Types;
-using TheXDS.MCART.Types.Base;
 using TheXDS.Vivianne.Extensions;
 using TheXDS.Vivianne.Models.Base;
 using TheXDS.Vivianne.Models.Fce;
 using TheXDS.Vivianne.Models.Fce.Nfs3;
 
 namespace TheXDS.Vivianne.Models;
-
-public class FceRenderState
-{
-    public IEnumerable<FcePart> VisibleParts { get; init; }
-    public byte[]? Texture { get; init; }
-    public Fce3Color? SelectedColor { get; init; }
-}
 
 public class Fce3EditorState : FileStateBase<FceFile>
 {

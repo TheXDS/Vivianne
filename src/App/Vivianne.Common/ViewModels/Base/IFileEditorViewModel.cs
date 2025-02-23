@@ -12,7 +12,7 @@ namespace TheXDS.Vivianne.ViewModels.Base;
 /// <typeparam name="TFile">
 /// Type of file for which the ViewModel is an editor.
 /// </typeparam>
-public interface IFileEditorViewModel<TState, TFile> : IStatefulViewModel<TState> where TState : IFileState<TFile>
+public interface IFileEditorViewModel<TState, TFile> : IStatefulViewModel<TState> where TState : IFileState<TFile> where TFile : notnull
 {
     /// <summary>
     /// Gets a reference to the command used to save all changes made to the
@@ -31,5 +31,9 @@ public interface IFileEditorViewModel<TState, TFile> : IStatefulViewModel<TState
     /// </summary>
     ICommand CloseCommand { get; }
 
-    IFileBackingStore<TFile>? BackingStore { get; init; }
+    /// <summary>
+    /// Gets or initializes a reference to the backing store used to read and
+    /// write files.
+    /// </summary>
+    IBackingStore<TFile>? BackingStore { get; init; }
 }

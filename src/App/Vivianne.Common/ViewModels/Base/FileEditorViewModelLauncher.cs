@@ -28,7 +28,7 @@ namespace TheXDS.Vivianne.ViewModels.Base;
 /// <typeparam name="TSerializer">Type of serializer that can be used to read and write file data.</typeparam>
 /// <typeparam name="TEditor">Type of editor to be launched upon invocation.</typeparam>
 public abstract class FileEditorViewModelLauncher<TState, TFile, TSerializer, TEditor> : ViewModel, IFileEditorViewModelLauncher
-    where TFile : new()
+    where TFile : notnull, new()
     where TState : IFileState<TFile>, new()
     where TSerializer : ISerializer<TFile>, new()
     where TEditor : IFileEditorViewModel<TState, TFile>, new()

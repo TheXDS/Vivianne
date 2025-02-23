@@ -71,7 +71,7 @@ public class FceFile
     /// to avoid exceeding <c>10</c> due to limitations in the related FeData
     /// file format for the color names.
     /// </remarks>
-    public ICollection<HsbColor> PrimaryColors { get; set; } = [];
+    public IList<HsbColor> PrimaryColors { get; set; } = [];
 
     /// <summary>
     /// Gets a table containing all the defined secondary colors for the FCE.
@@ -88,7 +88,7 @@ public class FceFile
     /// element, FCE renderers should use the single color defined in this
     /// table for all color combinations. 
     /// </remarks>
-    public ICollection<HsbColor> SecondaryColors { get; set; } = [];
+    public IList<HsbColor> SecondaryColors { get; set; } = [];
 
     /// <summary>
     /// Gets a table containing all defined Parts in the FCE.
@@ -97,7 +97,7 @@ public class FceFile
     /// This table should never exceed <c>64</c> <see cref="FcePart"/>
     /// elements.
     /// </remarks>
-    public ICollection<FcePart> Parts { get; set; } = [];
+    public IList<FcePart> Parts { get; set; } = [];
 
     /// <summary>
     /// Gets a table containing all the Dummies.
@@ -106,7 +106,7 @@ public class FceFile
     /// This table should never exceed <c>16</c> <see cref="FceAsciiBlob"/>
     /// elements.
     /// </remarks>
-    public ICollection<FceDummy> Dummies { get; set; } = [];
+    public IList<FceDummy> Dummies { get; set; } = [];
 
     /// <summary>
     /// Gets or sets a 64-byte table with data whose purpose is currently

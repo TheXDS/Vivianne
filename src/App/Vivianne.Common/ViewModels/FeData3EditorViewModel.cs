@@ -1,17 +1,11 @@
-﻿using System;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Input;
-using TheXDS.Ganymede.Types.Base;
-using TheXDS.MCART.Component;
+using System.Threading.Tasks;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Models.Fce.Nfs3;
 using TheXDS.Vivianne.Models.Fe.Nfs3;
-using TheXDS.Vivianne.Models.Viv;
-using TheXDS.Vivianne.Serializers;
 using TheXDS.Vivianne.Serializers.Fce.Nfs3;
-using TheXDS.Vivianne.Serializers.Fe.Nfs3;
-using TheXDS.Vivianne.Tools;
+using TheXDS.Vivianne.ViewModels.Base;
 
 namespace TheXDS.Vivianne.ViewModels;
 
@@ -19,82 +13,37 @@ namespace TheXDS.Vivianne.ViewModels;
 /// Implements a ViewModel that allows the user to see and edit FeData car
 /// information files for Need For Speed 3.
 /// </summary>
-public class FeData3EditorViewModel : ViewModel
+public class FeData3EditorViewModel : FileEditorViewModelBase<FeData3EditorState, FeData>
 {
-    private static readonly ISerializer<FeData> serializer = new FeDataSerializer();
-    private readonly Action<byte[]> saveCallback;
-    private readonly VivEditorState? viv;
-    private readonly string? fedataName;
-    private bool _LinkEdits;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="FeData3EditorViewModel"/>
-    /// class.
-    /// </summary>
-    /// <param name="data">FeData to manipulate.</param>
-    /// <param name="saveCallback">
-    /// Callback to invoke when saving the FeData contents.
-    /// </param>
-    /// <param name="viv">
-    /// Reference to the VIV file when attempting to sync up changes on other
-    /// files.
-    /// </param>
-    /// <param name="fedataName">
-    /// Name of the FeData file being edited, for sync purposes.
-    /// </param>
-    public FeData3EditorViewModel(byte[] data, Action<byte[]> saveCallback, VivEditorState? viv = null, string? fedataName = null)
+    /// <inheritdoc/>
+    protected override async Task OnCreated()
     {
-        this.saveCallback = saveCallback;
-        this.viv = viv;
-        this.fedataName = fedataName;
-        Data = serializer.Deserialize(data);
-        SaveCommand = new SimpleCommand(OnSave);
-        PreviewFceColorTable = LoadColorsFromFce(viv?.File);
+        if (await (BackingStore?.Store.ReadAsync("car.fce") ?? Task.FromResult<byte[]?>(null)) is not byte[] fceBytes) return;
+        FceSerializer serializer = new();
+        if (serializer.TryGetFce(fceBytes) is { } fce)
+        {
+            State.PreviewFceColorTable = ReadColorPairs(fce);
+        }
     }
 
-    private static Fce3Color[]? LoadColorsFromFce(VivFile? viv)
+    private static Fce3Color[] ReadColorPairs(FceFile fce)
     {
-        if (viv is null || !viv.TryGetValue("car.fce", out var data)) return null;
-        ISerializer<FceFile> s = new FceSerializer();
-        var fce = s.Deserialize(data);
-        return [];// fce.PrimaryColors.Zip(fce.SecondaryColors).Select(p => new Fce3Color(p.First, p.Second)).ToArray();
+        static HsbColor WrapTable(IList<HsbColor> colors, int index) => colors[index % colors.Count];
+        IEnumerable<(HsbColor, HsbColor)> colorPairs = fce.SecondaryColors.Count == 0
+            ? [.. fce.PrimaryColors.Zip(fce.PrimaryColors)]
+            : [.. fce.PrimaryColors.Zip(Enumerable.Range(0, fce.PrimaryColors.Count).Select((_, index) => WrapTable(fce.SecondaryColors, index)))];
+        return [.. colorPairs.Select(p => new Fce3Color() { PrimaryColor = p.Item1, SecondaryColor = p.Item2 })];
     }
 
-    /// <summary>
-    /// Gets a table of the colors defined in the FCE file.
-    /// </summary>
-    public Fce3Color[]? PreviewFceColorTable { get; }
+    //private void OnSave()
+    //{
+    //    saveCallback?.Invoke(serializer.Serialize(Data));
+    //    if (LinkEdits) OnSyncChanges();
+    //}
 
-    /// <summary>
-    /// Gets the <see cref="FeData"/> instance to view/edit.
-    /// </summary>
-    public FeData Data { get; }
-
-    /// <summary>
-    /// Gets a reference to the command used to save the changes made to the
-    /// FeData File.
-    /// </summary>
-    public ICommand SaveCommand { get; }
-
-    /// <summary>
-    /// Gets or sets a value that indicates that changes made on the FeData
-    /// editor should be synced up on other FeData files and the Carp.txt file.
-    /// </summary>
-    public bool LinkEdits
-    {
-        get => _LinkEdits;
-        set => Change(ref _LinkEdits, value);
-    }
-
-    private void OnSave()
-    {
-        saveCallback?.Invoke(serializer.Serialize(Data));
-        if (LinkEdits) OnSyncChanges();
-    }
-
-    private void OnSyncChanges()
-    {
-        if (viv is null || fedataName is null || Path.GetExtension(fedataName) is not { } ext) return;
-        FeData3SyncTool.Sync(Data, ext, viv.Directory);
-    }
+    //private void OnSyncChanges()
+    //{
+    //    if (viv is null || fedataName is null || Path.GetExtension(fedataName) is not { } ext) return;
+    //    FeData3SyncTool.Sync(Data, ext, viv.Directory);
+    //}
 }

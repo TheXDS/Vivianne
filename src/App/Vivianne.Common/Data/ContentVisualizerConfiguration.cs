@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using TheXDS.Ganymede.Types.Base;
-using TheXDS.MCART.Helpers;
 using TheXDS.Vivianne.Component;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Models.Fce.Nfs3;
-using TheXDS.Vivianne.Models.Fe.Nfs4;
 using TheXDS.Vivianne.Models.Fsh;
 using TheXDS.Vivianne.Serializers;
 using TheXDS.Vivianne.Serializers.Fce.Nfs3;
-using TheXDS.Vivianne.Serializers.Fe.Nfs4;
 using TheXDS.Vivianne.Serializers.Fsh;
 using TheXDS.Vivianne.Tools;
 using TheXDS.Vivianne.ViewModels;
@@ -49,29 +45,29 @@ internal static class ContentVisualizerConfiguration
         yield return new(".fsh", CreateFshEditorViewModel);
         yield return new(".qfs", CreateFshEditorViewModel);
 
-        //yield return new("fedata.bri", CreateFeDataEditorViewModel);
-        //yield return new("fedata.eng", CreateFeDataEditorViewModel);
-        //yield return new("fedata.fre", CreateFeDataEditorViewModel);
-        //yield return new("fedata.ger", CreateFeDataEditorViewModel);
-        //yield return new("fedata.ita", CreateFeDataEditorViewModel);
-        //yield return new("fedata.spa", CreateFeDataEditorViewModel);
-        //yield return new("fedata.swe", CreateFeDataEditorViewModel);
+        yield return new("fedata.bri", CreateFeDataEditorViewModel);
+        yield return new("fedata.eng", CreateFeDataEditorViewModel);
+        yield return new("fedata.fre", CreateFeDataEditorViewModel);
+        yield return new("fedata.ger", CreateFeDataEditorViewModel);
+        yield return new("fedata.ita", CreateFeDataEditorViewModel);
+        yield return new("fedata.spa", CreateFeDataEditorViewModel);
+        yield return new("fedata.swe", CreateFeDataEditorViewModel);
 
         //yield return new(".txt", CreateCarpEditorViewModel);
         yield return new(".fce", CreateFceEditorViewModel);
     }
 
-    //private static IViewModel CreateFeDataEditorViewModel(byte[] data, Action<byte[]> saveCallback, VivEditorState viv, string name)
-    //{
-    //    if (data[0] == 4)
-    //    {
-    //        return CreateEditorViewModel<FeData4EditorViewModel, FeData4EditorState, FeData, FeDataSerializer>(data, saveCallback, name);
-    //    }
-    //    else
-    //    {
-    //        return new FeData3EditorViewModel(data, saveCallback, viv, name) { Title = name };
-    //    }
-    //}
+    private static IViewModel CreateFeDataEditorViewModel(byte[] data, VivEditorViewModel vm, string name)
+    {
+        if (data[0] == 4)
+        {
+            return CreateEditorViewModel<FeData4EditorViewModel, FeData4EditorState, Models.Fe.Nfs4.FeData, Serializers.Fe.Nfs4.FeDataSerializer>(data, vm, name);
+        }
+        else
+        {
+            return CreateEditorViewModel<FeData3EditorViewModel, FeData3EditorState, Models.Fe.Nfs3.FeData, Serializers.Fe.Nfs3.FeDataSerializer>(data, vm, name);
+        }
+    }
 
     //private static CarpEditorViewModel? CreateCarpEditorViewModel(byte[] data, VivEditorViewModel vm, string name)
     //{

@@ -26,7 +26,6 @@ namespace TheXDS.Vivianne.ViewModels;
 /// </summary>
 public class VivEditorViewModel : HostViewModelBase, IFileEditorViewModel<VivEditorState, VivFile>
 {
-    private static ISerializer<VivFile> Serializer = new VivSerializer();
     private static readonly Dictionary<string, ContentVisualizerViewModelFactory> ContentVisualizers = new(ContentVisualizerConfiguration.Get());
     private static readonly Dictionary<string, Func<byte[]>> Templates = new(VivTemplates.Get());
 
@@ -96,7 +95,7 @@ public class VivEditorViewModel : HostViewModelBase, IFileEditorViewModel<VivEdi
     public ICommand CloseCommand { get; }
 
     /// <inheritdoc/>
-    public IFileBackingStore<VivFile>? BackingStore { get; init; }
+    public IBackingStore<VivFile>? BackingStore { get; init; }
 
     private void OnOpenFile(object? parameter)
     {

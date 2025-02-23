@@ -14,9 +14,11 @@ public interface IBackingStore
     Task<DialogResult<string>> GetNewFileName(string? oldFileName);
 }
 
-public interface IFileBackingStore<T> where T : notnull
+public interface IBackingStore<T> where T : notnull
 {
     Task<T?> ReadAsync();
     Task<bool> WriteAsync(T file);
     Task<bool> WriteNewAsync(T file);
+
+    IBackingStore Store { get; }
 }

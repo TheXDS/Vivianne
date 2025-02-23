@@ -1,13 +1,10 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TheXDS.Ganymede.Helpers;
 using TheXDS.Ganymede.Models;
-using TheXDS.Ganymede.Resources;
 using TheXDS.Ganymede.Types.Base;
 using TheXDS.Vivianne.Component;
-using TheXDS.Vivianne.Serializers;
 using St = TheXDS.Vivianne.Resources.Strings.ViewModels.FshEditorViewModel;
 
 namespace TheXDS.Vivianne.ViewModels.Base;
@@ -20,7 +17,7 @@ namespace TheXDS.Vivianne.ViewModels.Base;
 /// Type of file for which this ViewModel is an editor for.
 /// </typeparam>
 public abstract class FileEditorViewModelBase<TState, TFile> : ViewModel, IViewModel, IFileEditorViewModel<TState, TFile>
-    where TFile : new()
+    where TFile : notnull, new()
     where TState : INotifyPropertyChanged, IFileState<TFile>, new()
 {
     private TState state = default!;
@@ -42,7 +39,7 @@ public abstract class FileEditorViewModelBase<TState, TFile> : ViewModel, IViewM
     }
 
     /// <inheritdoc/>
-    public IFileBackingStore<TFile>? BackingStore { get; init; }
+    public IBackingStore<TFile>? BackingStore { get; init; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="FileEditorViewModelBase{TState, TFile}"/>
@@ -56,12 +53,12 @@ public abstract class FileEditorViewModelBase<TState, TFile> : ViewModel, IViewM
         SaveCommand = cb.BuildSimple(OnSave);
     }
 
-    private Task OnSave()
+    protected virtual Task OnSave()
     {
         return BackingStore?.WriteAsync(State.File) ?? Task.CompletedTask;
     }
 
-    private Task OnSaveAs()
+    protected virtual Task OnSaveAs()
     {
         return BackingStore?.WriteNewAsync(State.File) ?? Task.CompletedTask;
     }

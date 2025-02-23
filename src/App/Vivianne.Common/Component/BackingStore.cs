@@ -5,7 +5,7 @@ using TheXDS.Vivianne.Serializers;
 
 namespace TheXDS.Vivianne.Component;
 
-public class BackingStore<TFile, TSerializer>(IBackingStore backingStore) : IFileBackingStore<TFile>
+public class BackingStore<TFile, TSerializer>(IBackingStore backingStore) : IBackingStore<TFile>
     where TFile : new()
     where TSerializer : ISerializer<TFile>, new()
 {
@@ -13,6 +13,8 @@ public class BackingStore<TFile, TSerializer>(IBackingStore backingStore) : IFil
     private readonly IBackingStore backingStore = backingStore;
 
     public string FileName { get; set; }
+
+    public IBackingStore Store => backingStore;
 
     public async Task<TFile?> ReadAsync()
     {

@@ -1,12 +1,9 @@
 ﻿using TheXDS.Vivianne.Models.Base;
-using TheXDS.Vivianne.Models.Fe.Nfs4;
+using TheXDS.Vivianne.Models.Fe.Nfs3;
 
 namespace TheXDS.Vivianne.Models;
 
-/// <summary>
-/// Represents the current state of the FeData4 editor ViewModel.
-/// </summary>
-public class FeData4EditorState : FileStateBase<FeData>
+public class FeData3EditorState : FileStateBase<FeData>
 {
     private bool _LinkEdits;
 
@@ -19,4 +16,9 @@ public class FeData4EditorState : FileStateBase<FeData>
         get => _LinkEdits;
         set => Change(ref _LinkEdits, value);
     }
+
+    /// <summary>
+    /// Gets a table of the colors defined in the FCE file.
+    /// </summary>
+    public Fce3Color[]? PreviewFceColorTable { get; set; }
 }
