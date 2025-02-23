@@ -10,9 +10,12 @@ using TheXDS.Ganymede.Resources;
 using TheXDS.Ganymede.Types.Base;
 using TheXDS.Ganymede.Types.Extensions;
 using TheXDS.Ganymede.ViewModels;
+using TheXDS.Vivianne.Component;
 using TheXDS.Vivianne.Data;
 using TheXDS.Vivianne.Models;
-using TheXDS.Vivianne.Resources;
+using TheXDS.Vivianne.Models.Viv;
+using TheXDS.Vivianne.Serializers;
+using TheXDS.Vivianne.Serializers.Viv;
 using TheXDS.Vivianne.ViewModels.Base;
 using St = TheXDS.Vivianne.Resources.Strings.ViewModels.VivEditorViewModel;
 
@@ -23,10 +26,9 @@ namespace TheXDS.Vivianne.ViewModels;
 /// </summary>
 public class VivEditorViewModel : HostViewModelBase, IFileEditorViewModel<VivEditorState, VivFile>
 {
+    private static ISerializer<VivFile> Serializer = new VivSerializer();
     private static readonly Dictionary<string, ContentVisualizerViewModelFactory> ContentVisualizers = new(ContentVisualizerConfiguration.Get());
     private static readonly Dictionary<string, Func<byte[]>> Templates = new(VivTemplates.Get());
-    private ICommand saveCommand = null!;
-    private ICommand? saveAsCommand = null;
 
     /// <inheritdoc/>
     public VivEditorState State { get; set; } = null!;
@@ -44,6 +46,8 @@ public class VivEditorViewModel : HostViewModelBase, IFileEditorViewModel<VivEdi
         RemoveFileCommand = cb.BuildSimple(OnRemoveFile);
         NewFromTemplateCommand = cb.BuildSimple(OnNewFromTemplate);
         CloseCommand = cb.BuildSimple(OnClose);
+        SaveAsCommand = cb.BuildSimple(OnSaveAs);
+        SaveCommand = cb.BuildSimple(OnSave);
     }
 
     /// <summary>
@@ -83,41 +87,31 @@ public class VivEditorViewModel : HostViewModelBase, IFileEditorViewModel<VivEdi
     public ICommand RemoveFileCommand { get; }
 
     /// <inheritdoc/>
-    public ICommand SaveCommand
-    { 
-        get => saveCommand;
-        set => Change(ref saveCommand, value);
-    }
+    public ICommand SaveCommand { get; }
 
     /// <inheritdoc/>
-    public ICommand? SaveAsCommand
-    {
-        get => saveAsCommand;
-        set => Change(ref saveAsCommand, value);
-    }
+    public ICommand? SaveAsCommand { get; }
 
     /// <inheritdoc/>
     public ICommand CloseCommand { get; }
+
+    /// <inheritdoc/>
+    public IFileBackingStore<VivFile>? BackingStore { get; init; }
 
     private void OnOpenFile(object? parameter)
     {
         if (parameter is KeyValuePair<string, byte[]> { Key: { } file, Value: { } rawData })
         {
-            void Save(byte[] data)
-            {
-                UiThread.Invoke((Action)(() => State.Directory[file] = data));
-                State.UnsavedChanges = true;
-            }
             IViewModel? vm = null;
             foreach (var j in ContentVisualizers.Where(p => file.EndsWith(p.Key, StringComparison.InvariantCultureIgnoreCase)))
             {
-                if (j.Value is { } factory && factory.Invoke(rawData, Save, State, file) is { } visualizer)
+                if (j.Value is { } factory && factory.Invoke(rawData, this, file) is { } visualizer)
                 {
                     vm = visualizer;
                     break;
                 }
             }
-            vm ??= new ExternalFileViewModel(rawData, Save);
+            //vm ??= new ExternalFileViewModel(rawData, Save);
             vm.Title = file;
             ChildNavService!.Navigate(vm);
         }
@@ -129,7 +123,7 @@ public class VivEditorViewModel : HostViewModelBase, IFileEditorViewModel<VivEdi
 
     private async Task OnImportFile()
     {
-        var r = await DialogService!.GetFileOpenPath(CommonDialogTemplates.FileOpen with { Title = St.ImportFile }, FileFilters.AnyVivContentFilter);
+        var r = await DialogService!.GetFileOpenPath(CommonDialogTemplates.FileOpen with { Title = St.ImportFile }, Resources.FileFilters.AnyVivContentFilter);
         if (r.Success)
         {
             var keyName = Path.GetFileName(r.Result).ToLower();
@@ -196,6 +190,17 @@ public class VivEditorViewModel : HostViewModelBase, IFileEditorViewModel<VivEdi
             State.Directory[template.Key] = template.Value.Invoke();
         }
     }
+
+    private Task OnSave()
+    {
+        return BackingStore?.WriteAsync(State.File) ?? Task.CompletedTask;
+    }
+
+    private Task OnSaveAs()
+    {
+        return BackingStore?.WriteNewAsync(State.File) ?? Task.CompletedTask;
+    }
+
 
     private Task OnClose()
     {

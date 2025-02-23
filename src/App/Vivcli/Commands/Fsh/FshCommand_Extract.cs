@@ -32,7 +32,7 @@ public partial class FshCommand
             foreach (var j in fsh.Entries.Keys.Where(p => Regex.IsMatch(p, regex)))
             {
                 var blob = fsh.Entries[j];
-                if (blob.ToImage(blob?.LocalPalette ?? fsh.GetPalette()) is { } img)
+                if (blob.ToImage(blob?.ReadLocalPalette() ?? fsh.GetPalette()) is { } img)
                 {
                     using var fs = File.OpenWrite(Path.Combine(outDir.FullName, $"{j}.{format.ToString().ToLower()}"));
                     img.Save(fs, Mappings.ImageFormatEnconder[format]);

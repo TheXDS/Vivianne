@@ -7,11 +7,11 @@
     xmlns:gn="http://schemas.thexds.local/ganymede"
     xmlns:mcart="http://schemas.thexds.local/mcart"
     xmlns:ct="clr-namespace:TheXDS.Vivianne.Controls"
-    xmlns:md="clr-namespace:TheXDS.Vivianne.Models;assembly=VivLib"
+    xmlns:md="clr-namespace:TheXDS.Vivianne.Models.Fe.Nfs3;assembly=VivLib"
     xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings.Views"
     xmlns:stc="clr-namespace:TheXDS.Vivianne.Resources.Strings;assembly=Vivianne.Common"
     xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
-    xmlns:mdl="clr-namespace:TheXDS.Vivianne.Models;assembly=VivLib"
+    xmlns:mdl="clr-namespace:TheXDS.Vivianne.Models.Fe;assembly=VivLib"
     xmlns:controls="clr-namespace:TheXDS.Vivianne.Controls"
     xmlns:viewmodels="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
     xmlns:models="clr-namespace:TheXDS.Vivianne.Models;assembly=Vivianne.Common"
@@ -83,13 +83,13 @@
                                     Margin="5"
                                     IsEditable="False"
                                     SelectedItem="{Binding Data.VehicleClass}"
-                                    ItemsSource="{ct:EnumValProvider EnumType={x:Type md:Nfs3CarClass}}"/>
+                                    ItemsSource="{ct:EnumValProvider EnumType={x:Type md:CarClass}}"/>
                                 <ComboBox
                                     hlp:Form.Label="{x:Static st:FeDataEditorView.DriverSeat}"
                                     Margin="5"
                                     IsEditable="False"
                                     SelectedItem="{Binding Data.Seat}"
-                                    ItemsSource="{ct:EnumValProvider EnumType={x:Type md:DriverSeatPosition}}"/>
+                                    ItemsSource="{ct:EnumValProvider EnumType={x:Type mdl:DriverSeatPosition}}"/>
                             </mcart:StretchyWrapPanel>
                             <mcart:StretchyWrapPanel Margin="5" StretchProportionally="True">
                                 <CheckBox Margin="5" IsChecked="{Binding Data.IsPolice}">

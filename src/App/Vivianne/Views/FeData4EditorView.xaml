@@ -7,7 +7,7 @@
     xmlns:gn="http://schemas.thexds.local/ganymede"
     xmlns:mcart="http://schemas.thexds.local/mcart"
     xmlns:ct="clr-namespace:TheXDS.Vivianne.Controls"
-    xmlns:md="clr-namespace:TheXDS.Vivianne.Models;assembly=VivLib"
+    xmlns:md="clr-namespace:TheXDS.Vivianne.Models.Fe.Nfs4;assembly=VivLib"
     xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings.Views"
     xmlns:stc="clr-namespace:TheXDS.Vivianne.Resources.Strings;assembly=Vivianne.Common"
     xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
@@ -82,13 +82,13 @@
                                     Margin="5"
                                     IsEditable="False"
                                     SelectedItem="{Binding State.File.VehicleClass}"
-                                    ItemsSource="{ct:EnumValProvider EnumType={x:Type md:Nfs4CarClass}}"/>
+                                    ItemsSource="{ct:EnumValProvider EnumType={x:Type md:CarClass}}"/>
                             <ComboBox
                                     hlp:Form.Label="{x:Static st:FeDataEditorView.IsPolice}"
                                     Margin="5"
                                     IsEditable="False"
                                     SelectedItem="{Binding State.File.PoliceFlag}"
-                                    ItemsSource="{ct:EnumValProvider EnumType={x:Type md:Nfs4PursuitFlag}}"/>
+                                    ItemsSource="{ct:EnumValProvider EnumType={x:Type md:PursuitFlag}}"/>
 
                         </mcart:StretchyWrapPanel>
                         <!--<mcart:StretchyWrapPanel Margin="5" StretchProportionally="True">

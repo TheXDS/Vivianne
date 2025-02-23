@@ -1,7 +1,13 @@
 ﻿using TheXDS.MCART.Types.Extensions;
-using TheXDS.Vivianne.Models;
+using TheXDS.Vivianne.Models.Carp.Base;
+using TheXDS.Vivianne.Models.Carp.Nfs3;
+using TheXDS.Vivianne.Models.Fe;
+using TheXDS.Vivianne.Models.Fe.Nfs3;
+using TheXDS.Vivianne.Models.Viv;
 using TheXDS.Vivianne.Resources;
 using TheXDS.Vivianne.Serializers;
+using TheXDS.Vivianne.Serializers.Carp.Nfs3;
+using TheXDS.Vivianne.Serializers.Fe.Nfs3;
 
 namespace TheXDS.Vivianne.Tools;
 
@@ -15,7 +21,7 @@ public static class FeData3SyncTool
     /// Syncs changes between FeData files and Carp.
     /// </summary>
     /// <param name="source">
-    /// Source <see cref="FeData3"/> to sync all supported values from.
+    /// Source <see cref="FeData"/> to sync all supported values from.
     /// </param>
     /// <param name="sourceExt">
     /// File extension of <paramref name="source"/>. Used to exclude it from
@@ -25,11 +31,11 @@ public static class FeData3SyncTool
     /// Directory of the VIV file. Changes will be synced on all supported
     /// files inside the directory.
     /// </param>
-    public static void Sync(FeData3 source, string sourceExt, IDictionary<string, byte[]> vivDirectory)
+    public static void Sync(FeData source, string sourceExt, IDictionary<string, byte[]> vivDirectory)
     {
-        ISerializer<FeData3> fs = new FeData3Serializer();
-        ISerializer<Carp> cs = new CarpSerializer();
-        foreach (var j in FeData.KnownExtensions.ExceptFor(sourceExt))
+        ISerializer<FeData> fs = new FeDataSerializer();
+        ISerializer<CarPerf> cs = new CarpSerializer();
+        foreach (var j in FeDataBase.KnownExtensions.ExceptFor(sourceExt))
         {
             if (vivDirectory.TryGetValue($"fedata{j}", out var content))
             {
@@ -72,13 +78,13 @@ public static class FeData3SyncTool
 
     /// <summary>
     /// Syncs all FeData files inside the specified <see cref="VivFile"/> with
-    /// performance information from the specified <see cref="Carp"/>.
+    /// performance information from the specified <see cref="CarPerf"/>.
     /// </summary>
     /// <param name="source">Performance data source.</param>
     /// <param name="vivDirectory">VIV Directory to modify.</param>
-    public static void Sync(Carp source, IDictionary<string, byte[]> vivDirectory)
+    public static void Sync(CarPerf<CarClass> source, IDictionary<string, byte[]> vivDirectory)
     {
-        ISerializer<FeData3> fedataSerializer = new FeData3Serializer();        
+        ISerializer<FeData> fedataSerializer = new FeDataSerializer();        
         foreach (var j in Mappings.FeDataToTextProvider)
         {
             if (vivDirectory.TryGetValue($"fedata{j.Key}", out var content))

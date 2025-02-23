@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mdl="clr-namespace:TheXDS.Vivianne.Models;assembly=VivLib"
+    xmlns:mdl="clr-namespace:TheXDS.Vivianne.Models.Fe.Nfs3;assembly=VivLib"
     xmlns:gn="http://schemas.thexds.local/ganymede"
     xmlns:ct="clr-namespace:TheXDS.Vivianne.Controls"
     xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
@@ -59,7 +59,7 @@
                             hlp:Form.Label="{x:Static st:FeDataEditorView.CarClass}"
                             IsEditable="False"
                             SelectedItem="{Binding State.CarClass}"
-                            ItemsSource="{ct:EnumValProvider EnumType={x:Type mdl:Nfs3CarClass}}"/>
+                            ItemsSource="{ct:EnumValProvider EnumType={x:Type mdl:CarClass}}"/>
                         <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.MassKg}" Minimum="1" Value="{Binding State.Mass}"/>
                         <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.TopSpeedMS}" Minimum="1" Value="{Binding State.TopSpeed}"/>
                         <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.CameraArm}" Maximum="1" LargeChange="0.5" SmallChange="0.1" Value="{Binding State.CameraArm}"/>

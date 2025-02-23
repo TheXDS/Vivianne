@@ -14,20 +14,12 @@ namespace TheXDS.Vivianne.Models.Base;
 /// <typeparam name="T">
 /// Type for which this state represents an editor state.
 /// </typeparam>
-public abstract class FileStateBase<T> : NotifyPropertyChanged, IFileState<T>
+public abstract class FileStateBase<T> : EditorViewModelStateBase, IFileState<T>
 {
-    private bool unsavedChanges;
     private string? _filePath;
 
     /// <inheritdoc/>
     public T File { get; init; } = default!;
-
-    /// <inheritdoc/>
-    public bool UnsavedChanges
-    {
-        get => unsavedChanges;
-        set => Change(ref unsavedChanges, value);
-    }
 
     /// <inheritdoc/>
     public string? FilePath

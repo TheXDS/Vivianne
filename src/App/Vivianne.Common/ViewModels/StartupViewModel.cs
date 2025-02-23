@@ -11,6 +11,7 @@ using TheXDS.Ganymede.Types.Base;
 using TheXDS.Ganymede.Types.Extensions;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Properties;
+using TheXDS.Vivianne.Resources.Strings.ViewModels;
 using TheXDS.Vivianne.ViewModels.Base;
 using St = TheXDS.Vivianne.Resources.Strings.ViewModels.StartupViewModel;
 using Stc = TheXDS.Vivianne.Resources.Strings.Common;
@@ -34,11 +35,7 @@ public class StartupViewModel : ViewModel
         return vm.Launchers.OfType<IFileEditorViewModelLauncher>().FirstOrDefault(p => p.CanOpen(extension))?.OnOpen(file);
     }
 
-    private readonly IEnumerable<IViewModelLauncher> _Launchers = [
-        new VivFileEditorLauncher(),
-        new FshFileEditorLauncher(),
-        new ExtraToolsViewModelLauncher()
-        ];
+    private readonly IEnumerable<IViewModelLauncher> _Launchers;
     private bool _isNfs3Running;
 
     /// <summary>
@@ -81,6 +78,12 @@ public class StartupViewModel : ViewModel
     /// </summary>
     public StartupViewModel()
     {
+        _Launchers = [
+            new VivFileEditorLauncher(() => DialogService),
+            new FshFileEditorLauncher(() => DialogService),
+            new Fce3FileEditorLauncher(() => DialogService),
+            new ExtraToolsViewModelLauncher()
+        ];
         Title = St.StartupPage;
         var cb = CommandBuilder.For(this);
         SettingsCommand = cb.BuildSimple(OnSettings);

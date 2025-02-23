@@ -12,6 +12,7 @@ using TheXDS.Ganymede.Types.Extensions;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Extensions;
 using TheXDS.Vivianne.Models;
+using TheXDS.Vivianne.Models.Fsh;
 using TheXDS.Vivianne.Resources;
 using TheXDS.Vivianne.ViewModels.Base;
 using St = TheXDS.Vivianne.Resources.Strings.ViewModels.FshEditorViewModel;
@@ -114,14 +115,16 @@ public class FshEditorViewModel : FileEditorViewModelBase<FshEditorState, FshFil
     /// </remarks>
     public Color[]? Palette
     {
-        get => _palette ?? CurrentImage?.LocalPalette ?? State.File.GetPalette();
+        get => _palette ?? CurrentImage?.ReadLocalPalette() ?? State.File.GetPalette();
         set => Change(ref _palette, value);
     }
 
     /// <summary>
     /// Gets a value that indicates if this FSH file contains a car dashboard.
     /// </summary>
-    public bool IsDash => State.Entries.Count >= 2 && State.Entries.TryGetValue("0000", out FshBlob? dashGimx) && dashGimx.GaugeData is not null;
+    public bool IsDash => State.Entries.Count >= 2 
+        && State.Entries.TryGetValue("0000", out FshBlob? dashBlob) 
+        && dashBlob.FooterType() == FshBlobFooterType.CarDashboard;
 
     /// <summary>
     /// Gets the ID of the GIMX texture being displayed.
@@ -204,7 +207,7 @@ public class FshEditorViewModel : FileEditorViewModelBase<FshEditorState, FshFil
 
     private async Task OnExport()
     {
-        var r = await DialogService!.GetFileSavePath(CommonDialogTemplates.FileSave with { Title = St.SaveTextureAs }, FileFilters.CommonBitmapSaveFormats);
+        var r = await DialogService!.GetFileSavePath(CommonDialogTemplates.FileSave with { Title = St.SaveTextureAs }, Resources.FileFilters.CommonBitmapSaveFormats);
         if (!r.Success) return;
         CurrentImage!.ToImage(Palette)!.Save(r.Result, Mappings.ExportEnconder[Path.GetExtension(r.Result)]);
     }
@@ -277,7 +280,7 @@ public class FshEditorViewModel : FileEditorViewModelBase<FshEditorState, FshFil
         {
             Title = string.Format(St.ReplaceFsh, CurrentFshBlobId),
             Text = string.Format(St.ReplaceFshPrompt, CurrentFshBlobId)
-        }, FileFilters.CommonBitmapOpenFormats);
+        }, Resources.FileFilters.CommonBitmapOpenFormats);
         if (r.Success)
         {
             try
@@ -326,7 +329,7 @@ public class FshEditorViewModel : FileEditorViewModelBase<FshEditorState, FshFil
             {
                 Title = St.AddTexture,
                 Text = St.AddTexturePrompt
-            }, FileFilters.CommonBitmapOpenFormats)!),
+            }, Resources.FileFilters.CommonBitmapOpenFormats)!),
             new InputItemDescriptor<string>(d => d.GetInputText(CommonDialogTemplates.Input with
             {
                 Title = St.FshId,

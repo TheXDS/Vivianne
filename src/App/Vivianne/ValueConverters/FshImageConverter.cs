@@ -7,7 +7,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using TheXDS.MCART.Helpers;
 using TheXDS.Vivianne.Extensions;
-using TheXDS.Vivianne.Models;
+using TheXDS.Vivianne.Models.Fsh;
 using TheXDS.Vivianne.Resources;
 
 namespace TheXDS.Vivianne.ValueConverters;
@@ -23,7 +23,7 @@ public class FshImageConverter : IMultiValueConverter
     {
         if (values.Length < 1 || values[0] is not FshBlob blob) return null;
         
-        var p = (values.ElementAtOrDefault(1) as IEnumerable<SixLabors.ImageSharp.Color>)?.ToArray() ?? blob.LocalPalette;
+        var p = (values.ElementAtOrDefault(1) as IEnumerable<SixLabors.ImageSharp.Color>)?.ToArray() ?? blob.ReadLocalPalette();
         var image = blob.ToImage(p);
         var alpha = values.ElementAtOrDefault(2) as bool? ?? true;
 

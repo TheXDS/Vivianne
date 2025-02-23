@@ -2,12 +2,11 @@
 using SixLabors.ImageSharp.PixelFormats;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using TheXDS.MCART.Helpers;
 using TheXDS.Vivianne.Models;
-using TheXDS.Vivianne.ViewModels;
+using TheXDS.Vivianne.Models.Fsh;
 
 namespace TheXDS.Vivianne.ValueConverters;
 
@@ -36,7 +35,7 @@ public abstract class RawImageConverterBase
     /// surface, or <see langword="null"/> if the byte array could not be
     /// parsed as an image in any known format.
     /// </returns>
-    protected static BitmapSource? GetBitmap(byte[] value, CarColorItem? textureColor, bool enableAlpha = true)
+    protected static BitmapSource? GetBitmap(byte[] value, Fce3Color? textureColor, bool enableAlpha = true)
     {
         if (value is null) return null;
         try
@@ -55,7 +54,7 @@ public abstract class RawImageConverterBase
         }
     }
 
-    private static BitmapSource ConvertImageToBitmapSource<T>(FshBlobFormat format, Image<T> image, CarColorItem? textureColor, bool enableAlpha) where T : unmanaged, IPixel<T>
+    private static BitmapSource ConvertImageToBitmapSource<T>(FshBlobFormat format, Image<T> image, Fce3Color? textureColor, bool enableAlpha) where T : unmanaged, IPixel<T>
     {
         var width = image.Width;
         var height = image.Height;
@@ -74,7 +73,7 @@ public abstract class RawImageConverterBase
         return BitmapSource.Create(width, height, 96, 96, GetFormat(format), null, ms.ToArray(), width * (image.PixelType.BitsPerPixel / 8));
     }
 
-    private static ReadOnlyDictionary<FshBlobFormat, Func<object, CarColorItem?, bool, byte[]>> FshBlobToPixelWriter { get; } = new Dictionary<FshBlobFormat, Func<object, CarColorItem?, bool, byte[]>>()
+    private static ReadOnlyDictionary<FshBlobFormat, Func<object, Fce3Color?, bool, byte[]>> FshBlobToPixelWriter { get; } = new Dictionary<FshBlobFormat, Func<object, Fce3Color?, bool, byte[]>>()
     {
         { FshBlobFormat.Argb32,         GetColoredPixel  },
         { FshBlobFormat.Rgb24,          (c, f, _) => { var x = (Rgb24)c; return [x.B, x.G, x.R]; }},
@@ -87,18 +86,20 @@ public abstract class RawImageConverterBase
         { FshBlobFormat.Palette16,      (c, f, _) => { var x = (Bgr565)c; return BitConverter.GetBytes(x.PackedValue); }},
     }.AsReadOnly();
 
-    private static byte[] GetColoredPixel(object color, CarColorItem? carColor, bool enableAlpha)
+    private static byte[] GetColoredPixel(object color, Fce3Color? carColor, bool enableAlpha)
     {
         var x = (Rgba32)color;
         if (carColor is not null)
         {
+            var primary = carColor.PrimaryColor.ToRgba();
+            var secondary = carColor.SecondaryColor.ToRgba();
             if (x.A.IsBetween<byte>(30, 120))
             {
-                return [(byte)(x.B * (carColor.Primary.B / 255.0)), (byte)(x.G * (carColor.Primary.G / 255.0)), (byte)(x.R * (carColor.Primary.R / 255.0)), 255];
+                return [(byte)(x.B * (primary.B / 255.0)), (byte)(x.G * (primary.G / 255.0)), (byte)(x.R * (primary.R / 255.0)), 255];
             }
             else if (x.A.IsBetween<byte>(120, 220))
             {
-                return [(byte)(x.B * (carColor.Secondary.B / 255.0)), (byte)(x.G * (carColor.Secondary.G / 255.0)), (byte)(x.R * (carColor.Secondary.R / 255.0)), 255];
+                return [(byte)(x.B * (secondary.B / 255.0)), (byte)(x.G * (secondary.G / 255.0)), (byte)(x.R * (secondary.R / 255.0)), 255];
             }
         }
         return [x.B, x.G, x.R, enableAlpha ? x.A : (byte)255];

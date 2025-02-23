@@ -6,12 +6,16 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="SixLabors.ImageSharp" Version="3.1.6" />
-		<PackageReference Include="TheXDS.MCART" Version="0.18.0-alpha.7" />
+		<PackageReference Include="TheXDS.MCART" Version="0.18.0-alpha.8" />
 	</ItemGroup>
 	<ItemGroup>
 		<EmbeddedResource Update="Resources\Strings\Common.resx">
 			<Generator>ResXFileCodeGenerator</Generator>
 			<LastGenOutput>Common.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Strings\Mappings.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>Mappings.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Strings\QfsCodec.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>
@@ -35,6 +39,11 @@
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
 			<DependentUpon>Common.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\Strings\Mappings.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>Mappings.resx</DependentUpon>
 		</Compile>
 		<Compile Update="Resources\Strings\QfsCodec.Designer.cs">
 		  <DesignTime>True</DesignTime>

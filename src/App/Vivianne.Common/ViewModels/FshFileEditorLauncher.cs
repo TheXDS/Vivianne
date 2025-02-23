@@ -1,13 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using TheXDS.Ganymede.Services;
 using TheXDS.Ganymede.Types;
 using TheXDS.Ganymede.Types.Extensions;
 using TheXDS.MCART.Component;
 using TheXDS.Vivianne.Models;
+using TheXDS.Vivianne.Models.Fsh;
 using TheXDS.Vivianne.Properties;
 using TheXDS.Vivianne.Resources;
-using TheXDS.Vivianne.Serializers;
+using TheXDS.Vivianne.Serializers.Fsh;
+using TheXDS.Vivianne.Tools;
 using TheXDS.Vivianne.ViewModels.Base;
 using St = TheXDS.Vivianne.Resources.Strings.Tools.FshCompressTool;
 using St2 = TheXDS.Vivianne.Resources.Strings.Tools.QfsDecompressTool;
@@ -17,7 +21,8 @@ namespace TheXDS.Vivianne.ViewModels;
 /// <summary>
 /// Implements a launcher to create and/or edit FSH and QFS files.
 /// </summary>
-public class FshFileEditorLauncher() : FileEditorViewModelLauncher<FshEditorState, FshFile, FshSerializer, FshEditorViewModel>("FSH/QFS", FileFilters.FshQfsOpenFileFilter, FileFilters.FshQfsSaveFileFilter)
+public class FshFileEditorLauncher(Func<IDialogService> dialogSvc)
+    : FileEditorViewModelLauncher<FshEditorState, FshFile, FshSerializer, FshEditorViewModel>(dialogSvc, "FSH/QFS", FileFilters.FshQfsOpenFileFilter, FileFilters.FshQfsSaveFileFilter)
 {
     private async Task OnDecompress()
     {

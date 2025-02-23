@@ -1,19 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TheXDS.Ganymede.Models;
+using TheXDS.Ganymede.Services;
 using TheXDS.Ganymede.Types;
 using TheXDS.Ganymede.Types.Base;
 using TheXDS.Ganymede.Types.Extensions;
 using TheXDS.MCART.Component;
-using TheXDS.MCART.Helpers;
+using TheXDS.Vivianne.Component;
 using TheXDS.Vivianne.Helpers;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Properties;
 using TheXDS.Vivianne.Serializers;
 using St = TheXDS.Vivianne.Resources.Strings.Common;
+
 namespace TheXDS.Vivianne.ViewModels.Base;
 
 /// <summary>
@@ -30,9 +33,10 @@ public abstract class FileEditorViewModelLauncher<TState, TFile, TSerializer, TE
     where TSerializer : ISerializer<TFile>, new()
     where TEditor : IFileEditorViewModel<TState, TFile>, new()
 {
-    private static readonly TSerializer serializer = new();
-    private readonly IEnumerable<FileFilterItem> openFilter;
-    private readonly IEnumerable<FileFilterItem> saveFilter;
+    private static readonly TSerializer _serializer = new();
+    private readonly IEnumerable<FileFilterItem> _openFilter;
+    private readonly IEnumerable<FileFilterItem> _saveFilter;
+    private readonly Func<IDialogService> _dialogSvc;
 
     /// <inheritdoc/>
     public string PageName { get; }
@@ -57,10 +61,11 @@ public abstract class FileEditorViewModelLauncher<TState, TFile, TSerializer, TE
     /// <param name="pageName">Display name for the page.</param>
     /// <param name="openFilter">File filter to use when opening files.</param>
     /// <param name="saveFilter">File filter to use when saving files.</param>
-    protected FileEditorViewModelLauncher(string pageName, IEnumerable<FileFilterItem> openFilter, IEnumerable<FileFilterItem> saveFilter)
+    protected FileEditorViewModelLauncher(Func<IDialogService> dialogSvc, string pageName, IEnumerable<FileFilterItem> openFilter, IEnumerable<FileFilterItem> saveFilter)
     {
-        this.openFilter = openFilter;
-        this.saveFilter = saveFilter;
+        _dialogSvc = dialogSvc;
+        _openFilter = openFilter;
+        _saveFilter = saveFilter;
         PageName = pageName;
         NewFileCommand = new SimpleCommand(OnNew);
         OpenFileCommand = new SimpleCommand(p => DialogService?.RunOperation(q => OnOpen(p)) ?? Task.CompletedTask);
@@ -75,34 +80,31 @@ public abstract class FileEditorViewModelLauncher<TState, TFile, TSerializer, TE
     /// <param name="filter">
     /// File filter to use when opening or saving files.
     /// </param>
-    protected FileEditorViewModelLauncher(string pageName, IEnumerable<FileFilterItem> filter) : this(pageName, filter, filter)
+    protected FileEditorViewModelLauncher(Func<IDialogService> dialogSvc, string pageName, IEnumerable<FileFilterItem> filter) : this(dialogSvc, pageName, filter, filter)
     {
     }
 
     /// <inheritdoc/>
     public bool CanOpen(string fileExtension)
     {
-        return openFilter.Any(p => p.Extensions.Contains(fileExtension));
+        return _openFilter.Any(p => p.Extensions.Contains(fileExtension));
     }
 
     /// <inheritdoc/>
     public async Task OnOpen(object? parameter)
     {
-        if (await GetFilePath(parameter, [], openFilter) is not string filePath) return;
-        var file = await serializer.DeserializeAsync(File.OpenRead(filePath));
-        var state = new TState { File = file, FilePath = filePath };
+        if (await GetFilePath(parameter, [], _openFilter) is not string filePath) return;
+        var file = await _serializer.DeserializeAsync(File.OpenRead(filePath));
         var recentFile = CreateRecentFileInfo(filePath, file);
-        RecentFiles = Settings.Current.RecentFilesCount > 0
-            ? ([recentFile, .. RecentFiles.Where(p => p.FilePath != filePath).Take(Settings.Current.RecentFilesCount - 1)])
-            : ([]);
+        RecentFiles = Settings.Current.RecentFilesCount > 0 ? [recentFile, .. (RecentFiles?.Where(p => p.FilePath != filePath) ?? []).Take(Settings.Current.RecentFilesCount - 1)] : [];
         Notify(nameof(RecentFiles));
         await Settings.Save();
         var vm = new TEditor()
         {
             Title = recentFile.FriendlyName,
-            State = state,
+            State = new TState { File = file, FilePath = filePath },
+            BackingStore = new BackingStore<TFile, TSerializer>(new FileSystemBackingStore(_dialogSvc.Invoke(), _saveFilter)) { FileName = filePath },
         };
-        WireUpFullSaveCommands(vm, file, filePath);
         NavigationService!.Navigate(vm);
     }
 
@@ -140,51 +142,18 @@ public abstract class FileEditorViewModelLauncher<TState, TFile, TSerializer, TE
         }
     }
 
-    private void WireUpFullSaveCommands(TEditor vm, TFile file, string filePath)
-    {
-        vm.SaveCommand = ObservingCommandBuilder.Create(vm.State, () => OnSave(file, filePath)).ListensToCanExecute(s => s.UnsavedChanges).Build();
-        vm.SaveAsCommand = GetSaveAsCommand(vm, file, filePath);
-    }
-
-    private ObservingCommand GetSaveAsCommand(TEditor vm, TFile file, string? filePath = null)
-    {
-        return ObservingCommandBuilder.Create(vm.State, () => OnSaveAs(vm, file, saveFilter, filePath)).ListensToCanExecute(s => s.UnsavedChanges).Build();
-    }
-
     private void OnNew(object? parameter)
     {
-        var file = new TFile();
-        var state = new TState { File = file };
         var vm = new TEditor()
         {
             Title = St.NewFile,
-            State = state,
-        };
-        vm.SaveCommand = GetSaveAsCommand(vm, file);
-        NavigationService!.Navigate(vm);
-    }
-
-    private static byte[] GetSerializedFile(TFile file)
-    {
-        return serializer.Serialize(file);
-    }
-
-    private async Task OnSaveAs(TEditor vm, TFile file, IEnumerable<FileFilterItem> saveFilter, string? fileName)
-    {
-        if (await DialogService!.GetFileSavePath(saveFilter, fileName) is { Success: true, Result: { } filePath })
-        {
-            await OnSave(file, filePath);
-            if (vm.SaveAsCommand is null)
+            State = new TState
             {
-                WireUpFullSaveCommands(vm, file, filePath);
-            }
-        }
-    }
-
-    private Task OnSave(TFile file, string filePath)
-    {
-        BeforeSave(file, filePath);
-        return File.WriteAllBytesAsync(filePath, GetSerializedFile(file));
+                File = new TFile()
+            },
+            BackingStore = new BackingStore<TFile, TSerializer>(new FileSystemBackingStore(_dialogSvc.Invoke(), _saveFilter)),
+        };
+        NavigationService!.Navigate(vm);
     }
 
     private Task<string?> GetFilePath(object? parameter, ICollection<RecentFileInfo> recentFiles, IEnumerable<FileFilterItem> filters)

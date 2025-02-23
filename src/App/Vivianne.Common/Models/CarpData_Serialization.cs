@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
 using TheXDS.MCART.Helpers;
 using TheXDS.MCART.Types.Extensions;
+using TheXDS.Vivianne.Models.Carp.Nfs3;
+using TheXDS.Vivianne.Models.Fe.Nfs3;
 using TheXDS.Vivianne.Serializers;
+using TheXDS.Vivianne.Serializers.Carp.Nfs3;
 
 namespace TheXDS.Vivianne.Models;
 
@@ -22,26 +25,26 @@ public partial class CarpEditorState
 
     /// <summary>
     /// Creates a new instance of the <see cref="CarpEditorState"/> class from
-    /// a <see cref="Carp"/> object.
+    /// a <see cref="CarPerf"/> object.
     /// </summary>
     /// <param name="c">Object to get the data from.</param>
     /// <returns>
     /// A new instance of the <see cref="CarpEditorState"/> class.
     /// </returns>
-    public static CarpEditorState From(Carp c)
+    public static CarpEditorState From(CarPerf c)
     {
-        return CreateCopy<Carp, CarpEditorState>(c);
+        return CreateCopy<CarPerf, CarpEditorState>(c);
     }
 
     /// <summary>
-    /// Converts this instance to a <see cref="Carp"/> object.
+    /// Converts this instance to a <see cref="CarPerf"/> object.
     /// </summary>
     /// <returns>
-    /// A <see cref="Carp"/> object with the same values as this instance.
+    /// A <see cref="CarPerf"/> object with the same values as this instance.
     /// </returns>
-    public Carp ToCarp()
+    public CarPerf ToCarp()
     {
-        return CreateCopy<CarpEditorState, Carp>(this);
+        return CreateCopy<CarpEditorState, CarPerf>(this);
     }
 
     /// <summary>
@@ -50,7 +53,7 @@ public partial class CarpEditorState
     /// <returns>A string that contains the raw Carp data.</returns>
     public string ToSerializedCarp()
     {
-        return System.Text.Encoding.Latin1.GetString(((ISerializer<Carp>)new CarpSerializer()).Serialize(ToCarp()));
+        return System.Text.Encoding.Latin1.GetString(((ISerializer<CarPerf>)new CarpSerializer()).Serialize(ToCarp()));
     }
 
     private static TResult CreateCopy<TSource, TResult>(TSource source) where TResult : new()
@@ -58,7 +61,7 @@ public partial class CarpEditorState
         var result = new TResult();
         CopyProps<TSource, TResult, ushort>(source, result);
         CopyProps<TSource, TResult, int>(source, result);
-        CopyProps<TSource, TResult, Nfs3CarClass>(source, result);
+        CopyProps<TSource, TResult, CarClass>(source, result);
         CopyProps<TSource, TResult, double>(source, result);
         CopyCollection<TSource, TResult, int>(source, result);
         CopyCollection<TSource, TResult, double>(source, result);

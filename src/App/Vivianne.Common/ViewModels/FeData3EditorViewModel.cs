@@ -5,7 +5,12 @@ using System.Windows.Input;
 using TheXDS.Ganymede.Types.Base;
 using TheXDS.MCART.Component;
 using TheXDS.Vivianne.Models;
+using TheXDS.Vivianne.Models.Fce.Nfs3;
+using TheXDS.Vivianne.Models.Fe.Nfs3;
+using TheXDS.Vivianne.Models.Viv;
 using TheXDS.Vivianne.Serializers;
+using TheXDS.Vivianne.Serializers.Fce.Nfs3;
+using TheXDS.Vivianne.Serializers.Fe.Nfs3;
 using TheXDS.Vivianne.Tools;
 
 namespace TheXDS.Vivianne.ViewModels;
@@ -16,7 +21,7 @@ namespace TheXDS.Vivianne.ViewModels;
 /// </summary>
 public class FeData3EditorViewModel : ViewModel
 {
-    private static readonly ISerializer<FeData3> serializer = new FeData3Serializer();
+    private static readonly ISerializer<FeData> serializer = new FeDataSerializer();
     private readonly Action<byte[]> saveCallback;
     private readonly VivEditorState? viv;
     private readonly string? fedataName;
@@ -47,23 +52,23 @@ public class FeData3EditorViewModel : ViewModel
         PreviewFceColorTable = LoadColorsFromFce(viv?.File);
     }
 
-    private static Fce3ColorItem[]? LoadColorsFromFce(VivFile? viv)
+    private static Fce3Color[]? LoadColorsFromFce(VivFile? viv)
     {
         if (viv is null || !viv.TryGetValue("car.fce", out var data)) return null;
         ISerializer<FceFile> s = new FceSerializer();
-        var header = s.Deserialize(data).Header;
-        return header.PrimaryColorTable.Zip(header.SecondaryColorTable).Select(p=>new Fce3ColorItem(p.First, p.Second)).ToArray();
+        var fce = s.Deserialize(data);
+        return [];// fce.PrimaryColors.Zip(fce.SecondaryColors).Select(p => new Fce3Color(p.First, p.Second)).ToArray();
     }
 
     /// <summary>
     /// Gets a table of the colors defined in the FCE file.
     /// </summary>
-    public Fce3ColorItem[]? PreviewFceColorTable { get; }
+    public Fce3Color[]? PreviewFceColorTable { get; }
 
     /// <summary>
-    /// Gets the <see cref="FeData3"/> instance to view/edit.
+    /// Gets the <see cref="FeData"/> instance to view/edit.
     /// </summary>
-    public FeData3 Data { get; }
+    public FeData Data { get; }
 
     /// <summary>
     /// Gets a reference to the command used to save the changes made to the
@@ -90,6 +95,6 @@ public class FeData3EditorViewModel : ViewModel
     private void OnSyncChanges()
     {
         if (viv is null || fedataName is null || Path.GetExtension(fedataName) is not { } ext) return;
-        FeData3SyncTool.Sync(Data, ext, viv.Directory);        
+        FeData3SyncTool.Sync(Data, ext, viv.Directory);
     }
 }

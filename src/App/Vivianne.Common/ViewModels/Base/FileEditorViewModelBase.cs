@@ -1,8 +1,13 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using TheXDS.Ganymede.Helpers;
 using TheXDS.Ganymede.Models;
+using TheXDS.Ganymede.Resources;
 using TheXDS.Ganymede.Types.Base;
+using TheXDS.Vivianne.Component;
+using TheXDS.Vivianne.Serializers;
 using St = TheXDS.Vivianne.Resources.Strings.ViewModels.FshEditorViewModel;
 
 namespace TheXDS.Vivianne.ViewModels.Base;
@@ -14,25 +19,17 @@ namespace TheXDS.Vivianne.ViewModels.Base;
 /// <typeparam name="TFile">
 /// Type of file for which this ViewModel is an editor for.
 /// </typeparam>
-public abstract class FileEditorViewModelBase<TState, TFile> : ViewModel, IViewModel, IFileEditorViewModel<TState, TFile> where TState : class, IFileState<TFile>
+public abstract class FileEditorViewModelBase<TState, TFile> : ViewModel, IViewModel, IFileEditorViewModel<TState, TFile>
+    where TFile : new()
+    where TState : INotifyPropertyChanged, IFileState<TFile>, new()
 {
-    private ICommand saveCommand = null!;
-    private ICommand? saveAsCommand;
-    private TState state = null!;
+    private TState state = default!;
 
     /// <inheritdoc/>
-    public ICommand SaveCommand
-    {
-        get => saveCommand;
-        set => Change(ref saveCommand, value);
-    }
+    public ICommand SaveCommand { get; }
 
     /// <inheritdoc/>
-    public ICommand? SaveAsCommand
-    {
-        get => saveAsCommand;
-        set => Change(ref saveAsCommand, value);
-    }
+    public ICommand SaveAsCommand { get; }
 
     /// <inheritdoc/>
     public ICommand CloseCommand { get; }
@@ -44,6 +41,9 @@ public abstract class FileEditorViewModelBase<TState, TFile> : ViewModel, IViewM
         set => Change(ref state, value);
     }
 
+    /// <inheritdoc/>
+    public IFileBackingStore<TFile>? BackingStore { get; init; }
+
     /// <summary>
     /// Initializes a new instance of the <see cref="FileEditorViewModelBase{TState, TFile}"/>
     /// class.
@@ -52,6 +52,18 @@ public abstract class FileEditorViewModelBase<TState, TFile> : ViewModel, IViewM
     {
         var cb = CommandBuilder.For(this);
         CloseCommand = cb.BuildSimple(OnClose);
+        SaveAsCommand = cb.BuildSimple(OnSaveAs);
+        SaveCommand = cb.BuildSimple(OnSave);
+    }
+
+    private Task OnSave()
+    {
+        return BackingStore?.WriteAsync(State.File) ?? Task.CompletedTask;
+    }
+
+    private Task OnSaveAs()
+    {
+        return BackingStore?.WriteNewAsync(State.File) ?? Task.CompletedTask;
     }
 
     private Task OnClose()

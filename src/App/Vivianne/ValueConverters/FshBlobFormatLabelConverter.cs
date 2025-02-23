@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 using TheXDS.MCART.ValueConverters.Base;
-using TheXDS.Vivianne.Models;
+using TheXDS.Vivianne.Models.Fsh;
 using TheXDS.Vivianne.Resources;
 using St = TheXDS.Vivianne.Resources.Strings.ValueConverters.FshBlobFormatLabelConverter;
 

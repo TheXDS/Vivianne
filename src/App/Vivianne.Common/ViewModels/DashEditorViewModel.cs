@@ -1,5 +1,8 @@
 ﻿using System.Threading.Tasks;
 using TheXDS.Vivianne.Models;
+using TheXDS.Vivianne.Models.Fsh.Nfs3;
+using TheXDS.Vivianne.Serializers;
+using TheXDS.Vivianne.Serializers.Fsh.Blobs;
 
 namespace TheXDS.Vivianne.ViewModels;
 
@@ -12,7 +15,7 @@ public class DashEditorViewModel(GaugeDataState state) : EditorViewModelBase<Gau
     /// <inheritdoc/>
     protected override Task OnSaveChanges()
     {
-        State.Cabin.GaugeData = State.BackingStore;
+        State.Cabin.Footer = ((ISerializer<GaugeData>)new GaugeDataSerializer()).Serialize(State.BackingStore);
         if (State.Steering is not null)
         {
             State.Steering.XPosition = (ushort)State.SteeringXPosition;

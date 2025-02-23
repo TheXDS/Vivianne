@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using TheXDS.Ganymede.Types.Base;
 
 namespace TheXDS.Vivianne.ViewModels.Base;
 

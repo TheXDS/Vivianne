@@ -11,8 +11,14 @@ using TheXDS.Ganymede.Resources;
 using TheXDS.Ganymede.Services;
 using TheXDS.Ganymede.Types.Extensions;
 using TheXDS.MCART.Types.Extensions;
-using TheXDS.Vivianne.Models;
+using TheXDS.Vivianne.Models.Carp.Nfs3;
+using TheXDS.Vivianne.Models.Fe;
+using TheXDS.Vivianne.Models.Fe.Nfs3;
+using TheXDS.Vivianne.Models.Viv;
 using TheXDS.Vivianne.Serializers;
+using TheXDS.Vivianne.Serializers.Carp.Nfs3;
+using TheXDS.Vivianne.Serializers.Fe.Nfs3;
+using TheXDS.Vivianne.Serializers.Viv;
 using St = TheXDS.Vivianne.Resources.Strings.Tools.SerialNumberAnalyzer;
 using Stc = TheXDS.Vivianne.Resources.Strings.Common;
 
@@ -26,8 +32,8 @@ public class SerialNumberAnalyzer : IVivianneTool
 {
     private class SnEntry
     {
-        public readonly Dictionary<string, FeData3> FeDatas = [];
-        public Carp? Carp;
+        public readonly Dictionary<string, FeData> FeDatas = [];
+        public CarPerf? Carp;
         public string FilePath = null!;
         public VivFile VivFile = null!;
         public ushort? SerialNumber;
@@ -35,9 +41,9 @@ public class SerialNumberAnalyzer : IVivianneTool
     }
 
     private static readonly EnumerationOptions EnumOpts = new() { MatchCasing = MatchCasing.CaseInsensitive };
-    private static readonly ISerializer<FeData3> feSerializer = new FeData3Serializer();
+    private static readonly ISerializer<FeData> feSerializer = new FeDataSerializer();
     private static readonly ISerializer<VivFile> vivSerializer = new VivSerializer();
-    private static readonly ISerializer<Carp> carpSerializer = new CarpSerializer();
+    private static readonly ISerializer<CarPerf> carpSerializer = new CarpSerializer();
 
     private static async Task<SnEntry?> LoadViv(FileInfo file)
     {
@@ -57,7 +63,7 @@ public class SerialNumberAnalyzer : IVivianneTool
         }
     }
 
-    private static async Task<FeData3?> LoadFeData(VivFile viv, string feName)
+    private static async Task<FeData?> LoadFeData(VivFile viv, string feName)
     {
         try
         {
@@ -73,7 +79,7 @@ public class SerialNumberAnalyzer : IVivianneTool
         return null;
     }
 
-    private static async Task<Carp?> LoadCarp(VivFile viv)
+    private static async Task<CarPerf?> LoadCarp(VivFile viv)
     {
         try
         {
@@ -92,7 +98,7 @@ public class SerialNumberAnalyzer : IVivianneTool
     private static async Task ParseSnFromViv(SnEntry entry)
     {
         HashSet<ushort> serials = [];
-        foreach (var fe in FeData.KnownExtensions)
+        foreach (var fe in FeDataBase.KnownExtensions)
         {
             var feName = $"fedata{fe}";
             if (await LoadFeData(entry.VivFile, feName) is { } feData)

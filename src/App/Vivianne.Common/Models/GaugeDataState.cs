@@ -1,5 +1,10 @@
 ﻿using System.Linq;
+using TheXDS.Vivianne.Extensions;
 using TheXDS.Vivianne.Models.Base;
+using TheXDS.Vivianne.Models.Fsh;
+using TheXDS.Vivianne.Models.Fsh.Nfs3;
+using TheXDS.Vivianne.Serializers;
+using TheXDS.Vivianne.Serializers.Fsh.Blobs;
 
 namespace TheXDS.Vivianne.Models;
 
@@ -100,7 +105,9 @@ public class GaugeDataState : EditorViewModelStateBase
             GearXPosition = Gears[0].XPosition;
             GearYPosition = Gears[0].YPosition;
         }
-        _data = Cabin.GaugeData ?? default;
+        _data = Cabin.FooterType() == FshBlobFooterType.CarDashboard 
+            ? ((ISerializer<GaugeData>)new GaugeDataSerializer()).Deserialize(Cabin.Footer) 
+            : default;
     }
 
     /// <inheritdoc/>

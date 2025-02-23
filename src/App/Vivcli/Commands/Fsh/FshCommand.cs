@@ -1,7 +1,7 @@
 using TheXDS.MCART.Helpers;
 using TheXDS.Vivianne.Commands.Base;
-using TheXDS.Vivianne.Models;
-using TheXDS.Vivianne.Serializers;
+using TheXDS.Vivianne.Models.Fsh;
+using TheXDS.Vivianne.Serializers.Fsh;
 using St = TheXDS.Vivianne.Resources.Strings.FshCommand;
 
 namespace TheXDS.Vivianne.Commands.Fsh;

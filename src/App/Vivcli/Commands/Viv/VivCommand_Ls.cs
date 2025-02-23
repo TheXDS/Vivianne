@@ -2,6 +2,7 @@ using System.CommandLine;
 using TheXDS.MCART.Helpers;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Serializers;
+using TheXDS.Vivianne.Serializers.Viv;
 using St = TheXDS.Vivianne.Resources.Strings.VivCommand;
 
 namespace TheXDS.Vivianne.Commands.Viv;

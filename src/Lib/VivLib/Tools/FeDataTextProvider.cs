@@ -1,16 +1,16 @@
 ﻿using System.Globalization;
-using TheXDS.Vivianne.Models;
+using TheXDS.Vivianne.Models.Carp;
 
 namespace TheXDS.Vivianne.Tools;
 
 /// <summary>
 /// Base class for all FeData text providers.
 /// </summary>
-/// <param name="source"><see cref="Carp"/> performance data source.</param>
+/// <param name="source"><see cref="CarPerf"/> performance data source.</param>
 /// <param name="culture">
 /// Optional <see cref="CultureInfo"/> to use when formatting numbers.
 /// </param>
-public abstract class FeDataTextProvider(Carp source, CultureInfo? culture = null)
+public abstract class FeDataTextProvider(ICarPerf source, CultureInfo? culture = null)
 {
     /// <summary>
     /// Gets a reference to the culture to use on this provider.
@@ -18,10 +18,10 @@ public abstract class FeDataTextProvider(Carp source, CultureInfo? culture = nul
     protected CultureInfo Culture { get; } = culture ?? CultureInfo.InvariantCulture;
 
     /// <summary>
-    /// Gets a reference to the <see cref="Carp"/> data to get information
+    /// Gets a reference to the <see cref="CarPerf"/> data to get information
     /// from.
     /// </summary>
-    protected Carp CarpData { get; } = source;
+    protected ICarPerf CarpData { get; } = source;
 
     /// <summary>
     /// Gets a reference to a performance analysis instance to get some

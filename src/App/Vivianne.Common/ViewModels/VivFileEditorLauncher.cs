@@ -1,10 +1,12 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using TheXDS.Ganymede.Services;
 using TheXDS.Vivianne.Extensions;
-using TheXDS.Vivianne.Helpers;
 using TheXDS.Vivianne.Models;
+using TheXDS.Vivianne.Models.Viv;
 using TheXDS.Vivianne.Properties;
 using TheXDS.Vivianne.Resources;
-using TheXDS.Vivianne.Serializers;
+using TheXDS.Vivianne.Serializers.Viv;
 using TheXDS.Vivianne.ViewModels.Base;
 
 namespace TheXDS.Vivianne.ViewModels;
@@ -12,7 +14,8 @@ namespace TheXDS.Vivianne.ViewModels;
 /// <summary>
 /// Implements a launcher to create and/or edit VIV files.
 /// </summary>
-public class VivFileEditorLauncher() : FileEditorViewModelLauncher<VivEditorState, VivFile, VivSerializer, VivEditorViewModel>("VIV", FileFilters.VivFileFilter)
+public class VivFileEditorLauncher(Func<IDialogService> dialogSvc)
+    : FileEditorViewModelLauncher<VivEditorState, VivFile, VivSerializer, VivEditorViewModel>(dialogSvc, "VIV", FileFilters.VivFileFilter)
 {
     /// <inheritdoc/>
     public override RecentFileInfo[] RecentFiles

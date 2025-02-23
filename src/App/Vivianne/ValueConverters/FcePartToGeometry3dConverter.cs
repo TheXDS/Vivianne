@@ -8,15 +8,18 @@ using TheXDS.MCART.Exceptions;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.MCART.ValueConverters.Base;
 using TheXDS.Vivianne.Models;
+using TheXDS.Vivianne.Models.Fce;
+using TheXDS.Vivianne.Models.Fce.Nfs3;
+using TheXDS.Vivianne.Models.Tga;
 using TheXDS.Vivianne.ViewModels;
 
 namespace TheXDS.Vivianne.ValueConverters;
 
 /// <summary>
-/// Implements a part converter that converts a <see cref="RenderTreeState"/>
+/// Implements a part converter that converts a <see cref="FceRenderState"/>
 /// into a <see cref="Model3DGroup"/> that can be rendered by WPF.
 /// </summary>
-public class FcePreviewViewModelToModel3DGroupConverter : IOneWayValueConverter<RenderTreeState?, Model3DGroup?>
+public class FcePreviewViewModelToModel3DGroupConverter : IOneWayValueConverter<FceRenderState?, Model3DGroup?>
 {
     private record VertexUv(Point3D Vertex, Point Uv, Vector3d Normal);
 
@@ -56,7 +59,7 @@ public class FcePreviewViewModelToModel3DGroupConverter : IOneWayValueConverter<
         var filteredTriangles = value.Triangles.Where(p => (p.Flags & (TriangleFlags)15) == flags).ToArray();
         if (filteredTriangles.Length == 0) return null;
         var vertex = new List<VertexUv?>(new VertexUv[value.Vertices.Length]);
-        var workingCopy = new Triangle[filteredTriangles.Length];
+        var workingCopy = new FceTriangle[filteredTriangles.Length];
         for (int i = 0; i < filteredTriangles.Length; i++)
         {
             var j = filteredTriangles[i];
@@ -78,10 +81,10 @@ public class FcePreviewViewModelToModel3DGroupConverter : IOneWayValueConverter<
         }
         return new MeshGeometry3D()
         {
-            Positions = new Point3DCollection(vertex.Select(p => p?.Vertex ?? default)),
-            TriangleIndices = new Int32Collection(workingCopy.SelectMany(p => (int[])[p.I1, p.I2, p.I3])),
-            Normals = new Vector3DCollection(vertex.Select(p => p?.Normal ?? default).Select(p => new Vector3D(-p.Z, p.X, -p.Y))),
-            TextureCoordinates = new PointCollection(vertex.Select(p => p?.Uv ?? default)),
+            Positions = [.. vertex.Select(p => p?.Vertex ?? default)],
+            TriangleIndices = [.. workingCopy.SelectMany(p => (int[])[p.I1, p.I2, p.I3])],
+            Normals = [.. vertex.Select(p => p?.Normal ?? default).Select(p => new Vector3D(-p.Z, p.X, -p.Y))],
+            TextureCoordinates = [.. vertex.Select(p => p?.Uv ?? default)],
         };
     }
 
@@ -95,7 +98,7 @@ public class FcePreviewViewModelToModel3DGroupConverter : IOneWayValueConverter<
         }
     }
 
-    private static bool IsTextureLikelyTga(RenderTreeState state, [NotNullWhen(true)] out TargaHeader? header)
+    private static bool IsTextureLikelyTga(FceRenderState state, [NotNullWhen(true)] out TargaHeader? header)
     {
         var bytes = state.Texture?.Take(18).ToArray() ?? throw new TamperException();
         if (bytes.Length == 18)
@@ -111,13 +114,13 @@ public class FcePreviewViewModelToModel3DGroupConverter : IOneWayValueConverter<
         return header is not null;
     }
 
-    private static (Brush brush, bool flipU, bool flipV) CheckUvFlip(RenderTreeState value)
+    private static (Brush brush, bool flipU, bool flipV) CheckUvFlip(FceRenderState value)
     {
         Brush? brush = null;
         bool flipU = false, flipV = true; // NFS3 has the V coordinate flipped by default.
-        if (value.Texture is not null)
+        if (value.Texture is byte[] textureData)
         {
-            brush = new RawImageToBrushConverter().Convert(value.Texture, value.SelectedColor, CultureInfo.InvariantCulture);
+            brush = new RawImageToBrushConverter().Convert(textureData, value.SelectedColor, CultureInfo.InvariantCulture);
             if (IsTextureLikelyTga(value, out var tgaHeader))
             {
                 flipU = tgaHeader.Value.ImageInfo.XOrigin != 0;
@@ -141,7 +144,7 @@ public class FcePreviewViewModelToModel3DGroupConverter : IOneWayValueConverter<
     }
 
     /// <inheritdoc/>
-    public Model3DGroup? Convert(RenderTreeState? value, object? parameter, CultureInfo? culture)
+    public Model3DGroup? Convert(FceRenderState? value, object? parameter, CultureInfo? culture)
     {
         if (value is null) return null;
 
@@ -170,7 +173,7 @@ public class FcePreviewViewModelToModel3DGroupConverter : IOneWayValueConverter<
 
         foreach (var (flags, material) in materials.Concat(materials.Select(p => new KeyValuePair<TriangleFlags, Material>(p.Key | TriangleFlags.NoCulling, p.Value))))
         {
-            foreach (var part in value.Parts)
+            foreach (var part in value.VisibleParts)
             {
                 group.Children.Add(new GeometryModel3D(FcePartToGeometry(part, flipU, flipV, flags), material) { BackMaterial = flags.HasFlag(TriangleFlags.NoCulling) ? material : null });
             }

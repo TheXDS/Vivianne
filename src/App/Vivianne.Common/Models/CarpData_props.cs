@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using TheXDS.Vivianne.Models.Base;
+using TheXDS.Vivianne.Models.Fe.Nfs3;
 
 namespace TheXDS.Vivianne.Models;
 
@@ -21,7 +22,7 @@ public partial class CarpEditorState : EditorViewModelStateBase
     /// <summary>
     /// Gets or sets a value that indicates the Car class as set on the FeData.
     /// </summary>
-    public Nfs3CarClass CarClass
+    public CarClass CarClass
     {
         get => _CarClass;
         set => Change(ref _CarClass, value);

@@ -1,8 +1,10 @@
 using System.CommandLine;
 using TheXDS.MCART.Helpers;
 using TheXDS.Vivianne.Extensions;
-using TheXDS.Vivianne.Models;
+using TheXDS.Vivianne.Models.Fsh;
 using TheXDS.Vivianne.Serializers;
+using TheXDS.Vivianne.Serializers.Fsh;
+using TheXDS.Vivianne.Tools;
 using St = TheXDS.Vivianne.Resources.Strings.FshCommand;
 
 namespace TheXDS.Vivianne.Commands.Fsh;

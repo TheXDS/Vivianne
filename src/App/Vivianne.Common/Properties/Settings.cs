@@ -82,6 +82,8 @@ public class Settings
     /// </summary>
     public RecentFileInfo[] RecentFshFiles { get; set; }
 
+    public RecentFileInfo[] RecentFce3Files { get; set; }
+
     /// <summary>
     /// Gets or sets the path to the NFS3 main directory.
     /// </summary>

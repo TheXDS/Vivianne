@@ -3,7 +3,8 @@ using System.Linq;
 using TheXDS.MCART.Types;
 using TheXDS.Vivianne.Extensions;
 using TheXDS.Vivianne.Models.Base;
-using TheXDS.Vivianne.Serializers;
+using TheXDS.Vivianne.Models.Viv;
+using TheXDS.Vivianne.Serializers.Viv;
 
 namespace TheXDS.Vivianne.Models;
 

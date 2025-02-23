@@ -1,5 +1,5 @@
 ﻿using System.Globalization;
-using TheXDS.Vivianne.Models;
+using TheXDS.Vivianne.Models.Carp;
 
 namespace TheXDS.Vivianne.Tools;
 
@@ -7,7 +7,7 @@ namespace TheXDS.Vivianne.Tools;
 /// Implements a <see cref="FeDataTextProvider"/> for FRE fedata files.
 /// </summary>
 /// <param name="carp">Performance data source.</param>
-public class FreUnitTextProvider(Carp carp) : FeDataTextProvider(carp, CultureInfo.GetCultureInfo("fr-FR"))
+public class FreUnitTextProvider(ICarPerf carp) : FeDataTextProvider(carp, CultureInfo.GetCultureInfo("fr-FR"))
 {
     /// <inheritdoc/>
     public override string Weight => CarpData.Mass.ToString("0", Culture);

@@ -1,6 +1,7 @@
+using Microsoft.VisualBasic;
 using System.CommandLine;
 using TheXDS.Vivianne.Extensions;
-using TheXDS.Vivianne.Models;
+using TheXDS.Vivianne.Models.Fsh;
 using TheXDS.Vivianne.Resources;
 using St = TheXDS.Vivianne.Resources.Strings.FshCommand;
 
@@ -50,6 +51,15 @@ public partial class FshCommand
         Console.WriteLine(string.Format(St.BlobInfo_PrintBlobInfo3, blob.XRotation, blob.YRotation));
         Console.WriteLine(string.Format(St.BlobInfo_PrintBlobInfo4, blob.XPosition, blob.YPosition));
         Console.WriteLine(string.Format(St.BlobInfo_PrintBlobInfo5, blob.PixelData.Length.GetSize(humanOpt)));
-        Console.WriteLine(string.Format(St.BlobInfo_PrintBlobInfo6, Mappings.GetFshBlobFooterLabel(blob, humanOpt)));
+        Console.WriteLine(string.Format(St.BlobInfo_PrintBlobInfo6, GetFshBlobFooterLabel(blob, humanOpt)));
+    }
+
+    private static string GetFshBlobFooterLabel(FshBlob blob, bool humanReadable)
+    {
+        if (Mappings.FshBlobFooterToLabel.TryGetValue(blob.FooterType(), out var label))
+        {
+            return label;
+        }
+        return $"Unknown ({(blob.Footer?.Length ?? 0).GetSize(humanReadable)})";
     }
 }

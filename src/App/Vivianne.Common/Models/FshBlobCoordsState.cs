@@ -1,4 +1,5 @@
 ﻿using TheXDS.Vivianne.Models.Base;
+using TheXDS.Vivianne.Models.Fsh;
 using TheXDS.Vivianne.ViewModels;
 
 namespace TheXDS.Vivianne.Models;

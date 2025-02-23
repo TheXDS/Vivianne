@@ -48,5 +48,4 @@ public interface IInSerializer<in T>
     /// A task that can be used to await the async operation.
     /// </returns>
     Task SerializeToAsync(T entity, Stream stream) => Task.Run(() => SerializeTo(entity, stream));
-
 }

@@ -1,5 +1,6 @@
 ﻿using TheXDS.MCART.Types;
 using TheXDS.Vivianne.Models.Base;
+using TheXDS.Vivianne.Models.Fsh;
 
 namespace TheXDS.Vivianne.Models;
 

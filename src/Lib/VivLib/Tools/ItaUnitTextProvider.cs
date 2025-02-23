@@ -1,5 +1,5 @@
 ﻿using System.Globalization;
-using TheXDS.Vivianne.Models;
+using TheXDS.Vivianne.Models.Carp;
 
 namespace TheXDS.Vivianne.Tools;
 
@@ -7,7 +7,7 @@ namespace TheXDS.Vivianne.Tools;
 /// Implements a <see cref="FeDataTextProvider"/> for ITA fedata files.
 /// </summary>
 /// <param name="carp">Performance data source.</param>
-public class ItaUnitTextProvider(Carp carp) : FeDataTextProvider(carp, CultureInfo.GetCultureInfo("it-IT"))
+public class ItaUnitTextProvider(ICarPerf carp) : FeDataTextProvider(carp, CultureInfo.GetCultureInfo("it-IT"))
 {
     /// <inheritdoc/>
     public override string TopSpeed => (CarpData.TopSpeed * 3.6).ToString("0", Culture);

@@ -1,9 +1,11 @@
-﻿namespace TheXDS.Vivianne.Models;
+﻿using TheXDS.Vivianne.Models.Fe.Nfs3;
+
+namespace TheXDS.Vivianne.Models;
 
 public partial class CarpEditorState
 {
     private ushort _SerialNumber;
-    private Nfs3CarClass _CarClass;
+    private CarClass _CarClass;
     private double _Mass;
     private int _NumberOfGearsManual;
     private int _NumberOfGearsAuto;

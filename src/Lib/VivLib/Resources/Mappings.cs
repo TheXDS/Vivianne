@@ -8,10 +8,11 @@ using SixLabors.ImageSharp.Formats.Tga;
 using SixLabors.ImageSharp.PixelFormats;
 using System.Globalization;
 using TheXDS.MCART.Types.Extensions;
-using TheXDS.Vivianne.Extensions;
 using TheXDS.Vivianne.Models;
-using TheXDS.Vivianne.Serializers;
+using TheXDS.Vivianne.Models.Carp;
+using TheXDS.Vivianne.Models.Fsh;
 using TheXDS.Vivianne.Tools;
+using St = TheXDS.Vivianne.Resources.Strings.Mappings;
 
 namespace TheXDS.Vivianne.Resources;
 
@@ -22,26 +23,24 @@ namespace TheXDS.Vivianne.Resources;
 /// </summary>
 public static class Mappings
 {
-    private static readonly byte[] paletteHeader = [0x2a, 0x00, 0x00, 0x00, 0x00, 0x01, 0x01, 0x00];
-
     /// <summary>
     /// Maps a <see cref="FshBlobFormat"/> value to a corresponding label that
-    /// describes the GIMX pixel format.
+    /// describes the FshBlob pixel format.
     /// </summary>
     public static IReadOnlyDictionary<FshBlobFormat, string> FshBlobToLabel { get; } = new Dictionary<FshBlobFormat, string>()
     {
-        { FshBlobFormat.Palette32,      "32-bit color palette" },
-        { FshBlobFormat.Indexed8,       "8-bit color (256 colors) with palette" },
-        { FshBlobFormat.Rgb565,         "16-bit color (RGB565), no alpha" },
-        { FshBlobFormat.Argb32,         "24-bit color with 8-bit alpha channel (ARGB32)" },
-        { FshBlobFormat.Argb1555,       "16-bit Color with 1 bit alpha channel (ARGB1555)" },
-        { FshBlobFormat.Palette24Dos,   "24-bit color palette, DOS variant" },
-        { FshBlobFormat.Palette24,      "24-bit color palette" },
-        { FshBlobFormat.Palette16Nfs5,  "16-bit color palette, NFS5 variant" },
-        { FshBlobFormat.Palette16,      "16-bit color palette" },
-        { FshBlobFormat.Rgb24,          "24-bit color without alpha (RGB24)" },
-        { FshBlobFormat.Dxt3,           "DXT3 compressed texture" },
-        { FshBlobFormat.Dxt4,           "DXT4 compressed texture" },
+        { FshBlobFormat.Palette32,      St.FshBlobToLabel_Palette32 },
+        { FshBlobFormat.Indexed8,       St.FshBlobToLabel_Indexed8 },
+        { FshBlobFormat.Rgb565,         St.FshBlobToLabel_Rgb565 },
+        { FshBlobFormat.Argb32,         St.FshBlobToLabel_Argb32 },
+        { FshBlobFormat.Argb1555,       St.FshBlobToLabel_Argb1555 },
+        { FshBlobFormat.Palette24Dos,   St.FshBlobToLabel_Palette24Dos },
+        { FshBlobFormat.Palette24,      St.FshBlobToLabel_Palette24 },
+        { FshBlobFormat.Palette16Nfs5,  St.FshBlobToLabel_Palette16Nfs5 },
+        { FshBlobFormat.Palette16,      St.FshBlobToLabel_Palette16 },
+        { FshBlobFormat.Rgb24,          St.FshBlobToLabel_Rgb24 },
+        { FshBlobFormat.Dxt3,           St.FshBlobToLabel_Dxt3 },
+        { FshBlobFormat.Dxt4,           St.FshBlobToLabel_Dxt4 },
     }.AsReadOnly();
 
     /// <summary>
@@ -65,76 +64,11 @@ public static class Mappings
     /// </summary>
     public static IReadOnlyDictionary<FshBlobFooterType, string> FshBlobFooterToLabel { get; } = new Dictionary<FshBlobFooterType, string>()
     {
-        { FshBlobFooterType.None,           "No footer data present" },
-        { FshBlobFooterType.CarDashboard,   "Car dashboard data" },
-        { FshBlobFooterType.ColorPalette,   "Local color palette" },
-        { FshBlobFooterType.Padding,        "Padding zeros" },
+        { FshBlobFooterType.None,           St.FshBlobFooterToLabel_None },
+        { FshBlobFooterType.CarDashboard,   St.FshBlobFooterToLabel_CarDashboard },
+        { FshBlobFooterType.ColorPalette,   St.FshBlobFooterToLabel_ColorPalette },
+        { FshBlobFooterType.Padding,        St.FshBlobFooterToLabel_Padding},
     }.AsReadOnly();
-
-    /// <summary>
-    /// Gets a string that infers and describes the footer data contained in
-    /// the specified <see cref="FshBlob"/>.
-    /// </summary>
-    /// <param name="blob">
-    /// <see cref="FshBlob"/> from which to read the footer data.
-    /// </param>
-    /// <param name="humanReadable">
-    /// When the footer data cannot be identified, allows the description to
-    /// use a human-readable footer length when set to <see langword="true"/>;
-    /// while <see langword="false"/> would display the raw, unformatted size
-    /// of the footer in bytes.
-    /// </param>
-    /// <returns></returns>
-    public static string GetFshBlobFooterLabel(FshBlob blob, bool humanReadable)
-    {
-        foreach (var j in FshBlobFooterIdentifier)
-        {
-            if (j.Value.Invoke(blob.Footer!))
-            {
-                return FshBlobFooterToLabel.TryGetValue(j.Key, out var label)
-                    ? label
-                    : $"Other ({j.Key})";
-            }
-        }
-        return $"Unknown ({(blob.Footer?.Length ?? 0).GetSize(humanReadable)})";
-    }
-
-    /// <summary>
-    /// Includes a set of functions that can identify the kind of data in a FSH
-    /// blob footer.
-    /// </summary>
-    public static IReadOnlyDictionary<FshBlobFooterType, Func<byte[], bool>> FshBlobFooterIdentifier { get; } = new Dictionary<FshBlobFooterType, Func<byte[], bool>>()
-    {
-        { FshBlobFooterType.None,           b => b is null || b.Length == 0 },
-        { FshBlobFooterType.CarDashboard,   b => b.Length == 104 },
-        { FshBlobFooterType.ColorPalette,   b => b.Length == 1040 && b[0..8].SequenceEqual(paletteHeader) },
-        { FshBlobFooterType.Padding,        b => b.All(p => p == 0) },
-    }.AsReadOnly();
-
-    /// <summary>
-    /// Maps a <see cref="FshBlobFooterType"/> value to a corresponding method
-    /// that can read the footer data into a <see cref="FshBlob"/>.
-    /// </summary>
-    public static IReadOnlyDictionary<FshBlobFooterType, Action<FshBlob, byte[]>> FshFooterLoader { get; } = new Dictionary<FshBlobFooterType, Action<FshBlob, byte[]>>()
-    {
-        { FshBlobFooterType.None,           (_,_) => { } },
-        { FshBlobFooterType.CarDashboard,   ReadGaugeData },
-        { FshBlobFooterType.ColorPalette,   ReadColorPalette },
-        { FshBlobFooterType.Padding,        (_,_) => { } },
-    };
-
-    /// <summary>
-    /// Maps a <see cref="FshBlobFooterType"/> value to a corresponding method
-    /// that can serialize the footer data in a <see cref="FshBlob"/> into a
-    /// <see cref="byte"/> array.
-    /// </summary>
-    public static IReadOnlyDictionary<FshBlobFooterType, Func<FshBlob, byte[]>> FshFooterWriter { get; } = new Dictionary<FshBlobFooterType, Func<FshBlob, byte[]>>()
-    {
-        { FshBlobFooterType.None,           _ => [] },
-        { FshBlobFooterType.CarDashboard,   WriteGaugeData },
-        { FshBlobFooterType.ColorPalette,   WriteColorPalette },
-        { FshBlobFooterType.Padding,        b => b.Footer },
-    };
 
     /// <summary>
     /// Maps a <see cref="FshBlobFormat"/> value to a corresponding delegate
@@ -296,25 +230,6 @@ public static class Mappings
     }
 
     /// <summary>
-    /// Loads a color palette from the specified raw footer.
-    /// </summary>
-    /// <param name="footer">
-    /// Byte array extracted from the footer that contains the color palette
-    /// for the image.
-    /// </param>
-    /// <returns>
-    /// An array of <see cref="Color"/> with the color palette to use when
-    /// rendering the texture.
-    /// </returns>
-    public static Color[]? LoadPalette(byte[] footer)
-    {
-        var s = new FshBlobSerializer();
-        using var ms = new MemoryStream(footer);
-        var blob = s.Deserialize(ms)!;
-        return FshBlobToPalette[blob.Magic].Invoke(blob);
-    }
-
-    /// <summary>
     /// Loads an <see cref="Image"/> from the specified <see cref="FshBlob"/>,
     /// including the color palette to use as well as a transform function to
     /// cast the color data to the required pixel format of the image.
@@ -435,7 +350,7 @@ public static class Mappings
     /// Maps a FeData file extension to a proper text provider used to generate
     /// FeData performance information based on Carp data.
     /// </summary>
-    public static Dictionary<string, Func<Carp, FeDataTextProvider>> FeDataToTextProvider { get; } = new Dictionary<string, Func<Carp, FeDataTextProvider>>
+    public static Dictionary<string, Func<ICarPerf, FeDataTextProvider>> FeDataToTextProvider { get; } = new Dictionary<string, Func<ICarPerf, FeDataTextProvider>>
     {
         { ".bri", c => new BriUnitTextProvider(c) },
         { ".eng", c => new EngUnitTextProvider(c) },
@@ -452,9 +367,9 @@ public static class Mappings
     /// <param name="c">Carp data to extract performance data from.</param>
     /// <returns>
     /// A <see cref="FeDataTextProvider"/> that gets the localized performance
-    /// metrics from the specified <see cref="Carp"/>.
+    /// metrics from the specified <see cref="CarPerf"/>.
     /// </returns>
-    public static FeDataTextProvider GetTextProviderFromCulture(Carp c)
+    public static FeDataTextProvider GetTextProviderFromCulture(ICarPerf c)
     {
         return GetTextProviderFromCulture(c, CultureInfo.CurrentUICulture.TwoLetterISOLanguageName);
     }
@@ -469,9 +384,9 @@ public static class Mappings
     /// </param>
     /// <returns>
     /// A <see cref="FeDataTextProvider"/> that gets the localized performance
-    /// metrics from the specified <see cref="Carp"/>.
+    /// metrics from the specified <see cref="CarPerf"/>.
     /// </returns>
-    public static FeDataTextProvider GetTextProviderFromCulture(Carp c, string culture)
+    public static FeDataTextProvider GetTextProviderFromCulture(ICarPerf c, string culture)
     {
         return culture.ToLowerInvariant() switch
         {
@@ -484,48 +399,48 @@ public static class Mappings
         };
     }
  
-    private static void ReadColorPalette(FshBlob blob, byte[] data)
-    {
-        blob.LocalPalette = LoadPalette(data);
-    }
+    //private static void ReadColorPalette(FshBlob blob, byte[] data)
+    //{
+    //    blob.LocalPalette = LoadPalette(data);
+    //}
 
-    private static void ReadGaugeData(FshBlob blob, byte[] data)
-    {
-        using var ms = new MemoryStream(data);
-        using var br = new BinaryReader(ms);
-        blob.GaugeData = br.ReadStruct<GaugeData>();
-    }
+    //private static void ReadGaugeData(FshBlob blob, byte[] data)
+    //{
+    //    using var ms = new MemoryStream(data);
+    //    using var br = new BinaryReader(ms);
+    //    blob.GaugeData = br.ReadStruct<GaugeData>();
+    //}
 
-    private static byte[] WriteColorPalette(FshBlob blob)
-    {
-        if (blob.LocalPalette is null)
-        {
-            throw new InvalidOperationException("The specified FSH does not contain a palette.");
-        }
-        using var ms = new MemoryStream();
-        using var bw = new BinaryWriter(ms);
-        foreach (var j in blob.LocalPalette)
-        {
-            Rgba32 c = j.ToPixel<Rgba32>();
-            bw.Write([c.B, c.G, c.R, c.A]);
-        }
-        var b = new FshBlob()
-        {
-            Magic = FshBlobFormat.Palette32,
-            Width = 256,
-            Height = 1,
-            PixelData = ms.ToArray()
-        };
-        using var ms2 = new MemoryStream();
-        new FshBlobSerializer().SerializeTo(b, ms2);
-        return ms2.ToArray();
-    }
+    //private static byte[] WriteColorPalette(FshBlob blob)
+    //{
+    //    if (blob.LocalPalette is null)
+    //    {
+    //        throw new InvalidOperationException("The specified FSH does not contain a palette.");
+    //    }
+    //    using var ms = new MemoryStream();
+    //    using var bw = new BinaryWriter(ms);
+    //    foreach (var j in blob.LocalPalette)
+    //    {
+    //        Rgba32 c = j.ToPixel<Rgba32>();
+    //        bw.Write([c.B, c.G, c.R, c.A]);
+    //    }
+    //    var b = new FshBlob()
+    //    {
+    //        Magic = FshBlobFormat.Palette32,
+    //        Width = 256,
+    //        Height = 1,
+    //        PixelData = ms.ToArray()
+    //    };
+    //    using var ms2 = new MemoryStream();
+    //    new FshBlobSerializer().SerializeTo(b, ms2);
+    //    return ms2.ToArray();
+    //}
 
-    private static byte[] WriteGaugeData(FshBlob blob)
-    {
-        using var ms = new MemoryStream();
-        using var br = new BinaryWriter(ms);
-        br.WriteStruct(blob.GaugeData ?? default);
-        return ms.ToArray();
-    }
+    //private static byte[] WriteGaugeData(FshBlob blob)
+    //{
+    //    using var ms = new MemoryStream();
+    //    using var br = new BinaryWriter(ms);
+    //    br.WriteStruct(blob.GaugeData ?? default);
+    //    return ms.ToArray();
+    //}
 }

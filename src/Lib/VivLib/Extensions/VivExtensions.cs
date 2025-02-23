@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
-using TheXDS.Vivianne.Models;
+using TheXDS.Vivianne.Models.Fe;
+using TheXDS.Vivianne.Models.Viv;
 
 namespace TheXDS.Vivianne.Extensions;
 
@@ -21,7 +22,7 @@ public static class VivExtensions
     /// </returns>
     public static string? GetFriendlyName(this IDictionary<string, byte[]> viv)
     {
-        return viv.GetAnyFeData() is byte[] data ? GetFromFeData(data) : null;
+        return viv.GetAnyFeData() is byte[] data ? GetCarNameFromFeData(data) : null;
     }
 
     /// <summary>
@@ -35,18 +36,23 @@ public static class VivExtensions
     /// </returns>
     public static byte[]? GetAnyFeData(this IDictionary<string, byte[]> viv)
     {
-        foreach (var ext in FeData.KnownExtensions)
+        foreach (var ext in FeDataBase.KnownExtensions)
         {
             if (viv.TryGetValue($"fedata{ext}", out var feData)) return feData;
         }
         return null;
     }
 
-    private static string? GetFromFeData(byte[] feData)
+    public static IFeData? GetAnyParsedFeData(this IDictionary<string, byte[]> viv)
+    {
+        return null;// viv.GetAnyFeData() is byte[] data ? FeDataBase.GetFeData(data) : null;
+    }
+
+    private static string? GetCarNameFromFeData(byte[] feData)
     {
         try
         {
-            return FeData.GetFeData(feData).CarName;
+            return null;// FeDataBase.GetFeData(feData).CarName;
         }
         catch (Exception ex)
         {

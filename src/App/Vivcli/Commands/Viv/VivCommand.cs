@@ -1,6 +1,6 @@
 using TheXDS.Vivianne.Commands.Base;
-using TheXDS.Vivianne.Models;
-using TheXDS.Vivianne.Serializers;
+using TheXDS.Vivianne.Models.Viv;
+using TheXDS.Vivianne.Serializers.Viv;
 using St = TheXDS.Vivianne.Resources.Strings.VivCommand;
 
 namespace TheXDS.Vivianne.Commands.Viv;

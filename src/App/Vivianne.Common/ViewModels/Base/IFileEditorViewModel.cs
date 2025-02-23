@@ -1,5 +1,6 @@
 ﻿using System.Windows.Input;
 using TheXDS.Ganymede.Types.Base;
+using TheXDS.Vivianne.Component;
 
 namespace TheXDS.Vivianne.ViewModels.Base;
 
@@ -17,16 +18,18 @@ public interface IFileEditorViewModel<TState, TFile> : IStatefulViewModel<TState
     /// Gets a reference to the command used to save all changes made to the
     /// file.
     /// </summary>
-    ICommand SaveCommand { get; set; }
+    ICommand SaveCommand { get; }
 
     /// <summary>
     /// Gets a reference to the command used to save all changes made to the
     /// file to a different stream.
     /// </summary>
-    ICommand? SaveAsCommand { get; set; }
+    ICommand SaveAsCommand { get; }
 
     /// <summary>
     /// Gets a reference to the command used to close the active editor.
     /// </summary>
-    public ICommand CloseCommand { get; }
+    ICommand CloseCommand { get; }
+
+    IFileBackingStore<TFile>? BackingStore { get; init; }
 }

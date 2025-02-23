@@ -1,6 +1,7 @@
 ﻿using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using TheXDS.Vivianne.Extensions;
+using TheXDS.Vivianne.Models.Fsh.Nfs3;
 
 namespace TheXDS.Vivianne.Models;
 

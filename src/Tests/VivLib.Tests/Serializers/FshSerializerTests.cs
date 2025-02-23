@@ -1,46 +1,23 @@
 ﻿#pragma warning disable CS1591
-#pragma warning disable CA1859
 
-using TheXDS.Vivianne.Models;
+using TheXDS.MCART.Types.Extensions;
+using TheXDS.Vivianne.Models.Carp.Base;
+using TheXDS.Vivianne.Models.Fsh;
+using TheXDS.Vivianne.Serializers.Carp;
+using TheXDS.Vivianne.Serializers.Fsh;
 
 namespace TheXDS.Vivianne.Serializers;
 
-public class FshSerializerTests
+[TestFixture]
+public class FshSerializerTests() : SerializerTestsBase<FshSerializer, FshFile>("test.fsh", GetDefaultFile())
 {
-    private static MemoryStream CreateTestFshStream()
+    private static FshFile GetDefaultFile()
     {
-        return new([
-           0x53, 0x48, 0x50, 0x49, // "SHPI"
-           0x31, 0x00, 0x00, 0x00, // File length
-           0x01, 0x00, 0x00, 0x00, // Entries
-           0x47, 0x49, 0x4D, 0x58, // "GIMX"
-           0x54, 0x45, 0x53, 0x54, // 4-byte name ("TEST")
-           0x18, 0x00, 0x00, 0x00, // Entry offset
-           ..CreateTestFshItem()]);
-    }
-
-    private static byte[] CreateTestFshItem()
-    {
-        return [
-            0x7B,               // Unk_0x0
-            0x00, 0x00, 0x00,   // 24-bit blob size
-            0x03, 0x00,         // 3px width
-            0x03, 0x00,         // 3px height
-            0x02, 0x00,         // x rotation
-            0x02, 0x00,         // y rotation
-            0x40, 0x00,         // x position
-            0x40, 0x00,         // y position
-            0x80, 0x80, 0x80,   // \
-            0x80, 0x80, 0x80,   //  > Pixel data
-            0x80, 0x80, 0x80    // /
-        ];
-    }
-
-    private static FshFile CreateTestFsh()
-    {
-        return new FshFile() { Entries = { {"TEST", new FshBlob()
+        return new FshFile()
         {
-            Magic = (FshBlobFormat)0x7B,
+            Entries = { {"TEST", new FshBlob()
+        {
+            Magic = FshBlobFormat.Indexed8,
             Width = 3,
             Height = 3,
             XRotation = 2,
@@ -49,43 +26,25 @@ public class FshSerializerTests
             YPosition = 0x40,
             PixelData = [0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80],
             Footer = []
-        }}}};
+        }}}
+        };
     }
 
-    [Test]
-    public void Serializer_can_read_fsh()
+    protected override void TestParsedFile(FshFile expected, FshFile actual)
     {
-        FshFile expected = CreateTestFsh();
-        using var ms = CreateTestFshStream();
-        ISerializer<FshFile> serializer = new FshSerializer();
-
-        FshFile fsh = serializer.Deserialize(ms);
-
+        Assert.That(actual.Entries, Has.Count.EqualTo(expected.Entries.Count));
+        Assert.That(actual.Entries.ContainsKey("TEST"));
+        var expectedBlob = expected.Entries["TEST"];
+        var actualBlob = actual.Entries["TEST"];
         Assert.Multiple(() =>
         {
-            Assert.That(fsh.Entries, Has.Count.EqualTo(1));
-            Assert.That(fsh.Entries.ContainsKey("TEST"));
-            var img = fsh.Entries["TEST"];
-            Assert.That(img.Width, Is.EqualTo(3));
-            Assert.That(img.Height, Is.EqualTo(3));
-            Assert.That(img.XRotation, Is.EqualTo(2));
-            Assert.That(img.YRotation, Is.EqualTo(2));
-            Assert.That(img.XPosition, Is.EqualTo(0x40));
-            Assert.That(img.YPosition, Is.EqualTo(0x40));
-            Assert.That(img.PixelData, Is.EquivalentTo(new byte[] { 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80 }));
+            Assert.That(actualBlob.Width, Is.EqualTo(expectedBlob.Width));
+            Assert.That(actualBlob.Height, Is.EqualTo(expectedBlob.Height));
+            Assert.That(actualBlob.XRotation, Is.EqualTo(expectedBlob.XRotation));
+            Assert.That(actualBlob.YRotation, Is.EqualTo(expectedBlob.YRotation));
+            Assert.That(actualBlob.XPosition, Is.EqualTo(expectedBlob.XPosition));
+            Assert.That(actualBlob.YPosition, Is.EqualTo(expectedBlob.YPosition));
+            Assert.That(actualBlob.PixelData, Is.EquivalentTo(expectedBlob.PixelData));
         });
-    }
-
-
-    [Test]
-    public void Serializer_can_write_Fsh()
-    {
-        var expected = CreateTestFshStream().ToArray();
-        using var ms = new MemoryStream();
-        ISerializer<FshFile> s = new FshSerializer();
-
-        s.SerializeTo(CreateTestFsh(), ms);
-
-        Assert.That(ms.ToArray(), Is.EquivalentTo(expected));
     }
 }

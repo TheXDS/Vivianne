@@ -1,9 +1,10 @@
 ﻿using TheXDS.MCART.Types.Base;
+using TheXDS.Vivianne.Models.Fce.Nfs3;
 
 namespace TheXDS.Vivianne.Models;
 
 /// <summary>
-/// Mutable class equivalent to <see cref="FceColor"/>.
+/// Mutable class equivalent to <see cref="HsbColor"/>.
 /// </summary>
 public class MutableFceColor : NotifyPropertyChanged
 {
@@ -55,29 +56,29 @@ public class MutableFceColor : NotifyPropertyChanged
     }
 
     /// <summary>
-    /// Converts this color into an <see cref="FceColor"/> that allows for
+    /// Converts this color into an <see cref="HsbColor"/> that allows for
     /// preview operations to be executed by notification of property change.
     /// </summary>
-    public FceColor Preview => ToColor();
+    public HsbColor Preview => ToColor();
 
     /// <summary>
-    /// Converts this instance into an <see cref="FceColor"/>.
+    /// Converts this instance into an <see cref="HsbColor"/>.
     /// </summary>
     /// <returns>
-    /// An <see cref="FceColor"/> equivalent to this instance.
+    /// An <see cref="HsbColor"/> equivalent to this instance.
     /// </returns>
-    public FceColor ToColor() => new(Hue, Saturation, Brightness, Alpha);
+    public HsbColor ToColor() => new(Hue, Saturation, Brightness, Alpha);
 
     /// <summary>
-    /// Converts an <see cref="FceColor"/> into a <see cref="MutableFceColor"/>
+    /// Converts an <see cref="HsbColor"/> into a <see cref="MutableFceColor"/>
     /// instance.
     /// </summary>
     /// <param name="color">Color to be converted.</param>
     /// <returns>
     /// A new <see cref="MutableFceColor"/> instance equivalent to the original
-    /// <see cref="FceColor"/>.
+    /// <see cref="HsbColor"/>.
     /// </returns>
-    public static MutableFceColor From(FceColor color) => new()
+    public static MutableFceColor From(HsbColor color) => new()
     {
         Hue = (byte)color.Hue,
         Saturation = (byte)color.Saturation,
@@ -86,16 +87,16 @@ public class MutableFceColor : NotifyPropertyChanged
     };
 
     /// <summary>
-    /// Implicitly converts a <see cref="FceColor"/> into a
+    /// Implicitly converts a <see cref="HsbColor"/> into a
     /// <see cref="MutableFceColor"/>.
     /// </summary>
     /// <param name="color">Color to convert.</param>
-    public static implicit operator MutableFceColor(FceColor color) => From(color);
+    public static implicit operator MutableFceColor(HsbColor color) => From(color);
 
     /// <summary>
     /// Implicitly converts a <see cref="MutableFceColor"/> into a
-    /// <see cref="FceColor"/>.
+    /// <see cref="HsbColor"/>.
     /// </summary>
     /// <param name="color">Color to convert.</param>
-    public static implicit operator FceColor(MutableFceColor color) => color.ToColor();
+    public static implicit operator HsbColor(MutableFceColor color) => color.ToColor();
 }

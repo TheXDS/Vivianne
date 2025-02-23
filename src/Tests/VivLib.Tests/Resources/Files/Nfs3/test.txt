@@ -1,0 +1,160 @@
+Serial Number(0)
+1
+Car Classification(1)
+0
+mass [kg](2)
+1350
+number of gears (reverse + neutral + forward gears)(3)
+8
+number of gears (automatic, r, n, forward)(75)
+8
+gear shift delay (ticks)(4)
+6
+shift blip in rpm (size 8)(5)
+0,0,125,115,90,80,75,55
+brake blip in rpm (size 8)(6)
+0,0,115,100,85,75,60,50
+velocity to rpm ratio (size 8)(7)
+-273.90509,0,360.599213,233.674225,176.509521,131.028549,111.536697,92.044846
+velocity to rpm ratio (size 8)(76)
+-273.90509,0,360.599213,233.674225,176.509521,141.857346,115.868217,92.044846
+gear ratios (size 8)(8)
+2.529412,0,3.33,2.157895,1.63,1.31,1.07,0.85
+gear ratios automatic (size 8)(77)
+2.529412,0,2.933333,2.157895,1.63,1.31,1.07,0.85
+gear efficiency (size 8)(9)
+0.8,0,0.77,0.79,0.82,0.84,0.85,1.15
+gear efficiency automatic (size 8)(78)
+0.8,0,0.71,0.71,0.74,0.74,0.8,1.15
+torque curve (size 21) in 423 rpm increments(10)
+0,200,240,275,295,310,330,350,380,420,440,450,465,471,465,470,465,430,400,360,0
+final gear(11)
+3.8
+final gear automatic(79)
+3.8
+engine minimum rpm(12)
+1335
+engine redline in rpm(13)
+8900
+Maximum velocity of car [m/s](14)
+90.303543
+top speed cap [m/s](15)
+90.303543
+front drive ratio(16)
+0
+Uses Antilock Brake System(17)
+1
+Maximum braking deceleration(18)
+10.85
+front bias brake ratio(19)
+0.5294
+gas increasing curve(20)
+16,16,16,16,16,16,16,16
+gas decreasing curve(21)
+32,32,32,32,32,32,32,32
+brake increasing curve(22)
+64,32,16,8,4,2,1,1
+brake decreasing curve(23)
+32,32,32,32,32,32,32,32
+wheel base(24)
+2.58
+front grip bias(25)
+0.42
+power steering (boolean)(26)
+1
+minimum steering acceleration(27)
+18.25
+turn in ramp(28)
+16
+turn out ramp(29)
+32
+lateral acceleration grip multiplier(30)
+3.61
+aerodynamic downforce multiplier(31)
+0.002368
+gas off factor(32)
+0.465
+g transfer factor(33)
+0.462
+turning circle radius(34)
+6.3
+tire specs front(35)
+245,35,18
+tire specs rear(36)
+335,35,18
+tire wear(37)
+0
+Slide Multiplier(38)
+1.099991
+Spin Velocity Cap(39)
+0.299988
+Slide Velocity Cap(40)
+0.299988
+Slide Assistance Factor(41)
+150
+Push Factor(42)
+12000
+Low Turn Factor (the lower the figure, the better the turn)(43)
+0.023987
+High Turn Factor (the lower the figure, the better the turn)(44)
+0.028
+pitch roll factor(45)
+0.92
+road bumpiness factor(46)
+0.91
+spoiler function type(47)
+8
+spoiler activation speed [m/s](48)
+0
+gradual turn cutoff(49)
+110
+medium turn cutoff(50)
+160
+sharp turn cutoff(51)
+180
+medium turn speed modifier(52)
+0.97
+sharp turn speed modifier(53)
+0.95
+extreme turn speed modifier(54)
+0.93
+subdivide level(55)
+3
+camera arm(56)
+0.25
+Body Damage(57)
+0
+Engine Damage(58)
+0
+Suspension Damage(59)
+0
+Engine Tuning(60)
+1
+Brake Balance(61)
+0
+Steering TopSpeed(62)
+1
+Gear Rat Factor(63)
+1
+Suspension Stiffness(64)
+1.114755
+Aero Factor(65)
+1
+Tire Factor(66)
+1
+AI ACC0 acceleration table section(67)
+4.266667,6.34952,7.737358,8.536504,8.955383,9.161016,9.224277,9.157882,9.052475,9.028872,9.089978,9.139469,9.096681,9.01598
+AI ACC1 acceleration table section(68)
+9.009326,9.113148,9.31043,9.504269,9.512443,9.131333,8.316323,7.362495,6.64436,6.281654,6.185064,6.216635,6.278254,6.316365
+AI ACC2 acceleration table section(69)
+6.292465,6.171501,5.896525,5.472954,5.072002,4.847321,4.760395,4.711891,4.667427,4.630373,4.604499,4.588714,4.54823,4.39362
+AI ACC3 acceleration table section(70)
+4.094394,3.763382,3.514253,3.351206,3.247369,3.205148,3.21296,3.2186,3.184813,3.1297,3.083073,3.045386,3.004708,2.939694
+AI ACC4 acceleration table section(71)
+2.808251,2.604247,2.396461,2.251089,2.168125,2.114827,2.067707,2.019555,1.972794,1.922291,1.852626,1.778252,1.746975,1.770979
+AI ACC5 acceleration table section(72)
+1.809858,1.827267,1.815285,1.777023,1.717956,1.646383,1.569493,1.491768,1.415381,1.339153,1.260314,1.177396,1.0906,1.000228
+AI ACC6 acceleration table section(73)
+0.905302,0.803205,0.690751,0.566915,0.43453,0.299065,0.140351,0,0,0,0,0,0,0
+AI ACC7 acceleration table section(74)
+0,0,0,0,0,0,0,0,0,0,0,0,0,0

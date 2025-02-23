@@ -1,20 +1,20 @@
 ﻿using TheXDS.MCART.Math;
-using TheXDS.Vivianne.Models;
+using TheXDS.Vivianne.Models.Carp;
 
 namespace TheXDS.Vivianne.Tools;
 
 /// <summary>
-/// Analyzes the performance data from a <see cref="Carp"/>.
+/// Analyzes the performance data from a <see cref="ICarPerf"/>.
 /// </summary>
 public class CarpAnalysis
 {
-    private readonly Carp carp;
+    private readonly ICarPerf carp;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="CarpAnalysis"/> class.
     /// </summary>
-    /// <param name="carp"><see cref="Carp"/> to analyze.</param>
-    public CarpAnalysis(Carp carp)
+    /// <param name="carp"><see cref="ICarPerf"/> to analyze.</param>
+    public CarpAnalysis(ICarPerf carp)
     {
         var torqueWithRpmCurve = TorqueWithRpmCurve(carp);
         MaxTorque = torqueWithRpmCurve.MaxBy(p => p.torque);
@@ -58,7 +58,7 @@ public class CarpAnalysis
         return Math.Sqrt(2 * 0.3048 * targetMphSpeed / a) + (shiftDelay / 1000.0);
     }
 
-    private static (double torque, int rpm)[] TorqueWithRpmCurve(Carp carp)
+    private static (double torque, int rpm)[] TorqueWithRpmCurve(ICarPerf carp)
     {
         var rpmStep = (carp.EngineMaxRpm / carp.TorqueCurve.Count).Clamp(256, carp.EngineMaxRpm);
         return carp.TorqueCurve

@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Linq;
 using System.Reflection;
 using TheXDS.MCART.Types;
 using TheXDS.MCART.Types.Base;
+using TheXDS.Vivianne.Extensions;
 using TheXDS.Vivianne.Models.Base;
+using TheXDS.Vivianne.Models.Fce.Nfs3;
 using TheXDS.Vivianne.ViewModels;
 
 namespace TheXDS.Vivianne.Models;
@@ -27,15 +27,9 @@ public class FceColorTableEditorState(FceFile fce) : EditorViewModelStateBase
 
     private static ObservableListWrap<MutableFceColorItem> CreateFromFce(FceFile fce)
     {
-        var primary = fce.Header.PrimaryColorTable
-            .Take(fce.Header.PrimaryColors)
-            .Select(MutableFceColor.From);
-        var secondary = fce.Header.SecondaryColorTable
-            .Take(fce.Header.SecondaryColors)
-            .Select(MutableFceColor.From);
-        var joint = primary
-            .Zip(secondary)
-            .Select(p => new MutableFceColorItem(p.First, p.Second)).ToList();
+        var primary = fce.PrimaryColors;
+        var secondary = fce.SecondaryColors.Count > 0 ? fce.SecondaryColors.ToArray().Wrapping(16) : primary;
+        var joint = primary.Zip(secondary).Select(p => new MutableFceColorItem(MutableFceColor.From(p.First), MutableFceColor.From(p.Second))).ToList();
         var obsc = new ObservableListWrap<MutableFceColorItem>(joint);
         foreach (var item in joint)
         {

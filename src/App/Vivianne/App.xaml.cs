@@ -18,6 +18,6 @@ public partial class App : Application
     {
         UiThread.SetProxy(new DispatcherUiThreadProxy());
         PlatformServices.SetKeyboardProxy(new WpfKeyboardProxy());
-        PlatformServices.SetFceRender(new WpfStaticFceRender());
+        //PlatformServices.SetFceRender(new WpfStaticFceRender());
     }
 }
