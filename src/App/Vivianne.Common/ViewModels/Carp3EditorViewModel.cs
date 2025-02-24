@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using TheXDS.Ganymede.Helpers;
 using TheXDS.MCART.Component;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models;
+using TheXDS.Vivianne.Models.Carp.Nfs3;
 using TheXDS.Vivianne.Resources;
-using TheXDS.Vivianne.Tools;
+using TheXDS.Vivianne.ViewModels.Base;
 using St = TheXDS.Vivianne.Resources.Strings.ViewModels.CarpEditorViewModel;
 
 namespace TheXDS.Vivianne.ViewModels;
@@ -16,33 +16,20 @@ namespace TheXDS.Vivianne.ViewModels;
 /// <summary>
 /// Implements a ViewModel that alows the user to edit Carp data.
 /// </summary>
-public class CarpEditorViewModel : EditorViewModelBase<CarpEditorState>
+public class Carp3EditorViewModel : FileEditorViewModelBase<CarpEditorState, CarPerf>
 {
-    private readonly Action<string> _saveCallback;
-    private readonly VivEditorState? _vivFileRef;
-
     /// <summary>
-    /// Initializes a new instance of the <see cref="CarpEditorViewModel"/> class.
+    /// Initializes a new instance of the <see cref="Carp3EditorViewModel"/> class.
     /// </summary>
-    /// <param name="state">State to use on this ViewModel.</param>
-    /// <param name="saveCallback">
-    /// Callback to invoke when saving the Carp data.
-    /// </param>
-    /// <param name="vivFileRef">
-    /// Reference to the source VIV, for external file sync purposes.
-    /// </param>
-    public CarpEditorViewModel(CarpEditorState state, Action<string> saveCallback, VivEditorState? vivFileRef = null) : base(state)
+    public Carp3EditorViewModel()
     {
-        _saveCallback = saveCallback;
-        _vivFileRef = vivFileRef;
-
         EditIntCurveCommand = new SimpleCommand(OnEditIntCurve);
         EditDoubleCurveCommand = new SimpleCommand(OnEditDoubleCurve);
         CopyTransToAutoCommand = new SimpleCommand(OnCopyTransToAuto);
         CopyTransToManualCommand = new SimpleCommand(OnCopyTransToManual);
         CopyTiresToFrontCommand = new SimpleCommand(OnCopyTiresToFront);
         CopyTiresToRearCommand = new SimpleCommand(OnCopyTiresToRear);
-        FedataSyncCommand = new SimpleCommand(OnFeDataSync, vivFileRef is not null);
+        FedataSyncCommand = new SimpleCommand(OnFeDataSync);
         PerformanceMetricsCommand = new SimpleCommand(OnPerformanceMetrics);
     }
 
@@ -100,12 +87,12 @@ public class CarpEditorViewModel : EditorViewModelBase<CarpEditorState>
     /// </summary>
     public ICommand PerformanceMetricsCommand { get; }
 
-    /// <inheritdoc/>
-    protected override Task OnSaveChanges()
-    {
-        _saveCallback.Invoke(State.ToSerializedCarp());
-        return Task.CompletedTask;
-    }
+    ///// <inheritdoc/>
+    //protected override Task OnSaveChanges()
+    //{
+    //    _saveCallback.Invoke(State.ToSerializedCarp());
+    //    return Task.CompletedTask;
+    //}
 
     private Task OnEditDoubleCurve(object? parameter)
     {
@@ -136,49 +123,49 @@ public class CarpEditorViewModel : EditorViewModelBase<CarpEditorState>
 
     private async Task OnFeDataSync()
     {
-        if (_vivFileRef is not null)
-        {
-            UiThread.Invoke(() => FeData3SyncTool.Sync(State.ToCarp(), _vivFileRef.Directory));
-            await DialogService!.Message(St.FeDataSync, St.OperationCompletedSuccessfully);
-        }
+        //if (_vivFileRef is not null)
+        //{
+        //    UiThread.Invoke(() => FeData3SyncTool.Sync(State.ToCarp(), _vivFileRef.Directory));
+        //    await DialogService!.Message(St.FeDataSync, St.OperationCompletedSuccessfully);
+        //}
     }
 
     private void OnCopyTransToManual()
     {
-        State.NumberOfGearsManual = State.NumberOfGearsAuto;
-        State.FinalGearManual = State.FinalGearAuto;
-        State.VelocityToRpmManual.Clear();
-        State.VelocityToRpmManual.AddRange(State.VelocityToRpmAuto);
-        State.GearRatioManual.Clear();
-        State.GearRatioManual.AddRange(State.GearRatioAuto);
-        State.GearEfficiencyManual.Clear();
-        State.GearEfficiencyManual.AddRange(State.GearEfficiencyAuto);
+        State.File.NumberOfGearsManual = State.File.NumberOfGearsAuto;
+        State.File.FinalGearManual = State.File.FinalGearAuto;
+        State.File.VelocityToRpmManual.Clear();
+        State.File.VelocityToRpmManual.AddRange(State.File.VelocityToRpmAuto);
+        State.File.GearRatioManual.Clear();
+        State.File.GearRatioManual.AddRange(State.File.GearRatioAuto);
+        State.File.GearEfficiencyManual.Clear();
+        State.File.GearEfficiencyManual.AddRange(State.File.GearEfficiencyAuto);
     }
 
     private void OnCopyTransToAuto()
     {
-        State.NumberOfGearsAuto = State.NumberOfGearsManual;
-        State.FinalGearAuto = State.FinalGearManual;
-        State.VelocityToRpmAuto.Clear();
-        State.VelocityToRpmAuto.AddRange(State.VelocityToRpmManual);
-        State.GearRatioAuto.Clear();
-        State.GearRatioAuto.AddRange(State.GearRatioManual);
-        State.GearEfficiencyAuto.Clear();
-        State.GearEfficiencyAuto.AddRange(State.GearEfficiencyManual);
+        State.File.NumberOfGearsAuto = State.File.NumberOfGearsManual;
+        State.File.FinalGearAuto = State.File.FinalGearManual;
+        State.File.VelocityToRpmAuto.Clear();
+        State.File.VelocityToRpmAuto.AddRange(State.File.VelocityToRpmManual);
+        State.File.GearRatioAuto.Clear();
+        State.File.GearRatioAuto.AddRange(State.File.GearRatioManual);
+        State.File.GearEfficiencyAuto.Clear();
+        State.File.GearEfficiencyAuto.AddRange(State.File.GearEfficiencyManual);
     }
 
     private void OnCopyTiresToFront()
     {
-        State.TireWidthFront = State.TireWidthRear;
-        State.TireSidewallFront = State.TireSidewallRear;
-        State.TireRimFront = State.TireRimRear;
+        State.File.TireWidthFront = State.File.TireWidthRear;
+        State.File.TireSidewallFront = State.File.TireSidewallRear;
+        State.File.TireRimFront = State.File.TireRimRear;
     }
 
     private void OnCopyTiresToRear()
     {
-        State.TireWidthRear = State.TireWidthFront;
-        State.TireSidewallRear = State.TireSidewallFront;
-        State.TireRimRear = State.TireRimFront;
+        State.File.TireWidthRear = State.File.TireWidthFront;
+        State.File.TireSidewallRear = State.File.TireSidewallFront;
+        State.File.TireRimRear = State.File.TireRimFront;
     }
 
     private void Vm_StateSaved(object? sender, EventArgs e)
@@ -197,7 +184,7 @@ public class CarpEditorViewModel : EditorViewModelBase<CarpEditorState>
 
     private Task OnPerformanceMetrics()
     {
-        var a = Mappings.GetTextProviderFromCulture(State.ToCarp());
+        var a = Mappings.GetTextProviderFromCulture(State.File);
         return DialogService!.Message(St.PerformanceMetrics, string.Format(St.PerformanceMetricsDetails,
             a.Weight,
             a.TopSpeed,

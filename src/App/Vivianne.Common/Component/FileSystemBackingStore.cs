@@ -7,10 +7,11 @@ using TheXDS.Ganymede.Services;
 
 namespace TheXDS.Vivianne.Component;
 
-public class FileSystemBackingStore(IDialogService dialogSvc, IEnumerable<FileFilterItem> saveFilters) : IBackingStore
+public class FileSystemBackingStore(IDialogService dialogSvc, IEnumerable<FileFilterItem> saveFilters, string path) : IBackingStore
 {
     private readonly IDialogService _dialogSvc = dialogSvc;
     private readonly IEnumerable<FileFilterItem> _saveFilters = saveFilters;
+    private readonly string path = path;
 
     public async Task<byte[]?> ReadAsync(string fileName)
     {
@@ -21,7 +22,7 @@ public class FileSystemBackingStore(IDialogService dialogSvc, IEnumerable<FileFi
     {
         try
         {
-            await File.WriteAllBytesAsync(fileName, content);
+            await File.WriteAllBytesAsync(Path.Combine(path, fileName), content);
             return true;
         }
         catch (System.Exception ex)
@@ -33,6 +34,11 @@ public class FileSystemBackingStore(IDialogService dialogSvc, IEnumerable<FileFi
 
     public Task<DialogResult<string>> GetNewFileName(string? oldFileName)
     {
-        return _dialogSvc.GetFileSavePath(CommonDialogTemplates.FileSave, _saveFilters, oldFileName);
+        return _dialogSvc.GetFileSavePath(CommonDialogTemplates.FileSave, _saveFilters, Path.Combine(path, oldFileName));
+    }
+
+    public IEnumerable<string> EnumerateFiles()
+    {
+        return Directory.EnumerateFiles(path);
     }
 }

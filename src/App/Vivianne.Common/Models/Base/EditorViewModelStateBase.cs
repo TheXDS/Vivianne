@@ -26,6 +26,6 @@ public abstract class EditorViewModelStateBase : NotifyPropertyChanged
     protected override void OnDoChange<T>(ref T field, T value, string propertyName)
     {
         base.OnDoChange(ref field, value, propertyName);
-        UnsavedChanges = true;
+        UnsavedChanges = propertyName != nameof(UnsavedChanges);
     }
 }

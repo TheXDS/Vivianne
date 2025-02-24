@@ -182,16 +182,16 @@
                             <UniformGrid.Resources>
                                 <valueconverters:DrawingColorToBrushConverter x:Key="dc2bc"/>
                             </UniformGrid.Resources>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color1}" hlp:Form.FceColorPreview="{Binding PreviewFceColorTable[0], Mode=OneWay}" Text="{Binding State.File.Color1}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color2}" hlp:Form.FceColorPreview="{Binding PreviewFceColorTable[1], Mode=OneWay}" Text="{Binding State.File.Color2}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color3}" hlp:Form.FceColorPreview="{Binding PreviewFceColorTable[2], Mode=OneWay}" Text="{Binding State.File.Color3}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color4}" hlp:Form.FceColorPreview="{Binding PreviewFceColorTable[3], Mode=OneWay}" Text="{Binding State.File.Color4}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color5}" hlp:Form.FceColorPreview="{Binding PreviewFceColorTable[4], Mode=OneWay}" Text="{Binding State.File.Color5}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color6}" hlp:Form.FceColorPreview="{Binding PreviewFceColorTable[5], Mode=OneWay}" Text="{Binding State.File.Color6}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color7}" hlp:Form.FceColorPreview="{Binding PreviewFceColorTable[6], Mode=OneWay}" Text="{Binding State.File.Color7}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color8}" hlp:Form.FceColorPreview="{Binding PreviewFceColorTable[7], Mode=OneWay}" Text="{Binding State.File.Color8}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color9}" hlp:Form.FceColorPreview="{Binding PreviewFceColorTable[8], Mode=OneWay}" Text="{Binding State.File.Color9}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color10}" hlp:Form.FceColorPreview="{Binding PreviewFceColorTable[9], Mode=OneWay}" Text="{Binding State.File.Color10}"/>
+                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color1}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[0], Mode=OneWay}" Text="{Binding State.File.Color1}"/>
+                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color2}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[1], Mode=OneWay}" Text="{Binding State.File.Color2}"/>
+                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color3}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[2], Mode=OneWay}" Text="{Binding State.File.Color3}"/>
+                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color4}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[3], Mode=OneWay}" Text="{Binding State.File.Color4}"/>
+                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color5}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[4], Mode=OneWay}" Text="{Binding State.File.Color5}"/>
+                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color6}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[5], Mode=OneWay}" Text="{Binding State.File.Color6}"/>
+                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color7}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[6], Mode=OneWay}" Text="{Binding State.File.Color7}"/>
+                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color8}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[7], Mode=OneWay}" Text="{Binding State.File.Color8}"/>
+                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color9}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[8], Mode=OneWay}" Text="{Binding State.File.Color9}"/>
+                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color10}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[9], Mode=OneWay}" Text="{Binding State.File.Color10}"/>
                         </UniformGrid>
                     </Expander>
                 </UniformGrid>

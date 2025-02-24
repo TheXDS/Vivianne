@@ -12,6 +12,8 @@ public interface IBackingStore
     Task<bool> WriteAsync(string fileName, byte[] content);
 
     Task<DialogResult<string>> GetNewFileName(string? oldFileName);
+
+    IEnumerable<string> EnumerateFiles();
 }
 
 public interface IBackingStore<T> where T : notnull

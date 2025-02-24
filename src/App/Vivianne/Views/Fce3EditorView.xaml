@@ -4,7 +4,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ct="clr-namespace:TheXDS.Vivianne.Controls"
     xmlns:hlp="clr-namespace:TheXDS.Vivianne.Helpers"
+    xmlns:mdl="clr-namespace:TheXDS.Vivianne.Models;assembly=Vivianne.Common"
     xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings.Views"
     xmlns:vc="clr-namespace:TheXDS.Vivianne.ValueConverters"
     xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
@@ -21,39 +23,13 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="200"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-            <StackPanel Background="{StaticResource FadeInBackground}">                
-                <Expander Margin="10" IsExpanded="True" Header="Parts">                
-                    <ItemsControl
-                        ItemsSource="{Binding Parts, Mode=OneWay}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <CheckBox IsChecked="{Binding IsVisible}" Style="{StaticResource ToggleSwitch}">
-                                    <TextBlock Text="{Binding Part.Name, Mode=OneWay}" Foreground="White"/>
-                                </CheckBox>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </Expander>
-                <Expander Margin="10,0" IsExpanded="True" Header="Dummies">
-                    <ItemsControl
-                        ItemsSource="{Binding State.Dummies, Mode=OneWay}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Name, Mode=OneWay}" Foreground="White"/>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </Expander>
-            </StackPanel>
-        </ScrollViewer>
         <WrapPanel Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="5">
             <ComboBox
                 hlp:Form.Label="{x:Static st:FceEditorView.Texture}"
-                Width="150"
+                MinWidth="150"
                 Margin="5"
                 ItemsSource="{Binding CarTextures, Mode=OneWay}"
                 SelectedValuePath="Value"
@@ -82,7 +58,9 @@
             </ComboBox>
             <Button Margin="5" VerticalAlignment="Stretch" Command="{Binding ColorEditorCommand, Mode=OneWay}" Content="{x:Static st:FceEditorView.EditColors}"/>
         </WrapPanel>
-        <Border Grid.Row="1" Grid.Column="1" Background="{StaticResource DarkBackground}">
+        <Rectangle Grid.Row="1" Grid.Column="1" Fill="{StaticResource DarkBackground}"/>
+        <Rectangle Grid.Row="1" Grid.Column="0" Fill="{StaticResource FadeInBackground}"/>
+        <Border Grid.ColumnSpan="2" Grid.Row="1">
             <Viewport3D>
                 <Viewport3D.Camera>
                     <PerspectiveCamera x:Name="ptcMain" UpDirection="1,0,0" LookDirection="-20,40,40" Position="20,-40,-40"/>
@@ -90,5 +68,38 @@
                 <ModelVisual3D Content="{Binding RenderTree, Mode=OneWay, Converter={StaticResource fcevm2mesh}}"/>
             </Viewport3D>
         </Border>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <Expander Margin="10" IsExpanded="True" Header="Parts">
+                    <StackPanel>
+                        <ComboBox
+                            hlp:Form.Label="Preset"
+                            IsEditable="False"
+                            SelectedItem="{Binding FceLodPreset}"
+                            ItemsSource="{ct:EnumValProvider EnumType={x:Type mdl:FceLodPreset}}"/>
+                        <ItemsControl
+                            ItemsSource="{Binding Parts, Mode=OneWay}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <CheckBox IsChecked="{Binding IsVisible}" Style="{StaticResource ToggleSwitch}">
+                                        <TextBlock Text="{Binding Part.Name, Mode=OneWay}" Foreground="White"/>
+                                    </CheckBox>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Expander>
+                <Expander Margin="10,0" IsExpanded="True" Header="Dummies">
+                    <ItemsControl
+                        ItemsSource="{Binding State.Dummies, Mode=OneWay}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name, Mode=OneWay}" Foreground="White"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Expander>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </UserControl>

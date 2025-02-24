@@ -1,6 +1,8 @@
 ﻿using System.Diagnostics;
+using System.Runtime.Serialization;
 using TheXDS.Vivianne.Models.Fe;
 using TheXDS.Vivianne.Models.Viv;
+using TheXDS.Vivianne.Serializers;
 
 namespace TheXDS.Vivianne.Extensions;
 
@@ -43,16 +45,17 @@ public static class VivExtensions
         return null;
     }
 
-    public static IFeData? GetAnyParsedFeData(this IDictionary<string, byte[]> viv)
-    {
-        return null;// viv.GetAnyFeData() is byte[] data ? FeDataBase.GetFeData(data) : null;
-    }
-
     private static string? GetCarNameFromFeData(byte[] feData)
     {
         try
         {
-            return null;// FeDataBase.GetFeData(feData).CarName;
+            if (feData[0] == 4)
+            {
+                return ((IOutSerializer<Models.Fe.Nfs4.FeData>)new Serializers.Fe.Nfs4.FeDataSerializer()).Deserialize(feData).CarName;
+            }
+            {
+                return ((IOutSerializer<Models.Fe.Nfs3.FeData>)new Serializers.Fe.Nfs3.FeDataSerializer()).Deserialize(feData).CarName;
+            }
         }
         catch (Exception ex)
         {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -10,10 +11,12 @@ using TheXDS.MCART.Helpers;
 using TheXDS.MCART.Types;
 using TheXDS.MCART.Types.Base;
 using TheXDS.MCART.Types.Extensions;
+using TheXDS.Vivianne.Component;
 using TheXDS.Vivianne.Extensions;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Models.Fce.Nfs3;
 using TheXDS.Vivianne.Models.Fe;
+using TheXDS.Vivianne.Serializers;
 using TheXDS.Vivianne.ViewModels.Base;
 
 namespace TheXDS.Vivianne.ViewModels;
@@ -23,10 +26,10 @@ namespace TheXDS.Vivianne.ViewModels;
 /// </summary>
 public class Fce3EditorViewModel : FileEditorViewModelBase<Fce3EditorState, FceFile>
 {
-    private NamedObject<byte[]>? _selectedTexture;
+    private byte[]? _selectedTexture;
     private Fce3Color? _selectedColor;
     private FceLodPreset _lodPreset;
-    private FceRenderState _renderTree;
+    private FceRenderState? _renderTree;
 
     /// <summary>
     /// Gets a collection of the available textures for rendering.
@@ -37,7 +40,7 @@ public class Fce3EditorViewModel : FileEditorViewModelBase<Fce3EditorState, FceF
     /// Gets or sets the raw contents of the selected car texture.
     /// </summary>
     /// <remarks>By NFS3 standard, the raw texture will be in Targa (TGA) format.</remarks>
-    public NamedObject<byte[]>? SelectedCarTexture
+    public byte[]? SelectedCarTexture
     {
         get => _selectedTexture;
         set => Change(ref _selectedTexture, value);
@@ -52,6 +55,9 @@ public class Fce3EditorViewModel : FileEditorViewModelBase<Fce3EditorState, FceF
         set => Change(ref _selectedColor, value);
     }
 
+    /// <summary>
+    /// Gets or sets a value that indicates the LOD preset to load.
+    /// </summary>
     public FceLodPreset FceLodPreset
     {
         get => _lodPreset;
@@ -61,45 +67,25 @@ public class Fce3EditorViewModel : FileEditorViewModelBase<Fce3EditorState, FceF
         }
     }
 
-    public ObservableListWrap<FcePartListItem> Parts { get; private set; }
+    /// <summary>
+    /// Gets or sets a collection of the parts defined inthe FCE file.
+    /// </summary>
+    public ObservableListWrap<FcePartListItem> Parts { get; private set; } = null!;
 
-    public FceRenderState RenderTree
+    /// <summary>
+    /// Gets a reference to an object that describes the rendered scene.
+    /// </summary>
+    public FceRenderState? RenderTree
     { 
         get => _renderTree;
         private set => Change(ref _renderTree, value);
     }
 
-    private static IEnumerable<NamedObject<Fce3Color>> CreateColors(IFeData? feData, FceFile fce)
-    {
-        static string[] ReadColors(IFeData fe) => [fe.Color1, fe.Color2, fe.Color3, fe.Color4, fe.Color5, fe.Color6, fe.Color7, fe.Color8, fe.Color9, fe.Color10];
-        var names = (feData is not null ? ReadColors(feData) : fce.PrimaryColors.Select(p => p.ToString())).ToArray();
-        return CreateFromFce(fce).WithIndex().Select(p => new NamedObject<Fce3Color>(p.element, names[p.index]));
-    }
-
-    private static IEnumerable<Fce3Color> CreateFromFce(FceFile fce)
-    {
-        ICollection<HsbColor> primary = fce.PrimaryColors;
-        IEnumerable<HsbColor> secondary = fce.SecondaryColors.Count > 0 ? fce.SecondaryColors.ToArray().Wrapping(16) : primary;
-        return primary.Zip(secondary).Select(p => new Fce3Color { PrimaryColor = p.First, SecondaryColor = p.Second});
-    }
-
-    private static IEnumerable<NamedObject<byte[]>> GetTextures(IDictionary<string, byte[]> vivDirectory)
-    {
-        return vivDirectory.Where(p => p.Key.EndsWith(".tga")).Select(p => new NamedObject<byte[]>(p.Value, p.Key));
-    }
-
-    protected override Task OnCreated()
-    {
-
-        Parts = GetObservable();
-        //State.CarTextures.AddRange(GetTextures(vivDirectory));
-        //State.Colors.AddRange(CreateColors(vivDirectory.GetAnyParsedFeData(), State.File));
-        return base.OnCreated();
-    }
-
-
-
-
+    /// <summary>
+    /// Gets a reference to the command used to open a dialog to edit the FCE
+    /// color tables.
+    /// </summary>
+    public ICommand ColorEditorCommand { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Fce3EditorViewModel"/>
@@ -111,23 +97,35 @@ public class Fce3EditorViewModel : FileEditorViewModelBase<Fce3EditorState, FceF
         ColorEditorCommand = cb.BuildSimple(OnColorEditor);
     }
 
-    /// <summary>
-    /// Gets a reference to the command used to open a dialog to edit the FCE
-    /// color tables.
-    /// </summary>
-    public ICommand ColorEditorCommand { get; }
+    /// <inheritdoc/>
+    protected override async Task OnCreated()
+    {
+        Parts = GetObservable();
+        await foreach (var j in GetTextures(BackingStore?.Store)) CarTextures.Add(j);
+        if (await (BackingStore?.Store.ReadAsync("fedata.eng") ?? Task.FromResult<byte[]?>(null)) is { } fedata)
+        {
+            SetColorNames(State.Colors, fedata);
+        }
+        _lodPreset = FceLodPreset.High;
+        SwitchToLod(_lodPreset);
+        if (CarTextures.Count > 0) SelectedCarTexture = CarTextures.First().Value;
+        if (State.Colors.Count > 0) SelectedColor = State.Colors.First();
+        State.UnsavedChanges = false;
+        await base.OnCreated();
+    }
+
+    /// <inheritdoc/>
+    protected override void OnInitialize(IPropertyBroadcastSetup broadcastSetup)
+    {
+        Subscribe(() => SelectedCarTexture, OnVisibleChanged);
+        Subscribe(() => SelectedColor, OnVisibleChanged);
+    }
 
     private async Task OnColorEditor()
     {
-        //var state = new FceColorTableEditorState(fce);
-        //var vm = new FceColorEditorViewModel(state);
-        //vm.StateSaved += (sender, e) =>
-        //{
-        //    CarColors.Clear();
-        //    CarColors.AddRange(CreateColors(vivDirectory, fce.Header));
-        //    SelectedColorIndex = 0;
-        //};
-        //await DialogService!.Show(vm);
+        var state = new FceColorTableEditorState(State.File);
+        var vm = new FceColorEditorViewModel(state);
+        await DialogService!.Show(vm);
     }
 
     private void SwitchToLod(FceLodPreset preset)
@@ -143,10 +141,9 @@ public class Fce3EditorViewModel : FileEditorViewModelBase<Fce3EditorState, FceF
 
         foreach (var j in Parts)
         {
-            j.IsVisible = partsToShow.Contains(j);
+            j.IsVisible = partsToShow.Contains(j.Part);
         }
     }
-
 
     private ObservableListWrap<FcePartListItem> GetObservable()
     {
@@ -168,5 +165,40 @@ public class Fce3EditorViewModel : FileEditorViewModelBase<Fce3EditorState, FceF
             SelectedColor = SelectedColor,
             Texture = SelectedCarTexture,
         };
+    }
+
+    private static async IAsyncEnumerable<NamedObject<byte[]>> GetTextures(IBackingStore? store)
+    {
+        foreach (var file in store?.EnumerateFiles().Where(p => p.EndsWith(".tga")) ?? [])
+        {
+            if (await store!.ReadAsync(file) is byte[] contents)
+            {
+                yield return new NamedObject<byte[]>(contents, file);
+            }
+        }
+    }
+
+    private static void SetColorNames(ICollection<Fce3Color> colors, byte[] feDataContents)
+    {
+        IFeData feData = feDataContents[0] == 4
+            ? ((IOutSerializer<Models.Fe.Nfs4.FeData>)new Serializers.Fe.Nfs4.FeDataSerializer()).Deserialize(feDataContents)
+            : ((IOutSerializer<Models.Fe.Nfs3.FeData>)new Serializers.Fe.Nfs3.FeDataSerializer()).Deserialize(feDataContents);
+
+        string[] colorNames = [
+            feData.Color1,
+            feData.Color2,
+            feData.Color3,
+            feData.Color4,
+            feData.Color5,
+            feData.Color6,
+            feData.Color7,
+            feData.Color8,
+            feData.Color9,
+            feData.Color10];
+        
+        foreach (var j in colors.WithIndex())
+        {
+            j.element.Name = colorNames[j.index];
+        }
     }
 }

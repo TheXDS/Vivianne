@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using TheXDS.Ganymede.Types.Base;
 using TheXDS.Vivianne.Component;
 using TheXDS.Vivianne.Models;
+using TheXDS.Vivianne.Models.Carp.Nfs3;
 using TheXDS.Vivianne.Models.Fce.Nfs3;
 using TheXDS.Vivianne.Models.Fsh;
 using TheXDS.Vivianne.Serializers;
+using TheXDS.Vivianne.Serializers.Carp.Nfs3;
 using TheXDS.Vivianne.Serializers.Fce.Nfs3;
 using TheXDS.Vivianne.Serializers.Fsh;
 using TheXDS.Vivianne.Tools;
@@ -53,7 +55,7 @@ internal static class ContentVisualizerConfiguration
         yield return new("fedata.spa", CreateFeDataEditorViewModel);
         yield return new("fedata.swe", CreateFeDataEditorViewModel);
 
-        //yield return new(".txt", CreateCarpEditorViewModel);
+        yield return new(".txt", CreateCarpEditorViewModel);
         yield return new(".fce", CreateFceEditorViewModel);
     }
 
@@ -69,13 +71,16 @@ internal static class ContentVisualizerConfiguration
         }
     }
 
-    //private static CarpEditorViewModel? CreateCarpEditorViewModel(byte[] data, VivEditorViewModel vm, string name)
-    //{
-    //    byte[] carpMagic = [0x53, 0x65, 0x72, 0x69, 0x61, 0x6c, 0x20, 0x4e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x28, 0x30, 0x29];
-    //    if (!data[0..16].SequenceEqual(carpMagic)) return null;
-    //    void SaveCarp(string c) => vm.Invoke(System.Text.Encoding.Latin1.GetBytes(c));
-    //    return new(CarpEditorState.From(System.Text.Encoding.Latin1.GetString(data)), SaveCarp, vm.State) { Title = name };
-    //}
+    private static Carp3EditorViewModel? CreateCarpEditorViewModel(byte[] data, VivEditorViewModel vm, string name)
+    {
+        return CreateEditorViewModel<Carp3EditorViewModel, CarpEditorState, CarPerf, CarpSerializer>(data, vm, name);
+
+        /*
+        byte[] carpMagic = [0x53, 0x65, 0x72, 0x69, 0x61, 0x6c, 0x20, 0x4e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x28, 0x30, 0x29];
+        if (!data[0..16].SequenceEqual(carpMagic)) return null;
+        void SaveCarp(string c) => vm.Invoke(System.Text.Encoding.Latin1.GetBytes(c));
+        return new(CarpEditorState.From(System.Text.Encoding.Latin1.GetString(data)), SaveCarp, vm.State) { Title = name };*/
+    }
 
     private static TexturePreviewViewModel CreateTexturePreviewViewModel(byte[] data, VivEditorViewModel vm, string name)
     {

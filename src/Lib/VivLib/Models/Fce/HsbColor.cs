@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using TheXDS.MCART.Math;
 
-namespace TheXDS.Vivianne.Models.Fce.Nfs3;
+namespace TheXDS.Vivianne.Models.Fce;
 
 /// <summary>
 /// Represents a color in HSB color space, including an alpha component.

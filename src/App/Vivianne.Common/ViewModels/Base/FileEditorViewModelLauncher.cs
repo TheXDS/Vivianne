@@ -103,7 +103,7 @@ public abstract class FileEditorViewModelLauncher<TState, TFile, TSerializer, TE
         {
             Title = recentFile.FriendlyName,
             State = new TState { File = file, FilePath = filePath },
-            BackingStore = new BackingStore<TFile, TSerializer>(new FileSystemBackingStore(_dialogSvc.Invoke(), _saveFilter)) { FileName = filePath },
+            BackingStore = new BackingStore<TFile, TSerializer>(new FileSystemBackingStore(_dialogSvc.Invoke(), _saveFilter, Path.GetDirectoryName(filePath) ?? Environment.CurrentDirectory)) { FileName = Path.GetFileName(filePath) },
         };
         NavigationService!.Navigate(vm);
     }
@@ -151,7 +151,7 @@ public abstract class FileEditorViewModelLauncher<TState, TFile, TSerializer, TE
             {
                 File = new TFile()
             },
-            BackingStore = new BackingStore<TFile, TSerializer>(new FileSystemBackingStore(_dialogSvc.Invoke(), _saveFilter)),
+            BackingStore = new BackingStore<TFile, TSerializer>(new FileSystemBackingStore(_dialogSvc.Invoke(), _saveFilter, Environment.CurrentDirectory)),
         };
         NavigationService!.Navigate(vm);
     }

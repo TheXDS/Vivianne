@@ -72,7 +72,7 @@ public partial class FceSerializer : ISerializer<FceFile>
         List<int> vertexOffsets = [];
         foreach (var j in fce.Parts.Select((FcePart p) => p.Vertices))
         {
-            vertexOffsets.Add((int)poolStream.Position);
+            vertexOffsets.Add((int)poolStream.Position / Marshal.SizeOf<Vector3d>());
             pool.MarshalWriteStructArray(j);
         }
         header.PartVertexOffset = ArrayOfSize(vertexOffsets, 64);
@@ -85,9 +85,9 @@ public partial class FceSerializer : ISerializer<FceFile>
         List<int> triangleOffsets = [0];
         foreach (var j in fce.Parts.Select((FcePart p) => p.Triangles))
         {
-            triangleOffsets.Add(triangleOffsets.Last() + (pool.MarshalWriteStructArray(j) - 1));
+            triangleOffsets.Add(triangleOffsets.Last() + ((pool.MarshalWriteStructArray(j)) / Marshal.SizeOf<FceTriangle>()));
         }
-        header.PartTriangleOffset = ArrayOfSize(triangleOffsets, 64);
+        header.PartTriangleOffset = ArrayOfSize(triangleOffsets[..^1], 64);
         header.Rsvd1Offset = (int)poolStream.Position;
         pool.Write(fce.RsvdTable1);
         header.Rsvd2Offset = (int)poolStream.Position;

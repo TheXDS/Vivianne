@@ -183,30 +183,4 @@ public abstract class FeDataBase : IFeData
     /// <inheritdoc/>
     [OffsetTableIndex(39)]
     public string Color10 { get; set; } = string.Empty;
-
-
-    ///// <summary>
-    ///// Gets a FeData deserializer for the given raw data.
-    ///// </summary>
-    ///// <param name="data">Data to deserialize.</param>
-    ///// <returns>
-    ///// A FeData deserializer for the given raw data, automatically selecting
-    ///// the proper serializer class to use for the file format.
-    ///// </returns>
-    //public static IOutSerializer<IFeData> GetSerializer(byte[] data)
-    //{
-    //    return FeData4.IsValid(data) ? new FeData4Serializer() : new FeData3Serializer();
-    //}
-
-    ///// <summary>
-    ///// Gets a deserialized FeData instance from the given raw data.
-    ///// </summary>
-    ///// <param name="data">Data to deserialize</param>
-    ///// <returns>
-    ///// A game-agnostic FeData instance deserialized from the given raw data.
-    ///// </returns>
-    //public static IFeData GetFeData(byte[] data)
-    //{
-    //    return GetSerializer(data).Deserialize(data);
-    //}
 }
