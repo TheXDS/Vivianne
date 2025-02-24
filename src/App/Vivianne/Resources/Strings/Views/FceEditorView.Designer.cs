@@ -79,6 +79,15 @@ namespace TheXDS.Vivianne.Resources.Strings.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Rename....
+        /// </summary>
+        public static string Rename {
+            get {
+                return ResourceManager.GetString("Rename", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Texture.
         /// </summary>
         public static string Texture {

@@ -11,7 +11,8 @@
     xmlns:vc="clr-namespace:TheXDS.Vivianne.ValueConverters"
     xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
     d:DataContext="{d:DesignInstance Type=vm:Fce3EditorViewModel}"
-    mc:Ignorable="d"     
+    mc:Ignorable="d"
+    x:Name="pgRoot"
     d:DesignHeight="250" d:DesignWidth="500">
     <UserControl.Resources>
         <vc:FcePreviewViewModelToModel3DGroupConverter x:Key="fcevm2mesh"/>
@@ -60,20 +61,19 @@
         </WrapPanel>
         <Rectangle Grid.Row="1" Grid.Column="1" Fill="{StaticResource DarkBackground}"/>
         <Rectangle Grid.Row="1" Grid.Column="0" Fill="{StaticResource FadeInBackground}"/>
-        <Border Grid.ColumnSpan="2" Grid.Row="1">
-            <Viewport3D>
-                <Viewport3D.Camera>
-                    <PerspectiveCamera x:Name="ptcMain" UpDirection="1,0,0" LookDirection="-20,40,40" Position="20,-40,-40"/>
-                </Viewport3D.Camera>
-                <ModelVisual3D Content="{Binding RenderTree, Mode=OneWay, Converter={StaticResource fcevm2mesh}}"/>
-            </Viewport3D>
-        </Border>
+        <Viewport3D Grid.ColumnSpan="1" Grid.Column="1" Grid.Row="1">
+            <Viewport3D.Camera>
+                <PerspectiveCamera x:Name="ptcMain" UpDirection="1,0,0" LookDirection="-30,50,50" Position="30,-50,-50"/>
+            </Viewport3D.Camera>
+            <ModelVisual3D Content="{Binding RenderTree, Mode=OneWay, Converter={StaticResource fcevm2mesh}}"/>
+        </Viewport3D>
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
             <StackPanel>
                 <Expander Margin="10" IsExpanded="True" Header="Parts">
                     <StackPanel>
                         <ComboBox
                             hlp:Form.Label="Preset"
+                            Margin="0,0,0,10"
                             IsEditable="False"
                             SelectedItem="{Binding FceLodPreset}"
                             ItemsSource="{ct:EnumValProvider EnumType={x:Type mdl:FceLodPreset}}"/>
@@ -81,9 +81,16 @@
                             ItemsSource="{Binding Parts, Mode=OneWay}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <CheckBox IsChecked="{Binding IsVisible}" Style="{StaticResource ToggleSwitch}">
-                                        <TextBlock Text="{Binding Part.Name, Mode=OneWay}" Foreground="White"/>
-                                    </CheckBox>
+                                    <DockPanel>
+                                        <Button
+                                            Command="{Binding DataContext.RenamePartCommand, ElementName=pgRoot, Mode=OneWay}"
+                                            CommandParameter="{Binding}"
+                                            DockPanel.Dock="Right"
+                                            ToolTip="{x:Static st:FceEditorView.Rename}">✏️</Button>
+                                        <CheckBox IsChecked="{Binding IsVisible}" Style="{StaticResource ToggleSwitch}">
+                                            <TextBlock Text="{Binding Part.Name, Mode=OneWay}" Foreground="White"/>
+                                        </CheckBox>
+                                    </DockPanel>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>

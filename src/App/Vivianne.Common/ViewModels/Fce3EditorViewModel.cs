@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualBasic;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -7,6 +6,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TheXDS.Ganymede.Helpers;
+using TheXDS.Ganymede.Resources;
 using TheXDS.MCART.Helpers;
 using TheXDS.MCART.Types;
 using TheXDS.MCART.Types.Base;
@@ -18,7 +18,7 @@ using TheXDS.Vivianne.Models.Fce.Nfs3;
 using TheXDS.Vivianne.Models.Fe;
 using TheXDS.Vivianne.Serializers;
 using TheXDS.Vivianne.ViewModels.Base;
-
+using St = TheXDS.Vivianne.Resources.Strings.ViewModels.FceEditorView;
 namespace TheXDS.Vivianne.ViewModels;
 
 /// <summary>
@@ -87,6 +87,8 @@ public class Fce3EditorViewModel : FileEditorViewModelBase<Fce3EditorState, FceF
     /// </summary>
     public ICommand ColorEditorCommand { get; }
 
+    public ICommand RenamePartCommand { get; }
+
     /// <summary>
     /// Initializes a new instance of the <see cref="Fce3EditorViewModel"/>
     /// class.
@@ -95,6 +97,7 @@ public class Fce3EditorViewModel : FileEditorViewModelBase<Fce3EditorState, FceF
     {
         var cb = CommandBuilder.For(this);
         ColorEditorCommand = cb.BuildSimple(OnColorEditor);
+        RenamePartCommand = cb.BuildSimple(OnPartRename);
     }
 
     /// <inheritdoc/>
@@ -127,6 +130,17 @@ public class Fce3EditorViewModel : FileEditorViewModelBase<Fce3EditorState, FceF
         var vm = new FceColorEditorViewModel(state);
         await DialogService!.Show(vm);
         OnVisibleChanged(null!, null!, default);
+    }
+
+    private async Task OnPartRename(object? parameter)
+    {
+        if (parameter is not FcePartListItem { Part: Models.Base.INameable nameable } part || DialogService is null) return;
+        var result = await DialogService.GetInputText(CommonDialogTemplates.Input with { Title = St.RenamePart, Text = St.RenamePartHelp}, nameable.Name);
+        if (result.Success)
+        {
+            nameable.Name = result.Result;
+            part.Refresh();
+        }
     }
 
     private void SwitchToLod(FceLodPreset preset)

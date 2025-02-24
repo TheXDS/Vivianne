@@ -59,5 +59,23 @@ namespace TheXDS.Vivianne.Resources.Strings.ViewModels {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rename part.
+        /// </summary>
+        internal static string RenamePart {
+            get {
+                return ResourceManager.GetString("RenamePart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter a name for this element. Part names usually start with a colon and consist of a few uppercase letters that describe the properties and/or functionality of the part..
+        /// </summary>
+        internal static string RenamePartHelp {
+            get {
+                return ResourceManager.GetString("RenamePartHelp", resourceCulture);
+            }
+        }
     }
 }

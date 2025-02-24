@@ -106,4 +106,7 @@
   <data name="EditColors" xml:space="preserve">
     <value>Edit colors...</value>
   </data>
+  <data name="Rename" xml:space="preserve">
+    <value>Rename...</value>
+  </data>
 </root>

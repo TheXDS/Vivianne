@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -118,9 +118,9 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="RenamePart" xml:space="preserve">
-    <value>Rename part</value>
+    <value>Renombrar parte</value>
   </data>
   <data name="RenamePartHelp" xml:space="preserve">
-    <value>Please enter a name for this element. Part names usually start with a colon and consist of a few uppercase letters that describe the properties and/or functionality of the part.</value>
+    <value>Por favor ingrese un nombre para este elemento. Los nombres de partes usualmente inician con dos puntos y consisten de algunos caracteres en mayúscula que describen las propiedades y/o funcionalidad de la parte.</value>
   </data>
 </root>
