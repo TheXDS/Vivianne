@@ -1,6 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using TheXDS.MCART.Component;
+using TheXDS.MCART.Types.Base;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Models.Fce;
 
@@ -22,10 +25,26 @@ public class FceColorEditorViewModel : EditorViewModelBase<FceColorTableEditorSt
         RemoveColorCommand = new SimpleCommand(OnRemoveColor);
         state.Colors.CollectionChanged += (sende, e) =>
         {
+            foreach (var j in e.OldItems.Cast<MutableFceColorItem>())
+            {
+                j.PrimaryColor.Unsubscribe(OnColorChanged);
+                j.SecondaryColor.Unsubscribe(OnColorChanged);
+            }
+            foreach (var j in e.NewItems.Cast<MutableFceColorItem>())
+            {
+                j.PrimaryColor.Subscribe(OnColorChanged);
+                j.SecondaryColor.Subscribe(OnColorChanged);
+            }
+
             State.UnsavedChanges = true;
             UpdateCommands();
         };
         UpdateCommands();
+    }
+
+    private void OnColorChanged(object instance, PropertyInfo property, PropertyChangeNotificationType notificationType)
+    {
+        State.UnsavedChanges = true;
     }
 
     /// <summary>
@@ -44,9 +63,10 @@ public class FceColorEditorViewModel : EditorViewModelBase<FceColorTableEditorSt
         var newColors = State.Colors.Select<MutableFceColorItem, (HsbColor Primary, HsbColor Secondary)>(p => (p.PrimaryColor.ToColor(), p.SecondaryColor.ToColor())).ToArray();
         for (int i = 0; i < State.Colors.Count; i++)
         {
-            State.Fce.PrimaryColors[i] = newColors[i].Primary;
-            State.Fce.SecondaryColors[i] = newColors[i].Secondary;
+            State.Fce.Colors[i].PrimaryColor = State.Fce.File.PrimaryColors[i] = newColors[i].Primary;
+            State.Fce.Colors[i].SecondaryColor = State.Fce.File.SecondaryColors[i] = newColors[i].Secondary;
         }
+        State.Fce.UnsavedChanges = true;
         return Task.CompletedTask;
     }
 

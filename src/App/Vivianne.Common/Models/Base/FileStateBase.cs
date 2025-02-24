@@ -48,7 +48,7 @@ public abstract class FileStateBase<T> : EditorViewModelStateBase, IFileState<T>
         if ((oldValue is TValue v && v.Equals(value)) || ((object?[])[oldValue, value]).AreAllNull()) return false;
         prop.SetValue(File, value, null);
         Notify(prop.Name);
-        UnsavedChanges = prop.Name != nameof(UnsavedChanges);
+        if (prop.Name != nameof(UnsavedChanges)) UnsavedChanges = true;
         return true;
     }
 

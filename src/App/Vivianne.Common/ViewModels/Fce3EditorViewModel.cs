@@ -123,9 +123,10 @@ public class Fce3EditorViewModel : FileEditorViewModelBase<Fce3EditorState, FceF
 
     private async Task OnColorEditor()
     {
-        var state = new FceColorTableEditorState(State.File);
+        var state = new FceColorTableEditorState(State);
         var vm = new FceColorEditorViewModel(state);
         await DialogService!.Show(vm);
+        OnVisibleChanged(null!, null!, default);
     }
 
     private void SwitchToLod(FceLodPreset preset)

@@ -45,39 +45,39 @@
                             </Grid.Resources>
                             <ui:NumberBox
                                 hlp:Form.Label="H"
-                                Value="{Binding PrimaryColor.Hue}"/>
+                                Value="{Binding PrimaryColor.Hue, UpdateSourceTrigger=PropertyChanged}"/>
                             <ui:NumberBox
                                 Grid.Column="1"
                                 hlp:Form.Label="S"
-                                Value="{Binding PrimaryColor.Saturation}"/>
+                                Value="{Binding PrimaryColor.Saturation, UpdateSourceTrigger=PropertyChanged}"/>
                             <ui:NumberBox
                                 Grid.Column="2"
                                 hlp:Form.Label="B"
-                                Value="{Binding PrimaryColor.Brightness}"/>
+                                Value="{Binding PrimaryColor.Brightness, UpdateSourceTrigger=PropertyChanged}"/>
                             <ui:NumberBox
                                 Grid.Column="3"
                                 hlp:Form.Label="A"
-                                Value="{Binding PrimaryColor.Alpha}"/>
+                                Value="{Binding PrimaryColor.Alpha, UpdateSourceTrigger=PropertyChanged}"/>
                             <Rectangle Fill="{Binding PrimaryColor.Preview, Mode=OneWay, Converter={StaticResource mfc2bv}}" Grid.Column="4"/>
                             <ui:NumberBox
                                 Grid.Row="1"
                                 hlp:Form.Label="H"
-                                Value="{Binding SecondaryColor.Hue}"/>
+                                Value="{Binding SecondaryColor.Hue, UpdateSourceTrigger=PropertyChanged}"/>
                             <ui:NumberBox
                                 Grid.Row="1"
                                 Grid.Column="1"
                                 hlp:Form.Label="S"
-                                Value="{Binding SecondaryColor.Saturation}"/>
+                                Value="{Binding SecondaryColor.Saturation, UpdateSourceTrigger=PropertyChanged}"/>
                             <ui:NumberBox
                                 Grid.Row="1"
                                 Grid.Column="2"
                                 hlp:Form.Label="B"
-                                Value="{Binding SecondaryColor.Brightness}"/>
+                                Value="{Binding SecondaryColor.Brightness, UpdateSourceTrigger=PropertyChanged}"/>
                             <ui:NumberBox
                                 Grid.Row="1"
                                 Grid.Column="3"
                                 hlp:Form.Label="A"
-                                Value="{Binding SecondaryColor.Alpha}"/>
+                                Value="{Binding SecondaryColor.Alpha, UpdateSourceTrigger=PropertyChanged}"/>
                             <Rectangle Fill="{Binding SecondaryColor.Preview, Mode=OneWay, Converter={StaticResource mfc2bv}}" Grid.Row="1" Grid.Column="4"/>
                             <Button
                                 Width="32"
