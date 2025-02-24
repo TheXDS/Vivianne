@@ -14,6 +14,7 @@ using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Component;
 using TheXDS.Vivianne.Extensions;
 using TheXDS.Vivianne.Models;
+using TheXDS.Vivianne.Models.Fce;
 using TheXDS.Vivianne.Models.Fce.Nfs3;
 using TheXDS.Vivianne.Models.Fe;
 using TheXDS.Vivianne.Serializers;
@@ -93,6 +94,11 @@ public class Fce3EditorViewModel : FileEditorViewModelBase<Fce3EditorState, FceF
     public ICommand RenamePartCommand { get; }
 
     /// <summary>
+    /// Gets a reference to the command used to rename an FCE part.
+    /// </summary>
+    public ICommand RenameDummyCommand { get; }
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="Fce3EditorViewModel"/>
     /// class.
     /// </summary>
@@ -101,6 +107,7 @@ public class Fce3EditorViewModel : FileEditorViewModelBase<Fce3EditorState, FceF
         var cb = CommandBuilder.For(this);
         ColorEditorCommand = cb.BuildSimple(OnColorEditor);
         RenamePartCommand = cb.BuildSimple(OnPartRename);
+        RenameDummyCommand = cb.BuildSimple(OnDummyRename);
     }
 
     /// <inheritdoc/>
@@ -138,14 +145,23 @@ public class Fce3EditorViewModel : FileEditorViewModelBase<Fce3EditorState, FceF
     private async Task OnPartRename(object? parameter)
     {
         if (parameter is not FcePartListItem { Part: Models.Base.INameable nameable } part || DialogService is null) return;
-        var result = await DialogService.GetInputText(CommonDialogTemplates.Input with { Title = St.RenamePart, Text = St.RenamePartHelp}, nameable.Name);
+        var result = await DialogService.GetInputText(CommonDialogTemplates.Input with { Title = St.RenamePart, Text = St.RenamePartHelp }, nameable.Name);
         if (result.Success)
         {
             nameable.Name = result.Result;
             part.Refresh();
         }
     }
-
+    private async Task OnDummyRename(object? parameter)
+    {
+        if (parameter is not FceDummy dummy || DialogService is null) return;
+        var result = await DialogService.GetInputText(CommonDialogTemplates.Input with { Title = St.RenamePart, Text = St.RenamePartHelp }, dummy.Name);
+        if (result.Success)
+        {
+            dummy.Name = result.Result;
+            State.Dummies.Refresh();
+        }
+    }
     private void SwitchToLod(FceLodPreset preset)
     {
         var partsToShow = (preset switch

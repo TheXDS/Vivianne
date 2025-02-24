@@ -13,7 +13,7 @@
     d:DataContext="{d:DesignInstance Type=vm:Fce3EditorViewModel}"
     mc:Ignorable="d"
     x:Name="pgRoot"
-    d:DesignHeight="250" d:DesignWidth="500">
+    d:DesignHeight="500" d:DesignWidth="500">
     <UserControl.Resources>
         <vc:FcePreviewViewModelToModel3DGroupConverter x:Key="fcevm2mesh"/>
         <vc:FceColorToBrushConverter x:Key="dc2bc"/>
@@ -101,7 +101,14 @@
                         ItemsSource="{Binding State.Dummies, Mode=OneWay}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Name, Mode=OneWay}" Foreground="White"/>
+                                <DockPanel>
+                                    <Button
+                                        Command="{Binding DataContext.RenameDummyCommand, ElementName=pgRoot, Mode=OneWay}"
+                                        CommandParameter="{Binding}"
+                                        DockPanel.Dock="Right"
+                                        ToolTip="{x:Static st:FceEditorView.Rename}">✏️</Button>
+                                    <TextBlock Text="{Binding Name, Mode=OneWay}" Foreground="White"/>
+                                </DockPanel>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
