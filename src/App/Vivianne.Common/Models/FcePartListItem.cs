@@ -24,4 +24,13 @@ public class FcePartListItem(FcePart part) : NotifyPropertyChanged
         get => _IsVisible;
         set => Change(ref _IsVisible, value);
     }
+
+    /// <summary>
+    /// Variant of the <see cref="IsVisible"/> property that does not trigger a property change.
+    /// </summary>
+    public bool IsVisibleNoRedraw
+    {
+        get => _IsVisible;
+        set => _IsVisible = value;
+    }
 }

@@ -87,6 +87,9 @@ public class Fce3EditorViewModel : FileEditorViewModelBase<Fce3EditorState, FceF
     /// </summary>
     public ICommand ColorEditorCommand { get; }
 
+    /// <summary>
+    /// Gets a reference to the command used to rename an FCE part.
+    /// </summary>
     public ICommand RenamePartCommand { get; }
 
     /// <summary>
@@ -156,8 +159,9 @@ public class Fce3EditorViewModel : FileEditorViewModelBase<Fce3EditorState, FceF
 
         foreach (var j in Parts)
         {
-            j.IsVisible = partsToShow.Contains(j.Part);
+            j.IsVisibleNoRedraw = partsToShow.Contains(j.Part);
         }
+        OnVisibleChanged(null, null, default);
     }
 
     private ObservableListWrap<FcePartListItem> GetObservable()
@@ -172,7 +176,7 @@ public class Fce3EditorViewModel : FileEditorViewModelBase<Fce3EditorState, FceF
         return c;
     }
 
-    private void OnVisibleChanged(object instance, PropertyInfo property, PropertyChangeNotificationType notificationType)
+    private void OnVisibleChanged(object? instance, PropertyInfo? property, PropertyChangeNotificationType notificationType)
     {
         RenderTree = new()
         {
