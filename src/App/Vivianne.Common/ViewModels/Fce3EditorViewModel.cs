@@ -31,6 +31,7 @@ public class Fce3EditorViewModel : FileEditorViewModelBase<Fce3EditorState, FceF
     private Fce3Color? _selectedColor;
     private FceLodPreset _lodPreset;
     private FceRenderState? _renderTree;
+    private bool _refreshEnabled;
 
     /// <summary>
     /// Gets a collection of the available textures for rendering.
@@ -164,6 +165,7 @@ public class Fce3EditorViewModel : FileEditorViewModelBase<Fce3EditorState, FceF
     }
     private void SwitchToLod(FceLodPreset preset)
     {
+        _refreshEnabled = false;
         var partsToShow = (preset switch
         {
             FceLodPreset.High => State.Parts.Take(5),
@@ -175,8 +177,9 @@ public class Fce3EditorViewModel : FileEditorViewModelBase<Fce3EditorState, FceF
 
         foreach (var j in Parts)
         {
-            j.IsVisibleNoRedraw = partsToShow.Contains(j.Part);
+            j.IsVisible = partsToShow.Contains(j.Part);
         }
+        _refreshEnabled = true;
         OnVisibleChanged(null, null, default);
     }
 
@@ -194,6 +197,7 @@ public class Fce3EditorViewModel : FileEditorViewModelBase<Fce3EditorState, FceF
 
     private void OnVisibleChanged(object? instance, PropertyInfo? property, PropertyChangeNotificationType notificationType)
     {
+        if (!_refreshEnabled) return;
         RenderTree = new()
         {
             VisibleParts = Parts.Where(p => p.IsVisible).Select(p => p.Part),

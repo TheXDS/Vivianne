@@ -43,6 +43,7 @@ public class VivEditorViewModel : HostViewModelBase, IFileEditorViewModel<VivEdi
         ReplaceFileCommand = cb.BuildSimple(OnReplaceFile);
         ExportFileCommand = cb.BuildSimple(OnExportFile);
         RemoveFileCommand = cb.BuildSimple(OnRemoveFile);
+        RenameFileCommand = cb.BuildSimple(OnRenameFile);
         NewFromTemplateCommand = cb.BuildSimple(OnNewFromTemplate);
         CloseCommand = cb.BuildSimple(OnClose);
         SaveAsCommand = cb.BuildSimple(OnSaveAs);
@@ -85,6 +86,12 @@ public class VivEditorViewModel : HostViewModelBase, IFileEditorViewModel<VivEdi
     /// </summary>
     public ICommand RemoveFileCommand { get; }
 
+    /// <summary>
+    /// Gets a reference to the command used to rename a file inside the VIV
+    /// directory.
+    /// </summary>
+    public ICommand RenameFileCommand { get; }
+
     /// <inheritdoc/>
     public ICommand SaveCommand { get; }
 
@@ -126,7 +133,7 @@ public class VivEditorViewModel : HostViewModelBase, IFileEditorViewModel<VivEdi
         if (r.Success)
         {
             var keyName = Path.GetFileName(r.Result).ToLower();
-            if (State.Directory.ContainsKey(keyName) && !await DialogService.AskYn(St.ReplaceFile, string.Format(St.TheFileXAlreadyExist,keyName)))
+            if (State.Directory.ContainsKey(keyName) && !await DialogService.AskYn(St.ReplaceFile, string.Format(St.TheFileXAlreadyExist, keyName)))
             {
                 return;
             }
@@ -153,9 +160,10 @@ public class VivEditorViewModel : HostViewModelBase, IFileEditorViewModel<VivEdi
         {
             var ext = Path.GetExtension(file)[1..];
             var r = await DialogService!.GetFileOpenPath(CommonDialogTemplates.FileOpen with
-            { 
-                Title = string.Format(St.ReplaceX,file),
-                Text = string.Format(St.SelectAFileToRepaceXWith, file) },
+            {
+                Title = string.Format(St.ReplaceX, file),
+                Text = string.Format(St.SelectAFileToRepaceXWith, file)
+            },
                 [FileFilterItem.Simple(ext), FileFilterItem.AllFiles]);
             if (r.Success)
             {
@@ -175,13 +183,25 @@ public class VivEditorViewModel : HostViewModelBase, IFileEditorViewModel<VivEdi
         }
     }
 
+    private async Task OnRenameFile(object? parameter)
+    {
+        if (parameter is not KeyValuePair<string, byte[]> { Key: { } fileName, Value: { } file }) return;
+        var result = await DialogService.GetInputText(CommonDialogTemplates.Input with { Title = "St.RenamePart", Text = "St.RenamePartHelp" }, fileName);
+        if (result.Success)
+        {
+            State.Directory.Remove(fileName);
+            State.Directory.Add(result.Result, file);
+        }
+    }
+
     private async Task OnNewFromTemplate()
     {
-        var r = await DialogService!.SelectOption(new DialogTemplate 
-        { 
+        var r = await DialogService!.SelectOption(new DialogTemplate
+        {
             Title = St.NewFromTemplate,
             Text = St.SelectATemplate,
-            Color = System.Drawing.Color.Aquamarine, Icon = "➕"
+            Color = System.Drawing.Color.Aquamarine,
+            Icon = "➕"
         }, [.. Templates.Keys]);
         if (r.Success)
         {

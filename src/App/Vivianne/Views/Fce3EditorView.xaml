@@ -35,7 +35,7 @@
                 ItemsSource="{Binding CarTextures, Mode=OneWay}"
                 SelectedValuePath="Value"
                 DisplayMemberPath="Name"
-                SelectedValue="{Binding SelectedCarTexture}"/>            
+                SelectedValue="{Binding SelectedCarTexture}"/>
             <ComboBox
                 hlp:Form.Label="{x:Static st:FceEditorView.Color}"
                 Width="230"
@@ -53,7 +53,7 @@
                             <Rectangle Width="10" Height="10" Fill="{Binding PrimaryColor, Mode=OneWay, Converter={StaticResource dc2bc}}"/>
                             <Rectangle Width="10" Height="10" Grid.Column="1" Fill="{Binding SecondaryColor, Mode=OneWay, Converter={StaticResource dc2bc}}"/>
                             <TextBlock Margin="5,0,0,0" Grid.Column="2" Text="{Binding Name, Mode=OneWay}"/>
-                        </Grid>                        
+                        </Grid>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
@@ -85,6 +85,8 @@
                                         <Button
                                             Command="{Binding DataContext.RenamePartCommand, ElementName=pgRoot, Mode=OneWay}"
                                             CommandParameter="{Binding}"
+                                            Background="Transparent"
+                                            BorderThickness="0"
                                             DockPanel.Dock="Right"
                                             ToolTip="{x:Static st:FceEditorView.Rename}">✏️</Button>
                                         <CheckBox IsChecked="{Binding IsVisible}" Style="{StaticResource ToggleSwitch}">
@@ -105,6 +107,8 @@
                                     <Button
                                         Command="{Binding DataContext.RenameDummyCommand, ElementName=pgRoot, Mode=OneWay}"
                                         CommandParameter="{Binding}"
+                                        Background="Transparent"
+                                        BorderThickness="0"
                                         DockPanel.Dock="Right"
                                         ToolTip="{x:Static st:FceEditorView.Rename}">✏️</Button>
                                     <TextBlock Text="{Binding Name, Mode=OneWay}" Foreground="White"/>
