@@ -27,7 +27,7 @@ namespace TheXDS.Vivianne.ViewModels;
 public class VivEditorViewModel : HostViewModelBase, IFileEditorViewModel<VivEditorState, VivFile>
 {
     private static readonly Dictionary<string, ContentVisualizerViewModelFactory> ContentVisualizers = new(ContentVisualizerConfiguration.Get());
-    private static readonly Dictionary<string, Func<byte[]>> Templates = new(VivTemplates.Get());
+    private static readonly Dictionary<string, (string, Func<byte[]>)[]> Templates = new(VivTemplates.Get());
 
     /// <inheritdoc/>
     public VivEditorState State { get; set; } = null!;
@@ -206,7 +206,10 @@ public class VivEditorViewModel : HostViewModelBase, IFileEditorViewModel<VivEdi
         if (r.Success)
         {
             var template = Templates.ToList()[r.Result];
-            State.Directory[template.Key] = template.Value.Invoke();
+            foreach ((var filename, var factory) in template.Value)
+            {
+                State.Directory[filename] = factory.Invoke();
+            }
         }
     }
 
