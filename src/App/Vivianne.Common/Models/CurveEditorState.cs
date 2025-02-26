@@ -23,7 +23,7 @@ public class CurveEditorState : EditorViewModelStateBase
     public CurveEditorState(ICollection<double> targetCollection)
     {
         TargetCollection = targetCollection;
-        Collection = new ObservableCollection<double>(TargetCollection.Copy());
+        Collection = [.. TargetCollection.Copy()];
         Collection.CollectionChanged += (sender, e) => UnsavedChanges = true;
         _Minimum = TargetCollection.Min();
         _Maximum = TargetCollection.Max();

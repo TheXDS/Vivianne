@@ -8,7 +8,7 @@ using TheXDS.MCART.Helpers;
 using TheXDS.Vivianne.Models.Base;
 using St = TheXDS.Vivianne.Resources.Strings.Common;
 
-namespace TheXDS.Vivianne.ViewModels;
+namespace TheXDS.Vivianne.ViewModels.Base;
 
 /// <summary>
 /// Base class for all ViewModels that implement the 
@@ -57,7 +57,7 @@ public abstract class EditorViewModelBase<T> : AwaitableDialogViewModel, IStatef
     protected EditorViewModelBase(T state)
     {
         _state = state;
-        SaveChangesCommand = ObservingCommandBuilder.Create(state, InvokeSaveChanges)
+        SaveChangesCommand = state.Create(InvokeSaveChanges)
             .ListensToCanExecute(p => p.UnsavedChanges)
             .Build();
         DiscardChangesCommand = new SimpleCommand(OnDiscardChanges);

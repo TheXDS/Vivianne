@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models;
+using TheXDS.Vivianne.ViewModels.Base;
 
 namespace TheXDS.Vivianne.ViewModels;
 

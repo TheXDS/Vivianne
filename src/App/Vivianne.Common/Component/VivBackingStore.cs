@@ -6,7 +6,7 @@ using TheXDS.Vivianne.ViewModels;
 
 namespace TheXDS.Vivianne.Component;
 
-public class VivStateBackingStore(VivEditorViewModel viv) : IBackingStore
+public class VivBackingStore(VivEditorViewModel viv) : IBackingStore
 {
     private readonly VivEditorViewModel _viv = viv;
 

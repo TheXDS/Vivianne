@@ -3,34 +3,38 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using TheXDS.MCART.Component;
+using TheXDS.Ganymede.Helpers;
 using TheXDS.MCART.Types.Extensions;
-using TheXDS.Vivianne.Models;
-using TheXDS.Vivianne.Models.Carp.Nfs3;
+using TheXDS.Vivianne.Models.Carp.Base;
 using TheXDS.Vivianne.Resources;
 using TheXDS.Vivianne.ViewModels.Base;
 using St = TheXDS.Vivianne.Resources.Strings.ViewModels.CarpEditorViewModel;
 
-namespace TheXDS.Vivianne.ViewModels;
+namespace TheXDS.Vivianne.ViewModels.Carp;
 
 /// <summary>
 /// Implements a ViewModel that alows the user to edit Carp data.
 /// </summary>
-public class Carp3EditorViewModel : FileEditorViewModelBase<CarpEditorState, CarPerf>
+public class CarpEditorViewModel<TState, TFile, TCarClass> : FileEditorViewModelBase<TState, TFile>
+    where TState : CarpEditorState<TFile, TCarClass>, new()
+    where TCarClass : unmanaged, Enum
+    where TFile : CarPerf<TCarClass>, new()
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="Carp3EditorViewModel"/> class.
+    /// Initializes a new instance of the <see cref="CarpEditorViewModel{TState, TFile, TCarClass}"/> class.
     /// </summary>
-    public Carp3EditorViewModel()
+    public CarpEditorViewModel()
     {
-        EditIntCurveCommand = new SimpleCommand(OnEditIntCurve);
-        EditDoubleCurveCommand = new SimpleCommand(OnEditDoubleCurve);
-        CopyTransToAutoCommand = new SimpleCommand(OnCopyTransToAuto);
-        CopyTransToManualCommand = new SimpleCommand(OnCopyTransToManual);
-        CopyTiresToFrontCommand = new SimpleCommand(OnCopyTiresToFront);
-        CopyTiresToRearCommand = new SimpleCommand(OnCopyTiresToRear);
-        FedataSyncCommand = new SimpleCommand(OnFeDataSync);
-        PerformanceMetricsCommand = new SimpleCommand(OnPerformanceMetrics);
+        var cb = CommandBuilder.For(this);
+        EditIntCurveCommand = cb.BuildSimple(OnEditIntCurve);
+        EditDoubleCurveCommand = cb.BuildSimple(OnEditDoubleCurve);
+        CopyTransToAutoCommand = cb.BuildSimple(OnCopyTransToAuto);
+        CopyTransToManualCommand = cb.BuildSimple(OnCopyTransToManual);
+        CopyTiresToFrontCommand = cb.BuildSimple(OnCopyTiresToFront);
+        CopyTiresToRearCommand = cb.BuildSimple(OnCopyTiresToRear);
+        FedataSyncCommand = cb.BuildSimple(OnFeDataSync);
+        CarpWizardCommand = cb.BuildSimple(OnCarpWizard);
+        PerformanceMetricsCommand = cb.BuildSimple(OnPerformanceMetrics);
     }
 
     /// <summary>
@@ -87,13 +91,6 @@ public class Carp3EditorViewModel : FileEditorViewModelBase<CarpEditorState, Car
     /// </summary>
     public ICommand PerformanceMetricsCommand { get; }
 
-    ///// <inheritdoc/>
-    //protected override Task OnSaveChanges()
-    //{
-    //    _saveCallback.Invoke(State.ToSerializedCarp());
-    //    return Task.CompletedTask;
-    //}
-
     private Task OnEditDoubleCurve(object? parameter)
     {
         return parameter switch
@@ -111,7 +108,7 @@ public class Carp3EditorViewModel : FileEditorViewModelBase<CarpEditorState, Car
         {
             case ICollection<int> c:
                 collection = c;
-                doubleCollection = await RunCurveEditor(c.Select(p => (double)p).ToList());
+                doubleCollection = await RunCurveEditor([.. c.Select(p => (double)p)]);
                 break;
         }
         if (collection is not null && doubleCollection is not null)
@@ -121,13 +118,19 @@ public class Carp3EditorViewModel : FileEditorViewModelBase<CarpEditorState, Car
         }
     }
 
-    private async Task OnFeDataSync()
+    private void OnFeDataSync()
     {
+        throw new NotImplementedException();
         //if (_vivFileRef is not null)
         //{
         //    UiThread.Invoke(() => FeData3SyncTool.Sync(State.ToCarp(), _vivFileRef.Directory));
         //    await DialogService!.Message(St.FeDataSync, St.OperationCompletedSuccessfully);
         //}
+    }
+
+    private void OnCarpWizard()
+    {
+        throw new NotImplementedException();
     }
 
     private void OnCopyTransToManual()

@@ -52,6 +52,27 @@ public abstract class FileStateBase<T> : EditorViewModelStateBase, IFileState<T>
         return true;
     }
 
+
+    /// <summary>
+    /// Changes the property value on the underlying file.
+    /// </summary>
+    /// <param name="propSelector">Property selector.</param>
+    /// <param name="value">Value to be set on the property.</param>
+    /// <returns>
+    /// <see langword="true"/> if the property on the underlying file has
+    /// changed its value, <see langword="false"/> otherwise.
+    /// </returns>
+    protected bool Change(Expression<Func<T, Enum>> propSelector, Enum value)
+    {
+        var prop = ReflectionHelpers.GetProperty(propSelector);
+        Enum oldValue = (Enum)prop.GetValue(File)!;
+        if (oldValue == value) return false;
+        prop.SetValue(File, value, null);
+        Notify(prop.Name);
+        if (prop.Name != nameof(UnsavedChanges)) UnsavedChanges = true;
+        return true;
+    }
+
     /// <summary>
     /// Gets an observable wrap of the specified
     /// <see cref="Dictionary{TKey, TValue}"/>.
@@ -92,4 +113,24 @@ public abstract class FileStateBase<T> : EditorViewModelStateBase, IFileState<T>
         d.CollectionChanged += (_, e) => UnsavedChanges = true;
         return d;
     }
+
+    /// <summary>
+    /// Gets an observable wrap of the specified <see cref="ICollection{T}"/>.
+    /// </summary>
+    /// <typeparam name="TValue">
+    /// Type of values held in the list.
+    /// </typeparam>
+    /// <param name="collection">
+    /// Collection for which to get an observable version.
+    /// </param>
+    /// <returns>
+    /// A new observable wrap for the specified <see cref="ICollection{T}"/>.
+    /// </returns>
+    protected ObservableCollectionWrap<TValue> GetObservable<TValue>(ICollection<TValue> collection)
+    {
+        var d = new ObservableCollectionWrap<TValue>(collection);
+        d.CollectionChanged += (_, e) => UnsavedChanges = true;
+        return d;
+    }
+
 }

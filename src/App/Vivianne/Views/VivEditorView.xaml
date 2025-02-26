@@ -136,7 +136,14 @@
             Grid.Column="1"
             UseLayoutRounding="True"
             SnapsToDevicePixels="True"
-            VisualResolver="{gn:ConventionResolver}"
-            Navigator="{Binding ChildNavService}"/>
+            Navigator="{Binding ChildNavService}">
+            <gn:NavigationHost.VisualResolver>
+                <gn:WpfResolverStack>
+                    
+                    <gn:WpfConventionVisualResolver/>
+                </gn:WpfResolverStack>
+            </gn:NavigationHost.VisualResolver>
+        </gn:NavigationHost>
+        
     </Grid>
 </UserControl>

@@ -342,6 +342,51 @@ namespace TheXDS.Vivianne.Resources.Strings {
         /// <summary>
         ///   Looks up a localized string similar to file.
         /// </summary>
+        internal static string Rename_Arg1 {
+            get {
+                return ResourceManager.GetString("Rename_Arg1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name of the file to be renamed. It must exist inside the VIV..
+        /// </summary>
+        internal static string Rename_Arg1Help {
+            get {
+                return ResourceManager.GetString("Rename_Arg1Help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to new name.
+        /// </summary>
+        internal static string Rename_Arg2 {
+            get {
+                return ResourceManager.GetString("Rename_Arg2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New name of the file..
+        /// </summary>
+        internal static string Rename_Arg2Help {
+            get {
+                return ResourceManager.GetString("Rename_Arg2Help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Renames a file inside a VIV..
+        /// </summary>
+        internal static string Rename_Help {
+            get {
+                return ResourceManager.GetString("Rename_Help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to file.
+        /// </summary>
         internal static string Rm_Arg1 {
             get {
                 return ResourceManager.GetString("Rm_Arg1", resourceCulture);

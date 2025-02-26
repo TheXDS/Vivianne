@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using TheXDS.Vivianne.Models;
+using TheXDS.Vivianne.ViewModels.Base;
 
 namespace TheXDS.Vivianne.ViewModels;
 

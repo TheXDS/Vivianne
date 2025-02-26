@@ -7,6 +7,7 @@ using TheXDS.Ganymede.Models;
 using TheXDS.Ganymede.Resources;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Properties;
+using TheXDS.Vivianne.ViewModels.Base;
 
 namespace TheXDS.Vivianne.ViewModels;
 

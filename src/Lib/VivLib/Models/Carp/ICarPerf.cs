@@ -33,49 +33,49 @@ public interface ICarPerf : ISerialNumberModel
     /// Gets a collection of values that plot the first part of the AI
     /// acceleration curve.
     /// </summary>
-    ObservableCollection<double> AiCurve0 { get; }
+    ICollection<double> AiCurve0 { get; }
 
     /// <summary>
     /// Gets a collection of values that plot the second part of the AI
     /// acceleration curve.
     /// </summary>
-    ObservableCollection<double> AiCurve1 { get; }
+    ICollection<double> AiCurve1 { get; }
 
     /// <summary>
     /// Gets a collection of values that plot the third part of the AI
     /// acceleration curve.
     /// </summary>
-    ObservableCollection<double> AiCurve2 { get; }
+    ICollection<double> AiCurve2 { get; }
 
     /// <summary>
     /// Gets a collection of values that plot the fourth part of the AI
     /// acceleration curve.
     /// </summary>
-    ObservableCollection<double> AiCurve3 { get; }
+    ICollection<double> AiCurve3 { get; }
 
     /// <summary>
     /// Gets a collection of values that plot the fifth part of the AI
     /// acceleration curve.
     /// </summary>
-    ObservableCollection<double> AiCurve4 { get; }
+    ICollection<double> AiCurve4 { get; }
 
     /// <summary>
     /// Gets a collection of values that plot the sixth part of the AI
     /// acceleration curve.
     /// </summary>
-    ObservableCollection<double> AiCurve5 { get; }
+    ICollection<double> AiCurve5 { get; }
 
     /// <summary>
     /// Gets a collection of values that plot the seventh part of the AI
     /// acceleration curve.
     /// </summary>
-    ObservableCollection<double> AiCurve6 { get; }
+    ICollection<double> AiCurve6 { get; }
 
     /// <summary>
     /// Gets a collection of values that plot the eighth part of the AI
     /// acceleration curve.
     /// </summary>
-    ObservableCollection<double> AiCurve7 { get; }
+    ICollection<double> AiCurve7 { get; }
 
     /// <summary>
     /// Gets or sets a value from 0.0 to 1.0 that indicates the amount of body
@@ -105,19 +105,19 @@ public interface ICarPerf : ISerialNumberModel
     /// <remarks>
     /// The number of elements in this array should idealy remain at 8.
     /// </remarks>
-    ObservableCollection<double> BrakeBlip { get; }
+    ICollection<double> BrakeBlip { get; }
 
     /// <summary>
     /// Gets a collection of values taht indicates how the brakes decrease when
     /// released.
     /// </summary>
-    ObservableCollection<double> BrakeDecreaseCurve { get; }
+    ICollection<double> BrakeDecreaseCurve { get; }
 
     /// <summary>
     /// Gets a collection of values taht indicates how the brakes increase when
     /// applied.
     /// </summary>
-    ObservableCollection<double> BrakeIncreaseCurve { get; }
+    ICollection<double> BrakeIncreaseCurve { get; }
 
     double CameraArm { get; set; }
 
@@ -199,13 +199,13 @@ public interface ICarPerf : ISerialNumberModel
     /// Gets a collection of values taht indicates how the gas decreases when
     /// released.
     /// </summary>
-    ObservableCollection<double> GasDecreaseCurve { get; }
+    ICollection<double> GasDecreaseCurve { get; }
 
     /// <summary>
     /// Gets a collection of values taht indicates how the gas increases when
     /// applied.
     /// </summary>
-    ObservableCollection<double> GasIncreaseCurve { get; }
+    ICollection<double> GasIncreaseCurve { get; }
 
     double GasOffFactor { get; set; }
 
@@ -213,13 +213,13 @@ public interface ICarPerf : ISerialNumberModel
     /// Gets a collection of values that indicates the gear efficiency
     /// multiplier for any given gear for the automatic transmission.
     /// </summary>
-    ObservableCollection<double> GearEfficiencyAuto { get; }
+    ICollection<double> GearEfficiencyAuto { get; }
 
     /// <summary>
     /// Gets a collection of values that indicates the gear efficiency
     /// multiplier for any given gear for the manual transmission.
     /// </summary>
-    ObservableCollection<double> GearEfficiencyManual { get; }
+    ICollection<double> GearEfficiencyManual { get; }
 
     /// <summary>
     /// Gets or sets a value that allows the player to tune up or down the gear
@@ -240,7 +240,7 @@ public interface ICarPerf : ISerialNumberModel
     /// These values are merely informational, and are apparently not used for
     /// actual speed calculations.
     /// </remarks>
-    ObservableCollection<double> GearRatioAuto { get; }
+    ICollection<double> GearRatioAuto { get; }
 
     /// <summary>
     /// Gets a collection of values that indicate gear ratio for any given gear
@@ -250,7 +250,7 @@ public interface ICarPerf : ISerialNumberModel
     /// These values are merely informational, and are apparently not used for
     /// actual speed calculations.
     /// </remarks>
-    ObservableCollection<double> GearRatioManual { get; }
+    ICollection<double> GearRatioManual { get; }
 
     /// <summary>
     /// Gets a value that indicates the number of game ticks of delay between
@@ -334,7 +334,7 @@ public interface ICarPerf : ISerialNumberModel
     /// <remarks>
     /// The number of elements in this array should idealy remain at 8.
     /// </remarks>
-    ObservableCollection<double> ShiftBlip { get; }
+    ICollection<double> ShiftBlip { get; }
     
     double SlideAssistanceFactor { get; set; }
     
@@ -446,7 +446,7 @@ public interface ICarPerf : ISerialNumberModel
     /// <summary>
     /// Gets a collection of values plotting the engine's torque curve.
     /// </summary>
-    ObservableCollection<double> TorqueCurve { get; }
+    ICollection<double> TorqueCurve { get; }
     
     double TurnCircleRadius { get; set; }
     
@@ -459,14 +459,14 @@ public interface ICarPerf : ISerialNumberModel
     /// to calculate the actual top speed in any given gear for the automatic
     /// transmission.
     /// </summary>
-    ObservableCollection<double> VelocityToRpmAuto { get; }
+    ICollection<double> VelocityToRpmAuto { get; }
 
     /// <summary>
     /// Gets a collection of values that indicate a factor to divide the RPM by
     /// to calculate the actual top speed in any given gear for the manual
     /// transmission.
     /// </summary>
-    ObservableCollection<double> VelocityToRpmManual { get; }
+    ICollection<double> VelocityToRpmManual { get; }
 
     /// <summary>
     /// Gets or sets a value that indicates the wheel base for the car (the

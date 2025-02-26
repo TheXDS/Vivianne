@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using TheXDS.Ganymede.Types.Base;
 using TheXDS.Vivianne.Component;
 using TheXDS.Vivianne.Models;
@@ -13,6 +14,7 @@ using TheXDS.Vivianne.Serializers.Fsh;
 using TheXDS.Vivianne.Tools;
 using TheXDS.Vivianne.ViewModels;
 using TheXDS.Vivianne.ViewModels.Base;
+using TheXDS.Vivianne.ViewModels.Carp.Nfs3;
 
 namespace TheXDS.Vivianne.Data;
 
@@ -71,9 +73,17 @@ internal static class ContentVisualizerConfiguration
         }
     }
 
-    private static Carp3EditorViewModel? CreateCarpEditorViewModel(byte[] data, VivEditorViewModel vm, string name)
+    private static CarpEditorViewModel? CreateCarpEditorViewModel(byte[] data, VivEditorViewModel vm, string name)
     {
-        return CreateEditorViewModel<Carp3EditorViewModel, CarpEditorState, CarPerf, CarpSerializer>(data, vm, name);
+        if (System.Text.Encoding.Latin1.GetString(data).Contains("understeer gradient(80)"))
+        {
+            return null;
+            //return CreateEditorViewModel<ViewModels.Carp.Nfs4.CarpEditorViewModel, Models.Carp.Nfs4.CarpEditorState, Models.Carp.Nfs4.CarPerf, Serializers.Carp.Nfs4.CarpSerializer>(data, vm, name);
+        }
+        else
+        {
+            return CreateEditorViewModel<ViewModels.Carp.Nfs3.CarpEditorViewModel, CarpEditorState, CarPerf, CarpSerializer>(data, vm, name);
+        }
 
         /*
         byte[] carpMagic = [0x53, 0x65, 0x72, 0x69, 0x61, 0x6c, 0x20, 0x4e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x28, 0x30, 0x29];
@@ -108,7 +118,7 @@ internal static class ContentVisualizerConfiguration
         {
             Title = name,
             State = new TState() { File = serializer.Deserialize(data) },
-            BackingStore = new BackingStore<TFile, TSerializer>(new VivStateBackingStore(vm)),
+            BackingStore = new BackingStore<TFile, TSerializer>(new VivBackingStore(vm)),
         };
     }
 }

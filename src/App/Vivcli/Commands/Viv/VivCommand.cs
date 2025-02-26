@@ -19,5 +19,6 @@ public partial class VivCommand() : FileCommandBase<VivFile, VivSerializer>(
         BuildInfoCommand,
         BuildLsCommand,
         BuildReadCommand,
+        BuildRenameCommand,
         BuildRmCommand
     ]) { }

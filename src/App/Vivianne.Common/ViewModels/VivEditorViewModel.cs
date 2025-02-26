@@ -14,8 +14,6 @@ using TheXDS.Vivianne.Component;
 using TheXDS.Vivianne.Data;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Models.Viv;
-using TheXDS.Vivianne.Serializers;
-using TheXDS.Vivianne.Serializers.Viv;
 using TheXDS.Vivianne.ViewModels.Base;
 using St = TheXDS.Vivianne.Resources.Strings.ViewModels.VivEditorViewModel;
 
@@ -117,7 +115,7 @@ public class VivEditorViewModel : HostViewModelBase, IFileEditorViewModel<VivEdi
                     break;
                 }
             }
-            //vm ??= new ExternalFileViewModel(rawData, Save);
+            vm ??= new FileErrorViewModel();//new ExternalFileViewModel(rawData, new VivBackingStore(this), file);
             vm.Title = file;
             ChildNavService!.Navigate(vm);
         }
@@ -229,7 +227,12 @@ public class VivEditorViewModel : HostViewModelBase, IFileEditorViewModel<VivEdi
     /// <inheritdoc/>
     protected override Task OnCreated()
     {
-        ChildNavService!.NavigateAndReset<VivInfoViewModel, VivEditorState>(State);
+        if (ChildNavService is not null)
+        {
+            ChildNavService.HomePage = new VivInfoViewModel() { State = State };
+            ChildNavService.Reset();
+            //ChildNavService.NavigateAndReset<VivInfoViewModel, VivEditorState>(State);
+        }
         return base.OnCreated();
     }
 }

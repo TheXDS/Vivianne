@@ -1,6 +1,4 @@
-﻿using System.Collections.ObjectModel;
-
-namespace TheXDS.Vivianne.Models.Carp.Base;
+﻿namespace TheXDS.Vivianne.Models.Carp.Base;
 
 /// <summary>
 /// Describes Car performance data.
@@ -30,31 +28,31 @@ public class CarPerf<TCarClass> : ICarPerf, ICarClass<TCarClass> where TCarClass
     public int GearShiftDelay { get; set; }
 
     /// <inheritdoc/>
-    public ObservableCollection<double> ShiftBlip { get; } = [];
+    public ICollection<double> ShiftBlip { get; } = [];
 
     /// <inheritdoc/>
-    public ObservableCollection<double> BrakeBlip { get; } = [];
+    public ICollection<double> BrakeBlip { get; } = [];
 
     /// <inheritdoc/>
-    public ObservableCollection<double> VelocityToRpmManual { get; } = [];
+    public ICollection<double> VelocityToRpmManual { get; } = [];
 
     /// <inheritdoc/>
-    public ObservableCollection<double> VelocityToRpmAuto { get; } = [];
+    public ICollection<double> VelocityToRpmAuto { get; } = [];
 
     /// <inheritdoc/>
-    public ObservableCollection<double> GearRatioManual { get; } = [];
+    public ICollection<double> GearRatioManual { get; } = [];
 
     /// <inheritdoc/>
-    public ObservableCollection<double> GearRatioAuto { get; } = [];
+    public ICollection<double> GearRatioAuto { get; } = [];
 
     /// <inheritdoc/>
-    public ObservableCollection<double> GearEfficiencyManual { get; } = [];
+    public ICollection<double> GearEfficiencyManual { get; } = [];
 
     /// <inheritdoc/>
-    public ObservableCollection<double> GearEfficiencyAuto { get; } = [];
+    public ICollection<double> GearEfficiencyAuto { get; } = [];
 
     /// <inheritdoc/>
-    public ObservableCollection<double> TorqueCurve { get; } = [];
+    public ICollection<double> TorqueCurve { get; } = [];
 
     /// <inheritdoc/>
     public double FinalGearManual { get; set; }
@@ -87,16 +85,16 @@ public class CarPerf<TCarClass> : ICarPerf, ICarClass<TCarClass> where TCarClass
     public double FrontBrakeBias { get; set; }
 
     /// <inheritdoc/>
-    public ObservableCollection<double> GasIncreaseCurve { get; } = [];
+    public ICollection<double> GasIncreaseCurve { get; } = [];
 
     /// <inheritdoc/>
-    public ObservableCollection<double> GasDecreaseCurve { get; } = [];
+    public ICollection<double> GasDecreaseCurve { get; } = [];
 
     /// <inheritdoc/>
-    public ObservableCollection<double> BrakeIncreaseCurve { get; } = [];
+    public ICollection<double> BrakeIncreaseCurve { get; } = [];
 
     /// <inheritdoc/>
-    public ObservableCollection<double> BrakeDecreaseCurve { get; } = [];
+    public ICollection<double> BrakeDecreaseCurve { get; } = [];
 
     /// <inheritdoc/>
     public double WheelBase { get; set; }
@@ -240,26 +238,26 @@ public class CarPerf<TCarClass> : ICarPerf, ICarClass<TCarClass> where TCarClass
     public double TireFactor { get; set; }
 
     /// <inheritdoc/>
-    public ObservableCollection<double> AiCurve0 { get; } = [];
+    public ICollection<double> AiCurve0 { get; } = [];
 
     /// <inheritdoc/>
-    public ObservableCollection<double> AiCurve1 { get; } = [];
+    public ICollection<double> AiCurve1 { get; } = [];
 
     /// <inheritdoc/>
-    public ObservableCollection<double> AiCurve2 { get; } = [];
+    public ICollection<double> AiCurve2 { get; } = [];
 
     /// <inheritdoc/>
-    public ObservableCollection<double> AiCurve3 { get; } = [];
+    public ICollection<double> AiCurve3 { get; } = [];
 
     /// <inheritdoc/>
-    public ObservableCollection<double> AiCurve4 { get; } = [];
+    public ICollection<double> AiCurve4 { get; } = [];
 
     /// <inheritdoc/>
-    public ObservableCollection<double> AiCurve5 { get; } = [];
+    public ICollection<double> AiCurve5 { get; } = [];
 
     /// <inheritdoc/>
-    public ObservableCollection<double> AiCurve6 { get; } = [];
+    public ICollection<double> AiCurve6 { get; } = [];
 
     /// <inheritdoc/>
-    public ObservableCollection<double> AiCurve7 { get; } = [];
+    public ICollection<double> AiCurve7 { get; } = [];
 }
