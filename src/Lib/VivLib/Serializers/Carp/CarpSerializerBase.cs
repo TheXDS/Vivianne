@@ -12,45 +12,47 @@ namespace TheXDS.Vivianne.Serializers.Carp;
 /// </summary>
 public class CarpSerializerBase<TCarClass, TFile> : ISerializer<TFile> where TCarClass : unmanaged, Enum where TFile : ICarPerf, ICarClass<TCarClass>, new()
 {
-    private static int TryInt(string value)
+    protected static int TryInt(string value)
     {
         return int.TryParse(value, System.Globalization.CultureInfo.InvariantCulture, out var s) ? s : 0;
     }
 
-    private static double TryDouble(string value)
+    protected static double TryDouble(string value)
     {
         return double.TryParse(value, System.Globalization.CultureInfo.InvariantCulture, out var s) ? s : 0.0;
     }
 
-    private static int TryIntKey(Dictionary<int, string> dic, int key)
+    protected static int TryIntKey(Dictionary<int, string> dic, int key)
     {
         return TryInt(dic[key]);
     }
 
-    private static double TryDoubleKey(Dictionary<int, string> dic, int key)
+    protected static double TryDoubleKey(Dictionary<int, string> dic, int key)
     {
         return TryDouble(dic[key]);
     }
 
-    private static IEnumerable<T> TryArray<T>(Dictionary<int, string> dic, int key, Func<string, T> parse)
+    protected static IEnumerable<T> TryArray<T>(Dictionary<int, string> dic, int key, Func<string, T> parse)
     {
         return dic[key].Split(",").Where(p => !p.IsEmpty()).Select(parse);
     }
 
-    private static IEnumerable<int> TryIntArray(Dictionary<int, string> dic, int key)
+    protected static IEnumerable<int> TryIntArray(Dictionary<int, string> dic, int key)
     {
         return TryArray(dic, key, TryInt);
     }
 
-    private static IEnumerable<double> TryDoubleArray(Dictionary<int, string> dic, int key)
+    protected static IEnumerable<double> TryDoubleArray(Dictionary<int, string> dic, int key)
     {
         return TryArray(dic, key, TryDouble);
     }
 
-    private static int GetKey(string line)
+    protected static int GetKey(string line)
     {
         return int.TryParse(line.Split('(')[^1].ChopEnd(")"), out var k) ? k : -1;
     }
+
+    protected virtual void ReadProps(TFile carp, Dictionary<int, string> fields) { }
 
     /// <inheritdoc/>
     public TFile Deserialize(Stream stream)
@@ -161,11 +163,12 @@ public class CarpSerializerBase<TCarClass, TFile> : ISerializer<TFile> where TCa
             carp.TireSidewallRear = tirespecs[1];
             carp.TireRimRear = tirespecs[2];
         }
+        ReadProps(carp, dic);
         return carp;
     }
 
     /// <inheritdoc/>
-    public void SerializeTo(TFile entity, Stream stream)
+    public virtual void SerializeTo(TFile entity, Stream stream)
     {
         stream.WriteBytes(Encoding.Latin1.GetBytes($"""
         Serial Number(0)
@@ -328,6 +331,9 @@ public class CarpSerializerBase<TCarClass, TFile> : ISerializer<TFile> where TCa
         {string.Join(",", entity.AiCurve6)}
         AI ACC7 acceleration table section(74)
         {string.Join(",", entity.AiCurve7)}
+        {GetExtraProps(entity)}
         """));
     }
+
+    protected virtual string GetExtraProps(TFile entity) => string.Empty;
 }
