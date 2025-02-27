@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using TheXDS.MCART.Helpers;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.ViewModels.Base;
@@ -16,8 +17,18 @@ public class CurveEditorDialogViewModel(CurveEditorState state) : EditorViewMode
     /// <inheritdoc/>
     protected override Task OnSaveChanges()
     {
-        State.TargetCollection.Clear();
-        State.TargetCollection.AddRange(State.Collection);
+        if (State.TargetCollection is IList<double> list)
+        {
+            foreach (var (index, element) in State.Collection.WithIndex())
+            {
+                list[index] = element;
+            }
+        }
+        else
+        {
+            State.TargetCollection.Clear();
+            State.TargetCollection.AddRange(State.Collection);
+        }
         return Task.CompletedTask;
     }
 }

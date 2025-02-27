@@ -70,7 +70,7 @@ public abstract class FileEditorViewModelBase<TState, TFile> : ViewModel, IViewM
     {
         var cb = CommandBuilder.For(this);
         DiscardAndCloseCommand = cb.BuildSimple(OnClose);
-        SaveAsCommand = cb.BuildObserving(OnSaveAs).ListensToCanExecute(p => p.UnsavedChanges).Build();
+        SaveAsCommand = cb.BuildSimple(OnSaveAs);
         SaveCommand = cb.BuildObserving(OnSave).ListensToCanExecute(p => p.UnsavedChanges).Build();
         SaveAndCloseCommand = cb.BuildObserving(OnSaveAndClose).ListensToCanExecute(p => p.UnsavedChanges).Build();
     }

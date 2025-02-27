@@ -63,7 +63,7 @@ public class DraggableLineGraph : Control
 
     private static void OnDataChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (e.OldValue is ObservableCollection<double> oldData)
+        if (e.OldValue is INotifyCollectionChanged oldData)
         {
             oldData.CollectionChanged -= ((DraggableLineGraph)d).OnDataCollectionChanged;
         }
@@ -71,7 +71,7 @@ public class DraggableLineGraph : Control
         {
             if (!g.MinValue.IsValid()) g.MinValue = c.Min();
             if (!g.MaxValue.IsValid()) g.MaxValue = c.Max();
-            if (c is ObservableCollection<double> newData)
+            if (c is INotifyCollectionChanged newData)
             {
                 newData.CollectionChanged += ((DraggableLineGraph)d).OnDataCollectionChanged;
             }

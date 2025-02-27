@@ -199,6 +199,7 @@ public class VivEditorViewModel : HostViewModelBase, IFileEditorViewModel<VivEdi
             if (await DialogService!.AskYn(string.Format(St.RemoveX, file), string.Format(St.AreYouSureYouWantToRemoveX, file)))
             {
                 State.Directory.Remove(file);
+                ChildNavService?.Reset();
             }
         }
     }
