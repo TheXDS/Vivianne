@@ -231,4 +231,82 @@
   <data name="BrakeBlip" xml:space="preserve">
     <value>Resalte de frenado</value>
   </data>
+  <data name="RearTires" xml:space="preserve">
+    <value>Ruedas traseras</value>
+  </data>
+  <data name="RimSize" xml:space="preserve">
+    <value>Tamaño de la rueda</value>
+  </data>
+  <data name="AntilockBrakeSystem" xml:space="preserve">
+    <value>Frenos ABS</value>
+  </data>
+  <data name="TireWear" xml:space="preserve">
+    <value>Desgaste de llantas</value>
+  </data>
+  <data name="BodyDamage" xml:space="preserve">
+    <value>Daño del chasis</value>
+  </data>
+  <data name="EngineDamage" xml:space="preserve">
+    <value>Daño del motor</value>
+  </data>
+  <data name="SuspensionDamage" xml:space="preserve">
+    <value>Daño de suspensión</value>
+  </data>
+  <data name="EngineTuning" xml:space="preserve">
+    <value>Puesta a punto de motor</value>
+  </data>
+  <data name="BrakeBalance" xml:space="preserve">
+    <value>Balance de frenos</value>
+  </data>
+  <data name="SteeringSpeed" xml:space="preserve">
+    <value>Respuesta de dirección</value>
+  </data>
+  <data name="GearRatioFactor" xml:space="preserve">
+    <value>Factor de relación de marcha</value>
+  </data>
+  <data name="SuspensionStiffness" xml:space="preserve">
+    <value>Firmeza de suspensión</value>
+  </data>
+  <data name="AeroFactor" xml:space="preserve">
+    <value>Factor de aero</value>
+  </data>
+  <data name="TireFactor" xml:space="preserve">
+    <value>Factor de llanta</value>
+  </data>
+  <data name="Engine" xml:space="preserve">
+    <value>Motor</value>
+  </data>
+  <data name="CopyToAuto" xml:space="preserve">
+    <value>Copiar a auto</value>
+  </data>
+  <data name="CopyToManual" xml:space="preserve">
+    <value>Copiar a manual</value>
+  </data>
+  <data name="CopyToRear" xml:space="preserve">
+    <value>Copiar a trasero</value>
+  </data>
+  <data name="CopyToFront" xml:space="preserve">
+    <value>Copiar a delantero</value>
+  </data>
+  <data name="AICurves" xml:space="preserve">
+    <value>Curvas de AI</value>
+  </data>
+  <data name="FrontTires" xml:space="preserve">
+    <value>Ruedas frontales</value>
+  </data>
+  <data name="TireWidth" xml:space="preserve">
+    <value>Ancho de rueda</value>
+  </data>
+  <data name="FrontBiasBrakeRatio" xml:space="preserve">
+    <value>Relación de frenado frontal</value>
+  </data>
+  <data name="PowerSteering" xml:space="preserve">
+    <value>Dirección asistida</value>
+  </data>
+  <data name="TurnCircleRadius" xml:space="preserve">
+    <value>Radio de giro</value>
+  </data>
+  <data name="TireSidewall" xml:space="preserve">
+    <value>Cara de llanta</value>
+  </data>
 </root>

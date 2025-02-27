@@ -1,0 +1,56 @@
+﻿<UserControl
+    x:Class="TheXDS.Vivianne.Views.Specialized.MissingView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:local="clr-namespace:TheXDS.Vivianne.Views.Specialized"
+    mc:Ignorable="d"
+    d:DesignWidth="600">
+    <UserControl.Resources>
+        <Style TargetType="BulletDecorator">
+            <Setter Property="Margin" Value="0,8"/>
+        </Style>
+    </UserControl.Resources>
+    <Border
+        VerticalAlignment="Center"
+        HorizontalAlignment="Center"
+        Margin="50"
+        CornerRadius="10"
+        Background="Gray">
+        <Border.Effect>
+            <DropShadowEffect/>
+        </Border.Effect>
+        <Grid Margin="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+            <ui:FontIcon VerticalAlignment="top" Glyph="⚠️" Foreground="Orange" FontSize="48"/>
+            <TextBlock TextWrapping="Wrap" VerticalAlignment="Center" Foreground="White" Margin="20,0,0,0" Grid.Column="1">
+                Could not find a View to display the specified ViewModel.<LineBreak/>
+                ViewModel type: <Run Text="{Binding Mode=OneWay}"/><LineBreak/>
+                If you see this message, then:<LineBreak/>
+                <BulletDecorator>
+                    <BulletDecorator.Bullet>
+                        <Ellipse Fill="White" Width="4" Height="4"/>
+                    </BulletDecorator.Bullet>
+                    <TextBlock Margin="5,0,0,0" TextWrapping="Wrap">A compiler optimization removed the related View and you're relying on a convention resolver for your Ganymede navigation host.</TextBlock>
+                </BulletDecorator><LineBreak/>
+                <BulletDecorator>
+                    <BulletDecorator.Bullet>
+                        <Ellipse Fill="White" Width="4" Height="4"/>
+                    </BulletDecorator.Bullet>
+                    <TextBlock Margin="5,0,0,0" TextWrapping="Wrap">You forgot to implement your view.</TextBlock>
+                </BulletDecorator><LineBreak/>
+                <BulletDecorator>
+                    <BulletDecorator.Bullet>
+                        <Ellipse Fill="White" Width="4" Height="4"/>
+                    </BulletDecorator.Bullet>
+                    <TextBlock Margin="5,0,0,0" TextWrapping="Wrap">You tried to navigate to the incorrect ViewModel.</TextBlock>
+                </BulletDecorator> 
+            </TextBlock>
+        </Grid>
+    </Border>
+</UserControl>

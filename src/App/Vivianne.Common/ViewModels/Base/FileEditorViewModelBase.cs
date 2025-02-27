@@ -1,9 +1,10 @@
-﻿using System.ComponentModel;
+﻿using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TheXDS.Ganymede.Helpers;
 using TheXDS.Ganymede.Models;
 using TheXDS.Ganymede.Types.Base;
+using TheXDS.MCART.Types.Base;
 using TheXDS.Vivianne.Component;
 using St = TheXDS.Vivianne.Resources.Strings.ViewModels.FshEditorViewModel;
 
@@ -18,7 +19,7 @@ namespace TheXDS.Vivianne.ViewModels.Base;
 /// </typeparam>
 public abstract class FileEditorViewModelBase<TState, TFile> : ViewModel, IViewModel, IFileEditorViewModel<TState, TFile>
     where TFile : notnull, new()
-    where TState : INotifyPropertyChanged, IFileState<TFile>, new()
+    where TState : NotifyPropertyChanged, IFileState<TFile>, new()
 {
     private TState state = default!;
 
@@ -29,13 +30,33 @@ public abstract class FileEditorViewModelBase<TState, TFile> : ViewModel, IViewM
     public ICommand SaveAsCommand { get; }
 
     /// <inheritdoc/>
-    public ICommand CloseCommand { get; }
+    public ICommand SaveAndCloseCommand { get; }
+
+    /// <inheritdoc/>
+    public ICommand DiscardAndCloseCommand { get; }
+
+    /// <inheritdoc/>
+    public bool UnsavedChanges => State?.UnsavedChanges ?? false;
 
     /// <inheritdoc/>
     public TState State
     {
         get => state;
-        set => Change(ref state, value);
+        set
+        {
+            var oldState = state;
+            if (Change(ref state, value))
+            {
+                oldState?.Unsubscribe(OnUnsavedChanges);
+                value?.Subscribe(OnUnsavedChanges);
+            }
+        }
+    }
+
+    private void OnUnsavedChanges(object instance, PropertyInfo property, PropertyChangeNotificationType notificationType)
+    {
+        if (property.Name != nameof(UnsavedChanges)) return;
+        Notify(nameof(UnsavedChanges));
     }
 
     /// <inheritdoc/>
@@ -48,19 +69,48 @@ public abstract class FileEditorViewModelBase<TState, TFile> : ViewModel, IViewM
     protected FileEditorViewModelBase()
     {
         var cb = CommandBuilder.For(this);
-        CloseCommand = cb.BuildSimple(OnClose);
-        SaveAsCommand = cb.BuildSimple(OnSaveAs);
-        SaveCommand = cb.BuildSimple(OnSave);
+        DiscardAndCloseCommand = cb.BuildSimple(OnClose);
+        SaveAsCommand = cb.BuildObserving(OnSaveAs).ListensToCanExecute(p => p.UnsavedChanges).Build();
+        SaveCommand = cb.BuildObserving(OnSave).ListensToCanExecute(p => p.UnsavedChanges).Build();
+        SaveAndCloseCommand = cb.BuildObserving(OnSaveAndClose).ListensToCanExecute(p => p.UnsavedChanges).Build();
     }
 
+    /// <summary>
+    /// Saves the file from the ViewModel state into the current backing store.
+    /// </summary>
+    /// <returns>
+    /// A <see cref="Task"/> that can be used to await the async operation.
+    /// </returns>
     protected virtual Task OnSave()
     {
         return BackingStore?.WriteAsync(State.File) ?? Task.CompletedTask;
     }
 
+    /// <summary>
+    /// Saves the file from the ViewModel state as a new file into the current
+    /// backing store.
+    /// </summary>
+    /// <returns>
+    /// A <see cref="Task"/> that can be used to await the async operation.
+    /// </returns>
     protected virtual Task OnSaveAs()
     {
         return BackingStore?.WriteNewAsync(State.File) ?? Task.CompletedTask;
+    }
+
+    /// <summary>
+    /// Saves the file from the ViewModel state into the current backing store
+    /// and closes this editor.
+    /// </summary>
+    /// <returns>
+    /// A <see cref="Task"/> that can be used to await the async operation.
+    /// </returns>
+    protected virtual async Task OnSaveAndClose()
+    {
+        if (await (BackingStore?.WriteAsync(State.File) ?? Task.FromResult(false)))
+        {
+            await OnClose();
+        }
     }
 
     private Task OnClose()

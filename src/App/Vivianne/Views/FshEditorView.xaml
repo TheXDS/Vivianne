@@ -63,7 +63,7 @@
                             Padding="10,2"
                             Content="{x:Static st2:Common.Save}"/>
                         <Button
-                            Command="{Binding CloseCommand}"
+                            Command="{Binding DiscardAndCloseCommand}"
                             VerticalAlignment="Center"
                             Padding="10,2"
                             Content="{x:Static st2:Common.Discard}"/>

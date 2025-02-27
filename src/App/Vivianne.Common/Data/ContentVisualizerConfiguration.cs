@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using TheXDS.Ganymede.Types.Base;
 using TheXDS.Vivianne.Component;
 using TheXDS.Vivianne.Models;
-using TheXDS.Vivianne.Models.Carp.Nfs3;
 using TheXDS.Vivianne.Models.Fce.Nfs3;
 using TheXDS.Vivianne.Models.Fsh;
 using TheXDS.Vivianne.Serializers;
-using TheXDS.Vivianne.Serializers.Carp.Nfs3;
 using TheXDS.Vivianne.Serializers.Fce.Nfs3;
 using TheXDS.Vivianne.Serializers.Fsh;
-using TheXDS.Vivianne.Tools;
 using TheXDS.Vivianne.ViewModels;
 using TheXDS.Vivianne.ViewModels.Base;
-using TheXDS.Vivianne.ViewModels.Carp.Nfs3;
 
 namespace TheXDS.Vivianne.Data;
 
@@ -23,10 +17,7 @@ namespace TheXDS.Vivianne.Data;
 /// for visualizing and optionally editing a file inside a VIV.
 /// </summary>
 /// <param name="data">Raw file data to be loaded into the viewer.</param>
-/// <param name="saveCalback">
-/// Callback to invoke when the ViewModel needs to request saving the file.
-/// </param>
-/// <param name="file">Reference to the current VIV file.</param>
+/// <param name="vm">Reference to the current VIV editor.</param>
 /// <param name="fileName">Filename for the file being opened.</param>
 /// <returns>
 /// A <see cref="IViewModel"/> that can be navigated to for previewing and
@@ -61,7 +52,7 @@ internal static class ContentVisualizerConfiguration
         yield return new(".fce", CreateFceEditorViewModel);
     }
 
-    private static IViewModel CreateFeDataEditorViewModel(byte[] data, VivEditorViewModel vm, string name)
+    private static IViewModel? CreateFeDataEditorViewModel(byte[] data, VivEditorViewModel vm, string name)
     {
         if (data[0] == 4)
         {
@@ -73,16 +64,15 @@ internal static class ContentVisualizerConfiguration
         }
     }
 
-    private static CarpEditorViewModel? CreateCarpEditorViewModel(byte[] data, VivEditorViewModel vm, string name)
+    private static IViewModel? CreateCarpEditorViewModel(byte[] data, VivEditorViewModel vm, string name)
     {
         if (System.Text.Encoding.Latin1.GetString(data).Contains("understeer gradient(80)"))
         {
-            return null;
-            //return CreateEditorViewModel<ViewModels.Carp.Nfs4.CarpEditorViewModel, Models.Carp.Nfs4.CarpEditorState, Models.Carp.Nfs4.CarPerf, Serializers.Carp.Nfs4.CarpSerializer>(data, vm, name);
+            return CreateEditorViewModel<ViewModels.Carp.Nfs4.CarpEditorViewModel, Models.Carp.Nfs4.CarpEditorState, Models.Carp.Nfs4.CarPerf, Serializers.Carp.Nfs4.CarpSerializer>(data, vm, name);
         }
         else
         {
-            return CreateEditorViewModel<ViewModels.Carp.Nfs3.CarpEditorViewModel, CarpEditorState, CarPerf, CarpSerializer>(data, vm, name);
+            return CreateEditorViewModel<ViewModels.Carp.Nfs3.CarpEditorViewModel, Models.Carp.Nfs3.CarpEditorState, Models.Carp.Nfs3.CarPerf, Serializers.Carp.Nfs3.CarpSerializer>(data, vm, name);
         }
 
         /*
@@ -97,28 +87,41 @@ internal static class ContentVisualizerConfiguration
         return new(data) { Title = name };
     }
 
-    private static Fce3EditorViewModel CreateFceEditorViewModel(byte[] data, VivEditorViewModel vm, string name)
+    private static Fce3EditorViewModel? CreateFceEditorViewModel(byte[] data, VivEditorViewModel vm, string name)
     {
         return CreateEditorViewModel<Fce3EditorViewModel, Fce3EditorState, FceFile, FceSerializer>(data, vm, name);
     }
 
-    private static FshEditorViewModel CreateFshEditorViewModel(byte[] data, VivEditorViewModel vm, string name)
+    private static FshEditorViewModel? CreateFshEditorViewModel(byte[] data, VivEditorViewModel vm, string name)
     {
         return CreateEditorViewModel<FshEditorViewModel, FshEditorState, FshFile, FshSerializer>(data, vm, name);
     }
 
-    private static TViewModel CreateEditorViewModel<TViewModel, TState, TFile, TSerializer>(byte[] data, VivEditorViewModel vm, string name)
-        where TFile : new()
-        where TViewModel : IFileEditorViewModel<TState, TFile>, new()
-        where TState : IFileState<TFile>, new()
-        where TSerializer : ISerializer<TFile>, new()
+    private static TViewModel? CreateEditorViewModel<TViewModel, TState, TFile, TSerializer>(byte[] data, VivEditorViewModel vm, string name)
+        where TFile : notnull, new()
+        where TViewModel : notnull, IFileEditorViewModel<TState, TFile>, new()
+        where TState : notnull, IFileState<TFile>, new()
+        where TSerializer : notnull, ISerializer<TFile>, new()
     {
-        TSerializer serializer = new();
-        return new TViewModel()
+        try
         {
-            Title = name,
-            State = new TState() { File = serializer.Deserialize(data) },
-            BackingStore = new BackingStore<TFile, TSerializer>(new VivBackingStore(vm)),
-        };
+            return new TViewModel()
+            {
+                Title = name,
+                State = new TState() { File = new TSerializer().Deserialize(data) },
+                BackingStore = new BackingStore<TFile, TSerializer>(new VivBackingStore(vm)) { FileName = name },
+            };
+        }
+#if DEBUG
+        catch (System.Exception ex)
+        {
+            vm.DialogService!.Error(ex);
+#else
+        catch
+        {
+            vm.DialogService!.Error($"Could not open {name}", "The file might be damaged or corrupt; or may use a format not currently understood by Vivianne.");
+#endif
+            return default;
+        }
     }
 }

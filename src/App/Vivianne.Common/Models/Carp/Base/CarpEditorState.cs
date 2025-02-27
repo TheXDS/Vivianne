@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using TheXDS.MCART.Types;
 using TheXDS.Vivianne.Models.Base;
-using TheXDS.Vivianne.Models.Carp;
 
 namespace TheXDS.Vivianne.Models.Carp.Base;
 
@@ -11,27 +10,27 @@ namespace TheXDS.Vivianne.Models.Carp.Base;
 /// </summary>
 public class CarpEditorState<TCarPerf, TCarClass> : FileStateBase<TCarPerf>, ICarPerf where TCarPerf : CarPerf<TCarClass> where TCarClass : unmanaged, Enum
 {
-    private ObservableCollectionWrap<double>? _aiCurve0;
-    private ObservableCollectionWrap<double>? _aiCurve1;
-    private ObservableCollectionWrap<double>? _aiCurve2;
-    private ObservableCollectionWrap<double>? _aiCurve3;
-    private ObservableCollectionWrap<double>? _aiCurve4;
-    private ObservableCollectionWrap<double>? _aiCurve5;
-    private ObservableCollectionWrap<double>? _aiCurve6;
-    private ObservableCollectionWrap<double>? _aiCurve7;
-    private ObservableCollectionWrap<double>? _brakeBlip;
-    private ObservableCollectionWrap<double>? _brakeDecreaseCurve;
-    private ObservableCollectionWrap<double>? _brakeIncreaseCurve;
-    private ObservableCollectionWrap<double>? _gasDecreaseCurve;
-    private ObservableCollectionWrap<double>? _gasIncreaseCurve;
-    private ObservableCollectionWrap<double>? _gearEfficiencyAuto;
-    private ObservableCollectionWrap<double>? _gearEfficiencyManual;
-    private ObservableCollectionWrap<double>? _gearRatioAuto;
-    private ObservableCollectionWrap<double>? _gearRatioManual;
-    private ObservableCollectionWrap<double>? _shiftBlip;
-    private ObservableCollectionWrap<double>? _torqueCurve;
-    private ObservableCollectionWrap<double>? _velocityToRpmAuto;
-    private ObservableCollectionWrap<double>? _velocityToRpmManual;
+    private ObservableListWrap<double>? _aiCurve0;
+    private ObservableListWrap<double>? _aiCurve1;
+    private ObservableListWrap<double>? _aiCurve2;
+    private ObservableListWrap<double>? _aiCurve3;
+    private ObservableListWrap<double>? _aiCurve4;
+    private ObservableListWrap<double>? _aiCurve5;
+    private ObservableListWrap<double>? _aiCurve6;
+    private ObservableListWrap<double>? _aiCurve7;
+    private ObservableListWrap<double>? _brakeBlip;
+    private ObservableListWrap<double>? _brakeDecreaseCurve;
+    private ObservableListWrap<double>? _brakeIncreaseCurve;
+    private ObservableListWrap<double>? _gasDecreaseCurve;
+    private ObservableListWrap<double>? _gasIncreaseCurve;
+    private ObservableListWrap<double>? _gearEfficiencyAuto;
+    private ObservableListWrap<double>? _gearEfficiencyManual;
+    private ObservableListWrap<double>? _gearRatioAuto;
+    private ObservableListWrap<double>? _gearRatioManual;
+    private ObservableListWrap<double>? _shiftBlip;
+    private ObservableListWrap<double>? _torqueCurve;
+    private ObservableListWrap<double>? _velocityToRpmAuto;
+    private ObservableListWrap<double>? _velocityToRpmManual;
 
     /// <inheritdoc/>
     public bool Abs
@@ -55,28 +54,28 @@ public class CarpEditorState<TCarPerf, TCarClass> : FileStateBase<TCarPerf>, ICa
     }
 
     /// <inheritdoc/>
-    public ICollection<double> AiCurve0 => _aiCurve0 ??= GetObservable(File.AiCurve0);
+    public IList<double> AiCurve0 => _aiCurve0 ??= GetObservable(File.AiCurve0);
 
     /// <inheritdoc/>
-    public ICollection<double> AiCurve1 => _aiCurve1 ??= GetObservable(File.AiCurve1);
+    public IList<double> AiCurve1 => _aiCurve1 ??= GetObservable(File.AiCurve1);
 
     /// <inheritdoc/>
-    public ICollection<double> AiCurve2 => _aiCurve2 ??= GetObservable(File.AiCurve2);
+    public IList<double> AiCurve2 => _aiCurve2 ??= GetObservable(File.AiCurve2);
 
     /// <inheritdoc/>
-    public ICollection<double> AiCurve3 => _aiCurve3 ??= GetObservable(File.AiCurve3);
+    public IList<double> AiCurve3 => _aiCurve3 ??= GetObservable(File.AiCurve3);
 
     /// <inheritdoc/>
-    public ICollection<double> AiCurve4 => _aiCurve4 ??= GetObservable(File.AiCurve4);
+    public IList<double> AiCurve4 => _aiCurve4 ??= GetObservable(File.AiCurve4);
 
     /// <inheritdoc/>
-    public ICollection<double> AiCurve5 => _aiCurve5 ??= GetObservable(File.AiCurve5);
+    public IList<double> AiCurve5 => _aiCurve5 ??= GetObservable(File.AiCurve5);
 
     /// <inheritdoc/>
-    public ICollection<double> AiCurve6 => _aiCurve6 ??= GetObservable(File.AiCurve6);
+    public IList<double> AiCurve6 => _aiCurve6 ??= GetObservable(File.AiCurve6);
 
     /// <inheritdoc/>
-    public ICollection<double> AiCurve7 => _aiCurve7 ??= GetObservable(File.AiCurve7);
+    public IList<double> AiCurve7 => _aiCurve7 ??= GetObservable(File.AiCurve7);
 
     /// <inheritdoc/>
     public double BodyDamage
@@ -93,13 +92,13 @@ public class CarpEditorState<TCarPerf, TCarClass> : FileStateBase<TCarPerf>, ICa
     }
 
     /// <inheritdoc/>
-    public ICollection<double> BrakeBlip => _brakeBlip ??= GetObservable(File.BrakeBlip);
+    public IList<double> BrakeBlip => _brakeBlip ??= GetObservable(File.BrakeBlip);
 
     /// <inheritdoc/>
-    public ICollection<double> BrakeDecreaseCurve => _brakeDecreaseCurve ??= GetObservable(File.BrakeDecreaseCurve);
+    public IList<double> BrakeDecreaseCurve => _brakeDecreaseCurve ??= GetObservable(File.BrakeDecreaseCurve);
 
     /// <inheritdoc/>
-    public ICollection<double> BrakeIncreaseCurve => _brakeIncreaseCurve ??= GetObservable(File.BrakeIncreaseCurve);
+    public IList<double> BrakeIncreaseCurve => _brakeIncreaseCurve ??= GetObservable(File.BrakeIncreaseCurve);
 
     /// <inheritdoc/>
     public double CameraArm
@@ -188,10 +187,10 @@ public class CarpEditorState<TCarPerf, TCarClass> : FileStateBase<TCarPerf>, ICa
     }
 
     /// <inheritdoc/>
-    public ICollection<double> GasDecreaseCurve => _gasDecreaseCurve ??= GetObservable(File.GasDecreaseCurve);
+    public IList<double> GasDecreaseCurve => _gasDecreaseCurve ??= GetObservable(File.GasDecreaseCurve);
 
     /// <inheritdoc/>
-    public ICollection<double> GasIncreaseCurve => _gasIncreaseCurve ??= GetObservable(File.GasIncreaseCurve);
+    public IList<double> GasIncreaseCurve => _gasIncreaseCurve ??= GetObservable(File.GasIncreaseCurve);
 
     /// <inheritdoc/>
     public double GasOffFactor
@@ -201,10 +200,10 @@ public class CarpEditorState<TCarPerf, TCarClass> : FileStateBase<TCarPerf>, ICa
     }
 
     /// <inheritdoc/>
-    public ICollection<double> GearEfficiencyAuto => _gearEfficiencyAuto ??= GetObservable(File.GearEfficiencyAuto);
+    public IList<double> GearEfficiencyAuto => _gearEfficiencyAuto ??= GetObservable(File.GearEfficiencyAuto);
 
     /// <inheritdoc/>
-    public ICollection<double> GearEfficiencyManual => _gearEfficiencyManual ??= GetObservable(File.GearEfficiencyManual);
+    public IList<double> GearEfficiencyManual => _gearEfficiencyManual ??= GetObservable(File.GearEfficiencyManual);
 
     /// <inheritdoc/>
     public double GearRatFactor
@@ -214,10 +213,10 @@ public class CarpEditorState<TCarPerf, TCarClass> : FileStateBase<TCarPerf>, ICa
     }
 
     /// <inheritdoc/>
-    public ICollection<double> GearRatioAuto => _gearRatioAuto ??= GetObservable(File.GearRatioAuto);
+    public IList<double> GearRatioAuto => _gearRatioAuto ??= GetObservable(File.GearRatioAuto);
 
     /// <inheritdoc/>
-    public ICollection<double> GearRatioManual => _gearRatioManual ??= GetObservable(File.GearRatioManual);
+    public IList<double> GearRatioManual => _gearRatioManual ??= GetObservable(File.GearRatioManual);
 
     /// <inheritdoc/>
     public int GearShiftDelay
@@ -360,7 +359,7 @@ public class CarpEditorState<TCarPerf, TCarClass> : FileStateBase<TCarPerf>, ICa
     }
 
     /// <inheritdoc/>
-    public ICollection<double> ShiftBlip => _shiftBlip ??= GetObservable(File.ShiftBlip);
+    public IList<double> ShiftBlip => _shiftBlip ??= GetObservable(File.ShiftBlip);
 
     /// <inheritdoc/>
     public double SlideAssistanceFactor
@@ -496,7 +495,7 @@ public class CarpEditorState<TCarPerf, TCarClass> : FileStateBase<TCarPerf>, ICa
     }
 
     /// <inheritdoc/>
-    public ICollection<double> TorqueCurve => _torqueCurve ??= GetObservable(File.TorqueCurve);
+    public IList<double> TorqueCurve => _torqueCurve ??= GetObservable(File.TorqueCurve);
 
     /// <inheritdoc/>
     public double TurnCircleRadius
@@ -520,10 +519,10 @@ public class CarpEditorState<TCarPerf, TCarClass> : FileStateBase<TCarPerf>, ICa
     }
 
     /// <inheritdoc/>
-    public ICollection<double> VelocityToRpmAuto => _velocityToRpmAuto ??= GetObservable(File.VelocityToRpmAuto);
+    public IList<double> VelocityToRpmAuto => _velocityToRpmAuto ??= GetObservable(File.VelocityToRpmAuto);
 
     /// <inheritdoc/>
-    public ICollection<double> VelocityToRpmManual => _velocityToRpmManual ??= GetObservable(File.VelocityToRpmManual);
+    public IList<double> VelocityToRpmManual => _velocityToRpmManual ??= GetObservable(File.VelocityToRpmManual);
 
     /// <inheritdoc/>
     public double WheelBase

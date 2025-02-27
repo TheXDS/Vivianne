@@ -117,124 +117,52 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Description" xml:space="preserve">
-    <value>Ejecuta operaciones sobre archivos VIV.</value>
+  <data name="FshBlobToLabel_Palette32" xml:space="preserve">
+    <value>Paleta de color de 32 bits</value>
   </data>
-  <data name="Arg1" xml:space="preserve">
-    <value>archivo viv</value>
+  <data name="FshBlobToLabel_Indexed8" xml:space="preserve">
+    <value>Mapa de bits de 8 bits (256 colores) con paleta</value>
   </data>
-  <data name="Arg1Description" xml:space="preserve">
-    <value>Ruta al archivo VIV.</value>
+  <data name="FshBlobToLabel_Rgb565" xml:space="preserve">
+    <value>Color de 16 bits (RGB565), sin alfa</value>
   </data>
-  <data name="Add_Help" xml:space="preserve">
-    <value>Agrega un archivo al archivo VIV.</value>
+  <data name="FshBlobToLabel_Argb32" xml:space="preserve">
+    <value>Color de 24 bits con 8 bits de alfa (ARGB32)</value>
   </data>
-  <data name="Add_Arg1Help" xml:space="preserve">
-    <value>Indica el archivo a ser agregado.</value>
+  <data name="FshBlobToLabel_Argb1555" xml:space="preserve">
+    <value>Color de 16 bits con 1 bit de alfa (ARGB1555)</value>
   </data>
-  <data name="Add_Arg1" xml:space="preserve">
-    <value>archivo</value>
+  <data name="FshBlobToLabel_Palette24Dos" xml:space="preserve">
+    <value>Paleta de 24 bits, variante DOS</value>
   </data>
-  <data name="Add_ForceHelp" xml:space="preserve">
-    <value>Agrega el archivo de forma forzada, incluso si ya existe el mismo dentro del archivo VIV.</value>
+  <data name="FshBlobToLabel_Palette24" xml:space="preserve">
+    <value>Paleta de 24 bits</value>
   </data>
-  <data name="Add_NameHelp" xml:space="preserve">
-    <value>Nuevo nombre del archivo. Si se omite, se utilizará el nombre actual.</value>
+  <data name="FshBlobToLabel_Palette16Nfs5" xml:space="preserve">
+    <value>Paleta de 16 bits, variante de NFS5</value>
   </data>
-  <data name="Add_Fail" xml:space="preserve">
-    <value>El archivo VIV especificado ya contiene '{0}'.</value>
+  <data name="FshBlobToLabel_Palette16" xml:space="preserve">
+    <value>Paleta de 16 bits</value>
   </data>
-  <data name="Extract_Help" xml:space="preserve">
-    <value>Extrae un archivo desde el VIV especificado.</value>
+  <data name="FshBlobToLabel_Rgb24" xml:space="preserve">
+    <value>Color de 24 bits sin alfa (RGB24)</value>
   </data>
-  <data name="Extract_Arg1" xml:space="preserve">
-    <value>regex de archivo(s)</value>
+  <data name="FshBlobToLabel_Dxt3" xml:space="preserve">
+    <value>Textura con compresión DXT3</value>
   </data>
-  <data name="Extract_Arg1Help" xml:space="preserve">
-    <value>Nombre de archivo/regex que indica el o los archivos a extraer desde el VIV especificado. Si se omite, se extraerán todos los archivos.</value>
+  <data name="FshBlobToLabel_Dxt4" xml:space="preserve">
+    <value>Textura con compresión DXT4</value>
   </data>
-  <data name="Extract_DirectoryHelp" xml:space="preserve">
-    <value>Directorio de salida en el cual se escribirán los archivos. Se establece en el directorio actual de forma predeterminada.</value>
+  <data name="FshBlobFooterToLabel_None" xml:space="preserve">
+    <value>Sin datos de pié</value>
   </data>
-  <data name="Info_Help" xml:space="preserve">
-    <value>Obtiene información básica del archivo VIV.</value>
+  <data name="FshBlobFooterToLabel_CarDashboard" xml:space="preserve">
+    <value>Datos de cabina</value>
   </data>
-  <data name="Info_1" xml:space="preserve">
-    <value>Firma del encabezado: 0x{0} ({1})</value>
+  <data name="FshBlobFooterToLabel_ColorPalette" xml:space="preserve">
+    <value>Paleta de colores local</value>
   </data>
-  <data name="Info_2" xml:space="preserve">
-    <value>Tamaño del archivo en el encabezado: {0} ({1})</value>
-  </data>
-  <data name="Info_3" xml:space="preserve">
-    <value>Tamaño de archivo calculado: {0} ({1})</value>
-  </data>
-  <data name="Info_4" xml:space="preserve">
-    <value>Tamaño real del archivo: {0} ({1})</value>
-  </data>
-  <data name="Info_5" xml:space="preserve">
-    <value>Archivos: {0}</value>
-  </data>
-  <data name="Info_6" xml:space="preserve">
-    <value>Desplazamiento de la piscina de datos: {0}</value>
-  </data>
-  <data name="Ls_Help" xml:space="preserve">
-    <value>Enumera todos los archivos dentro del archivo VIV.</value>
-  </data>
-  <data name="Ls_SizeHelp" xml:space="preserve">
-    <value>Incluye el tamaño de cada archivo en el listado.</value>
-  </data>
-  <data name="Ls_OffsetHelp" xml:space="preserve">
-    <value>Incluye el desplazamiento de cada archivo en el listado.</value>
-  </data>
-  <data name="Ls_HumanHelp" xml:space="preserve">
-    <value>Los tamaños de archivo se presentarán en formato legible por humanos.</value>
-  </data>
-  <data name="Ls_DecHelp" xml:space="preserve">
-    <value>El desplazamiento de los archivos será presentado en formato decimal.</value>
-  </data>
-  <data name="Read_Help" xml:space="preserve">
-    <value>Lee un archivo dentro del archivo VIV.</value>
-  </data>
-  <data name="Read_FileHelp" xml:space="preserve">
-    <value>Archivo a leer dentro del VIV.</value>
-  </data>
-  <data name="Read_OutputHelp" xml:space="preserve">
-    <value>Si se especifica, indica la ruta donde se guardará el archivo. Si se omite, el contenido del archivo se volcará en la salida estándar.</value>
-  </data>
-  <data name="Read_Fail1" xml:space="preserve">
-    <value>Debe especificar un nombre de archivo.</value>
-  </data>
-  <data name="Read_Fail2" xml:space="preserve">
-    <value>El VIV especificado no contiene a '{0}'.</value>
-  </data>
-  <data name="Read_Arg1" xml:space="preserve">
-    <value>archivo</value>
-  </data>
-  <data name="Rm_Help" xml:space="preserve">
-    <value>Elimina un archivo dentro del archivo VIV.</value>
-  </data>
-  <data name="Rm_Arg1" xml:space="preserve">
-    <value>archivo</value>
-  </data>
-  <data name="Rm_Arg1Help" xml:space="preserve">
-    <value>Archivo a eliminar.</value>
-  </data>
-  <data name="Rm_Fail" xml:space="preserve">
-    <value>El VIV especificado no contiene a '{0}'.</value>
-  </data>
-  <data name="Rename_Arg1Help" xml:space="preserve">
-    <value>Nombre del archivo a renombrar. Debe existir dentro del VIV.</value>
-  </data>
-  <data name="Rename_Arg1" xml:space="preserve">
-    <value>archivo</value>
-  </data>
-  <data name="Rename_Help" xml:space="preserve">
-    <value>Renombra un archivo dentro de un VIV.</value>
-  </data>
-  <data name="Rename_Arg2" xml:space="preserve">
-    <value>nuevo nombre</value>
-  </data>
-  <data name="Rename_Arg2Help" xml:space="preserve">
-    <value>Nuevo nombre del archivo.</value>
+  <data name="FshBlobFooterToLabel_Padding" xml:space="preserve">
+    <value>Ceros de espaciado</value>
   </data>
 </root>

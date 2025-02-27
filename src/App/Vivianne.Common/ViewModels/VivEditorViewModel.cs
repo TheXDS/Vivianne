@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TheXDS.Ganymede.Helpers;
@@ -10,6 +11,7 @@ using TheXDS.Ganymede.Resources;
 using TheXDS.Ganymede.Types.Base;
 using TheXDS.Ganymede.Types.Extensions;
 using TheXDS.Ganymede.ViewModels;
+using TheXDS.MCART.Types.Base;
 using TheXDS.Vivianne.Component;
 using TheXDS.Vivianne.Data;
 using TheXDS.Vivianne.Models;
@@ -26,9 +28,22 @@ public class VivEditorViewModel : HostViewModelBase, IFileEditorViewModel<VivEdi
 {
     private static readonly Dictionary<string, ContentVisualizerViewModelFactory> ContentVisualizers = new(ContentVisualizerConfiguration.Get());
     private static readonly Dictionary<string, (string, Func<byte[]>)[]> Templates = new(VivTemplates.Get());
+    private VivEditorState state;
 
     /// <inheritdoc/>
-    public VivEditorState State { get; set; } = null!;
+    public VivEditorState State
+    {
+        get => state;
+        set
+        {
+            var oldState = state;
+            if (Change(ref state, value))
+            {
+                oldState?.Unsubscribe(() => oldState.UnsavedChanges);
+                value?.Subscribe(() => value.UnsavedChanges, OnUnsavedChanges);
+            }
+        }
+    }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="VivEditorViewModel"/> class.
@@ -43,9 +58,10 @@ public class VivEditorViewModel : HostViewModelBase, IFileEditorViewModel<VivEdi
         RemoveFileCommand = cb.BuildSimple(OnRemoveFile);
         RenameFileCommand = cb.BuildSimple(OnRenameFile);
         NewFromTemplateCommand = cb.BuildSimple(OnNewFromTemplate);
-        CloseCommand = cb.BuildSimple(OnClose);
-        SaveAsCommand = cb.BuildSimple(OnSaveAs);
+        DiscardAndCloseCommand = cb.BuildSimple(OnClose);
         SaveCommand = cb.BuildSimple(OnSave);
+        SaveAsCommand = cb.BuildSimple(OnSaveAs);
+        SaveAndCloseCommand = cb.BuildObserving(OnSaveAndClose).ListensToCanExecute(p => p.UnsavedChanges).Build();
     }
 
     /// <summary>
@@ -97,7 +113,13 @@ public class VivEditorViewModel : HostViewModelBase, IFileEditorViewModel<VivEdi
     public ICommand? SaveAsCommand { get; }
 
     /// <inheritdoc/>
-    public ICommand CloseCommand { get; }
+    public ICommand SaveAndCloseCommand { get; }
+
+    /// <inheritdoc/>
+    public ICommand DiscardAndCloseCommand { get; }
+
+    /// <inheritdoc/>
+    public bool UnsavedChanges => State?.UnsavedChanges ?? false;
 
     /// <inheritdoc/>
     public IBackingStore<VivFile>? BackingStore { get; init; }
@@ -115,9 +137,9 @@ public class VivEditorViewModel : HostViewModelBase, IFileEditorViewModel<VivEdi
                     break;
                 }
             }
-            vm ??= new FileErrorViewModel();//new ExternalFileViewModel(rawData, new VivBackingStore(this), file);
+            vm ??= new FileErrorViewModel();
             vm.Title = file;
-            ChildNavService!.Navigate(vm);
+            ChildNavService!.NavigateAndReset(vm);
         }
         else
         {
@@ -221,10 +243,20 @@ public class VivEditorViewModel : HostViewModelBase, IFileEditorViewModel<VivEdi
         return BackingStore?.WriteNewAsync(State.File) ?? Task.CompletedTask;
     }
 
+    protected virtual async Task OnSaveAndClose()
+    {
+        await OnSave();
+        await OnClose();
+    }
 
     private Task OnClose()
     {
         return NavigationService?.NavigateBack() ?? Task.CompletedTask;
+    }
+
+    private void OnUnsavedChanges(object instance, PropertyInfo property, PropertyChangeNotificationType notificationType)
+    {
+        Notify(nameof(UnsavedChanges));
     }
 
     /// <inheritdoc/>

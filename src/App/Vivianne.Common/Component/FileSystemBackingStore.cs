@@ -7,17 +7,33 @@ using TheXDS.Ganymede.Services;
 
 namespace TheXDS.Vivianne.Component;
 
+/// <summary>
+/// Implements a backing store that reads and writes files on the computer's
+/// filesystem.
+/// </summary>
+/// <param name="dialogSvc">
+/// Dialog service to use when requesting new filenames to store copies or new
+/// versions of an entity.
+/// </param>
+/// <param name="saveFilters">
+/// File filters to use when invoking the dialog service.
+/// </param>
+/// <param name="path">
+/// Full path to the file in the computer's filesystem.
+/// </param>
 public class FileSystemBackingStore(IDialogService dialogSvc, IEnumerable<FileFilterItem> saveFilters, string path) : IBackingStore
 {
     private readonly IDialogService _dialogSvc = dialogSvc;
     private readonly IEnumerable<FileFilterItem> _saveFilters = saveFilters;
     private readonly string path = path;
 
+    /// <inheritdoc/>
     public async Task<byte[]?> ReadAsync(string fileName)
     {
         return File.Exists(fileName) ? await File.ReadAllBytesAsync(fileName) : null;
     }
 
+    /// <inheritdoc/>
     public async Task<bool> WriteAsync(string fileName, byte[] content)
     {
         try
@@ -32,11 +48,13 @@ public class FileSystemBackingStore(IDialogService dialogSvc, IEnumerable<FileFi
         }
     }
 
-    public Task<DialogResult<string>> GetNewFileName(string? oldFileName)
+    /// <inheritdoc/>
+    public Task<DialogResult<string?>> GetNewFileName(string? oldFileName)
     {
-        return _dialogSvc.GetFileSavePath(CommonDialogTemplates.FileSave, _saveFilters, Path.Combine(path, oldFileName));
+        return _dialogSvc.GetFileSavePath(CommonDialogTemplates.FileSave, _saveFilters, Path.Combine(path, oldFileName ?? ""));
     }
 
+    /// <inheritdoc/>
     public IEnumerable<string> EnumerateFiles()
     {
         return Directory.EnumerateFiles(path);

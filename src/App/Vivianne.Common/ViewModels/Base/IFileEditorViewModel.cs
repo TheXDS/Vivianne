@@ -1,18 +1,12 @@
 ﻿using System.Windows.Input;
 using TheXDS.Ganymede.Types.Base;
-using TheXDS.Vivianne.Component;
 
 namespace TheXDS.Vivianne.ViewModels.Base;
 
 /// <summary>
-/// Defines a set of members to be implemented by a type that conforms a file
-/// editor ViewModel for a specific type of file.
+/// Defines a set of members to be implemented by a type that exposes commands to save a file.
 /// </summary>
-/// <typeparam name="TState">Type of state inside the ViewModel.</typeparam>
-/// <typeparam name="TFile">
-/// Type of file for which the ViewModel is an editor.
-/// </typeparam>
-public interface IFileEditorViewModel<TState, TFile> : IStatefulViewModel<TState> where TState : IFileState<TFile> where TFile : notnull
+public interface IFileEditorViewModel : IViewModel
 {
     /// <summary>
     /// Gets a reference to the command used to save all changes made to the
@@ -27,13 +21,17 @@ public interface IFileEditorViewModel<TState, TFile> : IStatefulViewModel<TState
     ICommand SaveAsCommand { get; }
 
     /// <summary>
-    /// Gets a reference to the command used to close the active editor.
+    /// Gets a reference to the command used to save the current file and close the editor.
     /// </summary>
-    ICommand CloseCommand { get; }
+    ICommand SaveAndCloseCommand { get; }
 
     /// <summary>
-    /// Gets or initializes a reference to the backing store used to read and
-    /// write files.
+    /// Gets a reference to the command used to close the active editor, discarding all changes.
     /// </summary>
-    IBackingStore<TFile>? BackingStore { get; init; }
+    ICommand DiscardAndCloseCommand { get; }
+
+    /// <summary>
+    /// Gets a value that indicates if there's unsaved changes in the editor.
+    /// </summary>
+    bool UnsavedChanges { get; }
 }

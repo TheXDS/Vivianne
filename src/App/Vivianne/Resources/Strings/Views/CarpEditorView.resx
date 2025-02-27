@@ -355,4 +355,22 @@
   <data name="TireFactor" xml:space="preserve">
     <value>Tire factor</value>
   </data>
+  <data name="Engine" xml:space="preserve">
+    <value>Engine</value>
+  </data>
+  <data name="CopyToAuto" xml:space="preserve">
+    <value>Copy to auto</value>
+  </data>
+  <data name="CopyToManual" xml:space="preserve">
+    <value>Copy to manual</value>
+  </data>
+  <data name="CopyToRear" xml:space="preserve">
+    <value>Copy to rear</value>
+  </data>
+  <data name="CopyToFront" xml:space="preserve">
+    <value>Copy to front</value>
+  </data>
+  <data name="AICurves" xml:space="preserve">
+    <value>AI curves</value>
+  </data>
 </root>

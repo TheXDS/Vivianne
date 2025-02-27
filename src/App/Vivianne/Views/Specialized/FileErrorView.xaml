@@ -7,20 +7,22 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:local="clr-namespace:TheXDS.Vivianne.Views.Specialized"
     mc:Ignorable="d">
-    <Border VerticalAlignment="Center" HorizontalAlignment="Center" CornerRadius="10" Background="Gray">
+    <Border
+        VerticalAlignment="Center"
+        HorizontalAlignment="Center"
+        Margin="50"
+        CornerRadius="10"
+        Background="Gray">
         <Border.Effect>
-            <DropShadowEffect>
-                
-            </DropShadowEffect>
+            <DropShadowEffect/>
         </Border.Effect>
-
-        <Grid Margin="30">
+        <Grid Margin="20">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
             <ui:FontIcon Glyph="⚠️" Foreground="Orange" FontSize="48"/>
-            <TextBlock VerticalAlignment="Center" Foreground="White" Margin="20,0,0,0" Grid.Column="1">
+            <TextBlock TextWrapping="Wrap" VerticalAlignment="Center" Foreground="White" Margin="20,0,0,0" Grid.Column="1">
                 Vivianne could not understand this file format.
             </TextBlock>
         </Grid>

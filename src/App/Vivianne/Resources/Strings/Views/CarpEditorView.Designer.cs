@@ -151,6 +151,15 @@ namespace TheXDS.Vivianne.Resources.Strings.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to AI curves.
+        /// </summary>
+        public static string AICurves {
+            get {
+                return ResourceManager.GetString("AICurves", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Antilock Brake System.
         /// </summary>
         public static string AntilockBrakeSystem {
@@ -241,6 +250,42 @@ namespace TheXDS.Vivianne.Resources.Strings.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copy to auto.
+        /// </summary>
+        public static string CopyToAuto {
+            get {
+                return ResourceManager.GetString("CopyToAuto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy to front.
+        /// </summary>
+        public static string CopyToFront {
+            get {
+                return ResourceManager.GetString("CopyToFront", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy to manual.
+        /// </summary>
+        public static string CopyToManual {
+            get {
+                return ResourceManager.GetString("CopyToManual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy to rear.
+        /// </summary>
+        public static string CopyToRear {
+            get {
+                return ResourceManager.GetString("CopyToRear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Drive dynamics.
         /// </summary>
         public static string DriveDynamics {
@@ -255,6 +300,15 @@ namespace TheXDS.Vivianne.Resources.Strings.Views {
         public static string Drivetrain {
             get {
                 return ResourceManager.GetString("Drivetrain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Engine.
+        /// </summary>
+        public static string Engine {
+            get {
+                return ResourceManager.GetString("Engine", resourceCulture);
             }
         }
         

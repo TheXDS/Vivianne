@@ -91,6 +91,13 @@ public class CarpEditorViewModel<TState, TFile, TCarClass> : FileEditorViewModel
     /// </summary>
     public ICommand PerformanceMetricsCommand { get; }
 
+    /// <inheritdoc/>
+    protected override Task OnCreated()
+    {
+        State.UnsavedChanges = false;
+        return base.OnCreated();
+    }
+
     private Task OnEditDoubleCurve(object? parameter)
     {
         return parameter switch
@@ -120,7 +127,7 @@ public class CarpEditorViewModel<TState, TFile, TCarClass> : FileEditorViewModel
 
     private void OnFeDataSync()
     {
-        throw new NotImplementedException();
+        //throw new NotImplementedException();
         //if (_vivFileRef is not null)
         //{
         //    UiThread.Invoke(() => FeData3SyncTool.Sync(State.ToCarp(), _vivFileRef.Directory));
@@ -130,50 +137,50 @@ public class CarpEditorViewModel<TState, TFile, TCarClass> : FileEditorViewModel
 
     private void OnCarpWizard()
     {
-        throw new NotImplementedException();
+        //throw new NotImplementedException();
     }
 
     private void OnCopyTransToManual()
     {
-        State.File.NumberOfGearsManual = State.File.NumberOfGearsAuto;
-        State.File.FinalGearManual = State.File.FinalGearAuto;
-        State.File.VelocityToRpmManual.Clear();
-        State.File.VelocityToRpmManual.AddRange(State.File.VelocityToRpmAuto);
-        State.File.GearRatioManual.Clear();
-        State.File.GearRatioManual.AddRange(State.File.GearRatioAuto);
-        State.File.GearEfficiencyManual.Clear();
-        State.File.GearEfficiencyManual.AddRange(State.File.GearEfficiencyAuto);
+        State.NumberOfGearsManual = State.NumberOfGearsAuto;
+        State.FinalGearManual = State.FinalGearAuto;
+        State.VelocityToRpmManual.Clear();
+        State.VelocityToRpmManual.AddRange(State.VelocityToRpmAuto);
+        State.GearRatioManual.Clear();
+        State.GearRatioManual.AddRange(State.GearRatioAuto);
+        State.GearEfficiencyManual.Clear();
+        State.GearEfficiencyManual.AddRange(State.GearEfficiencyAuto);
     }
 
     private void OnCopyTransToAuto()
     {
-        State.File.NumberOfGearsAuto = State.File.NumberOfGearsManual;
-        State.File.FinalGearAuto = State.File.FinalGearManual;
-        State.File.VelocityToRpmAuto.Clear();
-        State.File.VelocityToRpmAuto.AddRange(State.File.VelocityToRpmManual);
-        State.File.GearRatioAuto.Clear();
-        State.File.GearRatioAuto.AddRange(State.File.GearRatioManual);
-        State.File.GearEfficiencyAuto.Clear();
-        State.File.GearEfficiencyAuto.AddRange(State.File.GearEfficiencyManual);
+        State.NumberOfGearsAuto = State.NumberOfGearsManual;
+        State.FinalGearAuto = State.FinalGearManual;
+        State.VelocityToRpmAuto.Clear();
+        State.VelocityToRpmAuto.AddRange(State.VelocityToRpmManual);
+        State.GearRatioAuto.Clear();
+        State.GearRatioAuto.AddRange(State.GearRatioManual);
+        State.GearEfficiencyAuto.Clear();
+        State.GearEfficiencyAuto.AddRange(State.GearEfficiencyManual);
     }
 
     private void OnCopyTiresToFront()
     {
-        State.File.TireWidthFront = State.File.TireWidthRear;
-        State.File.TireSidewallFront = State.File.TireSidewallRear;
-        State.File.TireRimFront = State.File.TireRimRear;
+        State.TireWidthFront = State.TireWidthRear;
+        State.TireSidewallFront = State.TireSidewallRear;
+        State.TireRimFront = State.TireRimRear;
     }
 
     private void OnCopyTiresToRear()
     {
-        State.File.TireWidthRear = State.File.TireWidthFront;
-        State.File.TireSidewallRear = State.File.TireSidewallFront;
-        State.File.TireRimRear = State.File.TireRimFront;
+        State.TireWidthRear = State.TireWidthFront;
+        State.TireSidewallRear = State.TireSidewallFront;
+        State.TireRimRear = State.TireRimFront;
     }
 
     private void Vm_StateSaved(object? sender, EventArgs e)
     {
-        State.UnsavedChanges = true;
+        State.UnsavedChanges = true;        
     }
 
     private async Task<ICollection<double>> RunCurveEditor(ICollection<double> c)
@@ -187,7 +194,7 @@ public class CarpEditorViewModel<TState, TFile, TCarClass> : FileEditorViewModel
 
     private Task OnPerformanceMetrics()
     {
-        var a = Mappings.GetTextProviderFromCulture(State.File);
+        var a = Mappings.GetTextProviderFromCulture(State);
         return DialogService!.Message(St.PerformanceMetrics, string.Format(St.PerformanceMetricsDetails,
             a.Weight,
             a.TopSpeed,
