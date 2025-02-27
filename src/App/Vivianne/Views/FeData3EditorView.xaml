@@ -29,12 +29,12 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <UniformGrid Rows="1" Margin="10" HorizontalAlignment="Center" Grid.ColumnSpan="2">
-            <Button Padding="10,2" Command="{Binding SaveCommand, Mode=OneWay}" Content="{x:Static stc:Common.Save}"/>
-        </UniformGrid>
-        <CheckBox Margin="10,0" Style="{StaticResource ToggleSwitch}" Grid.Column="2">
-            <TextBlock Text="{x:Static st:FeDataEditorView.LinkEdits}" Foreground="White"/>
-        </CheckBox>
+        <ct:EditorBackdrop Grid.Row="1"/>
+        <controls:FileEditorCommandBar Editor="{Binding}" ShowClose="False">
+            <CheckBox Margin="10,0" Style="{StaticResource ToggleSwitch}" HorizontalAlignment="Right">
+                <TextBlock Text="{x:Static st:FeDataEditorView.LinkEdits}" Foreground="White"/>
+            </CheckBox>
+        </controls:FileEditorCommandBar>
         <ScrollViewer Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" BorderThickness="0">
             <ScrollViewer.Resources>
                 <Style TargetType="ScrollViewer">
@@ -42,9 +42,11 @@
                 </Style>
                 <Style TargetType="ui:TextBox" BasedOn="{StaticResource {x:Type ui:TextBox}}">
                     <Setter Property="Margin" Value="5"/>
+                    <Setter Property="MinWidth" Value="200"/>
                 </Style>
                 <Style TargetType="ui:NumberBox" BasedOn="{StaticResource {x:Type ui:NumberBox}}">
                     <Setter Property="Margin" Value="5"/>
+                    <Setter Property="MinWidth" Value="200"/>
                 </Style>
                 <Style TargetType="UniformGrid">
                     <Setter Property="Margin" Value="5"/>
@@ -54,7 +56,7 @@
                     <Setter Property="Margin" Value="5"/>
                 </Style>
             </ScrollViewer.Resources>
-            <StackPanel Margin="5">
+            <StackPanel Margin="0">
                 <mcart:StretchyWrapPanel>
                     <Expander Header="{x:Static st:FeDataEditorView.BasicProperties}" IsExpanded="True">
                         <StackPanel Margin="5">
@@ -67,6 +69,7 @@
                                     hlp:Form.Label="{x:Static st:FeDataEditorView.CarId}"
                                     VerticalAlignment="Center"
                                     MaxLength="4"
+                                    MinWidth="100"
                                     Margin="5"
                                     HorizontalAlignment="Stretch"
                                     Text="{Binding State.File.CarId}"/>
@@ -135,9 +138,9 @@
                         </Grid>
                     </Expander>
                 </mcart:StretchyWrapPanel>
-                <UniformGrid Margin="0">
+                <mcart:StretchyWrapPanel StretchProportionally="False">
                     <Expander Header="{x:Static st:FeDataEditorView.General}" IsExpanded="True" VerticalAlignment="Stretch">
-                        <UniformGrid Columns="2">
+                        <mcart:StretchyWrapPanel StretchProportionally="False">
                             <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Manufacturer}" Text="{Binding State.File.Manufacturer}"/>
                             <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Model}" Text="{Binding State.File.Model}"/>
                             <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Price}" Text="{Binding State.File.Price}"/>
@@ -147,10 +150,10 @@
                             <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Width}" Text="{Binding State.File.Width}"/>
                             <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Height}" Text="{Binding State.File.Height}"/>
                             <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Length}" Text="{Binding State.File.Length}"/>
-                        </UniformGrid>
+                        </mcart:StretchyWrapPanel>
                     </Expander>
                     <Expander Header="{x:Static st:FeDataEditorView.Performance}" IsExpanded="True" VerticalAlignment="Stretch">
-                        <UniformGrid Columns="2">
+                        <mcart:StretchyWrapPanel StretchProportionally="False">
                             <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Engine}" Text="{Binding State.File.Engine}"/>
                             <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Displacement}" Text="{Binding State.File.Displacement}"/>
                             <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Power}" Text="{Binding State.File.Hp}"/>
@@ -163,10 +166,10 @@
                             <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Accel0To100}" Text="{Binding State.File.Accel0To100}"/>
                             <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Transmission}" Text="{Binding State.File.Transmission}"/>
                             <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Gearbox}" Text="{Binding State.File.Gearbox}"/>
-                        </UniformGrid>
+                        </mcart:StretchyWrapPanel>
                     </Expander>
                     <Expander Header="{x:Static st:FeDataEditorView.History}" IsExpanded="True" VerticalAlignment="Stretch">
-                        <UniformGrid Columns="2">
+                        <mcart:StretchyWrapPanel StretchProportionally="False">
                             <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.History1}" Text="{Binding State.File.History1}"/>
                             <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.History2}" Text="{Binding State.File.History2}"/>
                             <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.History3}" Text="{Binding State.File.History3}"/>
@@ -175,13 +178,13 @@
                             <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.History6}" Text="{Binding State.File.History6}"/>
                             <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.History7}" Text="{Binding State.File.History7}"/>
                             <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.History8}" Text="{Binding State.File.History8}"/>
-                        </UniformGrid>
+                        </mcart:StretchyWrapPanel>
                     </Expander>
                     <Expander Header="{x:Static st:FeDataEditorView.Colors}" IsExpanded="True" VerticalAlignment="Stretch">
-                        <UniformGrid Columns="2">
-                            <UniformGrid.Resources>
+                        <mcart:StretchyWrapPanel StretchProportionally="False">
+                            <mcart:StretchyWrapPanel.Resources>
                                 <valueconverters:DrawingColorToBrushConverter x:Key="dc2bc"/>
-                            </UniformGrid.Resources>
+                            </mcart:StretchyWrapPanel.Resources>
                             <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color1}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[0], Mode=OneWay}" Text="{Binding State.File.Color1}"/>
                             <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color2}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[1], Mode=OneWay}" Text="{Binding State.File.Color2}"/>
                             <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color3}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[2], Mode=OneWay}" Text="{Binding State.File.Color3}"/>
@@ -192,9 +195,9 @@
                             <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color8}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[7], Mode=OneWay}" Text="{Binding State.File.Color8}"/>
                             <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color9}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[8], Mode=OneWay}" Text="{Binding State.File.Color9}"/>
                             <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color10}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[9], Mode=OneWay}" Text="{Binding State.File.Color10}"/>
-                        </UniformGrid>
+                        </mcart:StretchyWrapPanel>
                     </Expander>
-                </UniformGrid>
+                </mcart:StretchyWrapPanel>
                 <Expander>
                     <Expander.Header>
                         <DockPanel>
@@ -202,7 +205,7 @@
                             <CheckBox Style="{StaticResource ToggleSwitch}" x:Name="chkUnknown" Margin="10,0"/>
                         </DockPanel>
                     </Expander.Header>
-                    <UniformGrid Columns="4" IsEnabled="{Binding IsChecked, ElementName=chkUnknown}">
+                    <mcart:StretchyWrapPanel StretchProportionally="False" IsEnabled="{Binding IsChecked, ElementName=chkUnknown}">
                         <ui:NumberBox hlp:Form.Label="Unk_0x0c" Value="{Binding State.File.Unk_0x0c}"/>
                         <ui:NumberBox hlp:Form.Label="Unk_0x14" Value="{Binding State.File.Unk_0x14}"/>
                         <ui:NumberBox hlp:Form.Label="Unk_0x16" Value="{Binding State.File.Unk_0x16}"/>
@@ -214,7 +217,7 @@
                         <ui:NumberBox hlp:Form.Label="Unk_0x24" Value="{Binding State.File.Unk_0x24}"/>
                         <ui:NumberBox hlp:Form.Label="Unk_0x26" Value="{Binding State.File.Unk_0x26}"/>
                         <ui:NumberBox hlp:Form.Label="Unk_0x2c" Value="{Binding State.File.Unk_0x2c}"/>
-                    </UniformGrid>
+                    </mcart:StretchyWrapPanel>
                 </Expander>
             </StackPanel>
         </ScrollViewer>

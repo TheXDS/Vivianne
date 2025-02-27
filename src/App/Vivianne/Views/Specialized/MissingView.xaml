@@ -18,7 +18,7 @@
         HorizontalAlignment="Center"
         Margin="50"
         CornerRadius="10"
-        Background="Gray">
+        Background="{StaticResource DarkBackground}">
         <Border.Effect>
             <DropShadowEffect/>
         </Border.Effect>
@@ -29,14 +29,14 @@
             </Grid.ColumnDefinitions>
             <ui:FontIcon VerticalAlignment="top" Glyph="⚠️" Foreground="Orange" FontSize="48"/>
             <TextBlock TextWrapping="Wrap" VerticalAlignment="Center" Foreground="White" Margin="20,0,0,0" Grid.Column="1">
-                Could not find a View to display the specified ViewModel.<LineBreak/>
-                ViewModel type: <Run Text="{Binding Mode=OneWay}"/><LineBreak/>
+                Could not find a View to display the specified ViewModel.<LineBreak/><LineBreak/>
+                <Run FontFamily="Consolas" Text="{Binding Mode=OneWay}"/><LineBreak/><LineBreak/>
                 If you see this message, then:<LineBreak/>
                 <BulletDecorator>
                     <BulletDecorator.Bullet>
                         <Ellipse Fill="White" Width="4" Height="4"/>
                     </BulletDecorator.Bullet>
-                    <TextBlock Margin="5,0,0,0" TextWrapping="Wrap">A compiler optimization removed the related View and you're relying on a convention resolver for your Ganymede navigation host.</TextBlock>
+                    <TextBlock Margin="5,0,0,0" TextWrapping="Wrap">A compiler optimization removed the related View and you're relying on a convention resolver for your view.</TextBlock>
                 </BulletDecorator><LineBreak/>
                 <BulletDecorator>
                     <BulletDecorator.Bullet>

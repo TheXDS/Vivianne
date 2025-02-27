@@ -2,6 +2,7 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Resources/ControlTemplates/CheckBox.xaml"/>
         <ResourceDictionary Source="/Resources/ControlTemplates/DraggableLineGraph.xaml"/>
+        <ResourceDictionary Source="/Resources/ControlTemplates/EditorBackdrop.xaml"/>
         <ResourceDictionary Source="/Resources/ControlTemplates/FileEditorCommandBar.xaml"/>
         <ResourceDictionary Source="/Resources/ControlTemplates/FileEditorLauncherView.xaml"/>
         <ResourceDictionary Source="/Resources/ControlTemplates/ProcessMonitor.xaml"/>

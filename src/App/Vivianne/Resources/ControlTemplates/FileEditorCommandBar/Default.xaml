@@ -12,16 +12,16 @@
     <Style TargetType="local:FileEditorCommandBar">
         <Setter Property="VerticalAlignment" Value="Top"/>
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
-        <Setter Property="MinHeight" Value="45"/>
+        <Setter Property="MinHeight" Value="47"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:FileEditorCommandBar}">
-                    <DockPanel>
-                        <ui:Button Margin="0,5,5,5" Command="{Binding Editor.SaveCommand, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Icon="{ui:SymbolIcon Symbol=Save24}"/>
-                        <ui:Button Margin="5" Command="{Binding Editor.SaveAsCommand, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Icon="{ui:SymbolIcon Symbol=DocumentSave24}"/>
-                        <ui:Button Margin="5" Visibility="{Binding ShowClose, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource Bool2VisConv}}" Command="{Binding Editor.SaveAndCloseCommand, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Icon="{ui:SymbolIcon Symbol=ArrowLeft24}"/>
-                        <ui:Button Margin="5" Visibility="{Binding ShowClose, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource Bool2VisConv}}" Command="{Binding Editor.DiscardAndCloseCommand, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Icon="{ui:SymbolIcon Symbol=Backspace24}"/>
-                        <ContentPresenter Content="{TemplateBinding Content}"/>
+                    <DockPanel Margin="0,0,0,5">
+                        <ui:Button VerticalAlignment="Stretch" Margin="0,5,5,5" Command="{Binding Editor.SaveCommand, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Icon="{ui:SymbolIcon Symbol=Save24}"/>
+                        <ui:Button VerticalAlignment="Stretch" Margin="5" Command="{Binding Editor.SaveAsCommand, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Icon="{ui:SymbolIcon Symbol=DocumentSave24}"/>
+                        <ui:Button VerticalAlignment="Stretch" Margin="5" Visibility="{Binding ShowClose, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource Bool2VisConv}}" Command="{Binding Editor.SaveAndCloseCommand, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Icon="{ui:SymbolIcon Symbol=ArrowLeft24}"/>
+                        <ui:Button VerticalAlignment="Stretch" Margin="5" Visibility="{Binding ShowClose, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource Bool2VisConv}}" Command="{Binding Editor.DiscardAndCloseCommand, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Icon="{ui:SymbolIcon Symbol=Backspace24}"/>
+                        <ContentPresenter VerticalAlignment="Center" Content="{TemplateBinding Content}"/>
                     </DockPanel>
                 </ControlTemplate>
             </Setter.Value>

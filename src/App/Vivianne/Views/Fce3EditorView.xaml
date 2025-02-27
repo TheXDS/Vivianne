@@ -27,40 +27,41 @@
             <ColumnDefinition Width="200"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <WrapPanel Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="5">
-            <ComboBox
-                hlp:Form.Label="{x:Static st:FceEditorView.Texture}"
-                MinWidth="150"
-                Margin="5"
-                ItemsSource="{Binding CarTextures, Mode=OneWay}"
-                SelectedValuePath="Value"
-                DisplayMemberPath="Name"
-                SelectedValue="{Binding SelectedCarTexture}"/>
-            <ComboBox
-                hlp:Form.Label="{x:Static st:FceEditorView.Color}"
-                Width="230"
-                Margin="5"
-                SelectedValue="{Binding SelectedColor}"
-                ItemsSource="{Binding State.Colors, Mode=OneWay}">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                            <Rectangle Width="10" Height="10" Fill="{Binding PrimaryColor, Mode=OneWay, Converter={StaticResource dc2bc}}"/>
-                            <Rectangle Width="10" Height="10" Grid.Column="1" Fill="{Binding SecondaryColor, Mode=OneWay, Converter={StaticResource dc2bc}}"/>
-                            <TextBlock Margin="5,0,0,0" Grid.Column="2" Text="{Binding Name, Mode=OneWay}"/>
-                        </Grid>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
-            <Button Margin="5" VerticalAlignment="Stretch" Command="{Binding ColorEditorCommand, Mode=OneWay}" Content="{x:Static st:FceEditorView.EditColors}"/>
-        </WrapPanel>
-        <Rectangle Grid.Row="1" Grid.Column="1" Fill="{StaticResource DarkBackground}"/>
-        <Rectangle Grid.Row="1" Grid.Column="0" Fill="{StaticResource FadeInBackground}"/>
+        <ct:EditorBackdrop Grid.Row="1" Grid.ColumnSpan="2"/>
+        <ct:FileEditorCommandBar Grid.ColumnSpan="2" ShowClose="False">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <ComboBox
+                    hlp:Form.Label="{x:Static st:FceEditorView.Texture}"
+                    MinWidth="150"
+                    Margin="5"
+                    ItemsSource="{Binding CarTextures, Mode=OneWay}"
+                    SelectedValuePath="Value"
+                    DisplayMemberPath="Name"
+                    SelectedValue="{Binding SelectedCarTexture}"/>
+                <ComboBox
+                    hlp:Form.Label="{x:Static st:FceEditorView.Color}"
+                    Width="230"
+                    Margin="5"
+                    SelectedValue="{Binding SelectedColor}"
+                    ItemsSource="{Binding State.Colors, Mode=OneWay}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Rectangle Width="10" Height="10" Fill="{Binding PrimaryColor, Mode=OneWay, Converter={StaticResource dc2bc}}"/>
+                                <Rectangle Width="10" Height="10" Grid.Column="1" Fill="{Binding SecondaryColor, Mode=OneWay, Converter={StaticResource dc2bc}}"/>
+                                <TextBlock Margin="5,0,0,0" Grid.Column="2" Text="{Binding Name, Mode=OneWay}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <Button Margin="5" VerticalAlignment="Stretch" Command="{Binding ColorEditorCommand, Mode=OneWay}" Content="{x:Static st:FceEditorView.EditColors}"/>
+            </StackPanel>
+        </ct:FileEditorCommandBar>
         <Viewport3D Grid.ColumnSpan="1" Grid.Column="1" Grid.Row="1">
             <Viewport3D.Camera>
                 <PerspectiveCamera x:Name="ptcMain" UpDirection="1,0,0" LookDirection="-30,50,50" Position="30,-50,-50"/>

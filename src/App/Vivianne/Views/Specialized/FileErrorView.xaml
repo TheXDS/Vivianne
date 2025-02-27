@@ -12,7 +12,7 @@
         HorizontalAlignment="Center"
         Margin="50"
         CornerRadius="10"
-        Background="Gray">
+        Background="{StaticResource DarkBackground}">
         <Border.Effect>
             <DropShadowEffect/>
         </Border.Effect>
