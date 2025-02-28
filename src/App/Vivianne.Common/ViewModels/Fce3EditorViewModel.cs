@@ -25,10 +25,10 @@ namespace TheXDS.Vivianne.ViewModels;
 /// <summary>
 /// Implements a ViewModel that allows the user to preview an FCE model.
 /// </summary>
-public class Fce3EditorViewModel : FileEditorViewModelBase<Fce3EditorState, FceFile>
+public class Fce3EditorViewModel : FileEditorViewModelBase<FceEditorState, FceFile>
 {
     private byte[]? _selectedTexture;
-    private Fce3Color? _selectedColor;
+    private FceColor? _selectedColor;
     private FceLodPreset _lodPreset;
     private FceRenderState? _renderTree;
     private bool _refreshEnabled;
@@ -51,7 +51,7 @@ public class Fce3EditorViewModel : FileEditorViewModelBase<Fce3EditorState, FceF
     /// <summary>
     /// Gets or sets a value that indicates the index of the selected Car color.
     /// </summary>
-    public Fce3Color? SelectedColor
+    public FceColor? SelectedColor
     {
         get => _selectedColor;
         set => Change(ref _selectedColor, value);
@@ -217,7 +217,7 @@ public class Fce3EditorViewModel : FileEditorViewModelBase<Fce3EditorState, FceF
         }
     }
 
-    private static void SetColorNames(ICollection<Fce3Color> colors, byte[] feDataContents)
+    private static void SetColorNames(ICollection<FceColor> colors, byte[] feDataContents)
     {
         IFeData feData = feDataContents[0] == 4
             ? ((IOutSerializer<Models.Fe.Nfs4.FeData>)new Serializers.Fe.Nfs4.FeDataSerializer()).Deserialize(feDataContents)

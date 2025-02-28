@@ -9,5 +9,5 @@ public class FeData4EditorViewModel : FileEditorViewModelBase<FeData4EditorState
     /// <summary>
     /// Gets a table of the colors defined in the FCE file.
     /// </summary>
-    public Fce4Color[]? PreviewFceColorTable { get; }
+    public Models.Fce.Nfs4.FceColor[]? PreviewFceColorTable { get; }
 }

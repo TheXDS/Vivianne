@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ct="clr-namespace:TheXDS.Vivianne.Controls"
     xmlns:hlp="clr-namespace:TheXDS.Vivianne.Helpers"
-    xmlns:mdl="clr-namespace:TheXDS.Vivianne.Models;assembly=Vivianne.Common"
+    xmlns:mdl="clr-namespace:TheXDS.Vivianne.Models.Fce;assembly=Vivianne.Common"
     xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings.Views"
     xmlns:vc="clr-namespace:TheXDS.Vivianne.ValueConverters"
     xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"

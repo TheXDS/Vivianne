@@ -27,13 +27,13 @@ public class FeData3EditorViewModel : FileEditorViewModelBase<FeData3EditorState
         }
     }
 
-    private static Fce3Color[] ReadColorPairs(FceFile fce)
+    private static FceColor[] ReadColorPairs(FceFile fce)
     {
         static HsbColor WrapTable(IList<HsbColor> colors, int index) => colors[index % colors.Count];
         IEnumerable<(HsbColor, HsbColor)> colorPairs = fce.SecondaryColors.Count == 0
             ? [.. fce.PrimaryColors.Zip(fce.PrimaryColors)]
             : [.. fce.PrimaryColors.Zip(Enumerable.Range(0, fce.PrimaryColors.Count).Select((_, index) => WrapTable(fce.SecondaryColors, index)))];
-        return [.. colorPairs.Select(p => new Fce3Color() { PrimaryColor = p.Item1, SecondaryColor = p.Item2 })];
+        return [.. colorPairs.Select(p => new FceColor() { PrimaryColor = p.Item1, SecondaryColor = p.Item2 })];
     }
 
     //private void OnSave()

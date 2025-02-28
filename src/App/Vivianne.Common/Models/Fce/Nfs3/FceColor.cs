@@ -1,31 +1,37 @@
 ﻿using TheXDS.MCART.Types.Base;
-using TheXDS.Vivianne.Models.Fce;
 
-namespace TheXDS.Vivianne.Models;
+namespace TheXDS.Vivianne.Models.Fce.Nfs3;
 
 /// <summary>
 /// Represents an inmutable FCE color set for NFS3 cars.
 /// </summary>
-/// <param name="primaryColor">Value of the primary color.</param>
-/// <param name="secondaryColor">Value of the secondary color.</param>
-public class Fce3Color : NotifyPropertyChanged
+public class FceColor : NotifyPropertyChanged
 {
     private HsbColor _primaryColor;
     private HsbColor _secondaryColor;
-    private string _name;
+    private string? _name;
 
+    /// <summary>
+    /// Gets or sets the name of the color.
+    /// </summary>
     public string Name
     {
-        get => _name;
+        get => _name ?? PrimaryColor.ToString();
         set => Change(ref _name, value);
     }
 
+    /// <summary>
+    /// Gets or sets the primary color.
+    /// </summary>
     public HsbColor PrimaryColor 
     { 
         get => _primaryColor;
         set => Change(ref _primaryColor, value);
     }
 
+    /// <summary>
+    /// Gets or sets the secondary color.
+    /// </summary>
     public HsbColor SecondaryColor
     { 
         get => _secondaryColor;

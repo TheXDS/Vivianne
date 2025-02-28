@@ -1,4 +1,4 @@
-﻿namespace TheXDS.Vivianne.Models;
+﻿namespace TheXDS.Vivianne.Models.Fce;
 
 /// <summary>
 /// Enumerates the possible FCE LOD presets available.

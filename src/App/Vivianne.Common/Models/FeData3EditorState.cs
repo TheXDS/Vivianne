@@ -1,4 +1,5 @@
 ﻿using TheXDS.Vivianne.Models.Base;
+using TheXDS.Vivianne.Models.Fce.Nfs3;
 using TheXDS.Vivianne.Models.Fe.Nfs3;
 
 namespace TheXDS.Vivianne.Models;
@@ -20,5 +21,5 @@ public class FeData3EditorState : FileStateBase<FeData>
     /// <summary>
     /// Gets a table of the colors defined in the FCE file.
     /// </summary>
-    public Fce3Color[]? PreviewFceColorTable { get; set; }
+    public FceColor[]? PreviewFceColorTable { get; set; }
 }

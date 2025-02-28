@@ -89,7 +89,7 @@ internal static class ContentVisualizerConfiguration
 
     private static Fce3EditorViewModel? CreateFceEditorViewModel(byte[] data, VivEditorViewModel vm, string name)
     {
-        return CreateEditorViewModel<Fce3EditorViewModel, Fce3EditorState, FceFile, FceSerializer>(data, vm, name);
+        return CreateEditorViewModel<Fce3EditorViewModel, FceEditorState, FceFile, FceSerializer>(data, vm, name);
     }
 
     private static FshEditorViewModel? CreateFshEditorViewModel(byte[] data, VivEditorViewModel vm, string name)

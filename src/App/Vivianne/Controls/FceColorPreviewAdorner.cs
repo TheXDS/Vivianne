@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
-using TheXDS.Vivianne.Models;
+using TheXDS.Vivianne.Models.Fce.Nfs3;
 using TheXDS.Vivianne.ValueConverters;
 
 namespace TheXDS.Vivianne.Controls;
@@ -12,7 +12,7 @@ namespace TheXDS.Vivianne.Controls;
 /// </summary>
 /// <param name="control">Control to draw the adorner onto.</param>
 /// <param name="color">Reference to the FCE color to draw.</param>
-public class FceColorPreviewAdorner(Control control, Fce3Color color) : Adorner(control)
+public class FceColorPreviewAdorner(Control control, FceColor color) : Adorner(control)
 {
     private static readonly FceColorToBrushConverter _converter = new();
     private readonly Control _control = control;
