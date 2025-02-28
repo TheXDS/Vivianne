@@ -129,4 +129,7 @@
 		  <LastGenOutput>VivInfoViewModel.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="ViewModels\Fce\" />
+	</ItemGroup>
 </Project>

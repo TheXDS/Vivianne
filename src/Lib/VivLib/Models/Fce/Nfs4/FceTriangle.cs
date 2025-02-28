@@ -32,7 +32,12 @@ public struct FceTriangle
     /// Gets a 12-byte table with unknown values (<see cref="short"/> data type
     /// presumed).
     /// </summary>
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 6)] public short[] Unk_0x10;
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 12)] public byte[] Unk_0x10;
+
+    /// <summary>
+    /// Gets a flagset that indicates properties for the triangle.
+    /// </summary>
+    public TriangleFlags Flags;
 
     /// <summary>
     /// Gets the U component of the UV coordinates for the first vertex of this triangle.

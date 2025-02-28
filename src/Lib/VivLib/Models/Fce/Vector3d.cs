@@ -9,4 +9,7 @@ namespace TheXDS.Vivianne.Models.Fce;
 /// <param name="Y">Y component of tje vector.</param>
 /// <param name="Z">Z component of the vector.</param>
 [StructLayout(LayoutKind.Sequential)]
-public record struct Vector3d(float X, float Y, float Z);
+public record struct Vector3d(float X, float Y, float Z)
+{
+    public static readonly int SizeOf = Marshal.SizeOf<Vector3d>();
+}

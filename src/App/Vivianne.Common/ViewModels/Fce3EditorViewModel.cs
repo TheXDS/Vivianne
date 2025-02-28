@@ -116,6 +116,7 @@ public class Fce3EditorViewModel : FileEditorViewModelBase<FceEditorState, FceFi
     {
         Parts = GetObservable();
         await foreach (var j in GetTextures(BackingStore?.Store)) CarTextures.Add(j);
+        CarTextures.Add(new(null!, "< none >"));
         if (await (BackingStore?.Store.ReadAsync("fedata.eng") ?? Task.FromResult<byte[]?>(null)) is { } fedata)
         {
             SetColorNames(State.Colors, fedata);

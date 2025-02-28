@@ -6,10 +6,10 @@ namespace TheXDS.Vivianne.Serializers.Fce.Nfs3;
 
 public partial class FceSerializer
 {
-    private readonly record struct FceData(in Fce3FileHeader Header, in Vector3d[] Vertices, in Vector3d[] Normals, in FceTriangle[] Triangles);
+    private readonly record struct FceData(in FceFileHeader Header, in Vector3d[] Vertices, in Vector3d[] Normals, in FceTriangle[] Triangles);
 
     [StructLayout(LayoutKind.Sequential)]
-    private  struct Fce3FileHeader
+    private  struct FceFileHeader
     {
         public int Unk_0x0;
         public int Triangles;

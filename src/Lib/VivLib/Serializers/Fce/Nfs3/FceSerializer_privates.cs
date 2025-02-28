@@ -7,9 +7,9 @@ public partial class FceSerializer
 {
     private const int DataOffset = 0x1f04; //sizeof(Fce3FileHeader)
 
-    private static Fce3FileHeader CreateHeader(FceFile entity)
+    private static FceFileHeader CreateHeader(FceFile entity)
     {
-        return new Fce3FileHeader()
+        return new FceFileHeader()
         {
             Unk_0x0 = entity.Unk_0x0,
             Triangles = entity.Parts.Sum(p => p.Triangles.Length),
