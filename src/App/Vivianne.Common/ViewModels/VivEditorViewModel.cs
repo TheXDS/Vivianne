@@ -11,6 +11,7 @@ using TheXDS.Ganymede.Resources;
 using TheXDS.Ganymede.Types.Base;
 using TheXDS.Ganymede.Types.Extensions;
 using TheXDS.Ganymede.ViewModels;
+using TheXDS.MCART.Helpers;
 using TheXDS.MCART.Types.Base;
 using TheXDS.Vivianne.Component;
 using TheXDS.Vivianne.Data;
@@ -156,15 +157,22 @@ public class VivEditorViewModel : HostViewModelBase, IFileEditorViewModel<VivEdi
 
     private async Task OnImportFile()
     {
-        var r = await DialogService!.GetFileOpenPath(CommonDialogTemplates.FileOpen with { Title = St.ImportFile }, Resources.FileFilters.AnyVivContentFilter);
+        var r = await DialogService!.GetFilesOpenPath(CommonDialogTemplates.FileOpen with { Title = St.ImportFile }, Resources.FileFilters.AnyVivContentFilter);
         if (r.Success)
         {
-            var keyName = Path.GetFileName(r.Result).ToLower();
-            if (State.Directory.ContainsKey(keyName) && !await DialogService.AskYn(St.ReplaceFile, string.Format(St.TheFileXAlreadyExist, keyName)))
+            await DialogService.RunOperation(async (cancel, progress) =>
             {
-                return;
-            }
-            State.Directory[keyName] = await DialogService.RunOperation(p => File.ReadAllBytesAsync(r.Result));
+                foreach ((var index, var j) in r.Result.WithIndex())
+                {
+                    if (cancel.IsCancellationRequested) return;
+                    var keyName = Path.GetFileName(j).ToLower();
+                    if (!State.Directory.ContainsKey(keyName) || await DialogService.AskYn(St.ReplaceFile, string.Format(St.TheFileXAlreadyExist, keyName)))
+                    {
+                        progress.Report(new ProgressReport(index * 100.0 / r.Result.Length, $"Importing {j}..."));
+                        State.Directory[keyName] = await File.ReadAllBytesAsync(j, cancel);
+                    }
+                }
+            });
         }
     }
 
