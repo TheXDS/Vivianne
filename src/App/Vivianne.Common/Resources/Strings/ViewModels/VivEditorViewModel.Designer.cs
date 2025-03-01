@@ -97,6 +97,24 @@ namespace TheXDS.Vivianne.Resources.Strings.ViewModels {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Rename file.
+        /// </summary>
+        internal static string Rename {
+            get {
+                return ResourceManager.GetString("Rename", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the new name of the file.
+        /// </summary>
+        internal static string RenameHelp {
+            get {
+                return ResourceManager.GetString("RenameHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Replace file.
         /// </summary>
         internal static string ReplaceFile {

@@ -31,9 +31,9 @@ public class FileEditorCommandBar : ContentControl
     /// Gets or sets a reference to the linked
     /// <see cref="IFileEditorViewModel"/> instance.
     /// </summary>
-    public IFileEditorViewModel Editor
+    public IFileEditorViewModel? Editor
     {
-        get => (IFileEditorViewModel)GetValue(EditorProperty);
+        get => (IFileEditorViewModel)GetValue(EditorProperty) ?? DataContext as IFileEditorViewModel;
         set => SetValue(EditorProperty, value);
     }
 

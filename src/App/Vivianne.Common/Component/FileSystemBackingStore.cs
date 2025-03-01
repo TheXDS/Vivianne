@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using TheXDS.Ganymede.Models;
 using TheXDS.Ganymede.Resources;
 using TheXDS.Ganymede.Services;
+using TheXDS.Vivianne.Helpers;
+using TheXDS.Vivianne.Properties;
 
 namespace TheXDS.Vivianne.Component;
 
@@ -38,6 +40,7 @@ public class FileSystemBackingStore(IDialogService dialogSvc, IEnumerable<FileFi
     {
         try
         {
+            if (Settings.Current.AutoBackup) FileBackup.Create(fileName);            
             await File.WriteAllBytesAsync(Path.Combine(path, fileName), content);
             return true;
         }

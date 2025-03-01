@@ -28,7 +28,7 @@ public class VivEditorViewModel : HostViewModelBase, IFileEditorViewModel<VivEdi
 {
     private static readonly Dictionary<string, ContentVisualizerViewModelFactory> ContentVisualizers = new(ContentVisualizerConfiguration.Get());
     private static readonly Dictionary<string, (string, Func<byte[]>)[]> Templates = new(VivTemplates.Get());
-    private VivEditorState state;
+    private VivEditorState state = null!;
 
     /// <inheritdoc/>
     public VivEditorState State
@@ -214,7 +214,7 @@ public class VivEditorViewModel : HostViewModelBase, IFileEditorViewModel<VivEdi
     private async Task OnRenameFile(object? parameter)
     {
         if (parameter is not KeyValuePair<string, byte[]> { Key: { } fileName, Value: { } file }) return;
-        var result = await DialogService.GetInputText(CommonDialogTemplates.Input with { Title = "St.RenamePart", Text = "St.RenamePartHelp" }, fileName);
+        var result = await DialogService!.GetInputText(CommonDialogTemplates.Input with { Title = St.Rename, Text = St.RenameHelp }, fileName);
         if (result.Success)
         {
             State.Directory.Remove(fileName);
@@ -251,7 +251,7 @@ public class VivEditorViewModel : HostViewModelBase, IFileEditorViewModel<VivEdi
         return BackingStore?.WriteNewAsync(State.File) ?? Task.CompletedTask;
     }
 
-    protected virtual async Task OnSaveAndClose()
+    private async Task OnSaveAndClose()
     {
         await OnSave();
         await OnClose();
@@ -274,7 +274,6 @@ public class VivEditorViewModel : HostViewModelBase, IFileEditorViewModel<VivEdi
         {
             ChildNavService.HomePage = new VivInfoViewModel() { State = State };
             ChildNavService.Reset();
-            //ChildNavService.NavigateAndReset<VivInfoViewModel, VivEditorState>(State);
         }
         return base.OnCreated();
     }

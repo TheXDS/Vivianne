@@ -124,4 +124,10 @@
   <data name="SelectATemplate" xml:space="preserve">
     <value>Select a template to create a new file in the VIV directory.</value>
   </data>
+  <data name="RenameHelp" xml:space="preserve">
+    <value>Enter the new name of the file</value>
+  </data>
+  <data name="Rename" xml:space="preserve">
+    <value>Rename file</value>
+  </data>
 </root>

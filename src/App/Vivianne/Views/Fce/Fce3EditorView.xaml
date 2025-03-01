@@ -28,7 +28,7 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <ct:EditorBackdrop Grid.Row="1" Grid.ColumnSpan="2"/>
-        <ct:FileEditorCommandBar Margin="10,0,0,0" Grid.ColumnSpan="2" ShowClose="False">
+        <ct:FileEditorCommandBar Margin="10,0,0,0" Grid.ColumnSpan="2" ShowClose="False" Editor="{Binding}">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                 <ComboBox
                     hlp:Form.Label="{x:Static st:FceEditorView.Texture}"
