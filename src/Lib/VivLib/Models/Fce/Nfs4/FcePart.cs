@@ -6,7 +6,7 @@ namespace TheXDS.Vivianne.Models.Fce.Nfs4;
 /// Represents a single FCE part with all of its vertices, triangles, normals
 /// and Origin data.
 /// </summary>
-public class FcePart: INameable
+public class FcePart : INameable
 {
     /// <summary>
     /// Gets or sets the name of the FCE part.

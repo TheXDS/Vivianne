@@ -145,6 +145,7 @@
                 <gn:WpfResolverStack>
                     <gn:ResolverEntry ViewModel="{x:Type carp3vm:CarpEditorViewModel}" View="{x:Type views:Carp3EditorView}"/>
                     <!--<gn:ResolverEntry ViewModel="{x:Type carp4vm:CarpEditorViewModel}" View="{x:Type views:Carp4EditorView}"/>-->
+                    <gn:ResolverEntry ViewModel="{x:Type vm:ExternalFileViewModel}" View="{x:Type Control}"/>
                     <gn:WpfConventionVisualResolver/>
                     <gn:WpfConstResolver View="{x:Type viewsSpec:MissingView}"/>
                 </gn:WpfResolverStack>

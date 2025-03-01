@@ -13,6 +13,10 @@ public interface IKeyboardProxy
     /// Gets a value that indicates if the <c>Shift</c> key is being held down.
     /// </summary>
     bool IsShiftKeyDown { get; }
+
+    bool IsAltKeyDown { get; }
+
+    bool IsCtrlKeyDown { get; }
 }
 
 public interface IStorageBackend

@@ -130,6 +130,6 @@
 		</EmbeddedResource>
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="ViewModels\Fce\" />
+	  <Folder Include="ViewModels\Fce\Nfs4\" />
 	</ItemGroup>
 </Project>

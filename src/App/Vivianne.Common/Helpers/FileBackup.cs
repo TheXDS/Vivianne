@@ -2,8 +2,16 @@
 
 namespace TheXDS.Vivianne.Helpers;
 
+/// <summary>
+/// Contains methods used to create and manage file backups for any file that
+/// can be edited by Vivianne.
+/// </summary>
 public static class FileBackup
 {
+    /// <summary>
+    /// Creates a backup of the specified file.
+    /// </summary>
+    /// <param name="originalFile">Full path of the original file.</param>
     public static void Create(string originalFile)
     {
         if (!File.Exists(originalFile)) return;

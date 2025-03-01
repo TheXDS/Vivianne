@@ -17,12 +17,13 @@ namespace TheXDS.Vivianne.ViewModels;
 /// store, as opening a file with an external application from the filesystem
 /// through Vivianne would not make sense, although it's possible to do so.
 /// </param>
+/// <param name="name">Name of the file to be opened externally.</param>
 public class ExternalFileViewModel(byte[] rawFile, IBackingStore store, string name) : RawContentViewModel(rawFile)
 {
+    /// <inheritdoc/>
     protected override Task OnCreated()
     {
-        return DialogService.RunOperation(OnAwaitExternalApp);
-        
+        return DialogService?.RunOperation(OnAwaitExternalApp) ?? Task.CompletedTask;
     }
 
     private async Task OnAwaitExternalApp(IProgress<ProgressReport> progress)
@@ -32,9 +33,13 @@ public class ExternalFileViewModel(byte[] rawFile, IBackingStore store, string n
         var file = Path.Combine(dir.FullName, name);
         await File.WriteAllBytesAsync(file, RawFile);
         progress.Report("Waiting for application");
-        var proc = Process.Start(file);
+        var proc = Process.Start(new ProcessStartInfo(file) { UseShellExecute = true });
         if (proc is null || proc.HasExited) return;
         await proc.WaitForExitAsync();
-        NavigationService.Reset();
+        progress.Report($"Repacking {name}...");
+        await store.WriteAsync(name, await File.ReadAllBytesAsync(file));
+        File.Delete(file);
+        Directory.Delete(dir.FullName);
+        NavigationService?.Reset();
     }
 }

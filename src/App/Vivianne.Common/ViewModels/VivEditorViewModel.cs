@@ -110,7 +110,7 @@ public class VivEditorViewModel : HostViewModelBase, IFileEditorViewModel<VivEdi
     public ICommand SaveCommand { get; }
 
     /// <inheritdoc/>
-    public ICommand? SaveAsCommand { get; }
+    public ICommand SaveAsCommand { get; }
 
     /// <inheritdoc/>
     public ICommand SaveAndCloseCommand { get; }
@@ -129,12 +129,19 @@ public class VivEditorViewModel : HostViewModelBase, IFileEditorViewModel<VivEdi
         if (parameter is KeyValuePair<string, byte[]> { Key: { } file, Value: { } rawData })
         {
             IViewModel? vm = null;
-            foreach (var j in ContentVisualizers.Where(p => file.EndsWith(p.Key, StringComparison.InvariantCultureIgnoreCase)))
+            if (PlatformServices.IsAltKeyDown)
             {
-                if (j.Value is { } factory && factory.Invoke(rawData, this, file) is { } visualizer)
+                vm = ContentVisualizerConfiguration.CreateExternalEditorViewModel(rawData, this, file);
+            }
+            else
+            {
+                foreach (var j in ContentVisualizers.Where(p => file.EndsWith(p.Key, StringComparison.InvariantCultureIgnoreCase)))
                 {
-                    vm = visualizer;
-                    break;
+                    if (j.Value is { } factory && factory.Invoke(rawData, this, file) is { } visualizer)
+                    {
+                        vm = visualizer;
+                        break;
+                    }
                 }
             }
             vm ??= new FileErrorViewModel();

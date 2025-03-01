@@ -7,11 +7,10 @@ using System.Windows.Media.Media3D;
 using TheXDS.MCART.Exceptions;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.MCART.ValueConverters.Base;
-using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Models.Fce;
 using TheXDS.Vivianne.Models.Fce.Nfs3;
 using TheXDS.Vivianne.Models.Tga;
-using TheXDS.Vivianne.ViewModels;
+using TheXDS.Vivianne.Serializers.Fce.Nfs3;
 
 namespace TheXDS.Vivianne.ValueConverters;
 
@@ -19,7 +18,7 @@ namespace TheXDS.Vivianne.ValueConverters;
 /// Implements a part converter that converts a <see cref="FceRenderState"/>
 /// into a <see cref="Model3DGroup"/> that can be rendered by WPF.
 /// </summary>
-public class FcePreviewViewModelToModel3DGroupConverter : IOneWayValueConverter<FceRenderState?, Model3DGroup?>
+public class Fce3RendererConverter : IOneWayValueConverter<FceRenderState?, Model3DGroup?>
 {
     private record VertexUv(Point3D Vertex, Point Uv, Vector3d Normal);
 

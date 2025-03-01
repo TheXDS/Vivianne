@@ -6,6 +6,9 @@ using TheXDS.Vivianne.Models.Base;
 
 namespace TheXDS.Vivianne.Models.Fce.Nfs3;
 
+/// <summary>
+/// Represents the FCE editor state.
+/// </summary>
 public class FceEditorState : FileStateBase<FceFile>
 {
     private ObservableListWrap<FceColor>? _colors;
@@ -24,7 +27,13 @@ public class FceEditorState : FileStateBase<FceFile>
     /// </summary>
     public ObservableListWrap<FceColor> Colors => _colors ??= GetObservable(ColorsFromFce(File));
 
+    /// <summary>
+    /// Gets a collection of all available parts from the FCE file.
+    /// </summary>
     public ObservableListWrap<FcePart> Parts => _parts ??= GetObservable(File.Parts.ToList());
 
+    /// <summary>
+    /// Gets a collection of all available dummies from te FCE file.
+    /// </summary>
     public ObservableListWrap<FceDummy> Dummies => _dummies ??= GetObservable(File.Dummies.ToList());
 }

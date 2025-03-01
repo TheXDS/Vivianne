@@ -20,7 +20,7 @@ using TheXDS.Vivianne.Models.Fe;
 using TheXDS.Vivianne.Serializers;
 using TheXDS.Vivianne.ViewModels.Base;
 using St = TheXDS.Vivianne.Resources.Strings.ViewModels.FceEditorView;
-namespace TheXDS.Vivianne.ViewModels;
+namespace TheXDS.Vivianne.ViewModels.Fce.Nfs3;
 
 /// <summary>
 /// Implements a ViewModel that allows the user to preview an FCE model.
@@ -72,7 +72,7 @@ public class Fce3EditorViewModel : FileEditorViewModelBase<FceEditorState, FceFi
     /// <summary>
     /// Gets or sets a collection of the parts defined inthe FCE file.
     /// </summary>
-    public ObservableListWrap<FcePartListItem> Parts { get; private set; } = null!;
+    public ObservableListWrap<FcePartListItem<FcePart>> Parts { get; private set; } = null!;
 
     /// <summary>
     /// Gets a reference to an object that describes the rendered scene.
@@ -116,7 +116,7 @@ public class Fce3EditorViewModel : FileEditorViewModelBase<FceEditorState, FceFi
     {
         Parts = GetObservable();
         await foreach (var j in GetTextures(BackingStore?.Store)) CarTextures.Add(j);
-        CarTextures.Add(new(null!, "< none >"));
+        CarTextures.Add(new(null!, St.NoTexture));
         if (await (BackingStore?.Store.ReadAsync("fedata.eng") ?? Task.FromResult<byte[]?>(null)) is { } fedata)
         {
             SetColorNames(State.Colors, fedata);
@@ -146,7 +146,7 @@ public class Fce3EditorViewModel : FileEditorViewModelBase<FceEditorState, FceFi
 
     private async Task OnPartRename(object? parameter)
     {
-        if (parameter is not FcePartListItem { Part: Models.Base.INameable nameable } part || DialogService is null) return;
+        if (parameter is not FcePartListItem<FcePart> { Part: Models.Base.INameable nameable } part || DialogService is null) return;
         var result = await DialogService.GetInputText(CommonDialogTemplates.Input with { Title = St.RenamePart, Text = St.RenamePartHelp }, nameable.Name);
         if (result.Success)
         {
@@ -184,13 +184,13 @@ public class Fce3EditorViewModel : FileEditorViewModelBase<FceEditorState, FceFi
         OnVisibleChanged(null, null, default);
     }
 
-    private ObservableListWrap<FcePartListItem> GetObservable()
+    private ObservableListWrap<FcePartListItem<FcePart>> GetObservable()
     {
-        var c = new ObservableListWrap<FcePartListItem>([.. State.File.Parts.Select(p => new FcePartListItem(p))]);
+        var c = new ObservableListWrap<FcePartListItem<FcePart>>([.. State.File.Parts.Select(p => new FcePartListItem<FcePart>(p))]);
         c.CollectionChanged += (_, e) =>
         {
-            if (e.OldItems is not null) foreach (var j in e.OldItems.Cast<FcePartListItem>()) j.Unsubscribe(() => j.IsVisible);
-            if (e.NewItems is not null) foreach (var j in e.NewItems.Cast<FcePartListItem>()) j.Subscribe(() => j.IsVisible, OnVisibleChanged);
+            if (e.OldItems is not null) foreach (var j in e.OldItems.Cast<FcePartListItem<FcePart>>()) j.Unsubscribe(() => j.IsVisible);
+            if (e.NewItems is not null) foreach (var j in e.NewItems.Cast<FcePartListItem<FcePart>>()) j.Subscribe(() => j.IsVisible, OnVisibleChanged);
         };
         c.Refresh();
         return c;
@@ -235,10 +235,10 @@ public class Fce3EditorViewModel : FileEditorViewModelBase<FceEditorState, FceFi
             feData.Color8,
             feData.Color9,
             feData.Color10];
-        
-        foreach (var j in colors.WithIndex())
+
+        foreach (var (index, element) in colors.WithIndex())
         {
-            j.element.Name = colorNames[j.index];
+            element.Name = colorNames[index];
         }
     }
 }

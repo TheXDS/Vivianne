@@ -61,6 +61,15 @@ namespace TheXDS.Vivianne.Resources.Strings.ViewModels {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;none&gt;.
+        /// </summary>
+        internal static string NoTexture {
+            get {
+                return ResourceManager.GetString("NoTexture", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Rename part.
         /// </summary>
         internal static string RenamePart {

@@ -3,12 +3,14 @@ using TheXDS.Ganymede.Types.Base;
 using TheXDS.Vivianne.Component;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Models.Fce.Nfs3;
+using TheXDS.Vivianne.Models.Fe;
 using TheXDS.Vivianne.Models.Fsh;
 using TheXDS.Vivianne.Serializers;
 using TheXDS.Vivianne.Serializers.Fce.Nfs3;
 using TheXDS.Vivianne.Serializers.Fsh;
 using TheXDS.Vivianne.ViewModels;
 using TheXDS.Vivianne.ViewModels.Base;
+using TheXDS.Vivianne.ViewModels.Fce.Nfs3;
 
 namespace TheXDS.Vivianne.Data;
 
@@ -52,6 +54,11 @@ internal static class ContentVisualizerConfiguration
         yield return new(".fce", CreateFceEditorViewModel);
     }
 
+    public static IViewModel? CreateExternalEditorViewModel(byte[] data, VivEditorViewModel vm, string name)
+    {
+        return new ExternalFileViewModel(data, new VivBackingStore(vm), name);
+    }
+
     private static IViewModel? CreateFeDataEditorViewModel(byte[] data, VivEditorViewModel vm, string name)
     {
         if (data[0] == 4)
@@ -74,12 +81,6 @@ internal static class ContentVisualizerConfiguration
         {
             return CreateEditorViewModel<ViewModels.Carp.Nfs3.CarpEditorViewModel, Models.Carp.Nfs3.CarpEditorState, Models.Carp.Nfs3.CarPerf, Serializers.Carp.Nfs3.CarpSerializer>(data, vm, name);
         }
-
-        /*
-        byte[] carpMagic = [0x53, 0x65, 0x72, 0x69, 0x61, 0x6c, 0x20, 0x4e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x28, 0x30, 0x29];
-        if (!data[0..16].SequenceEqual(carpMagic)) return null;
-        void SaveCarp(string c) => vm.Invoke(System.Text.Encoding.Latin1.GetBytes(c));
-        return new(CarpEditorState.From(System.Text.Encoding.Latin1.GetString(data)), SaveCarp, vm.State) { Title = name };*/
     }
 
     private static TexturePreviewViewModel CreateTexturePreviewViewModel(byte[] data, VivEditorViewModel vm, string name)

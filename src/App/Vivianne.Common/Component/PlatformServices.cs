@@ -21,6 +21,26 @@ public static class PlatformServices
     public static bool IsShiftKeyDown => _keyboardProxy?.IsShiftKeyDown ?? false;
 
     /// <summary>
+    /// Gets a value that indicates if the <c>Alt</c> key is being held down.
+    /// </summary>
+    /// <value>
+    /// <see langword="true"/> if the <c>Alt</c> key is being held down,
+    /// <see langword="false"/> otherwise, or if the application did not set a
+    /// keyboard proxy on initialization.
+    /// </value>
+    public static bool IsAltKeyDown => _keyboardProxy?.IsAltKeyDown ?? false;
+
+    /// <summary>
+    /// Gets a value that indicates if the <c>Ctrl</c> key is being held down.
+    /// </summary>
+    /// <value>
+    /// <see langword="true"/> if the <c>Ctrl</c> key is being held down,
+    /// <see langword="false"/> otherwise, or if the application did not set a
+    /// keyboard proxy on initialization.
+    /// </value>
+    public static bool IsCtrlKeyDown => _keyboardProxy?.IsCtrlKeyDown ?? false;
+
+    /// <summary>
     /// Sets the keyboard proxy to use on the application.
     /// </summary>
     /// <param name="proxy">Keyboard proxy instance to use.</param>

@@ -9,13 +9,13 @@
     xmlns:mdl="clr-namespace:TheXDS.Vivianne.Models.Fce;assembly=Vivianne.Common"
     xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings.Views"
     xmlns:vc="clr-namespace:TheXDS.Vivianne.ValueConverters"
-    xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
+    xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels.Fce.Nfs3;assembly=Vivianne.Common"
     d:DataContext="{d:DesignInstance Type=vm:Fce3EditorViewModel}"
     mc:Ignorable="d"
     x:Name="pgRoot"
     d:DesignHeight="500" d:DesignWidth="500">
     <UserControl.Resources>
-        <vc:FcePreviewViewModelToModel3DGroupConverter x:Key="fcevm2mesh"/>
+        <vc:Fce3RendererConverter x:Key="fcevm2mesh"/>
         <vc:FceColorToBrushConverter x:Key="dc2bc"/>
     </UserControl.Resources>
     <Grid>
@@ -28,7 +28,7 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <ct:EditorBackdrop Grid.Row="1" Grid.ColumnSpan="2"/>
-        <ct:FileEditorCommandBar Grid.ColumnSpan="2" ShowClose="False">
+        <ct:FileEditorCommandBar Margin="10,0,0,0" Grid.ColumnSpan="2" ShowClose="False">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                 <ComboBox
                     hlp:Form.Label="{x:Static st:FceEditorView.Texture}"
