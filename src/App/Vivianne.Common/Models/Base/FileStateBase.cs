@@ -1,10 +1,9 @@
-﻿using TheXDS.MCART.Types;
-using TheXDS.Vivianne.ViewModels.Base;
-using TheXDS.MCART.Types.Base;
-using System.Linq.Expressions;
-using System;
-using TheXDS.MCART.Helpers;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
+using TheXDS.MCART.Helpers;
+using TheXDS.MCART.Types;
+using TheXDS.Vivianne.ViewModels.Base;
 
 namespace TheXDS.Vivianne.Models.Base;
 
@@ -20,13 +19,6 @@ public abstract class FileStateBase<T> : EditorViewModelStateBase, IFileState<T>
 
     /// <inheritdoc/>
     public T File { get; init; } = default!;
-
-    /// <inheritdoc/>
-    public string? FilePath
-    { 
-        get => _filePath;
-        set => Change(ref _filePath, value);
-    }
 
     /// <summary>
     /// Changes the property value on the underlying file.

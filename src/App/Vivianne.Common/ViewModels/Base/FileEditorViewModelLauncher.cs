@@ -102,7 +102,7 @@ public abstract class FileEditorViewModelLauncher<TState, TFile, TSerializer, TE
         var vm = new TEditor()
         {
             Title = recentFile.FriendlyName,
-            State = new TState { File = file, FilePath = filePath },
+            State = new TState { File = file },
             BackingStore = new BackingStore<TFile, TSerializer>(new FileSystemBackingStore(_dialogSvc.Invoke(), _saveFilter, Path.GetDirectoryName(filePath) ?? Environment.CurrentDirectory)) { FileName = Path.GetFileName(filePath) },
         };
         NavigationService!.Navigate(vm);

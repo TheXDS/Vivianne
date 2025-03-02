@@ -17,6 +17,7 @@ using TheXDS.Vivianne.Component;
 using TheXDS.Vivianne.Data;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Models.Viv;
+using TheXDS.Vivianne.Properties;
 using TheXDS.Vivianne.ViewModels.Base;
 using St = TheXDS.Vivianne.Resources.Strings.ViewModels.VivEditorViewModel;
 
@@ -249,9 +250,13 @@ public class VivEditorViewModel : HostViewModelBase, IFileEditorViewModel<VivEdi
         }
     }
 
-    private Task OnSave()
+    private async Task OnSave()
     {
-        return BackingStore?.WriteAsync(State.File) ?? Task.CompletedTask;
+        if (await BackingStore!.WriteAsync(State.File))
+        {
+            Title = State.FriendlyName;
+            await Settings.Current.AddRecentVivFile(new RecentFileInfo() { FilePath = BackingStore.FileName, FriendlyName = State.FriendlyName });
+        }
     }
 
     private Task OnSaveAs()

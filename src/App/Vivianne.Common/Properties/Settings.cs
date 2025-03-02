@@ -69,6 +69,7 @@ public class Settings
     {
         RecentVivFiles = [];
         RecentFshFiles = [];
+        RecentFce3Files = [];
         RecentFilesCount = 10;
     }
 
@@ -82,6 +83,10 @@ public class Settings
     /// </summary>
     public RecentFileInfo[] RecentFshFiles { get; set; }
 
+
+    /// <summary>
+    /// Gets or sets the list of recent FCE3 files.
+    /// </summary>
     public RecentFileInfo[] RecentFce3Files { get; set; }
 
     /// <summary>
@@ -113,4 +118,14 @@ public class Settings
     /// Gets or sets the number of recent files to be recalled by Vivianne.
     /// </summary>
     public int RecentFilesCount { get; set; }
+
+    /// <summary>
+    /// Adds a recent VIV file to the recent files collection.
+    /// </summary>
+    /// <param name="file"></param>
+    public Task AddRecentVivFile(RecentFileInfo file)
+    {
+        RecentVivFiles = RecentFilesCount > 0 ? [file, .. (RecentVivFiles?.Where(p => p.FilePath != file.FilePath) ?? []).Take(RecentFilesCount - 1)] : [];
+        return Save();
+    }
 }

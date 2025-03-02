@@ -21,9 +21,4 @@ public interface IFileState<TFile> : INotifyPropertyChanged
     /// Gets a reference to the file being edited.
     /// </summary>
     TFile File { get; init; }
-
-    /// <summary>
-    /// Gets or sets the underlying file path to save the file onto.
-    /// </summary>
-    string? FilePath { get; set; }
 }

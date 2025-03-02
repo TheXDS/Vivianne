@@ -12,7 +12,7 @@
     xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings.Views"
     xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
     xmlns:vc2="clr-namespace:TheXDS.Vivianne.ValueConverters"
-    xmlns:mcart="http://schemas.thexds.local/mcart"
+    xmlns:mcart="http://schemas.thexds.local/mcart" xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     x:Name="ucRoot"
     d:DataContext="{d:DesignInstance Type=vm:VivEditorViewModel}"
     mc:Ignorable="d" 
@@ -46,8 +46,10 @@
                 </RadioButton.Template>
             </RadioButton>
             <mcart:StretchyWrapPanel Margin="5" Orientation="Horizontal" DockPanel.Dock="Bottom">
-                <Button HorizontalAlignment="Stretch" Margin="5" Command="{Binding ImportFileCommand}">➕</Button>
-                <Button HorizontalAlignment="Stretch" Margin="5" Command="{Binding NewFromTemplateCommand}">📄</Button>
+                <ui:Button HorizontalAlignment="Stretch" Margin="5" Command="{Binding ImportFileCommand}" Icon="{ui:SymbolIcon Symbol=Add24}"/>
+                <ui:Button HorizontalAlignment="Stretch" Margin="5" Command="{Binding NewFromTemplateCommand}" Icon="{ui:SymbolIcon Symbol=New24}"/>
+                <ui:Button HorizontalAlignment="Stretch" Margin="5" Command="{Binding SaveCommand}" Icon="{ui:SymbolIcon Symbol=Save24}"/>
+                <ui:Button HorizontalAlignment="Stretch" Margin="5" Command="{Binding SaveAsCommand}" Icon="{ui:SymbolIcon Symbol=SaveArrowRight24}"/>
             </mcart:StretchyWrapPanel>
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <ItemsControl Margin="0,0,0,0" MinWidth="150" ItemsSource="{Binding State.Directory}">
