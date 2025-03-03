@@ -24,6 +24,12 @@ public class FcePart : INameable
     public Vector3d[] Vertices { get; set; } = [];
 
     /// <summary>
+    /// Gets an array of the part vertices with a pre-applied origin
+    /// transformation.
+    /// </summary>
+    public Vector3d[] TransformedVertices => [.. Vertices.Select(p => new Vector3d(p.X + Origin.X, p.Y + Origin.Y, p.Z + Origin.Z))];
+
+    /// <summary>
     /// Gets or sets the collection of normals for vertices associated to this
     /// FCE part.
     /// </summary>

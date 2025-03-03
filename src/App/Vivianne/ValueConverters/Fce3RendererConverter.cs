@@ -10,7 +10,6 @@ using TheXDS.MCART.ValueConverters.Base;
 using TheXDS.Vivianne.Models.Fce;
 using TheXDS.Vivianne.Models.Fce.Nfs3;
 using TheXDS.Vivianne.Models.Tga;
-using TheXDS.Vivianne.Serializers.Fce.Nfs3;
 
 namespace TheXDS.Vivianne.ValueConverters;
 
@@ -142,6 +141,36 @@ public class Fce3RendererConverter : IOneWayValueConverter<FceRenderState?, Mode
         };
     }
 
+    private static GeometryModel3D CreateShadow(FceFile file)
+    {
+        var verts = new Point3D[]
+        {
+            new(-file.YHalfSize * SizeFactor,  file.ZHalfSize * SizeFactor, file.XHalfSize * SizeFactor),
+            new(-file.YHalfSize * SizeFactor,  file.ZHalfSize * SizeFactor, -file.XHalfSize * SizeFactor),
+            new(-file.YHalfSize * SizeFactor, -file.ZHalfSize * SizeFactor, file.XHalfSize * SizeFactor),
+            new(-file.YHalfSize * SizeFactor, -file.ZHalfSize * SizeFactor, -file.XHalfSize * SizeFactor),
+        };
+        var normals = new Vector3D[]
+        {
+            new(file.YHalfSize * SizeFactor,  file.ZHalfSize * SizeFactor, file.XHalfSize * SizeFactor),
+            new(file.YHalfSize * SizeFactor,  file.ZHalfSize * SizeFactor, -file.XHalfSize * SizeFactor),
+            new(file.YHalfSize * SizeFactor, -file.ZHalfSize * SizeFactor, file.XHalfSize * SizeFactor),
+            new(file.YHalfSize * SizeFactor, -file.ZHalfSize * SizeFactor, -file.XHalfSize * SizeFactor),
+        };
+        var tris = new int[]
+        {
+            1,0,2,1,2,3
+        };
+        var uv = new Point[]
+        {
+            new(0,0),
+            new(1,0),
+            new(0,1),
+            new(1,1)
+        };
+        return new GeometryModel3D(new MeshGeometry3D() { Positions = [.. verts], TriangleIndices = [.. tris], TextureCoordinates = [.. uv], Normals = [..normals] }, new DiffuseMaterial(Brushes.Black));
+    }
+
     /// <inheritdoc/>
     public Model3DGroup? Convert(FceRenderState? value, object? parameter, CultureInfo? culture)
     {
@@ -176,6 +205,11 @@ public class Fce3RendererConverter : IOneWayValueConverter<FceRenderState?, Mode
             {
                 group.Children.Add(new GeometryModel3D(FcePartToGeometry(part, flipU, flipV, flags), material) { BackMaterial = flags.HasFlag(TriangleFlags.NoCulling) ? material : null });
             }
+        }
+
+        if (value.FceFile is FceFile fceFile)
+        {
+            group.Children.Add(CreateShadow(fceFile));
         }
 
         return group;

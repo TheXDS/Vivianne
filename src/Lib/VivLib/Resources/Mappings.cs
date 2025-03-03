@@ -58,6 +58,16 @@ public static class Mappings
             : string.Format(Strings.Common.UnknownAsHex, format);
     }
 
+    public static string FceMagicToString(Models.Fce.Nfs4.FceFile file)
+    {
+        return file.Magic switch
+        {
+            0x00101014 => "Need For Speed 4 FCE",
+            0x00101015 => "Motor City Online FCE",
+            _ => "unknown"
+        };
+    }
+
     /// <summary>
     /// Maps a <see cref="FshBlobFormat"/> value to a corresponding label that
     /// describes the GIMX pixel format.

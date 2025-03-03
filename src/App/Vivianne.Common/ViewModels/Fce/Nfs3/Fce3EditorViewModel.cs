@@ -8,6 +8,7 @@ using System.Windows.Input;
 using TheXDS.Ganymede.Helpers;
 using TheXDS.Ganymede.Resources;
 using TheXDS.MCART.Helpers;
+using TheXDS.MCART.Math;
 using TheXDS.MCART.Types;
 using TheXDS.MCART.Types.Base;
 using TheXDS.MCART.Types.Extensions;
@@ -32,6 +33,7 @@ public class Fce3EditorViewModel : FileEditorViewModelBase<FceEditorState, FceFi
     private FceLodPreset _lodPreset;
     private FceRenderState? _renderTree;
     private bool _refreshEnabled;
+    private bool _renderShadow = true;
 
     /// <summary>
     /// Gets a collection of the available textures for rendering.
@@ -70,6 +72,23 @@ public class Fce3EditorViewModel : FileEditorViewModelBase<FceEditorState, FceFi
     }
 
     /// <summary>
+    /// Gets or sets a value that enables ot disables rendering a shadow on the
+    /// car.
+    /// </summary>
+    /// <remarks>
+    /// The car shadow render is useful to check for the "floating car" issue
+    /// that some mods might have.
+    /// </remarks>
+    public bool RenderShadow
+    {
+        get => _renderShadow;
+        set
+        {
+            if (Change(ref _renderShadow, value)) OnVisibleChanged(null!, null!, default);
+        }
+    }
+
+    /// <summary>
     /// Gets or sets a collection of the parts defined inthe FCE file.
     /// </summary>
     public ObservableListWrap<FcePartListItem<FcePart>> Parts { get; private set; } = null!;
@@ -88,6 +107,12 @@ public class Fce3EditorViewModel : FileEditorViewModelBase<FceEditorState, FceFi
     /// color tables.
     /// </summary>
     public ICommand ColorEditorCommand { get; }
+
+    /// <summary>
+    /// Gets a command that applies center transformations to fix a "floating
+    /// car".
+    /// </summary>
+    public ICommand FceCenterCommand { get; }
 
     /// <summary>
     /// Gets a reference to the command used to rename an FCE part.
@@ -109,6 +134,7 @@ public class Fce3EditorViewModel : FileEditorViewModelBase<FceEditorState, FceFi
         ColorEditorCommand = cb.BuildSimple(OnColorEditor);
         RenamePartCommand = cb.BuildSimple(OnPartRename);
         RenameDummyCommand = cb.BuildSimple(OnDummyRename);
+        FceCenterCommand = cb.BuildSimple(OnFceCenter);
     }
 
     /// <inheritdoc/>
@@ -144,6 +170,29 @@ public class Fce3EditorViewModel : FileEditorViewModelBase<FceEditorState, FceFi
         OnVisibleChanged(null!, null!, default);
     }
 
+    private void OnFceCenter()
+    {
+        var vertices = State.File.Parts.SelectMany(p => p.TransformedVertices).ToArray();
+        var minX = vertices.Min(p => p.X);
+        var minY = vertices.Min(p => p.Y);
+        var minZ = vertices.Min(p => p.Z);
+        var xDiff = minX + State.File.XHalfSize;
+        var yDiff = minY + State.File.YHalfSize;
+        var zDiff = minZ + State.File.ZHalfSize;
+        if (((IEnumerable<float>)[xDiff, yDiff, zDiff]).AreZero()) return;
+        foreach (var j in State.File.Parts)
+        {
+            j.Origin = new Vector3d
+            {
+                X = j.Origin.X - xDiff,
+                Y = j.Origin.Y - yDiff,
+                Z = j.Origin.Z - zDiff
+            };
+        }
+        State.UnsavedChanges = true;
+        OnVisibleChanged(null, null, PropertyChangeNotificationType.PropertyChanged);
+    }
+
     private async Task OnPartRename(object? parameter)
     {
         if (parameter is not FcePartListItem<FcePart> { Part: Models.Base.INameable nameable } part || DialogService is null) return;
@@ -154,6 +203,7 @@ public class Fce3EditorViewModel : FileEditorViewModelBase<FceEditorState, FceFi
             part.Refresh();
         }
     }
+
     private async Task OnDummyRename(object? parameter)
     {
         if (parameter is not FceDummy dummy || DialogService is null) return;
@@ -164,6 +214,7 @@ public class Fce3EditorViewModel : FileEditorViewModelBase<FceEditorState, FceFi
             State.Dummies.Refresh();
         }
     }
+
     private void SwitchToLod(FceLodPreset preset)
     {
         _refreshEnabled = false;
@@ -204,6 +255,7 @@ public class Fce3EditorViewModel : FileEditorViewModelBase<FceEditorState, FceFi
             VisibleParts = Parts.Where(p => p.IsVisible).Select(p => p.Part),
             SelectedColor = SelectedColor,
             Texture = SelectedCarTexture,
+            FceFile = _renderShadow ? State.File : null
         };
     }
 

@@ -22,4 +22,9 @@ public class FceRenderState
     /// Gets or sets the color to apply to the car texture during rendering.
     /// </summary>
     public FceColor? SelectedColor { get; init; }
+
+    /// <summary>
+    /// Gets or sets a reference to the FCE file being rendered.
+    /// </summary>
+    public FceFile? FceFile { get; init; }
 }

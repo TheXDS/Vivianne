@@ -285,7 +285,7 @@ public class VivEditorViewModel : HostViewModelBase, IFileEditorViewModel<VivEdi
     {
         if (ChildNavService is not null)
         {
-            ChildNavService.HomePage = new VivInfoViewModel() { State = State };
+            ChildNavService.HomePage = new VivInfoViewModel() { State = State, FileName = BackingStore?.FileName };
             ChildNavService.Reset();
         }
         return base.OnCreated();

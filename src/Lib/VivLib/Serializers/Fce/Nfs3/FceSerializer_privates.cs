@@ -39,7 +39,7 @@ public partial class FceSerializer
     {
         var arr = collection.ToArray();
         var appendSize = size - arr.Length;
-        return appendSize < size
+        return appendSize <= size
             ? [.. arr, .. Enumerable.Repeat(defaultValue, appendSize)]
             : [.. arr.Take(size)];
     }

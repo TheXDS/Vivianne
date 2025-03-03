@@ -18,12 +18,22 @@ namespace TheXDS.Vivianne.ViewModels;
 public class VivInfoViewModel : ViewModel, IStatefulViewModel<VivEditorState>
 {
     private VivEditorState state = null!;
+    private string? fileName;
 
     /// <inheritdoc/>
     public VivEditorState State
     {
         get => state;
         set => Change(ref state, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the file path to be displayed.
+    /// </summary>
+    public string? FileName
+    { 
+        get => fileName;
+        set => Change(ref fileName, value);
     }
 
     /// <summary>

@@ -25,7 +25,7 @@
         </Grid.ColumnDefinitions>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20">
             <TextBlock FontSize="16" Text="{Binding State.FriendlyName, Mode=OneWay}"/>
-            <TextBlock Text="{Binding State.FilePath, Mode=OneWay}" TextWrapping="Wrap"/>
+            <TextBlock Text="{Binding FileName, Mode=OneWay}" TextWrapping="Wrap"/>
             <Separator/>
             <TextBlock Text="{Binding State.File.Directory.Count, Mode=OneWay, StringFormat={x:Static st:VivInfoView.DirSize}}"/>
             <TextBlock Text="{Binding State.FileSize, Mode=OneWay, Converter={StaticResource sizeConv}, StringFormat={x:Static st:VivInfoView.FileSize}}"/>
