@@ -288,7 +288,7 @@ public class Fce3EditorViewModel : FileEditorViewModelBase<FceEditorState, FceFi
             feData.Color9,
             feData.Color10];
 
-        foreach (var (index, element) in colors.WithIndex())
+        foreach (var (index, element) in colors.WithIndex().Take(10))
         {
             element.Name = colorNames[index];
         }
