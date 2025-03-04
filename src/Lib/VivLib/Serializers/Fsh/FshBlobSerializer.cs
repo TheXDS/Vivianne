@@ -15,7 +15,6 @@ public class FshBlobSerializer : ISerializer<FshBlob?>
         using var reader = new BinaryReader(stream);
         int currentOffset = (int)reader.BaseStream.Position;
         var magic = (FshBlobFormat)reader.ReadByte();
-        if (!Mappings.FshBlobBytesPerPixel.TryGetValue(magic, out byte value)) return null;
         var footerOffset = BitConverter.ToInt32([.. reader.ReadBytes(3), 0]);
         var width = reader.ReadUInt16();
         var height = reader.ReadUInt16();
@@ -23,6 +22,18 @@ public class FshBlobSerializer : ISerializer<FshBlob?>
         var yrot = reader.ReadUInt16();
         var xpos = reader.ReadUInt16();
         var ypos = reader.ReadUInt16();
+        if (!Mappings.FshBlobBytesPerPixel.TryGetValue(magic, out byte value)) return new FshBlob
+        {
+            Magic = magic,
+            Width = width,
+            Height = height,
+            XRotation = xrot,
+            YRotation = yrot,
+            XPosition = xpos,
+            YPosition = ypos,
+            PixelData = [],
+            Footer = []
+        };
         var pixelDataSize = width * height * value;
         var pixelData = reader.ReadBytes(pixelDataSize);
         byte[] footer = [];
