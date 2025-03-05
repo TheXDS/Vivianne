@@ -3,6 +3,7 @@
 		<TargetFramework>net8.0-windows</TargetFramework>
 	</PropertyGroup>
 	<ItemGroup>
+		<PackageReference Include="System.Windows.Extensions" Version="9.0.2" />
 		<PackageReference Include="TheXDS.Ganymede" Version="0.4.0-alpha.16" />
 	</ItemGroup>
 	<ItemGroup>

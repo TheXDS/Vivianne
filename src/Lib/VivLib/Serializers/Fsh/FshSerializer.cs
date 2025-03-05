@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using TheXDS.MCART.Types.Extensions;
+using TheXDS.Vivianne.Helpers;
 using TheXDS.Vivianne.Models.Fsh;
-using TheXDS.Vivianne.Tools;
 using static System.Text.Encoding;
 using St = TheXDS.Vivianne.Resources.Strings.Serializers.FshSerializer;
 

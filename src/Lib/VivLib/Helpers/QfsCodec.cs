@@ -32,7 +32,7 @@ jloup@gzip.org          madler@alumni.caltech.edu
 
 using St = TheXDS.Vivianne.Resources.Strings.QfsCodec;
 
-namespace TheXDS.Vivianne.Tools;
+namespace TheXDS.Vivianne.Helpers;
 
 /// <summary>
 /// Implements a codec that can read and write QFS files.
