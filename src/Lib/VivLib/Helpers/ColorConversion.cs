@@ -2,6 +2,10 @@
 
 namespace TheXDS.Vivianne.Helpers;
 
+/// <summary>
+/// Includes helper functions to perform Rendering operations on BNK audio
+/// streams, such as conversion to WAV files, etc.
+/// </summary>
 public static class BnkRender
 {
     /// <summary>

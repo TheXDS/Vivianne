@@ -17,8 +17,8 @@
 	  <EmbeddedResource Include="Resources\Embedded\EarlyAlphaNote.txt" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="TheXDS.Ganymede.Wpf" Version="0.4.0-alpha.16" />
-		<PackageReference Include="WPF-UI" Version="3.0.5" />
+		<PackageReference Include="TheXDS.Ganymede.Wpf" Version="0.4.0-alpha.17" />
+		<PackageReference Include="WPF-UI" Version="4.0.2" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Vivianne.Common\Vivianne.Common.csproj" />

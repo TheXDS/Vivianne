@@ -4,7 +4,7 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="System.Windows.Extensions" Version="9.0.2" />
-		<PackageReference Include="TheXDS.Ganymede" Version="0.4.0-alpha.16" />
+		<PackageReference Include="TheXDS.Ganymede" Version="0.4.0-alpha.17" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\..\Lib\VivLib\VivLib.csproj" />

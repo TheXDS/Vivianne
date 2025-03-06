@@ -58,6 +58,14 @@ public static class Mappings
             : string.Format(Strings.Common.UnknownAsHex, format);
     }
 
+    /// <summary>
+    /// Maps the FCE file header magic number to a string that describes the
+    /// internal file format used from within the available variants of FCE4.
+    /// </summary>
+    /// <param name="file">File to infer the format description for.</param>
+    /// <returns>
+    /// A string that describes the file format and/or origin of the FCE file.
+    /// </returns>
     public static string FceMagicToString(Models.Fce.Nfs4.FceFile file)
     {
         return file.Magic switch
@@ -377,7 +385,7 @@ public static class Mappings
     /// <param name="c">Carp data to extract performance data from.</param>
     /// <returns>
     /// A <see cref="FeDataTextProvider"/> that gets the localized performance
-    /// metrics from the specified <see cref="CarPerf"/>.
+    /// metrics from the specified <see cref="ICarPerf"/>.
     /// </returns>
     public static FeDataTextProvider GetTextProviderFromCulture(ICarPerf c)
     {
@@ -394,7 +402,7 @@ public static class Mappings
     /// </param>
     /// <returns>
     /// A <see cref="FeDataTextProvider"/> that gets the localized performance
-    /// metrics from the specified <see cref="CarPerf"/>.
+    /// metrics from the specified <see cref="ICarPerf"/>.
     /// </returns>
     public static FeDataTextProvider GetTextProviderFromCulture(ICarPerf c, string culture)
     {

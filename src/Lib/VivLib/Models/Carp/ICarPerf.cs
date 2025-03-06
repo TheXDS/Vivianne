@@ -119,6 +119,9 @@ public interface ICarPerf : ISerialNumberModel
     /// </summary>
     IList<double> BrakeIncreaseCurve { get; }
 
+    /// <summary>
+    /// Gets or sets the "Camera Arm" value.
+    /// </summary>
     double CameraArm { get; set; }
 
     /// <summary>
@@ -152,6 +155,9 @@ public interface ICarPerf : ISerialNumberModel
     /// </remarks>
     double EngineTuning { get; set; }
 
+    /// <summary>
+    /// Gets or sets the "Extreme Turn Speed Modifier" value.
+    /// </summary>
     double ExtremeTurnSpdMod { get; set; }
 
     /// <summary>
@@ -207,6 +213,9 @@ public interface ICarPerf : ISerialNumberModel
     /// </summary>
     IList<double> GasIncreaseCurve { get; }
 
+    /// <summary>
+    /// Gets or sets the "Gas off" value.
+    /// </summary>
     double GasOffFactor { get; set; }
 
     /// <summary>
@@ -258,14 +267,29 @@ public interface ICarPerf : ISerialNumberModel
     /// </summary>
     int GearShiftDelay { get; set; }
 
+    /// <summary>
+    /// Gets or sets the "Gradual turn cutoff" value.
+    /// </summary>
     double GradualTurnCutoff { get; set; }
 
+    /// <summary>
+    /// Gets or sets the "G transfer factor" value.
+    /// </summary>
     double GTransferFactor { get; set; }
 
+    /// <summary>
+    /// Gets or sets the "High turn factor" value.
+    /// </summary>
     double HighTurnFactor { get; set; }
 
+    /// <summary>
+    /// Gets or sets the "Lateral acceleration grip multiplier" value.
+    /// </summary>
     double LateralAccGripMult { get; set; }
 
+    /// <summary>
+    /// Gets or sets the "Low turn factor" value.
+    /// </summary>
     double LowTurnFactor { get; set; }
 
     /// <summary>
@@ -287,10 +311,19 @@ public interface ICarPerf : ISerialNumberModel
     /// </remarks>
     double MaxVelocity { get; set; }
 
+    /// <summary>
+    /// Gets or sets the "Medium turn cutoff" value.
+    /// </summary>
     double MediumTurnCutoff { get; set; }
 
+    /// <summary>
+    /// Gets or sets the "Medium turn speed modifier" value.
+    /// </summary>
     double MediumTurnSpdMod { get; set; }
 
+    /// <summary>
+    /// Gets or sets the "Minimum steer acceleration" value.
+    /// </summary>
     double MinimumSteerAccel { get; set; }
 
     /// <summary>
@@ -311,6 +344,9 @@ public interface ICarPerf : ISerialNumberModel
     /// </remarks>
     int NumberOfGearsManual { get; set; }
 
+    /// <summary>
+    /// Gets or sets the "Pitch roll factor" value.
+    /// </summary>
     double PitchRollFactor { get; set; }
 
     /// <summary>
@@ -319,12 +355,24 @@ public interface ICarPerf : ISerialNumberModel
     /// </summary>
     bool PowerSteering { get; set; }
 
+    /// <summary>
+    /// Gets or sets the "Push factor" value.
+    /// </summary>
     double PushFactor { get; set; }
 
+    /// <summary>
+    /// Gets or sets the "Road bump" value.
+    /// </summary>
     double RoadBumpFactor { get; set; }
-    
+
+    /// <summary>
+    /// Gets or sets the "Sharp turn cutoff" value.
+    /// </summary>
     double SharpTurnCutoff { get; set; }
-    
+
+    /// <summary>
+    /// Gets or sets the "Sharp turn speed modifier" value.
+    /// </summary>
     double SharpTurnSpdMod { get; set; }
 
     /// <summary>
@@ -335,17 +383,35 @@ public interface ICarPerf : ISerialNumberModel
     /// The number of elements in this array should idealy remain at 8.
     /// </remarks>
     IList<double> ShiftBlip { get; }
-    
+
+    /// <summary>
+    /// Gets or sets the "Slide assistance factor" value.
+    /// </summary>
     double SlideAssistanceFactor { get; set; }
-    
+
+    /// <summary>
+    /// Gets or sets the "Slide multiplier" value.
+    /// </summary>
     double SlideMult { get; set; }
-    
+
+    /// <summary>
+    /// Gets or sets the "Slide velocity cap" value.
+    /// </summary>
     double SlideVelocityCap { get; set; }
-    
+
+    /// <summary>
+    /// Gets or sets the "Spin velocity cap" value.
+    /// </summary>
     double SpinVelocityCap { get; set; }
-    
+
+    /// <summary>
+    /// Gets or sets the "Spoiler activation speed" value.
+    /// </summary>
     double SpoilerActivationSpeed { get; set; }
-    
+
+    /// <summary>
+    /// Gets or sets the "Spoiler function type" value.
+    /// </summary>
     int SpoilerFunctionType { get; set; }
 
     /// <summary>
@@ -358,7 +424,10 @@ public interface ICarPerf : ISerialNumberModel
     /// consequences.
     /// </remarks>
     double SteeringSpeed { get; set; }
-    
+
+    /// <summary>
+    /// Gets or sets the "Subdivide level" value.
+    /// </summary>
     double SubdivideLevel { get; set; }
 
     /// <summary>
@@ -447,11 +516,20 @@ public interface ICarPerf : ISerialNumberModel
     /// Gets a collection of values plotting the engine's torque curve.
     /// </summary>
     IList<double> TorqueCurve { get; }
-    
+
+    /// <summary>
+    /// Gets or sets a value that indicates the minimum turning radius of the car.
+    /// </summary>
     double TurnCircleRadius { get; set; }
-    
+
+    /// <summary>
+    /// Gets or sets the "Turn-In ramp" value.
+    /// </summary>
     double TurnInRamp { get; set; }
-    
+
+    /// <summary>
+    /// Gets or sets the "Turn-Out ramp" value.
+    /// </summary>
     double TurnOutRamp { get; set; }
 
     /// <summary>

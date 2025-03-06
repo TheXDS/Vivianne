@@ -3,6 +3,7 @@ using TheXDS.Vivianne.Models.Fe.Nfs3;
 
 namespace TheXDS.Vivianne.Serializers.Carp.Nfs3;
 
-public class CarpSerializer : CarpSerializerBase<CarClass, CarPerf>
-{
-}
+/// <summary>
+/// Implements a Carp serializer for NFS3 cars.
+/// </summary>
+public class CarpSerializer : CarpSerializerBase<CarClass, CarPerf>;

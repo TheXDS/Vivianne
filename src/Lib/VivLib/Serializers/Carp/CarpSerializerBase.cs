@@ -12,46 +12,106 @@ namespace TheXDS.Vivianne.Serializers.Carp;
 /// </summary>
 public class CarpSerializerBase<TCarClass, TFile> : ISerializer<TFile> where TCarClass : unmanaged, Enum where TFile : ICarPerf, ICarClass<TCarClass>, new()
 {
-    protected static int TryInt(string value)
+    private static int TryInt(string value)
     {
         return int.TryParse(value, System.Globalization.CultureInfo.InvariantCulture, out var s) ? s : 0;
     }
 
-    protected static double TryDouble(string value)
+    private static double TryDouble(string value)
     {
         return double.TryParse(value, System.Globalization.CultureInfo.InvariantCulture, out var s) ? s : 0.0;
     }
 
+    private static IEnumerable<T> TryArray<T>(Dictionary<int, string> dic, int key, Func<string, T> parse)
+    {
+        return dic[key].Split(",").Where(p => !p.IsEmpty()).Select(parse);
+    }
+
+    /// <summary>
+    /// Tries to read an <see cref="int"/> value from the Carp file parsed
+    /// lines.
+    /// </summary>
+    /// <param name="dic">
+    /// Dictionary containing the parsed Carp file lines.
+    /// </param>
+    /// <param name="key">Key of the value to get.</param>
+    /// <returns>
+    /// The value obtained from the dictinoary of parsed Carp lines, or
+    /// <c><see langword="default"/></c> if either the value did not exist or
+    /// if it was unable to be parsed as an <see cref="int"/> value.
+    /// </returns>
     protected static int TryIntKey(Dictionary<int, string> dic, int key)
     {
         return TryInt(dic[key]);
     }
 
+    /// <summary>
+    /// Tries to read an <see cref="double"/> value from the Carp file parsed
+    /// lines.
+    /// </summary>
+    /// <param name="dic">
+    /// Dictionary containing the parsed Carp file lines.
+    /// </param>
+    /// <param name="key">Key of the value to get.</param>
+    /// <returns>
+    /// The value obtained from the dictinoary of parsed Carp lines, or
+    /// <c><see langword="default"/></c> if either the value did not exist or
+    /// if it was unable to be parsed as an <see cref="double"/> value.
+    /// </returns>
     protected static double TryDoubleKey(Dictionary<int, string> dic, int key)
     {
         return TryDouble(dic[key]);
     }
 
-    protected static IEnumerable<T> TryArray<T>(Dictionary<int, string> dic, int key, Func<string, T> parse)
-    {
-        return dic[key].Split(",").Where(p => !p.IsEmpty()).Select(parse);
-    }
-
+    /// <summary>
+    /// Tries to read a collection of <see cref="int"/> values from the Carp
+    /// file parsed lines.
+    /// </summary>
+    /// <param name="dic">
+    /// Dictionary containing the parsed Carp file lines.
+    /// </param>
+    /// <param name="key">Key of the value to get.</param>
+    /// <returns>
+    /// The array of values obtained from the dictinoary of parsed Carp lines,
+    /// or <c><see langword="default"/></c> if either the value did not exist
+    /// or if it was unable to be parsed as an <see cref="int"/> array.
+    /// </returns>
     protected static IEnumerable<int> TryIntArray(Dictionary<int, string> dic, int key)
     {
         return TryArray(dic, key, TryInt);
     }
 
+    /// <summary>
+    /// Tries to read a collection of <see cref="double"/> values from the Carp
+    /// file parsed lines.
+    /// </summary>
+    /// <param name="dic">
+    /// Dictionary containing the parsed Carp file lines.
+    /// </param>
+    /// <param name="key">Key of the value to get.</param>
+    /// <returns>
+    /// The array of values obtained from the dictinoary of parsed Carp lines,
+    /// or <c><see langword="default"/></c> if either the value did not exist
+    /// or if it was unable to be parsed as an <see cref="double"/> array.
+    /// </returns>
     protected static IEnumerable<double> TryDoubleArray(Dictionary<int, string> dic, int key)
     {
         return TryArray(dic, key, TryDouble);
     }
 
-    protected static int GetKey(string line)
+    private static int GetKey(string line)
     {
         return int.TryParse(line.Split('(')[^1].ChopEnd(")"), out var k) ? k : -1;
     }
 
+    /// <summary>
+    /// When overriden in a derived class, allows for deserialization of
+    /// additional properties to be performed.
+    /// </summary>
+    /// <param name="carp">Object being deserialized.</param>
+    /// <param name="fields">
+    /// Dictionary of values that were read and parsed from the Carp file.
+    /// </param>
     protected virtual void ReadProps(TFile carp, Dictionary<int, string> fields) { }
 
     /// <inheritdoc/>
@@ -335,5 +395,13 @@ public class CarpSerializerBase<TCarClass, TFile> : ISerializer<TFile> where TCa
         """));
     }
 
+    /// <summary>
+    /// When overriden in a derived class, allows the serializer to write any
+    /// additional properties defined in the Carp model.
+    /// </summary>
+    /// <param name="entity">Entity being serialized.</param>
+    /// <returns>
+    /// A string with the additional contents of the serialized Carp file.
+    /// </returns>
     protected virtual string GetExtraProps(TFile entity) => string.Empty;
 }

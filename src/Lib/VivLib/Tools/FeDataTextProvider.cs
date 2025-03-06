@@ -6,7 +6,7 @@ namespace TheXDS.Vivianne.Tools;
 /// <summary>
 /// Base class for all FeData text providers.
 /// </summary>
-/// <param name="source"><see cref="CarPerf"/> performance data source.</param>
+/// <param name="source"><see cref="ICarPerf"/> performance data source.</param>
 /// <param name="culture">
 /// Optional <see cref="CultureInfo"/> to use when formatting numbers.
 /// </param>
@@ -18,7 +18,7 @@ public abstract class FeDataTextProvider(ICarPerf source, CultureInfo? culture =
     protected CultureInfo Culture { get; } = culture ?? CultureInfo.InvariantCulture;
 
     /// <summary>
-    /// Gets a reference to the <see cref="CarPerf"/> data to get information
+    /// Gets a reference to the <see cref="ICarPerf"/> data to get information
     /// from.
     /// </summary>
     protected ICarPerf CarpData { get; } = source;

@@ -97,11 +97,22 @@ public static class FshBlobExtensions
         return FshBlobToPalette[paletteBlob.Magic].Invoke(blob);
     }
 
+    /// <summary>
+    /// Writes a local color palette to the footer of a <see cref="FshBlob"/>.
+    /// </summary>
+    /// <param name="blob">
+    /// FSH blob to write the local color palette to.
+    /// </param>
+    /// <param name="colors">
+    /// Contents of the color table. Must have no more than 256 colors.
+    /// Currently, parsers only support tables with exactly 256 colors.
+    /// </param>
     public static void WriteLocalPalette(this FshBlob blob, IEnumerable<Color> colors)
     {
         using var ms = new MemoryStream();
         using var bw = new BinaryWriter(ms);
-        foreach (var j in colors)
+        var colorTable = colors.ToArray();
+        foreach (var j in colorTable)
         {
             Rgba32 c = j.ToPixel<Rgba32>();
             bw.Write([c.B, c.G, c.R, c.A]);
@@ -109,7 +120,7 @@ public static class FshBlobExtensions
         var b = new FshBlob()
         {
             Magic = FshBlobFormat.Palette32,
-            Width = 256,
+            Width = (ushort)colorTable.Length,
             Height = 1,
             PixelData = ms.ToArray()
         };
@@ -118,6 +129,15 @@ public static class FshBlobExtensions
         blob.Footer = ms2.ToArray();
     }
 
+    /// <summary>
+    /// Gets a value that indicates the inferred type of the footer data in the
+    /// specified <see cref="FshBlob"/>.
+    /// </summary>
+    /// <param name="blob">FSH blob to read the footer data from.</param>
+    /// <returns>
+    /// A value that indicates the type of data that the footer in
+    /// <paramref name="blob"/> seems to contain.
+    /// </returns>
     public static FshBlobFooterType FooterType(this FshBlob blob)
     {
         return FshBlobFooterIdentifier.FirstOrDefault(p => p.Predicate.Invoke(blob.Footer))?.Value ?? FshBlobFooterType.Unknown;

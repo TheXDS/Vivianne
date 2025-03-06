@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TheXDS.MCART.Helpers;
+﻿using TheXDS.MCART.Helpers;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models.Bnk;
 
 namespace TheXDS.Vivianne.Serializers.Bnk;
 
+/// <summary>
+/// Implements a serializer for BNK audio files.
+/// </summary>
 public class BnkSerializer : ISerializer<BnkFile>
 {
+    /// <inheritdoc/>
     public BnkFile Deserialize(Stream stream)
     {
         using BinaryReader br = new(stream);
@@ -33,6 +32,7 @@ public class BnkSerializer : ISerializer<BnkFile>
         return bnk;
     }
 
+    /// <inheritdoc/>
     public void SerializeTo(BnkFile entity, Stream stream)
     {
         throw new NotImplementedException();

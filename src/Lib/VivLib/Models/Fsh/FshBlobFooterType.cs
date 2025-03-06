@@ -25,7 +25,7 @@ public enum FshBlobFooterType
     ColorPalette,
 
     /// <summary>
-    /// Indicates that the footer contains padding bytes.
+    /// Indicates that the footer contains some form of padding bytes.
     /// </summary>
     Padding,
 
