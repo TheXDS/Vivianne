@@ -69,5 +69,4 @@ public static class BnkRender
         bw.Write(data);
         return wavStream.ToArray();
     }
-
 }

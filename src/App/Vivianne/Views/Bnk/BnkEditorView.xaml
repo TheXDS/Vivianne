@@ -12,8 +12,10 @@
     xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels.Bnk;assembly=Vivianne.Common"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     d:DataContext="{d:DesignInstance Type=vm:BnkEditorViewModel}"
-    mc:Ignorable="d" 
-    d:DesignHeight="250" d:DesignWidth="400">
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <vc:BnkVisualizerConverter x:Key="bnkvis"/>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -48,9 +50,12 @@
             <Border.Effect>
                 <DropShadowEffect/>
             </Border.Effect>
-            <StackPanel VerticalAlignment="Center" Margin="10" Orientation="Horizontal">
-                <ui:Button Icon="{ui:SymbolIcon Symbol=Play24}" Command="{Binding PlaySampleCommand, Mode=OneWay}"/>
-                <ui:Button Icon="{ui:SymbolIcon Symbol=Save24}" Command="{Binding ExportSampleCommand, Mode=OneWay}"/>
+            <StackPanel>
+                <Image Margin="10" Source="{Binding State.SelectedStream, Converter={StaticResource bnkvis}}" Stretch="Uniform" RenderOptions.BitmapScalingMode="Fant"/>
+                <StackPanel VerticalAlignment="Center" Margin="10" Orientation="Horizontal">
+                    <ui:Button Icon="{ui:SymbolIcon Symbol=Play24}" Command="{Binding PlaySampleCommand, Mode=OneWay}"/>
+                    <ui:Button Icon="{ui:SymbolIcon Symbol=Save24}" Command="{Binding ExportSampleCommand, Mode=OneWay}"/>
+                </StackPanel>
             </StackPanel>
         </Border>
 
