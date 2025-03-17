@@ -1,0 +1,12 @@
+﻿namespace TheXDS.Vivianne.Serializers.Bnk;
+
+internal enum PtHeaderField : byte
+{
+    Unk_0x06 = 0x06,
+    Unk_0x0a = 0x0a,
+    Unk_0x10 = 0x10,
+    Unk_0x13 = 0x13,
+    Unk_0x91 = 0x91,
+    AudioHeader = 0xfd,
+    EndOfHeader = 0xff,
+}

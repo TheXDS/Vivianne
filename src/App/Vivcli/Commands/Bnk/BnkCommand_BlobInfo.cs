@@ -25,14 +25,14 @@ public partial class BnkCommand
         {
             if (blobArg is null)
             {
-                foreach (var j in bnk.Blobs.WithIndex())
+                foreach (var j in bnk.Streams.WithIndex())
                 {
                     Console.WriteLine(string.Format(St.BlobInfo_BlobName, j.index));
                     PrintBlobInfo(j.element, humanOpt);
                     Console.WriteLine();
                 }
             }
-            else if (bnk.Blobs.ElementAtOrDefault(blobArg.Value) is { } blob)
+            else if (bnk.Streams.ElementAtOrDefault(blobArg.Value) is { } blob)
             {
                 PrintBlobInfo(blob, humanOpt);
             }

@@ -1,17 +1,32 @@
-﻿using System.Runtime.InteropServices;
+﻿using TheXDS.Vivianne.Models.Bnk;
 
 namespace TheXDS.Vivianne.Serializers.Bnk;
 
 internal class PtHeader
 {
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-    public byte[] Magic = "PT\0\0"u8.ToArray();
-    public byte Channels = 1;
-    public bool Compression = false;
-    public int SampleRate = 22050;
-    public int NumSamples;
-    public int LoopOffset = 1;
-    public int LoopLength;
-    public int DataOffset;
-    public int BytesPerSample = 2;
+    public readonly Dictionary<PtHeaderField, PtHeaderValue> Values = [];
+    public readonly Dictionary<PtAudioHeaderField, PtHeaderValue> AudioValues = new()
+    {
+        { PtAudioHeaderField.Channels, new(1, 1) },
+        { PtAudioHeaderField.Compression, new(1, 0) },
+        { PtAudioHeaderField.SampleRate, new(2, 22050) },
+        { PtAudioHeaderField.NumSamples, new(2, 0) },
+        { PtAudioHeaderField.LoopOffset, new(2, 0) },
+        { PtAudioHeaderField.LoopLength, new(2, 0) },
+        { PtAudioHeaderField.DataOffset, new(4, 0) },
+        { PtAudioHeaderField.BytesPerSample, new(1, 2) },
+        { PtAudioHeaderField.EndOfHeader, new(4, 0) },
+    };
+
+    public PtHeaderValue this[PtHeaderField field]
+    {
+        get => Values[field];
+        set => Values[field] = value;
+    }
+
+    public PtHeaderValue this[PtAudioHeaderField field]
+    {
+        get => AudioValues[field];
+        set => AudioValues[field] = value;
+    }
 }

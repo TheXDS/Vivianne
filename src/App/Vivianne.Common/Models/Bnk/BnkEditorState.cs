@@ -5,13 +5,13 @@ namespace TheXDS.Vivianne.Models.Bnk;
 
 public class BnkEditorState : FileStateBase<BnkFile>
 {
-    private ObservableListWrap<BnkBlob> _samples;
+    private ObservableListWrap<BnkBlob> _streams;
     private BnkBlob? selectedSample;
-    private bool loop;
+    private bool loop = true;
 
-    public ObservableListWrap<BnkBlob> Samples => _samples ??= GetObservable(File.Blobs);
+    public ObservableListWrap<BnkBlob> Streams => _streams ??= GetObservable(File.Streams);
 
-    public BnkBlob? SelectedSample
+    public BnkBlob? SelectedStream
     {
         get => selectedSample;
         set => Change(ref selectedSample, value);
@@ -22,6 +22,4 @@ public class BnkEditorState : FileStateBase<BnkFile>
         get => loop;
         set => Change(ref loop, value);
     }
-
-    
 }

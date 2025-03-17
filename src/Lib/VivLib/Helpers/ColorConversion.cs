@@ -1,40 +1,4 @@
-﻿using TheXDS.Vivianne.Models.Bnk;
-
-namespace TheXDS.Vivianne.Helpers;
-
-/// <summary>
-/// Includes helper functions to perform Rendering operations on BNK audio
-/// streams, such as conversion to WAV files, etc.
-/// </summary>
-public static class BnkRender
-{
-    /// <summary>
-    /// Renders an uncompressed, 16-bit PCM BNK blob into a .WAV file.
-    /// </summary>
-    /// <param name="blob"></param>
-    /// <returns></returns>
-    public static MemoryStream RenderBnk(BnkBlob blob)
-    {
-        int fileSize = 36 + blob.SampleData.Length;
-        var wavStream = new MemoryStream();
-        wavStream.Write("RIFF"u8.ToArray(), 0, 4);
-        wavStream.Write(BitConverter.GetBytes(fileSize), 0, 4);
-        wavStream.Write("WAVE"u8.ToArray(), 0, 4);
-        wavStream.Write("fmt "u8.ToArray(), 0, 4);
-        wavStream.Write(BitConverter.GetBytes(16), 0, 4); // size of fmt header
-        wavStream.Write(BitConverter.GetBytes((short)1), 0, 2); // format tag (PCM)
-        wavStream.Write(BitConverter.GetBytes((short)blob.Channels), 0, 2);
-        wavStream.Write(BitConverter.GetBytes(blob.SampleRate), 0, 4);
-        wavStream.Write(BitConverter.GetBytes(blob.SampleRate * blob.Channels * 2), 0, 4); // byte rate
-        wavStream.Write(BitConverter.GetBytes((short)(blob.Channels * 2)), 0, 2); // block align
-        wavStream.Write(BitConverter.GetBytes((short)16), 0, 2); // bits per sample
-        wavStream.Write("data"u8.ToArray(), 0, 4);
-        wavStream.Write(BitConverter.GetBytes(blob.SampleData.Length), 0, 4);
-        wavStream.Write(blob.SampleData, 0, blob.SampleData.Length);
-        wavStream.Position = 0;
-        return wavStream;
-    }
-}
+﻿namespace TheXDS.Vivianne.Helpers;
 
 /// <summary>
 /// Includes methods to perform color conversion between different color

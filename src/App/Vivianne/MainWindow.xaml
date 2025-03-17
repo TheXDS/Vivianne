@@ -22,12 +22,12 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <ui:TitleBar Height="30" CloseWindowByDoubleClickOnIcon="True" Title="{Binding Navigator.CurrentViewModel.Title, Mode=OneWay, ElementName=vmHost, StringFormat='{}{0} - Vivianne' }">
-            <ui:TitleBar.Header>
-                <StackPanel Orientation="Horizontal" Margin="0 0 5 0">
+        <ui:TitleBar HorizontalContentAlignment="Stretch" Height="30" CloseWindowByDoubleClickOnIcon="True" Title="{Binding Navigator.CurrentViewModel.Title, Mode=OneWay, ElementName=vmHost, StringFormat='{}{0} - Vivianne' }">
+            <ui:TitleBar.TrailingContent>
+                <DockPanel HorizontalAlignment="Stretch" Margin="0 0 5 0">
                     <ui:Button
                         IsTabStop="False"
-                        Focusable="False"                       
+                        Focusable="False"
                         Command="{Binding Navigator.NavigateBackCommand, Mode=OneWay, ElementName=vmHost}"
                         WindowChrome.IsHitTestVisibleInChrome="True"
                         ToolTip="{x:Static st:MainWindow.SaveAndClose}"
@@ -36,8 +36,8 @@
                         BorderThickness="0"
                         Padding="10,7"
                         Icon="{ui:SymbolIcon Symbol=ArrowLeft32}"/>
-                </StackPanel>
-            </ui:TitleBar.Header>
+                </DockPanel>
+            </ui:TitleBar.TrailingContent>
         </ui:TitleBar>
         <gn:NavigationHost
             Grid.Row="1"

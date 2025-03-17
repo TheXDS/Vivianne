@@ -20,7 +20,7 @@ public partial class BnkCommand
     {
         return FileTransaction(bnkFile, async bnk => {
             using var output = outFile.OpenWrite();
-            await BnkRender.RenderBnk(bnk.Blobs[blobArg]).CopyToAsync(output);
+            await output.WriteAsync(BnkRender.RenderBnk(bnk.Streams[blobArg]));
             await output.FlushAsync();
         }, true);
     }

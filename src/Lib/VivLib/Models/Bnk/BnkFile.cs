@@ -9,6 +9,6 @@
         /// Gets the collection of audio stream blobs contained in this BNK
         /// file.
         /// </summary>
-        public IList<BnkBlob> Blobs { get; } = [];
+        public IList<BnkBlob> Streams { get; } = [];
     }
 }
