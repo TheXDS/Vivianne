@@ -12,9 +12,11 @@
 		<None Remove="Resources\Embedded\EarlyAlphaNote.txt" />
 		<None Remove="Resources\Fonts\Muli-Light.ttf" />
 		<None Remove="Resources\Fonts\NFS_by_JLTV.ttf" />
+		<None Remove="Resources\Images\vivianne.png" />
 	</ItemGroup>
 	<ItemGroup>
 	  <EmbeddedResource Include="Resources\Embedded\EarlyAlphaNote.txt" />
+	  <Resource Include="Resources\Images\vivianne.png" />
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="TheXDS.Ganymede.Wpf" Version="0.4.0-alpha.17" />

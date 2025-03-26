@@ -1,10 +1,12 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TheXDS.Ganymede.Helpers;
 using TheXDS.Ganymede.Models;
 using TheXDS.Ganymede.Resources;
+using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Properties;
 using TheXDS.Vivianne.ViewModels.Base;
@@ -17,6 +19,20 @@ namespace TheXDS.Vivianne.ViewModels;
 /// </summary>
 public class SettingsViewModel : EditorViewModelBase<SettingsState>
 {
+    /// <summary>
+    /// Gets a string that describes the current app version.
+    /// </summary>
+    public string Version
+    {
+        get
+        {
+            var asm = Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly();
+            return asm.GetAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ??
+                asm.GetAttribute<AssemblyVersionAttribute>()?.Version ??
+                "1.0.0";
+        }
+    }
+
     /// <summary>
     /// Gets a command used to browse for the NFS3 main directory.
     /// </summary>

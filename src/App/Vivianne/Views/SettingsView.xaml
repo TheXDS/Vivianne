@@ -98,7 +98,7 @@
                 </ui:CardControl>
             </StackPanel>
         </TabItem>
-        <TabItem Header="{x:Static st:SettingsView.VIVEditor}">
+        <TabItem Header="{x:Static st:SettingsView.VIVEditor}" IsEnabled="False">
             <StackPanel>
                 <ui:CardControl Icon="{ui:SymbolIcon Symbol=Document16}">
                     <ui:CardControl.Header>
@@ -139,6 +139,30 @@
                     <ui:ToggleSwitch IsChecked="{Binding State.AutoBackup}"/>
                 </ui:CardControl>
             </StackPanel>
+        </TabItem>
+        <TabItem Header="About">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+                <Image Source="/Resources/Images/vivianne.png" Margin="50"/>
+                <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" TextBlock.FontFamily="{StaticResource MuliLight}">
+                    <TextBlock HorizontalAlignment="Center" FontSize="24" FontFamily="{StaticResource nfsFont}">Vivianne</TextBlock>
+                    <TextBlock HorizontalAlignment="Center">A NFS3 modding tool</TextBlock>
+                    <Separator/>
+                    <TextBlock TextWrapping="Wrap" Width="400">
+                        Version <Run Text="{Binding Version, Mode=OneWay}"/>
+                        <LineBreak/><LineBreak/>
+                        Created by TheXDS!
+                        <LineBreak/><LineBreak/>
+                        Released under the <Hyperlink NavigateUri="https://mit-license.org/">MIT</Hyperlink> license.
+                        <LineBreak/><LineBreak/>
+                        Special thanks to:<LineBreak/>
+                        Rata536, AJ_Lethal, Skoti_nfs, VEG, Exotic_Lover, TsTg, pete and the rest of the NFS3 modding community in our Discord server. You guys are awesome!
+                    </TextBlock>
+                </StackPanel>
+            </Grid>
         </TabItem>
     </TabControl>
 </UserControl>
