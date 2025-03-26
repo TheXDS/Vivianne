@@ -156,7 +156,7 @@ public static class Form
 
     private static void OnFceColorPreviewChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
     {
-        AttachAdorner<FceColorPreviewAdorner, FceColor>(obj, e, (control, color) => new FceColorPreviewAdorner((Control)control, color));
+        AttachAdorner<FceColorPreviewAdorner, FceColor?>(obj, e, (control, color) => new FceColorPreviewAdorner((Control)control, color));
     }
 
     private static void AttachAdorner<TAdorner, TValue>(DependencyObject obj, DependencyPropertyChangedEventArgs e, Func<FrameworkElement, TValue, TAdorner> adornerFactory) where TAdorner : Adorner

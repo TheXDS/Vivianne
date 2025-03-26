@@ -32,6 +32,9 @@ public class GaugePreviewData(GaugeDataState state)
     /// </summary>
     public DialData Tachometer => state.BackingStore.Tachometer;
 
+    /// <summary>
+    /// Gets or sets the Dial Width base value.
+    /// </summary>
     public int DialWidthBase => state.DialWidthBase;
 
     /// <summary>

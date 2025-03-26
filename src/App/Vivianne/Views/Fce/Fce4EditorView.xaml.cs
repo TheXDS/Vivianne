@@ -1,28 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows.Controls;
 
-namespace TheXDS.Vivianne.Views.Fce
+namespace TheXDS.Vivianne.Views.Fce;
+
+/// <summary>
+/// Interaction logic for Fce4EditorView.xaml
+/// </summary>
+public partial class Fce4EditorView : UserControl
 {
     /// <summary>
-    /// Interaction logic for Fce4EditorView.xaml
+    /// Initializes a new instance of the <see cref="Fce4EditorView"/> class.
     /// </summary>
-    public partial class Fce4EditorView : UserControl
+    public Fce4EditorView()
     {
-        public Fce4EditorView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

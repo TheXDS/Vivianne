@@ -79,9 +79,9 @@ public class StartupViewModel : ViewModel
     public StartupViewModel()
     {
         _Launchers = [
-            new VivFileEditorLauncher(() => DialogService),
-            new FshFileEditorLauncher(() => DialogService),
-            new Fce3FileEditorLauncher(() => DialogService),
+            new VivFileEditorLauncher(() => DialogService!),
+            new FshFileEditorLauncher(() => DialogService!),
+            new Fce3FileEditorLauncher(() => DialogService!),
             new ExtraToolsViewModelLauncher()
         ];
         Title = St.StartupPage;

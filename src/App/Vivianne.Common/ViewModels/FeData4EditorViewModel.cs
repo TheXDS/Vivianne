@@ -4,6 +4,9 @@ using TheXDS.Vivianne.ViewModels.Base;
 
 namespace TheXDS.Vivianne.ViewModels;
 
+/// <summary>
+/// Implements a ViewModel that allows the user to edit FeData files for NFS4.
+/// </summary>
 public class FeData4EditorViewModel : FileEditorViewModelBase<FeData4EditorState, FeData>
 {
     /// <summary>

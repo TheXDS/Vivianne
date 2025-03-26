@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
-using TheXDS.Vivianne.Models.Bnk;
-using TheXDS.MCART.Types.Extensions;
 using System.Text;
+using TheXDS.MCART.Types.Extensions;
+using TheXDS.Vivianne.Models.Bnk;
 
 namespace TheXDS.Vivianne.Helpers;
 
@@ -22,29 +22,85 @@ public static class BnkRender
         public short BitsPerSample;
     }
 
+    [StructLayout(LayoutKind.Sequential, Pack = 2)]
+    private struct RiffFileHeader
+    {
+        public static RiffFileHeader Empty() => new()
+        {
+            Magic = "RIFF"u8.ToArray(),
+            ContentType = "WAVE"u8.ToArray(),
+            FmtMagic = "fmt "u8.ToArray()
+        };
+
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+        public byte[] Magic;
+        public int FileSize;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+        public byte[] ContentType;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+        public byte[] FmtMagic;
+    }
+
     /// <summary>
-    /// Renders an uncompressed, 16-bit PCM BNK blob into a .WAV file.
+    /// Renders a BNK blob into a .WAV file.
     /// </summary>
     /// <param name="blob">Blob to be rendered.</param>
-    /// <param name="loopOnly">
-    /// Renders only the looping section of the BNK audio stream.
-    /// </param>
-    /// <returns></returns>
-    public static byte[] RenderBnk(BnkBlob blob)
+    /// <returns>
+    /// A byte array with the raw contents of the BNK audio stream rendered as
+    /// an uncompressed 16-bit PCM .WAV file.
+    /// </returns>
+    public static byte[] RenderBnk(BnkStream blob)
     {
-        if (blob.Compression) throw new NotImplementedException();
-
         return RenderData(blob, blob.SampleData);
     }
 
-    public static byte[] RenderBnkLoop(BnkBlob blob)
+    /// <summary>
+    /// Renders the looping section of a BNK blob into a .WAV file.
+    /// </summary>
+    /// <param name="blob">Blob to be rendered.</param>
+    /// <returns>
+    /// A byte array with the raw contents of the looping section of the BNK
+    /// audio stream rendered as an uncompressed 16-bit PCM .WAV file.
+    /// </returns>
+    public static byte[] RenderBnkLoop(BnkStream blob)
     {
-        if (blob.Compression) throw new NotImplementedException();
-
-        return RenderData(blob, [.. blob.SampleData.Skip(blob.LoopStart * 2).Take(blob.LoopLength * 2)]);
+        byte[] data = blob.SampleData;
+        return RenderData(blob, [.. data.Skip(blob.LoopStart * 2).Take(blob.LoopLength * 2)]);
     }
 
-    private static byte[] RenderData(BnkBlob blob, byte[] data)
+    /// <summary>
+    /// Creates a new BnkStream from the specified .WAV data.
+    /// </summary>
+    /// <param name="data">Raw .WAV data to create the BNK stream from.</param>
+    /// <returns>
+    /// A new <see cref="BnkStream"/> that has the same audio contents as the
+    /// input .WAV file.
+    /// </returns>
+    public static BnkStream FromWav(byte[] data)
+    {
+        using var ms = new MemoryStream(data);
+        using var br = new BinaryReader(ms);
+        var fileHeader = br.MarshalReadStruct<RiffFileHeader>();
+        _ = br.ReadInt32();
+        var fmt = br.MarshalReadStruct<WavFmtHeader>();
+        _ = br.ReadBytes(4);
+        var dataLength = br.ReadInt32();
+        var rawData = br.ReadBytes(dataLength);
+
+        return new BnkStream()
+        {
+            Properties = new Dictionary<byte, PtHeaderValue>(),
+            BytesPerSample = (byte)(fmt.BitsPerSample / 8),
+            Compression = false,
+            Channels = (byte)fmt.Channels,
+            LoopStart = 0,
+            LoopLength = dataLength / (fmt.BitsPerSample / 8),
+            SampleRate = (ushort)fmt.SampleRate,
+            SampleData = rawData
+        };
+    }
+
+    private static byte[] RenderData(BnkStream blob, byte[] data)
     {
         int fileSize = 36 + data.Length;
         var wavStream = new MemoryStream();

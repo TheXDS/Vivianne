@@ -117,8 +117,64 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="RootHelp" xml:space="preserve">
-    <value>Vivianne CLI - Una herramienta de modding para NFS3.</value>
+  <data name="BNKv2_AltStreamWarning" xml:space="preserve">
+    <value>BNK v2 parsers do not (or at least should not) support alternate audio streams. If you continue, these alternate streams will be lost. Are you sure you want to save this BNK using the v2 format?</value>
+  </data>
+  <data name="BNKStream" xml:space="preserve">
+    <value>BNK stream</value>
+  </data>
+  <data name="NoLoop" xml:space="preserve">
+    <value>The audio stream does not contain a looping section.</value>
+  </data>
+  <data name="UnsupportedAudioStream" xml:space="preserve">
+    <value>Unsupported audio stream.</value>
+  </data>
+  <data name="NoAudioStreamLoaded" xml:space="preserve">
+    <value>No audio stream loaded</value>
+  </data>
+  <data name="BnkNfo_AltStream" xml:space="preserve">
+    <value>ℹ️ Has alternate audio stream</value>
+  </data>
+  <data name="BnkNfo_Channels" xml:space="preserve">
+    <value>Channels: {0}</value>
+  </data>
+  <data name="BnkNfo_Duration" xml:space="preserve">
+    <value>Duration: {0}</value>
+  </data>
+  <data name="BnkNfo_Format" xml:space="preserve">
+    <value>Audio stream format: {0}-bit {1}</value>
+  </data>
+  <data name="BnkNfo_SampleRate" xml:space="preserve">
+    <value>Sample rate: {0} Hz</value>
+  </data>
+  <data name="BnkNfo_Samples" xml:space="preserve">
+    <value>Total samples: {0}</value>
+  </data>
+  <data name="BnkNfo_Size" xml:space="preserve">
+    <value>Size: {0}</value>
+  </data>
+  <data name="BNKVersion" xml:space="preserve">
+    <value>BNK version</value>
+  </data>
+  <data name="Stream" xml:space="preserve">
+    <value>Stream</value>
+  </data>
+  <data name="ShowInfo" xml:space="preserve">
+    <value>Show Info</value>
+  </data>
+  <data name="LoopStart" xml:space="preserve">
+    <value>Loop start</value>
+  </data>
+  <data name="LoopLength" xml:space="preserve">
+    <value>Loop length</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="ExportLoop" xml:space="preserve">
+    <value>Export loop</value>
   </data>
 </root>

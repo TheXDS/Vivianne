@@ -58,6 +58,7 @@ public abstract class FileEditorViewModelLauncher<TState, TFile, TSerializer, TE
     /// <see cref="FileEditorViewModelLauncher{TState, TFile, TSerializer, TEditor}"/>
     /// class.
     /// </summary>
+    /// <param name="dialogSvc">Dialog service to consume for dialogs.</param>
     /// <param name="pageName">Display name for the page.</param>
     /// <param name="openFilter">File filter to use when opening files.</param>
     /// <param name="saveFilter">File filter to use when saving files.</param>
@@ -76,6 +77,7 @@ public abstract class FileEditorViewModelLauncher<TState, TFile, TSerializer, TE
     /// <see cref="FileEditorViewModelLauncher{TState, TFile, TSerializer, TEditor}"/>
     /// class.
     /// </summary>
+    /// <param name="dialogSvc">Dialog service to consume for dialogs.</param>
     /// <param name="pageName">Display name for the page.</param>
     /// <param name="filter">
     /// File filter to use when opening or saving files.

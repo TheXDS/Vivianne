@@ -64,6 +64,12 @@ public static class FileFilters
     public static IEnumerable<FileFilterItem> AnyVivContentFilter { get; } = [new FileFilterItem(St.CommonVIVContentFiles, ["car*.fce", "car*.tga", "car*.fsh", "dash*.qfs", "carp*.txt", "fedata.*", "*.bnk"]), FileFilterItem.AllFiles];
 
     /// <summary>
+    /// Gets a set of file filters to be used on file dialogs for opening and
+    /// saving audio files.
+    /// </summary>
+    public static IEnumerable<FileFilterItem> AudioFileFilter { get; } = [new FileFilterItem("WAV audio file", "*.wav"), FileFilterItem.AllFiles];
+
+    /// <summary>
     /// Gets a set of file filter to be used on file dialogs for saving files
     /// with common bitmap file formats.
     /// </summary>

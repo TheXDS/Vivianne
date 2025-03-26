@@ -15,8 +15,6 @@ namespace TheXDS.Vivianne.Models.Base;
 /// </typeparam>
 public abstract class FileStateBase<T> : EditorViewModelStateBase, IFileState<T>
 {
-    private string? _filePath;
-
     /// <inheritdoc/>
     public T File { get; init; } = default!;
 

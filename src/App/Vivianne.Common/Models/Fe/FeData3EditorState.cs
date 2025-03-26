@@ -25,5 +25,5 @@ public class FeData3EditorState : FileStateBase<FeData>
     /// <summary>
     /// Gets a table of the colors defined in the FCE file.
     /// </summary>
-    public FceColor[]? PreviewFceColorTable { get; set; }
+    public FceColor?[]? PreviewFceColorTable { get; set; }
 }

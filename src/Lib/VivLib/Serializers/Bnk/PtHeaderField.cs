@@ -2,11 +2,33 @@
 
 internal enum PtHeaderField : byte
 {
-    Unk_0x06 = 0x06,
-    Unk_0x0a = 0x0a,
-    Unk_0x10 = 0x10,
-    Unk_0x13 = 0x13,
-    Unk_0x91 = 0x91,
+    /// <summary>
+    /// Indicates that the following data is an audio stream header.
+    /// </summary>
     AudioHeader = 0xfd,
+    
+    /// <summary>
+    /// Indicates a special data block that has not been identified yet (might
+    /// be a secondary alt stream, needs to be confirmed)
+    /// </summary>
+    Unk_0xfc = 0xfc,
+
+    /// <summary>
+    /// Indicates that the following data is for an alternate
+    /// <see cref="PtHeader"/> that could be used by the game as a fallback
+    /// stream, a simultaneous playback stream, etc.
+    /// </summary>
+    /// <remarks>
+    /// While some BNKs in NFS3 include alt streams, it is not verified that
+    /// this data is actually being used. Speculation suggests that it might be
+    /// used if the other primary PT header values instruct the game to do so,
+    /// but this is also unconfirmed.
+    /// </remarks>
+    AlternateStream = 0xfe,
+
+    /// <summary>
+    /// Indicates the end of the PT header data, and further parsing should be
+    /// stopped at this point.
+    /// </summary>
     EndOfHeader = 0xff,
 }

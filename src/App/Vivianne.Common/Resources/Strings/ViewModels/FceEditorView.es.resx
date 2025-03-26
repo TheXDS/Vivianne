@@ -123,4 +123,7 @@
   <data name="RenamePartHelp" xml:space="preserve">
     <value>Por favor ingrese un nombre para este elemento. Los nombres de partes usualmente inician con dos puntos y consisten de algunos caracteres en mayúscula que describen las propiedades y/o funcionalidad de la parte.</value>
   </data>
+  <data name="NoTexture" xml:space="preserve">
+    <value>&lt;ninguna&gt;</value>
+  </data>
 </root>

@@ -144,4 +144,10 @@
   <data name="TheFileXAlreadyExist" xml:space="preserve">
     <value>El archivo '{0}' ya existe. ¿Desea reemplazarlo?</value>
   </data>
+  <data name="RenameHelp" xml:space="preserve">
+    <value>Escriba el nuevo nombre del archivo</value>
+  </data>
+  <data name="Rename" xml:space="preserve">
+    <value>Renombrar archivo</value>
+  </data>
 </root>

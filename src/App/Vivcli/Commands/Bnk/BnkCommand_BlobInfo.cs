@@ -43,7 +43,7 @@ public partial class BnkCommand
         }, true);
     }
 
-    private static void PrintBlobInfo(BnkBlob blob, bool humanOpt)
+    private static void PrintBlobInfo(BnkStream blob, bool humanOpt)
     {
         Console.WriteLine(string.Format("Samplig rate: {0} Hz", blob.SampleRate));
         Console.WriteLine(string.Format("Channels: {0}", blob.Channels));

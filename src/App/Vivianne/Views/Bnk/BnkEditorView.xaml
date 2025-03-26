@@ -6,59 +6,131 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:ct="clr-namespace:TheXDS.Vivianne.Controls"
     xmlns:hlp="clr-namespace:TheXDS.Vivianne.Helpers"
-    xmlns:mdl="clr-namespace:TheXDS.Vivianne.Models.Fce;assembly=Vivianne.Common"
-    xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings.Views"
+    xmlns:mdl="clr-namespace:TheXDS.Vivianne.Models.Bnk;assembly=VivLib"
+    xmlns:sys="clr-namespace:System;assembly=netstandard"
     xmlns:vc="clr-namespace:TheXDS.Vivianne.ValueConverters"
     xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels.Bnk;assembly=Vivianne.Common"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:mcart="http://schemas.thexds.local/mcart"
+    xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings.ViewModels;assembly=Vivianne.Common"
     d:DataContext="{d:DesignInstance Type=vm:BnkEditorViewModel}"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    d:DesignWidth="700">
     <UserControl.Resources>
         <vc:BnkVisualizerConverter x:Key="bnkvis"/>
+        <vc:BnkStreamInformationConverter x:Key="bnkNfo"/>
+        <BooleanToVisibilityConverter x:Key="b2vc"/>
+        <mcart:NullToVisibilityConverter x:Key="n2vc"/>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
             <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <ct:EditorBackdrop Grid.Row="1" Grid.ColumnSpan="2"/>
         <ct:FileEditorCommandBar Margin="10,0,0,0" Grid.ColumnSpan="2" ShowClose="False" Editor="{Binding}">
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                <ComboBox
-                    hlp:Form.Label="Stream"
-                    MinWidth="150"
-                    Margin="5"
-                    ItemsSource="{Binding State.Streams, Mode=OneWay}"
-                    SelectedValue="{Binding State.SelectedStream}"/>
-            </StackPanel>
-        </ct:FileEditorCommandBar>
-        <ct:DoubleCollectionEditor Grid.Row="1"/>
-
-        <Border
-            Grid.Column="1"
-            Grid.Row="1"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            CornerRadius="10"
-            MinHeight="100"
-            MinWidth="150"
-            Background="{StaticResource MidBackground}">
-            <Border.Effect>
-                <DropShadowEffect/>
-            </Border.Effect>
-            <StackPanel>
-                <Image Margin="10" Source="{Binding State.SelectedStream, Converter={StaticResource bnkvis}}" Stretch="Uniform" RenderOptions.BitmapScalingMode="Fant"/>
-                <StackPanel VerticalAlignment="Center" Margin="10" Orientation="Horizontal">
-                    <ui:Button Icon="{ui:SymbolIcon Symbol=Play24}" Command="{Binding PlaySampleCommand, Mode=OneWay}"/>
-                    <ui:Button Icon="{ui:SymbolIcon Symbol=Save24}" Command="{Binding ExportSampleCommand, Mode=OneWay}"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.ColumnSpan="2">
+                    <ComboBox
+                        Margin="5"
+                        hlp:Form.Label="{x:Static st:BnkEditorViewModel.BNKVersion}"
+                        SelectedValue="{Binding State.File.FileVersion}">
+                        <sys:Int16>2</sys:Int16>
+                        <sys:Int16>4</sys:Int16>
+                    </ComboBox>
+                    <ComboBox
+                        hlp:Form.Label="{x:Static st:BnkEditorViewModel.Stream}"
+                        MinWidth="150"
+                        Margin="5"
+                        DisplayMemberPath="Id"
+                        ItemsSource="{Binding State.AllStreams, Mode=OneWay}"
+                        SelectedValue="{Binding State.SelectedStream}"/>
                 </StackPanel>
-            </StackPanel>
-        </Border>
-
+                <CheckBox
+                    Grid.Column="1"
+                    Style="{StaticResource ToggleSwitch}"
+                    Content="{x:Static st:BnkEditorViewModel.ShowInfo}"
+                    TextBlock.Foreground="White"
+                    Margin="5"
+                    IsChecked="{Binding State.ShowInfo}"
+                    Grid.ColumnSpan="2"/>
+            </Grid>
+        </ct:FileEditorCommandBar>
+        <mcart:StretchyWrapPanel Orientation="Horizontal" Margin="5" Grid.Row="1">
+            <mcart:StretchyWrapPanel HorizontalAlignment="Stretch">
+                <ui:NumberBox 
+                    MinWidth="210"
+                    Margin="5"
+                    hlp:Form.Label="{x:Static st:BnkEditorViewModel.LoopStart}"
+                    Value="{Binding State.LoopStart, UpdateSourceTrigger=PropertyChanged}"/>
+                <ui:NumberBox
+                    MinWidth="210"
+                    Margin="5"
+                    hlp:Form.Label="{x:Static st:BnkEditorViewModel.LoopLength}"
+                    Value="{Binding State.LoopLength, UpdateSourceTrigger=PropertyChanged}"/>
+            </mcart:StretchyWrapPanel>
+            <mcart:StretchyWrapPanel VerticalAlignment="Center">
+                <ui:Button
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Stretch"
+                    Margin="5"
+                    Icon="{ui:SymbolIcon Symbol=Open24}"
+                    Command="{Binding ImportWavCommand, Mode=OneWay}"
+                    Content="{x:Static st:BnkEditorViewModel.Import}"/>
+                <ui:Button
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Stretch"
+                    Margin="5"
+                    Icon="{ui:SymbolIcon Symbol=Save24}"
+                    Command="{Binding ExportSampleCommand, Mode=OneWay}"
+                    Content="{x:Static st:BnkEditorViewModel.Export}"/>
+                <ui:Button
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Stretch"
+                    Margin="5"
+                    Icon="{ui:SymbolIcon Symbol=Save24}"
+                    Command="{Binding ExportLoopCommand, Mode=OneWay}"
+                    Content="{x:Static st:BnkEditorViewModel.ExportLoop}"/>
+            </mcart:StretchyWrapPanel>
+        </mcart:StretchyWrapPanel>
+        <StackPanel Orientation="Horizontal" Margin="5" Grid.Column="1" Grid.Row="1">
+            <ui:Button Margin="5" Icon="{ui:SymbolIcon Symbol=Play24}" Command="{Binding PlaySampleCommand, Mode=OneWay}"/>
+            <ui:Button Margin="5" Icon="{ui:SymbolIcon Symbol=PlayMultiple16}" Command="{Binding PlayLoopingSampleCommand, Mode=OneWay}"/>
+            <ui:Button Margin="5" Icon="{ui:SymbolIcon Symbol=Stop24}" Command="{Binding StopPlaybackCommand, Mode=OneWay}"/>
+        </StackPanel>
+        <Grid Grid.ColumnSpan="2" Grid.Row="2" Background="#202530">
+            <Viewbox>
+                <TextBlock 
+                    Opacity="0.25"
+                    Foreground="White"
+                    Margin="20"
+                    Visibility="{Binding Source, ElementName=imgPreview, Converter={StaticResource n2vc}}"
+                    Text="{x:Static st:BnkEditorViewModel.UnsupportedAudioStream}"/>
+            </Viewbox>
+            <Image
+                x:Name="imgPreview"
+                Margin="10"
+                Source="{Binding State.SelectedStream, Converter={StaticResource bnkvis}}"
+                Stretch="Fill"
+                RenderOptions.BitmapScalingMode="Fant"/>
+            <TextBlock 
+                Visibility="{Binding State.ShowInfo, Mode=OneWay, Converter={StaticResource b2vc}}"
+                Text="{Binding State.SelectedStream, Converter={StaticResource bnkNfo}}"
+                Opacity="0.65"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Background="Black"
+                Margin="10"
+                Padding="10"/>
+        </Grid>
     </Grid>
-
 </UserControl>

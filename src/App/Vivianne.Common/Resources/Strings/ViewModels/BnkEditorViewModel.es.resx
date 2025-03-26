@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,8 +117,64 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="RootHelp" xml:space="preserve">
-    <value>Vivianne CLI - Una herramienta de modding para NFS3.</value>
+  <data name="BNKv2_AltStreamWarning" xml:space="preserve">
+    <value>Los lectores de archivos BNK v2 no soportan (o al menos no deberían soportar) flujos de audio alternos. Si continúa, estos flujos alternos se perderán. ¿Está seguro de que desea guardar este archivo BNK utilizando el formato v2?</value>
+  </data>
+  <data name="BNKStream" xml:space="preserve">
+    <value>Flujo BNK</value>
+  </data>
+  <data name="NoLoop" xml:space="preserve">
+    <value>El flujo de audio no contiene una sección de repetición.</value>
+  </data>
+  <data name="UnsupportedAudioStream" xml:space="preserve">
+    <value>Flujo de audio no soportado.</value>
+  </data>
+  <data name="NoAudioStreamLoaded" xml:space="preserve">
+    <value>No se ha cargado un flujo de audio</value>
+  </data>
+  <data name="BnkNfo_Duration" xml:space="preserve">
+    <value>Duración: {0}</value>
+  </data>
+  <data name="BnkNfo_Samples" xml:space="preserve">
+    <value>Muestras totales: {0}</value>
+  </data>
+  <data name="BnkNfo_AltStream" xml:space="preserve">
+    <value>ℹ️ Contiene un flujo de audio alternativo</value>
+  </data>
+  <data name="BnkNfo_Channels" xml:space="preserve">
+    <value>Canales: {0}</value>
+  </data>
+  <data name="BnkNfo_Format" xml:space="preserve">
+    <value>Formato de flujo de audio: {1} de {0} bits</value>
+  </data>
+  <data name="BnkNfo_SampleRate" xml:space="preserve">
+    <value>Tasa de muestreo: {0} Hz</value>
+  </data>
+  <data name="BnkNfo_Size" xml:space="preserve">
+    <value>Tamaño: {0}</value>
+  </data>
+  <data name="BNKVersion" xml:space="preserve">
+    <value>Versión de BNK</value>
+  </data>
+  <data name="Stream" xml:space="preserve">
+    <value>Flujo</value>
+  </data>
+  <data name="ShowInfo" xml:space="preserve">
+    <value>Mostrar info</value>
+  </data>
+  <data name="LoopStart" xml:space="preserve">
+    <value>Inicio de repetición</value>
+  </data>
+  <data name="LoopLength" xml:space="preserve">
+    <value>Duración de repetición</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>Importar</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Exportar</value>
+  </data>
+  <data name="ExportLoop" xml:space="preserve">
+    <value>Exportar repetición</value>
   </data>
 </root>

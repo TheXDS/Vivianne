@@ -29,4 +29,6 @@ internal class PtHeader
         get => AudioValues[field];
         set => AudioValues[field] = value;
     }
+
+    public PtHeader? AltStream { get; set; }
 }

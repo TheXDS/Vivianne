@@ -83,6 +83,11 @@
 			<AutoGen>True</AutoGen>
 			<DependentUpon>FeDataEditorView.resx</DependentUpon>
 		</Compile>
+		<Compile Update="Resources\Strings\Views\FileErrorView.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>FileErrorView.resx</DependentUpon>
+		</Compile>
 		<Compile Update="Resources\Strings\Views\FshEditorView.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
@@ -158,6 +163,10 @@
 		<EmbeddedResource Update="Resources\Strings\Views\FeDataEditorView.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>FeDataEditorView.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Strings\Views\FileErrorView.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>FileErrorView.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Strings\Views\FshEditorView.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>

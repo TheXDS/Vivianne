@@ -11,3 +11,10 @@ I don't know if Need For Speed III supports any of these additional FSH pixel fo
 To enable the extended FSH format support, either:
 1. Edit the `./BuildTargets/GlobalDirectives.targets` file to include `EnableFullFshFormat` inside the `ExtraDefineConstants` tag
 2. Include the `-p:ExtraDefineConstants=EnableFullFshFormat` parameter when building Vivianne from sources using `dotnet`.
+
+## BNK compression support
+Currently, Vivianne does not support compressed audio streams in BNK files. This is due to the relatively poor documentation on how the compression algorithms work, as well as lack of time from my part to properly investigate and implement codecs for those (I already know about the [vgmstream](https://github.com/vgmstream/vgmstream) repo).
+
+Generally speaking, cars shipped with Need For Speed III do not have compressed audio streams for the engine sounds, so this would not be a problem for general car modding. Cop speech is another story, but usually no one creates a car with cop speech support (not that it can't happen, but... you know, unlikely).
+
+Anyway, a broken codec for what should've been EA ADPCM is being included in the sources. You can compile Vivianne with it if you define the `EnableBnkCompression` constant.

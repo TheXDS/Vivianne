@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models.Fce.Nfs3;
 using TheXDS.Vivianne.Models.Fe;
 using TheXDS.Vivianne.Models.Fe.Nfs3;
@@ -22,11 +23,11 @@ public class FeData3EditorViewModel : FileEditorViewModelBase<FeData3EditorState
         FceSerializer serializer = new();
         if (serializer.TryGetFce(fceBytes) is { } fce)
         {
-            State.PreviewFceColorTable = ReadColorPairs(fce);
+            State.PreviewFceColorTable = [.. ReadColorPairs(fce).Concat(Enumerable.Range(0, 10).Select(_ => (FceColor?)null)).Take(10)];
         }
     }
 
-    private static FceColor[] ReadColorPairs(FceFile fce)
+    private static FceColor?[] ReadColorPairs(FceFile fce)
     {
         static HsbColor WrapTable(IList<HsbColor> colors, int index) => colors[index % colors.Count];
         IEnumerable<(HsbColor, HsbColor)> colorPairs = fce.SecondaryColors.Count == 0

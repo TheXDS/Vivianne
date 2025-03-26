@@ -8,7 +8,8 @@ namespace TheXDS.Vivianne.Views;
 public partial class FeData3EditorView : UserControl
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="FeData3EditorView"/> class.
+    /// Initializes a new instance of the <see cref="FeData3EditorView"/>
+    /// class.
     /// </summary>
     public FeData3EditorView()
     {

@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace TheXDS.Vivianne.Component;
+﻿namespace TheXDS.Vivianne.Component;
 
 /// <summary>
 /// Defines a set of members to be implemented by a type that exposes keyboard
@@ -14,14 +12,13 @@ public interface IKeyboardProxy
     /// </summary>
     bool IsShiftKeyDown { get; }
 
+    /// <summary>
+    /// Gets a value that indicates if the <c>Alt</c> key is being held down.
+    /// </summary>
     bool IsAltKeyDown { get; }
 
+    /// <summary>
+    /// Gets a value that indicates if the <c>Ctrl</c> key is being held down.
+    /// </summary>
     bool IsCtrlKeyDown { get; }
-}
-
-public interface IStorageBackend
-{
-    Task<byte[]> Read(string path);
-
-    Task Write(string path, byte[] data);
 }

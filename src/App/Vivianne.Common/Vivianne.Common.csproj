@@ -40,6 +40,11 @@
 		  <AutoGen>True</AutoGen>
 		  <DependentUpon>SerialNumberAnalyzer.resx</DependentUpon>
 		</Compile>
+		<Compile Update="Resources\Strings\ViewModels\BnkEditorViewModel.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>BnkEditorViewModel.resx</DependentUpon>
+		</Compile>
 		<Compile Update="Resources\Strings\ViewModels\CarpEditorViewModel.Designer.cs">
 		  <DesignTime>True</DesignTime>
 		  <AutoGen>True</AutoGen>
@@ -100,6 +105,10 @@
 		<EmbeddedResource Update="Resources\Strings\Tools\SerialNumberAnalyzer.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>
 		  <LastGenOutput>SerialNumberAnalyzer.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Strings\ViewModels\BnkEditorViewModel.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>BnkEditorViewModel.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Strings\ViewModels\CarpEditorViewModel.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>

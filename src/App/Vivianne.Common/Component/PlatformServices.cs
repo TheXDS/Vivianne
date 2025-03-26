@@ -49,6 +49,11 @@ public static class PlatformServices
         _keyboardProxy = proxy;
     }
 
+    /// <summary>
+    /// Sets the FCE render service instance to use when a request to render a
+    /// specific model is made.
+    /// </summary>
+    /// <param name="render">FCE render service to expose.</param>
     public static void SetFceRender(IStaticFceRender render)
     {
         _staticFceRender = render;

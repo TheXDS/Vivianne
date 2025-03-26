@@ -309,4 +309,88 @@
   <data name="TireSidewall" xml:space="preserve">
     <value>Cara de llanta</value>
   </data>
+  <data name="MaxBrakingDecel" xml:space="preserve">
+    <value>Decel. de frenado máx</value>
+  </data>
+  <data name="WheelBase" xml:space="preserve">
+    <value>Base de rueda</value>
+  </data>
+  <data name="FrontGripBias" xml:space="preserve">
+    <value>Proporción de agarre frontal</value>
+  </data>
+  <data name="MinSteeringAccel" xml:space="preserve">
+    <value>Accel. mínima de dirección</value>
+  </data>
+  <data name="TurnInRamp" xml:space="preserve">
+    <value>Incremento de giro</value>
+  </data>
+  <data name="TurnOutRamp" xml:space="preserve">
+    <value>Decremento de giro</value>
+  </data>
+  <data name="LateralAccGripMult" xml:space="preserve">
+    <value>Mult. agarre acc. lat.</value>
+  </data>
+  <data name="AeroDownforceMult" xml:space="preserve">
+    <value>Mult. presión aerodinámica</value>
+  </data>
+  <data name="GasOffFactor" xml:space="preserve">
+    <value>Factor de suelte de acelerador</value>
+  </data>
+  <data name="GTransferFactor" xml:space="preserve">
+    <value>Factor de trans. G</value>
+  </data>
+  <data name="SlideMultiplier" xml:space="preserve">
+    <value>Mult. deslizamiento</value>
+  </data>
+  <data name="SpinVelocityCap" xml:space="preserve">
+    <value>Tope de velocidad de giro</value>
+  </data>
+  <data name="SlideVelocityCap" xml:space="preserve">
+    <value>Tope de velocidad de deslizamiento</value>
+  </data>
+  <data name="SlideAssistanceFactor" xml:space="preserve">
+    <value>Factor de asistencia de deslizamiento</value>
+  </data>
+  <data name="PushFactor" xml:space="preserve">
+    <value>Factor de empuje</value>
+  </data>
+  <data name="LowTurnFactor" xml:space="preserve">
+    <value>Factor de giro bajo</value>
+  </data>
+  <data name="HighTurnFactor" xml:space="preserve">
+    <value>Factor de giro alto</value>
+  </data>
+  <data name="PitchRollFactor" xml:space="preserve">
+    <value>Factor de vuelque</value>
+  </data>
+  <data name="RoadBumpFactor" xml:space="preserve">
+    <value>Factor de desnivel de camino</value>
+  </data>
+  <data name="SpoilerFunctionType" xml:space="preserve">
+    <value>Tipo de función de alerón</value>
+  </data>
+  <data name="SpoilerActSpeed" xml:space="preserve">
+    <value>Velocidad de activación de alerón</value>
+  </data>
+  <data name="GradualTurnCutoff" xml:space="preserve">
+    <value>Corte de giro gradual</value>
+  </data>
+  <data name="MediumTurnCutoff" xml:space="preserve">
+    <value>Corte de giro medio</value>
+  </data>
+  <data name="SharpTurnCutoff" xml:space="preserve">
+    <value>Corte de giro cerrado</value>
+  </data>
+  <data name="MedTurnSpdMod" xml:space="preserve">
+    <value>Mod. de vel. de giro med.</value>
+  </data>
+  <data name="SharpTurnSpdMod" xml:space="preserve">
+    <value>Mod. de vel. de giro cerr.</value>
+  </data>
+  <data name="ExtrTurnSpdMod" xml:space="preserve">
+    <value>Mod. de vel. de giro extr.</value>
+  </data>
+  <data name="SubdivideLevel" xml:space="preserve">
+    <value>Nivel de subdivisión</value>
+  </data>
 </root>

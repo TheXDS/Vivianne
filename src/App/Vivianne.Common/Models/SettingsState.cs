@@ -3,6 +3,9 @@ using TheXDS.Vivianne.Properties;
 
 namespace TheXDS.Vivianne.Models;
 
+/// <summary>
+/// Represents the current state of the settings editor view model.
+/// </summary>
 public class SettingsState : EditorViewModelStateBase
 {
     private string? _nfs3Path;

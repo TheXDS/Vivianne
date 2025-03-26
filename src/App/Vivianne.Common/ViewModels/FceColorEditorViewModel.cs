@@ -1,9 +1,9 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using TheXDS.MCART.Component;
 using TheXDS.MCART.Types.Base;
+using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Models.Fce.Nfs3;
 using TheXDS.Vivianne.ViewModels.Base;
@@ -26,12 +26,12 @@ public class FceColorEditorViewModel : EditorViewModelBase<FceColorTableEditorSt
         RemoveColorCommand = new SimpleCommand(OnRemoveColor);
         state.Colors.CollectionChanged += (sende, e) =>
         {
-            foreach (var j in e.OldItems.Cast<MutableFceColorItem>())
+            foreach (var j in e.OldItems.NotNull().Cast<MutableFceColorItem>())
             {
                 j.PrimaryColor.Unsubscribe(OnColorChanged);
                 j.SecondaryColor.Unsubscribe(OnColorChanged);
             }
-            foreach (var j in e.NewItems.Cast<MutableFceColorItem>())
+            foreach (var j in e.NewItems.NotNull().Cast<MutableFceColorItem>())
             {
                 j.PrimaryColor.Subscribe(OnColorChanged);
                 j.SecondaryColor.Subscribe(OnColorChanged);

@@ -6,6 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:local="clr-namespace:TheXDS.Vivianne.Views.Specialized"
+    xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings.Views"
     mc:Ignorable="d">
     <Border
         VerticalAlignment="Center"
@@ -22,9 +23,13 @@
                 <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
             <ui:FontIcon Glyph="⚠️" Foreground="Orange" FontSize="48"/>
-            <TextBlock TextWrapping="Wrap" VerticalAlignment="Center" Foreground="White" Margin="20,0,0,0" Grid.Column="1">
-                Vivianne could not understand this file format.
-            </TextBlock>
+            <TextBlock
+                TextWrapping="Wrap"
+                VerticalAlignment="Center"
+                Foreground="White"
+                Margin="20,0,0,0"
+                Grid.Column="1"
+                Text="{x:Static st:FileErrorView.ErrorMessage}"/>
         </Grid>
     </Border>
 </UserControl>
