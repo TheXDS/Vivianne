@@ -72,33 +72,6 @@ public class BnkEditorViewModel : FileEditorViewModelBase<BnkEditorState, BnkFil
     }
 
     /// <inheritdoc/>
-    protected override async Task OnSave()
-    {
-        if (await CheckBnkBeforeSave()) await base.OnSave();
-    }
-
-    /// <inheritdoc/>
-    protected override async Task OnSaveAs()
-    {
-        if (await CheckBnkBeforeSave()) await base.OnSaveAs();
-    }
-
-    private async Task<bool> CheckBnkBeforeSave()
-    {
-        if (State.File.FileVersion == 2 && State.Streams.Any(p => p.AltStream is not null))
-        {
-            if (!await DialogService!.AskYn(St.BNKv2_AltStreamWarning)) return false;
-            {
-                foreach (var j in State.Streams)
-                {
-                    j.AltStream = null;
-                }
-            }
-        }
-        return true;
-    }
-
-    /// <inheritdoc/>
     protected override Task OnCreated()
     {
         State.SelectedStream = State.Streams.FirstOrDefault();
