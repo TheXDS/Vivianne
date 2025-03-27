@@ -17,7 +17,7 @@
     ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
     ExtendsContentIntoTitleBar="true"
     Height="450" Width="800" Icon="/vivianne.ico">
-    <Grid hlp:Form.BetaMessage="Beta UI is subject to change">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>

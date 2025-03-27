@@ -156,7 +156,7 @@
                         <LineBreak/><LineBreak/>
                         Created by TheXDS!
                         <LineBreak/><LineBreak/>
-                        Released under the <Hyperlink NavigateUri="https://mit-license.org/">MIT</Hyperlink> license.
+                        Released under the <Hyperlink NavigateUri="https://mit-license.org/" Click="Hyperlink_Click">MIT</Hyperlink> license.
                         <LineBreak/><LineBreak/>
                         Special thanks to:<LineBreak/>
                         Rata536, AJ_Lethal, Skoti_nfs, VEG, Exotic_Lover, TsTg, pete and the rest of the NFS3 modding community in our Discord server. You guys are awesome!

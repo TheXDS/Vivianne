@@ -7,6 +7,7 @@ using System.Windows.Input;
 using TheXDS.Ganymede.Types.Extensions;
 using TheXDS.MCART.Component;
 using TheXDS.MCART.Types.Base;
+using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Helpers;
 using TheXDS.Vivianne.Models.Bnk;
 using TheXDS.Vivianne.Resources;
@@ -81,7 +82,7 @@ public class BnkEditorViewModel : FileEditorViewModelBase<BnkEditorState, BnkFil
     /// <inheritdoc/>
     protected override Task OnCreated()
     {
-        State.SelectedStream = State.Streams.FirstOrDefault();
+        State.SelectedStream = State.Streams.NotNull().FirstOrDefault();
         State.Subscribe(OnStateChanged);
         return Task.CompletedTask;
     }

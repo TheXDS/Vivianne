@@ -7,6 +7,7 @@
     xmlns:controls="clr-namespace:TheXDS.Vivianne.Controls"
     xmlns:vc="clr-namespace:TheXDS.Vivianne.ValueConverters"
     xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
+    xmlns:ct="clr-namespace:TheXDS.Vivianne.Controls"
     xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings.Views"
     xmlns:st2="clr-namespace:TheXDS.Vivianne.Resources.Strings;assembly=Vivianne.Common"
     xmlns:mcart="http://schemas.thexds.local/mcart"
@@ -31,23 +32,25 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Border Grid.ColumnSpan="2">
-            <DockPanel Margin="0,10,10,10" VerticalAlignment="Center">
-                <DockPanel.Resources>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="Foreground" Value="White"/>
-                        <Setter Property="VerticalAlignment" Value="Center"/>
-                        <Setter Property="Margin" Value="10,0"/>
-                    </Style>
-                    <Style TargetType="Separator">
-                        <Setter Property="LayoutTransform">
-                            <Setter.Value>
-                                <RotateTransform Angle="90"/>
-                            </Setter.Value>
-                        </Setter>
-                        <Setter Property="Margin" Value="10,0"/>
-                    </Style>
-                </DockPanel.Resources>
-                <ComboBox
+            <ct:FileEditorCommandBar Margin="10,0,0,0" VerticalContentAlignment="Center" Grid.ColumnSpan="2" ShowClose="False" Editor="{Binding}">
+
+                <DockPanel VerticalAlignment="Center">
+                    <DockPanel.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="Margin" Value="10,0"/>
+                        </Style>
+                        <Style TargetType="Separator">
+                            <Setter Property="LayoutTransform">
+                                <Setter.Value>
+                                    <RotateTransform Angle="90"/>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Margin" Value="10,0"/>
+                        </Style>
+                    </DockPanel.Resources>
+                    <ComboBox
                     Width="180"
                     VerticalAlignment="Center"
                     IsEditable="False"
@@ -55,36 +58,24 @@
                     DisplayMemberPath="Key"
                     SelectedValuePath="Value"
                     SelectedValue="{Binding CurrentImage}"/>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <UniformGrid Visibility="{Binding State.UnsavedChanges, Converter={StaticResource b2v}}" Rows="1">
-                        <Button
-                            Command="{Binding SaveCommand}"                           
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <TextBlock><Run Text="{x:Static st:FshEditorView.Zoom}"/><Run Text="{Binding ZoomLevel, Mode=OneWay}"/></TextBlock>
+                        <Slider x:Name="sldZoom" Minimum="1.0" Maximum="10.0" Value="{Binding ZoomLevel}" Margin="5" Width="100" SmallChange="0.5" LargeChange="1" TickFrequency="0.125" IsSnapToTickEnabled="True"/>
+                        <CheckBox Style="{StaticResource ToggleSwitch}" Padding="10,0" IsChecked="{Binding Alpha}">
+                            <TextBlock Text="{x:Static st:FshEditorView.Alpha}"/>
+                        </CheckBox>
+                        <TextBlock Text="{x:Static st:FshEditorView.Background}"/>
+                        <ComboBox
+                            IsEnabled="{Binding Alpha, Mode=OneWay}"
+                            Width="180"
                             VerticalAlignment="Center"
-                            Padding="10,2"
-                            Content="{x:Static st2:Common.Save}"/>
-                        <Button
-                            Command="{Binding DiscardAndCloseCommand}"
-                            VerticalAlignment="Center"
-                            Padding="10,2"
-                            Content="{x:Static st2:Common.Discard}"/>
-                    </UniformGrid>
-                    <Separator Visibility="{Binding State.UnsavedChanges, Converter={StaticResource b2v}}"/>
-                    <TextBlock><Run Text="{x:Static st:FshEditorView.Zoom}"/><Run Text="{Binding ZoomLevel, Mode=OneWay}"/></TextBlock>
-                    <Slider x:Name="sldZoom" Minimum="1.0" Maximum="10.0" Value="{Binding ZoomLevel}" Margin="5" Width="100" SmallChange="0.5" LargeChange="1" TickFrequency="0.125" IsSnapToTickEnabled="True"/>
-                    <CheckBox Style="{StaticResource ToggleSwitch}" Padding="10,0" IsChecked="{Binding Alpha}">
-                        <TextBlock Text="{x:Static st:FshEditorView.Alpha}"/>
-                    </CheckBox>
-                    <TextBlock Text="{x:Static st:FshEditorView.Background}"/>
-                    <ComboBox
-                        IsEnabled="{Binding Alpha, Mode=OneWay}"
-                        Width="180"
-                        VerticalAlignment="Center"
-                        IsEditable="False"
-                        SelectedItem="{Binding Background, FallbackValue={x:Static vm:BackgroundType.Checkerboard}}"
-                        ItemsSource="{controls:EnumValProvider EnumType={x:Type vm:BackgroundType}}">
-                    </ComboBox>
-                </StackPanel>
-            </DockPanel>
+                            IsEditable="False"
+                            SelectedItem="{Binding Background, FallbackValue={x:Static vm:BackgroundType.Checkerboard}}"
+                            ItemsSource="{controls:EnumValProvider EnumType={x:Type vm:BackgroundType}}">
+                        </ComboBox>
+                    </StackPanel>
+                </DockPanel>
+            </ct:FileEditorCommandBar>
         </Border>
         <ScrollViewer
             Width="180"

@@ -1,13 +1,13 @@
 ﻿<UserControl
-    x:Class="TheXDS.Vivianne.Views.Carp3EditorView"
+    x:Class="TheXDS.Vivianne.Views.Carp4EditorView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mdl="clr-namespace:TheXDS.Vivianne.Models.Fe.Nfs3;assembly=VivLib"
+    xmlns:mdl="clr-namespace:TheXDS.Vivianne.Models.Fe.Nfs4;assembly=VivLib"
     xmlns:gn="http://schemas.thexds.local/ganymede"
     xmlns:ct="clr-namespace:TheXDS.Vivianne.Controls"
-    xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels.Carp.Nfs3;assembly=Vivianne.Common"
+    xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels.Carp.Nfs4;assembly=Vivianne.Common"
     xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings.Views"
     xmlns:models="clr-namespace:TheXDS.Vivianne.Models;assembly=Vivianne.Common"
     xmlns:vc="clr-namespace:TheXDS.Vivianne.ValueConverters"
@@ -223,6 +223,7 @@
                                 <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.SharpTurnSpdMod}" Value="{Binding State.SharpTurnSpdMod}"/>
                                 <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.ExtrTurnSpdMod}" Value="{Binding State.ExtremeTurnSpdMod}"/>
                                 <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.SubdivideLevel}" Value="{Binding State.SubdivideLevel}"/>
+                                <ui:NumberBox hlp:Form.Label="Understeer gradient" Value="{Binding State.UndersteerGradient}"/>
                             </mcart:StretchyWrapPanel>
                         </StackPanel>
                     </Expander>

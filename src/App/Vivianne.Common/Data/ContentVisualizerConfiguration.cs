@@ -15,6 +15,7 @@ using TheXDS.Vivianne.ViewModels;
 using TheXDS.Vivianne.ViewModels.Base;
 using TheXDS.Vivianne.ViewModels.Bnk;
 using TheXDS.Vivianne.ViewModels.Fce.Nfs3;
+using TheXDS.Vivianne.ViewModels.Fce.Nfs4;
 
 namespace TheXDS.Vivianne.Data;
 
@@ -93,11 +94,19 @@ internal static class ContentVisualizerConfiguration
         return new(data) { Title = name };
     }
 
-    private static Fce3EditorViewModel? CreateFceEditorViewModel(byte[] data, VivEditorViewModel vm, string name)
+    private static readonly byte[][] knownFce4Headers =
+    [
+        [0x00, 0x10, 0x10, 0x14],
+        [0x00, 0x10, 0x10, 0x15],
+        [0x14, 0x10, 0x10, 0x00],
+        [0x15, 0x10, 0x10, 0x00],
+    ];
+
+    private static IViewModel? CreateFceEditorViewModel(byte[] data, VivEditorViewModel vm, string name)
     {
-        if (data[0..4].SequenceEqual(new byte[] { 0x00, 0x10, 0x10, 0x14 }) || data[0..4].SequenceEqual(new byte[] { 0x00, 0x10, 0x10, 0x15 }))
+        if (knownFce4Headers.Any(data[0..4].SequenceEqual))
         {
-            return null; //TODO: implement NFS4 FCE ViewModel
+            return new Fce4EditorViewModel(); //TODO: implement NFS4 FCE ViewModel
         }
         return CreateEditorViewModel<Fce3EditorViewModel, FceEditorState, FceFile, FceSerializer>(data, vm, name);
     }

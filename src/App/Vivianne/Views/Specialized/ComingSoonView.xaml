@@ -1,0 +1,39 @@
+﻿<UserControl
+    x:Class="TheXDS.Vivianne.Views.Specialized.ComingSoonView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:local="clr-namespace:TheXDS.Vivianne.Views.Specialized"
+    mc:Ignorable="d">
+    <Border
+        VerticalAlignment="Center"
+        HorizontalAlignment="Center"
+        Margin="50"
+        CornerRadius="10"
+        Background="{StaticResource DarkBackground}">
+        <Border.Effect>
+            <DropShadowEffect/>
+        </Border.Effect>
+        <Grid Margin="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+            <ui:FontIcon Glyph="⏳" Foreground="SlateGray" FontSize="48"/>
+            <TextBlock
+                TextWrapping="Wrap"
+                VerticalAlignment="Center"
+                Foreground="White"
+                Margin="20,0,0,0"
+                Grid.Column="1">
+                Support for this file is coming soon(ish)
+                <LineBreak/>
+                <LineBreak/>
+                In the meantime, check out Vivianne's
+                <Hyperlink Click="Hyperlink_Click" NavigateUri="https://github.com/TheXDS/Vivianne/">Github code repository</Hyperlink>
+            </TextBlock>
+        </Grid>
+    </Border>
+</UserControl>

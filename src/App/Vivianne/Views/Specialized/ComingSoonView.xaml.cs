@@ -3,17 +3,17 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 
-namespace TheXDS.Vivianne.Views;
+namespace TheXDS.Vivianne.Views.Specialized;
 
 /// <summary>
-/// Interaction logic for SettingsView.xaml
+/// Interaction logic for ComingSoonView.xaml
 /// </summary>
-public partial class SettingsView : UserControl
+public partial class ComingSoonView : UserControl
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="SettingsView"/> class.
+    /// Initializes a new instance of the <see cref="ComingSoonView"/> class.
     /// </summary>
-    public SettingsView()
+    public ComingSoonView()
     {
         InitializeComponent();
     }

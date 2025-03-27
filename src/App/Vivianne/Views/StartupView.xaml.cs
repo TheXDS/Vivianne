@@ -18,11 +18,10 @@ public partial class StartupView : UserControl
     public StartupView()
     {
         InitializeComponent();
-#if !DEBUG
+#if !DEBUG && EnableStartupWarning
         Loaded += StartupView_Loaded;
-#endif
     }
-#if !DEBUG
+
     private static volatile bool WasWarningShown = false;
 
     private void StartupView_Loaded(object sender, System.Windows.RoutedEventArgs e)
@@ -39,6 +38,6 @@ public partial class StartupView : UserControl
         if (rs is null) return null;
         using var sr = new StreamReader(rs);
         return vm.DialogService?.Warning("Very early alpha application!", sr.ReadToEnd());
-    }
 #endif
+    }
 }

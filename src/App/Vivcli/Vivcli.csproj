@@ -1,47 +1,47 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+	
+	<ItemGroup>
+		<PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
+		<ProjectReference Include="..\..\Lib\VivLib\VivLib.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
-    <ProjectReference Include="..\..\Lib\VivLib\VivLib.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Update="Resources\Strings\VivCli.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>VivCli.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\Strings\FshCommand.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>FshCommand.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\Strings\VivCommand.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>VivCommand.resx</DependentUpon>
+		</Compile>
+	</ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="Resources\Strings\VivCli.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>VivCli.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\Strings\FshCommand.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>FshCommand.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\Strings\VivCommand.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>VivCommand.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="Resources\Strings\VivCli.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>VivCli.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Strings\FshCommand.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>FshCommand.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Strings\VivCommand.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>VivCommand.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Update="Resources\Strings\VivCli.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>VivCli.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Strings\FshCommand.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>FshCommand.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Strings\VivCommand.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>VivCommand.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+	</ItemGroup>
 </Project>

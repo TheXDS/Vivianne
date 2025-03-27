@@ -15,6 +15,11 @@ To enable the extended FSH format support, either:
 ## BNK compression support
 Currently, Vivianne does not support compressed audio streams in BNK files. This is due to the relatively poor documentation on how the compression algorithms work, as well as lack of time from my part to properly investigate and implement codecs for those (I already know about the [vgmstream](https://github.com/vgmstream/vgmstream) repo).
 
-Generally speaking, cars shipped with Need For Speed III do not have compressed audio streams for the engine sounds, so this would not be a problem for general car modding. Cop speech is another story, but usually no one creates a car with cop speech support (not that it can't happen, but... you know, unlikely).
+Generally speaking, cars shipped with Need For Speed III and Need For Speed 4 do not have compressed audio streams for the engine sounds, so this would not be a problem for general car modding. Cop speech and another in-game audio is another story, but usually no one creates a car with cop speech support (not that it can't happen, but... you know, unlikely).
 
 Anyway, a broken codec for what should've been EA ADPCM is being included in the sources. You can compile Vivianne with it if you define the `EnableBnkCompression` constant.
+
+## Startup warning message
+When compiling Vivianne with the release config, it's possible to enable a warning message to be displayed upon app startup. This is useful during early stages of development, or during a major overhaul. This warning message is usually directed at QA teams, or beta testers, not for end users.
+
+If you want to display a message during app startup, edit `Vivianne/Resources/Embedded/EarlyAlphaNote.txt` with your custom message, and then compile Vivianne on the `Release` configuration as well as defining the `EnableStartupWarning` constant.

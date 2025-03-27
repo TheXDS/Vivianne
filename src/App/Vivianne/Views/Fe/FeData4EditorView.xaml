@@ -29,12 +29,12 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <UniformGrid Rows="1" Margin="10" HorizontalAlignment="Center" Grid.ColumnSpan="2">
-            <Button Padding="10,2" Command="{Binding SaveCommand, Mode=OneWay}" Content="{x:Static stc:Common.Save}"/>
-        </UniformGrid>
-        <CheckBox Margin="10,0" Style="{StaticResource ToggleSwitch}" Grid.Column="2">
-            <TextBlock Text="{x:Static st:FeDataEditorView.LinkEdits}" Foreground="White"/>
-        </CheckBox>
+        <ct:EditorBackdrop Grid.Row="1"/>
+        <controls:FileEditorCommandBar Editor="{Binding}" ShowClose="False">
+            <!--<CheckBox Margin="10,0" Style="{StaticResource ToggleSwitch}" HorizontalAlignment="Right" IsEnabled="False">
+                <TextBlock Text="{x:Static st:FeDataEditorView.LinkEdits}" Foreground="White"/>
+            </CheckBox>-->
+        </controls:FileEditorCommandBar>
         <ScrollViewer Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" BorderThickness="0">
             <ScrollViewer.Resources>
                 <Style TargetType="ScrollViewer">

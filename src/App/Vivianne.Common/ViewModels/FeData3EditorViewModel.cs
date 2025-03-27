@@ -35,16 +35,4 @@ public class FeData3EditorViewModel : FileEditorViewModelBase<FeData3EditorState
             : [.. fce.PrimaryColors.Zip(Enumerable.Range(0, fce.PrimaryColors.Count).Select((_, index) => WrapTable(fce.SecondaryColors, index)))];
         return [.. colorPairs.Select(p => new FceColor() { PrimaryColor = p.Item1, SecondaryColor = p.Item2 })];
     }
-
-    //private void OnSave()
-    //{
-    //    saveCallback?.Invoke(serializer.Serialize(Data));
-    //    if (LinkEdits) OnSyncChanges();
-    //}
-
-    //private void OnSyncChanges()
-    //{
-    //    if (viv is null || fedataName is null || Path.GetExtension(fedataName) is not { } ext) return;
-    //    FeData3SyncTool.Sync(Data, ext, viv.Directory);
-    //}
 }

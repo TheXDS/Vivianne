@@ -31,9 +31,9 @@
         </Grid.RowDefinitions>
         <ct:EditorBackdrop Grid.Row="1"/>
         <controls:FileEditorCommandBar Editor="{Binding}" ShowClose="False">
-            <CheckBox Margin="10,0" Style="{StaticResource ToggleSwitch}" HorizontalAlignment="Right">
+            <!--<CheckBox Margin="10,0" Style="{StaticResource ToggleSwitch}" HorizontalAlignment="Right" IsEnabled="False">
                 <TextBlock Text="{x:Static st:FeDataEditorView.LinkEdits}" Foreground="White"/>
-            </CheckBox>
+            </CheckBox>-->
         </controls:FileEditorCommandBar>
         <ScrollViewer Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" BorderThickness="0">
             <ScrollViewer.Resources>

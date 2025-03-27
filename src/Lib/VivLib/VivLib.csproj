@@ -14,24 +14,24 @@
 			<LastGenOutput>Common.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Strings\Info\Bnk\BnkStreamInfoExtractor.resx">
-		  <Generator>ResXFileCodeGenerator</Generator>
-		  <LastGenOutput>BnkStreamInfoExtractor.Designer.cs</LastGenOutput>
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>BnkStreamInfoExtractor.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Strings\Mappings.resx">
-		  <Generator>PublicResXFileCodeGenerator</Generator>
-		  <LastGenOutput>Mappings.Designer.cs</LastGenOutput>
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>Mappings.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Strings\QfsCodec.resx">
-		  <Generator>ResXFileCodeGenerator</Generator>
-		  <LastGenOutput>QfsCodec.Designer.cs</LastGenOutput>
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>QfsCodec.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Strings\Serializers\FshSerializer.resx">
-		  <Generator>ResXFileCodeGenerator</Generator>
-		  <LastGenOutput>FshSerializer.Designer.cs</LastGenOutput>
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>FshSerializer.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Strings\Serializers\VivSerializer.resx">
-		  <Generator>ResXFileCodeGenerator</Generator>
-		  <LastGenOutput>VivSerializer.Designer.cs</LastGenOutput>
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>VivSerializer.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Strings\Tools\FceCleanupTool.resx">
 			<Generator>ResXFileCodeGenerator</Generator>
@@ -45,29 +45,29 @@
 			<DependentUpon>Common.resx</DependentUpon>
 		</Compile>
 		<Compile Update="Resources\Strings\Info\Bnk\BnkStreamInfoExtractor.Designer.cs">
-		  <DesignTime>True</DesignTime>
-		  <AutoGen>True</AutoGen>
-		  <DependentUpon>BnkStreamInfoExtractor.resx</DependentUpon>
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>BnkStreamInfoExtractor.resx</DependentUpon>
 		</Compile>
 		<Compile Update="Resources\Strings\Mappings.Designer.cs">
-		  <DesignTime>True</DesignTime>
-		  <AutoGen>True</AutoGen>
-		  <DependentUpon>Mappings.resx</DependentUpon>
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Mappings.resx</DependentUpon>
 		</Compile>
 		<Compile Update="Resources\Strings\QfsCodec.Designer.cs">
-		  <DesignTime>True</DesignTime>
-		  <AutoGen>True</AutoGen>
-		  <DependentUpon>QfsCodec.resx</DependentUpon>
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>QfsCodec.resx</DependentUpon>
 		</Compile>
 		<Compile Update="Resources\Strings\Serializers\FshSerializer.Designer.cs">
-		  <DesignTime>True</DesignTime>
-		  <AutoGen>True</AutoGen>
-		  <DependentUpon>FshSerializer.resx</DependentUpon>
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>FshSerializer.resx</DependentUpon>
 		</Compile>
 		<Compile Update="Resources\Strings\Serializers\VivSerializer.Designer.cs">
-		  <DesignTime>True</DesignTime>
-		  <AutoGen>True</AutoGen>
-		  <DependentUpon>VivSerializer.resx</DependentUpon>
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>VivSerializer.resx</DependentUpon>
 		</Compile>
 		<Compile Update="Resources\Strings\Tools\FceCleanupTool.Designer.cs">
 			<DesignTime>True</DesignTime>
