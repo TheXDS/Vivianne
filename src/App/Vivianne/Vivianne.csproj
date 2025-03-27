@@ -7,12 +7,16 @@
 		<UseWPF>true</UseWPF>
 		<EnableWindowsTargeting>true</EnableWindowsTargeting>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<ApplicationIcon>vivianne.ico</ApplicationIcon>
 	</PropertyGroup>
 	<ItemGroup>
 		<None Remove="Resources\Embedded\EarlyAlphaNote.txt" />
 		<None Remove="Resources\Fonts\Muli-Light.ttf" />
 		<None Remove="Resources\Fonts\NFS_by_JLTV.ttf" />
 		<None Remove="Resources\Images\vivianne.png" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Resource Include="vivianne.ico" />
 	</ItemGroup>
 	<ItemGroup>
 	  <EmbeddedResource Include="Resources\Embedded\EarlyAlphaNote.txt" />
