@@ -14,12 +14,14 @@
                     <DockPanel Background="{StaticResource DarkBackground}">
                         <DockPanel.Resources>
                             <mcart:CountVisibilityConverter x:Key="a2vc"/>
+                            <BooleanToVisibilityConverter x:Key="b2vc"/>
                         </DockPanel.Resources>
                         <StackPanel>
                             <StackPanel Margin="5">
                                 <Button
                                     Margin="5"
                                     HorizontalAlignment="Stretch"
+                                    Visibility="{Binding Launcher.CanCreateNew, Mode=OneWay, Converter={StaticResource b2vc}, RelativeSource={RelativeSource TemplatedParent}}"
                                     Command="{Binding Launcher.NewFileCommand, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}">
                                     <TextBlock Text="{Binding Launcher.PageName, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}, StringFormat={x:Static st:FileEditorLauncherView.NewX}}"/>
                                 </Button>

@@ -48,4 +48,9 @@ public interface IFileEditorViewModelLauncher : IViewModelLauncher
     /// editor ViewModel created by this instance.
     /// </summary>
     ICommand OpenFileCommand { get; }
+
+    /// <summary>
+    /// Gets a value that indicates if the "New" command should be available.
+    /// </summary>
+    bool CanCreateNew { get; }
 }

@@ -48,6 +48,9 @@ public abstract class FileEditorViewModelLauncher<TState, TFile, TSerializer, TE
     public ICommand OpenFileCommand { get; }
 
     /// <inheritdoc/>
+    public bool CanCreateNew { get; }
+
+    /// <inheritdoc/>
     public abstract RecentFileInfo[] RecentFiles { get; set; }
 
     /// <inheritdoc/>
@@ -62,13 +65,19 @@ public abstract class FileEditorViewModelLauncher<TState, TFile, TSerializer, TE
     /// <param name="pageName">Display name for the page.</param>
     /// <param name="openFilter">File filter to use when opening files.</param>
     /// <param name="saveFilter">File filter to use when saving files.</param>
-    protected FileEditorViewModelLauncher(Func<IDialogService> dialogSvc, string pageName, IEnumerable<FileFilterItem> openFilter, IEnumerable<FileFilterItem> saveFilter)
+    /// <param name="canCreateNew">
+    /// If omitted or set to <see langword="true"/>, the "New" command will be
+    /// enabled and available. If set to <see langword="false"/>, the "New"
+    /// command will be disabled.
+    /// </param>
+    protected FileEditorViewModelLauncher(Func<IDialogService> dialogSvc, string pageName, IEnumerable<FileFilterItem> openFilter, IEnumerable<FileFilterItem> saveFilter, bool canCreateNew = true)
     {
         _dialogSvc = dialogSvc;
         _openFilter = openFilter;
         _saveFilter = saveFilter;
+        CanCreateNew = canCreateNew;
         PageName = pageName;
-        NewFileCommand = new SimpleCommand(OnNew);
+        NewFileCommand = new SimpleCommand(OnNew, canCreateNew);
         OpenFileCommand = new SimpleCommand(p => DialogService?.RunOperation(q => OnOpen(p)) ?? Task.CompletedTask);
     }
 
@@ -82,7 +91,12 @@ public abstract class FileEditorViewModelLauncher<TState, TFile, TSerializer, TE
     /// <param name="filter">
     /// File filter to use when opening or saving files.
     /// </param>
-    protected FileEditorViewModelLauncher(Func<IDialogService> dialogSvc, string pageName, IEnumerable<FileFilterItem> filter) : this(dialogSvc, pageName, filter, filter)
+    /// <param name="canCreateNew">
+    /// If omitted or set to <see langword="true"/>, the "New" command will be
+    /// enabled and available. If set to <see langword="false"/>, the "New"
+    /// command will be disabled.
+    /// </param>
+    protected FileEditorViewModelLauncher(Func<IDialogService> dialogSvc, string pageName, IEnumerable<FileFilterItem> filter, bool canCreateNew = true) : this(dialogSvc, pageName, filter, filter, canCreateNew)
     {
     }
 
