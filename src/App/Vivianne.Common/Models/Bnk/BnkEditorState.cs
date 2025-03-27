@@ -12,28 +12,28 @@ namespace TheXDS.Vivianne.Models.Bnk;
 /// </summary>
 public class BnkEditorState : FileStateBase<BnkFile>
 {
-    private ObservableListWrap<BnkStream>? _streams;
+    private ObservableListWrap<BnkStream?>? _streams;
     private BnkStream? selectedSample;
     private bool _showInfo = true;
     private int _loopStart;
-    private int _loopLength;
+    private int _loopEnd;
 
     /// <summary>
     /// Gets a reference to the collection of streams available in the BNK file
     /// as laid out on it, allowing the addition and removal of streams.
     /// </summary>
-    public ObservableListWrap<BnkStream> Streams => _streams ??= GetObservable(File.Streams);
+    public ObservableListWrap<BnkStream?> Streams => _streams ??= GetObservable(File.Streams);
 
     /// <summary>
     /// Enumerates all available streams on the BNK file (including alternate
     /// streams) on a flat list for ease of access.
     /// </summary>
-    public IEnumerable<BnkStream> AllStreams => Streams.Concat(File.Streams.Select(p => p.AltStream).NotNull());
+    public IEnumerable<BnkStream> AllStreams => Streams.Concat(File.Streams.Select(p => p?.AltStream)).NotNull();
 
     /// <inheritdoc/>
     protected override void OnInitialize(IPropertyBroadcastSetup broadcastSetup)
     {
-        broadcastSetup.RegisterPropertyChangeTrigger(() => SelectedStream, () => LoopStart, () => LoopLength);
+        broadcastSetup.RegisterPropertyChangeTrigger(() => SelectedStream, () => LoopStart, () => LoopEnd);
     }
 
     /// <summary>
@@ -44,10 +44,10 @@ public class BnkEditorState : FileStateBase<BnkFile>
         get => selectedSample;
         set
         {
-            if (Change(ref selectedSample, value) && value is { LoopStart: int ls, LoopLength: int ll })
+            if (Change(ref selectedSample, value) && value is { LoopStart: int ls, LoopEnd: int ll })
             {
                 LoopStart = ls;
-                LoopLength = ll;
+                LoopEnd = ll;
             }
         }
     }
@@ -69,12 +69,12 @@ public class BnkEditorState : FileStateBase<BnkFile>
     /// Gets or sets the duration (in samples) of the looping audio for the
     /// selected audio stream.
     /// </summary>
-    public int LoopLength
+    public int LoopEnd
     {
-        get => _loopLength;
+        get => _loopEnd;
         set
         {
-            if (Change(ref _loopLength, value) && SelectedStream is not null) SelectedStream.LoopLength = value;
+            if (Change(ref _loopEnd, value) && SelectedStream is not null) SelectedStream.LoopEnd = value;
         }
     }
 

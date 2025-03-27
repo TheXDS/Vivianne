@@ -1,6 +1,6 @@
 using System.CommandLine;
 using TheXDS.MCART.Helpers;
-using TheXDS.Vivianne.Extensions;
+using TheXDS.Vivianne.Info.Bnk;
 using TheXDS.Vivianne.Models.Bnk;
 using St = TheXDS.Vivianne.Resources.Strings.FshCommand;
 
@@ -13,13 +13,15 @@ public partial class BnkCommand
         var cmd = new Command("blobinfo", "Gets information on a specific BNK blob");
         var blobArg = new Argument<int?>("blob index",() => null, "Index of the blob to read.");
         var humanOption = new Option<bool>(["--human", "-H"], St.Common_HumanOptionHelp);
+        var altStreamOption = new Option<bool>(["--altStreams", "-a"], "Include alternate stream data as well on the output");
         cmd.AddArgument(blobArg);
         cmd.AddOption(humanOption);
-        cmd.SetHandler(BlobInfoCommand, fileArg, blobArg, humanOption);
+        cmd.AddOption(altStreamOption);
+        cmd.SetHandler(BlobInfoCommand, fileArg, blobArg, humanOption, altStreamOption);
         return cmd;
     }
 
-    private static Task BlobInfoCommand(FileInfo bnkFile, int? blobArg, bool humanOpt)
+    private static Task BlobInfoCommand(FileInfo bnkFile, int? blobArg, bool humanOpt, bool altOpt)
     {
         return FileTransaction(bnkFile, bnk =>
         {
@@ -28,13 +30,13 @@ public partial class BnkCommand
                 foreach (var j in bnk.Streams.WithIndex())
                 {
                     Console.WriteLine(string.Format(St.BlobInfo_BlobName, j.index));
-                    PrintBlobInfo(j.element, humanOpt);
+                    PrintBlobInfo(j.element, humanOpt, altOpt);
                     Console.WriteLine();
                 }
             }
             else if (bnk.Streams.ElementAtOrDefault(blobArg.Value) is { } blob)
             {
-                PrintBlobInfo(blob, humanOpt);
+                PrintBlobInfo(blob, humanOpt, altOpt);
             }
             else
             {
@@ -43,10 +45,22 @@ public partial class BnkCommand
         }, true);
     }
 
-    private static void PrintBlobInfo(BnkStream blob, bool humanOpt)
+    private static void PrintBlobInfo(BnkStream? blob, bool humanOpt, bool altOpt)
     {
-        Console.WriteLine(string.Format("Samplig rate: {0} Hz", blob.SampleRate));
-        Console.WriteLine(string.Format("Channels: {0}", blob.Channels));
-        Console.WriteLine(string.Format("Raw sample size: {0}", blob.SampleData.Length.GetSize(humanOpt)));
+        if (blob is not null)
+        {
+            foreach (var j in new BnkStreamInfoExtractor().GetInfo(blob))
+            {
+                Console.WriteLine(j);
+            }
+            if (altOpt && blob.AltStream is not null)
+            {
+                PrintBlobInfo(blob.AltStream, humanOpt, false);
+            }
+        }
+        else
+        {
+            Console.WriteLine("Index points to <NULL>, no data present");
+        }
     }
 }

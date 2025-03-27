@@ -71,12 +71,14 @@
                     MinWidth="210"
                     Margin="5"
                     hlp:Form.Label="{x:Static st:BnkEditorViewModel.LoopStart}"
+                    Maximum="{Binding State.LoopEnd}"
                     Value="{Binding State.LoopStart, UpdateSourceTrigger=PropertyChanged}"/>
                 <ui:NumberBox
                     MinWidth="210"
                     Margin="5"
-                    hlp:Form.Label="{x:Static st:BnkEditorViewModel.LoopLength}"
-                    Value="{Binding State.LoopLength, UpdateSourceTrigger=PropertyChanged}"/>
+                    hlp:Form.Label="Loop end"
+                    Minimum="{Binding State.LoopStart}"
+                    Value="{Binding State.LoopEnd, UpdateSourceTrigger=PropertyChanged}"/>
             </mcart:StretchyWrapPanel>
             <mcart:StretchyWrapPanel VerticalAlignment="Center">
                 <ui:Button
@@ -86,6 +88,13 @@
                     Icon="{ui:SymbolIcon Symbol=Open24}"
                     Command="{Binding ImportWavCommand, Mode=OneWay}"
                     Content="{x:Static st:BnkEditorViewModel.Import}"/>
+                <ui:Button
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Stretch"
+                    Margin="5"
+                    Icon="{ui:SymbolIcon Symbol=Open24}"
+                    Command="{Binding ImportAsAltStreamCommand, Mode=OneWay}"
+                    Content="Import Alt stream"/>
                 <ui:Button
                     VerticalAlignment="Center"
                     HorizontalAlignment="Stretch"

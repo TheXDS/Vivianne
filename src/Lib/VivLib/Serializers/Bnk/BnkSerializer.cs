@@ -18,15 +18,21 @@ public class BnkSerializer : ISerializer<BnkFile>
         using BinaryReader br = new(stream);
         var header = br.MarshalReadStruct<BnkHeader>();
         var headerSize = Marshal.SizeOf<BnkHeader>();
+        int payloadSize = 0;
         if (header.Version == 0x04)
         {
-            _ = br.MarshalReadStruct<BnkV4Header>();
+            payloadSize = br.MarshalReadStruct<BnkV4Header>().PoolSize;
             headerSize += Marshal.SizeOf<BnkV4Header>();
         }
         var sampleOffsets = br.MarshalReadArray<int>(header.Streams);
-        var samples = new List<BnkStream>();
-        foreach (var (index, offset) in sampleOffsets.WithIndex().Where(p => p.element != 0))
+        List<BnkStream?> samples = [];
+        foreach (var (index, offset) in sampleOffsets.WithIndex())
         {
+            if (offset == 0)
+            {
+                samples.Add(null);
+                continue;
+            }
             br.BaseStream.Seek(headerSize + offset + (sizeof(int) * index), SeekOrigin.Begin);
             if (!br.ReadBytes(4).SequenceEqual("PT\0\0"u8.ToArray()))
             {
@@ -35,7 +41,11 @@ public class BnkSerializer : ISerializer<BnkFile>
             var ptHeader = ReadPtHeader(br);
             samples.Add(ToBnkStream(ptHeader, br, index.ToString()));
         }
-        var bnk = new BnkFile() { FileVersion = header.Version };
+        var bnk = new BnkFile()
+        {
+            FileVersion = header.Version,
+            PayloadSize = header.Version == 4 ? payloadSize : (int)stream.Length - headerSize
+        };
         bnk.Streams.AddRange(samples);
         return bnk;
     }
@@ -62,6 +72,11 @@ public class BnkSerializer : ISerializer<BnkFile>
         var headerOffsets = new List<int>();
         foreach (var (index, j) in entity.Streams.WithIndex())
         {
+            if (j is null)
+            {
+                headerOffsets.Add(0);
+                continue;
+            }
             var pt = WritePtHeaderData(poolBw, j, poolOffset);
             headerOffsets.Add((int)headersStream.Position + (entity.Streams.Count * 4) - (4*index));
             headersBw.Write("PT\0\0"u8.ToArray());
@@ -87,7 +102,7 @@ public class BnkSerializer : ISerializer<BnkFile>
         return ptHeader;
     }
 
-    private static BnkStream ToBnkStream(PtHeader header, BinaryReader br, string id)
+    private static BnkStream ToBnkStream(PtHeader header, BinaryReader br, string id, bool isAltStream = false)
     {
         var sampleData = br.ReadBytesAt(header[PtAudioHeaderField.DataOffset], int.Clamp(header[PtAudioHeaderField.BytesPerSample] * header[PtAudioHeaderField.NumSamples], 0, (int)(br.BaseStream.Length - header[PtAudioHeaderField.DataOffset])));
         if (header[PtAudioHeaderField.Compression].Value != 0)
@@ -105,10 +120,11 @@ public class BnkSerializer : ISerializer<BnkFile>
             Compression = header[PtAudioHeaderField.Compression].Value != 0,
             SampleRate = (ushort)header[PtAudioHeaderField.SampleRate],
             LoopStart = header[PtAudioHeaderField.LoopOffset],
-            LoopLength = header[PtAudioHeaderField.LoopLength],
+            LoopEnd = header[PtAudioHeaderField.LoopLength],
             BytesPerSample = (byte)header[PtAudioHeaderField.BytesPerSample],
             SampleData = sampleData,
-            AltStream = header.AltStream is { } altHeader ? ToBnkStream(altHeader, br, $"Alt {id}") : null,
+            IsAltStream = isAltStream,
+            AltStream = header.AltStream is { } altHeader ? ToBnkStream(altHeader, br, $"Alt {id}", true) : null,
             Properties = new Dictionary<byte, PtHeaderValue>(header.Values.Select(p => new KeyValuePair<byte, PtHeaderValue>((byte)p.Key, p.Value)))
         };
     }
@@ -126,7 +142,7 @@ public class BnkSerializer : ISerializer<BnkFile>
          * padding bytes might be permitted (or even necessary, will need to
          * test and find out)
          */
-        return entity.Streams.Select(ToPtHeader).Sum(CalculatePtHeaderSize) + (entity.Streams.Count * 5);
+        return entity.Streams.NotNull().Select(ToPtHeader).Sum(CalculatePtHeaderSize) + (entity.Streams.Count * 5);
     }
 
     private static int CalculatePtHeaderSize(PtHeader header)
@@ -159,7 +175,7 @@ public class BnkSerializer : ISerializer<BnkFile>
         header[PtAudioHeaderField.SampleRate] = blob.SampleRate;
         header[PtAudioHeaderField.NumSamples] = blob.SampleData.Length / blob.BytesPerSample;
         header[PtAudioHeaderField.LoopOffset] = blob.LoopStart;
-        header[PtAudioHeaderField.LoopLength] = blob.LoopLength;
+        header[PtAudioHeaderField.LoopLength] = blob.LoopEnd;
         header[PtAudioHeaderField.BytesPerSample] = blob.BytesPerSample;
         if (blob.AltStream is not null)
         {

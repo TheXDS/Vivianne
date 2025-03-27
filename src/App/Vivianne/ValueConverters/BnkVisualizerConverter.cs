@@ -36,8 +36,8 @@ public class BnkVisualizerConverter : IOneWayValueConverter<BnkStream?, ImageSou
             System.Drawing.Pen loopPen = new(System.Drawing.Color.SkyBlue, 1);
             System.Drawing.Pen gridPen = new(System.Drawing.Color.LightGray);
             System.Drawing.Pen loopStartPen = new(System.Drawing.Color.Red);
-            var loopStart = value.LoopStart * 2;
-            var loopEnd = value.LoopLength + loopStart;
+            var loopStart = value.LoopStart;
+            var loopEnd = value.LoopEnd;
             graphics.DrawLine(gridPen, 0, 512, 1024, 512);
             for (int i = 0; i < normalizedSamples.Length - 1; i++)
             {
@@ -45,7 +45,7 @@ public class BnkVisualizerConverter : IOneWayValueConverter<BnkStream?, ImageSou
                 double x2 = (double)(i + 1) / normalizedSamples.Length * width;
                 double y1 = height / 2 - normalizedSamples[i] * height / 2;
                 double y2 = height / 2 - normalizedSamples[i + 1] * height / 2;
-                if (i == loopStart && value.LoopLength > 0)
+                if ((i == loopStart || i == loopEnd) && loopStart < loopEnd && loopEnd != 0)
                 {
                     graphics.DrawLine(gridPen, (float)x1, 0, (float)x1, 1024);
                 }

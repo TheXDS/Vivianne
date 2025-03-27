@@ -56,6 +56,12 @@ public class BnkEditorViewModel : FileEditorViewModelBase<BnkEditorState, BnkFil
     /// current audio stream, replacing its contents.
     /// </summary>
     public ICommand ImportWavCommand { get; }
+    
+    /// <summary>
+    /// Gets a reference to the command used to import a .WAV file as the
+    /// alternate stream for the selected BNK stream.
+    /// </summary>
+    public ICommand ImportAsAltStreamCommand { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="BnkEditorViewModel"/>
@@ -69,6 +75,7 @@ public class BnkEditorViewModel : FileEditorViewModelBase<BnkEditorState, BnkFil
         ExportSampleCommand = new SimpleCommand(OnExportSample);
         ExportLoopCommand = new SimpleCommand(OnExportLoop);
         ImportWavCommand = new SimpleCommand(OnImportWav);
+        ImportAsAltStreamCommand = new SimpleCommand(OnImportAsAltStream);
     }
 
     /// <inheritdoc/>
@@ -97,7 +104,7 @@ public class BnkEditorViewModel : FileEditorViewModelBase<BnkEditorState, BnkFil
     private async Task OnPlayLoopingSample()
     {
         if (State.SelectedStream is not { } sample) return;
-        if (State.SelectedStream.LoopLength == 0)
+        if (State.SelectedStream.LoopEnd == 0)
         {
             _snd.Stop();
             await DialogService!.Message(St.BNKStream, St.NoLoop);
@@ -126,7 +133,22 @@ public class BnkEditorViewModel : FileEditorViewModelBase<BnkEditorState, BnkFil
             State.SelectedStream.BytesPerSample = stream.BytesPerSample;
             State.SelectedStream.SampleData = stream.SampleData;
             State.LoopStart = stream.LoopStart;
-            State.LoopLength = stream.LoopLength;
+            State.LoopEnd = stream.LoopEnd;
+            State.Refresh();
+        }
+    }
+
+    private async Task OnImportAsAltStream()
+    {
+        if (State.SelectedStream is null) return;
+        if (State.SelectedStream.IsAltStream)
+        {
+            await DialogService!.Error(St.ImportAltStream, St.NestedAltStreamsError);
+            return;
+        }
+        if (await DialogService!.GetFileOpenPath(FileFilters.AudioFileFilter) is { Success: true, Result: string path })
+        {
+            State.SelectedStream.AltStream = BnkRender.FromWav(await File.ReadAllBytesAsync(path));
             State.Refresh();
         }
     }

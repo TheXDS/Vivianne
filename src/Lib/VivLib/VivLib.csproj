@@ -13,6 +13,10 @@
 			<Generator>ResXFileCodeGenerator</Generator>
 			<LastGenOutput>Common.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Strings\Info\Bnk\BnkStreamInfoExtractor.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>BnkStreamInfoExtractor.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Strings\Mappings.resx">
 		  <Generator>PublicResXFileCodeGenerator</Generator>
 		  <LastGenOutput>Mappings.Designer.cs</LastGenOutput>
@@ -39,6 +43,11 @@
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
 			<DependentUpon>Common.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\Strings\Info\Bnk\BnkStreamInfoExtractor.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>BnkStreamInfoExtractor.resx</DependentUpon>
 		</Compile>
 		<Compile Update="Resources\Strings\Mappings.Designer.cs">
 		  <DesignTime>True</DesignTime>

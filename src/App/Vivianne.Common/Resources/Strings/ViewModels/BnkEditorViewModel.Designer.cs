@@ -61,69 +61,6 @@ namespace TheXDS.Vivianne.Resources.Strings.ViewModels {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ℹ️ Has alternate audio stream.
-        /// </summary>
-        public static string BnkNfo_AltStream {
-            get {
-                return ResourceManager.GetString("BnkNfo_AltStream", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Channels: {0}.
-        /// </summary>
-        public static string BnkNfo_Channels {
-            get {
-                return ResourceManager.GetString("BnkNfo_Channels", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Duration: {0}.
-        /// </summary>
-        public static string BnkNfo_Duration {
-            get {
-                return ResourceManager.GetString("BnkNfo_Duration", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Audio stream format: {0}-bit {1}.
-        /// </summary>
-        public static string BnkNfo_Format {
-            get {
-                return ResourceManager.GetString("BnkNfo_Format", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Sample rate: {0} Hz.
-        /// </summary>
-        public static string BnkNfo_SampleRate {
-            get {
-                return ResourceManager.GetString("BnkNfo_SampleRate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Total samples: {0}.
-        /// </summary>
-        public static string BnkNfo_Samples {
-            get {
-                return ResourceManager.GetString("BnkNfo_Samples", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Size: {0}.
-        /// </summary>
-        public static string BnkNfo_Size {
-            get {
-                return ResourceManager.GetString("BnkNfo_Size", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to BNK stream.
         /// </summary>
         public static string BNKStream {
@@ -178,6 +115,15 @@ namespace TheXDS.Vivianne.Resources.Strings.ViewModels {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Import Alt stream.
+        /// </summary>
+        public static string ImportAltStream {
+            get {
+                return ResourceManager.GetString("ImportAltStream", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Loop length.
         /// </summary>
         public static string LoopLength {
@@ -192,6 +138,15 @@ namespace TheXDS.Vivianne.Resources.Strings.ViewModels {
         public static string LoopStart {
             get {
                 return ResourceManager.GetString("LoopStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The BNK file format does not support nested alt streams..
+        /// </summary>
+        public static string NestedAltStreamsError {
+            get {
+                return ResourceManager.GetString("NestedAltStreamsError", resourceCulture);
             }
         }
         

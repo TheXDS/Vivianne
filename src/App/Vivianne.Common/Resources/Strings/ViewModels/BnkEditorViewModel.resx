@@ -132,27 +132,6 @@
   <data name="NoAudioStreamLoaded" xml:space="preserve">
     <value>No audio stream loaded</value>
   </data>
-  <data name="BnkNfo_AltStream" xml:space="preserve">
-    <value>ℹ️ Has alternate audio stream</value>
-  </data>
-  <data name="BnkNfo_Channels" xml:space="preserve">
-    <value>Channels: {0}</value>
-  </data>
-  <data name="BnkNfo_Duration" xml:space="preserve">
-    <value>Duration: {0}</value>
-  </data>
-  <data name="BnkNfo_Format" xml:space="preserve">
-    <value>Audio stream format: {0}-bit {1}</value>
-  </data>
-  <data name="BnkNfo_SampleRate" xml:space="preserve">
-    <value>Sample rate: {0} Hz</value>
-  </data>
-  <data name="BnkNfo_Samples" xml:space="preserve">
-    <value>Total samples: {0}</value>
-  </data>
-  <data name="BnkNfo_Size" xml:space="preserve">
-    <value>Size: {0}</value>
-  </data>
   <data name="BNKVersion" xml:space="preserve">
     <value>BNK version</value>
   </data>
@@ -176,5 +155,11 @@
   </data>
   <data name="ExportLoop" xml:space="preserve">
     <value>Export loop</value>
+  </data>
+  <data name="NestedAltStreamsError" xml:space="preserve">
+    <value>The BNK file format does not support nested alt streams.</value>
+  </data>
+  <data name="ImportAltStream" xml:space="preserve">
+    <value>Import Alt stream</value>
   </data>
 </root>

@@ -11,6 +11,12 @@
         public string Id { get; set; } = string.Empty;
 
         /// <summary>
+        /// Gets or sets a value that lets the app and serializer know if this
+        /// stream is an alt stream children to a main BNK audio stream.
+        /// </summary>
+        public bool IsAltStream { get; set; }
+
+        /// <summary>
         /// Gets or sets the number of audio channels contained in the BNK blob
         /// data.
         /// </summary>
@@ -34,7 +40,7 @@
         /// <summary>
         /// Gets or sets the length of the looping audio data.
         /// </summary>
-        public int LoopLength { get; set; }
+        public int LoopEnd { get; set; }
 
         /// <summary>
         /// Gets or sets a value that determines the number of bytes that

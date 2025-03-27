@@ -11,9 +11,27 @@
         public short FileVersion { get; set; }
 
         /// <summary>
+        /// Gets or sets a value that describes the total payload size as
+        /// declared on the BNK v4 header.
+        /// </summary>
+        /// <remarks>
+        /// On BNKv2, this value will just be the calculated sum of the data
+        /// pool.
+        /// </remarks>
+        public int PayloadSize { get; set; }
+
+        /// <summary>
+        /// Get or sets the unknown value at 0x10 on BNK v4 files.
+        /// </summary>
+        /// <remarks>
+        /// This value can be (and must be) ignored on BNK v2 files.
+        /// </remarks>
+        public int Unk_0x10 { get; set; }
+
+        /// <summary>
         /// Gets the collection of audio stream blobs contained in this BNK
         /// file.
         /// </summary>
-        public IList<BnkStream> Streams { get; } = [];
+        public IList<BnkStream?> Streams { get; } = [];
     }
 }

@@ -19,8 +19,9 @@ public partial class BnkCommand
     private static Task ExtractCommand(FileInfo bnkFile, int blobArg, FileInfo outFile)
     {
         return FileTransaction(bnkFile, async bnk => {
+            if (bnk.Streams[blobArg] is not { } bnkStream) return;
             using var output = outFile.OpenWrite();
-            await output.WriteAsync(BnkRender.RenderBnk(bnk.Streams[blobArg]));
+            await output.WriteAsync(BnkRender.RenderBnk(bnkStream));
             await output.FlushAsync();
         }, true);
     }

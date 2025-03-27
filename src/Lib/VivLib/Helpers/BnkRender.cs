@@ -65,7 +65,7 @@ public static class BnkRender
     public static byte[] RenderBnkLoop(BnkStream blob)
     {
         byte[] data = blob.SampleData;
-        return RenderData(blob, [.. data.Skip(blob.LoopStart * 2).Take(blob.LoopLength * 2)]);
+        return RenderData(blob, [.. data.Skip(blob.LoopStart * 2).Take((blob.LoopEnd - blob.LoopStart) * 2)]);
     }
 
     /// <summary>
@@ -94,7 +94,7 @@ public static class BnkRender
             Compression = false,
             Channels = (byte)fmt.Channels,
             LoopStart = 0,
-            LoopLength = dataLength / (fmt.BitsPerSample / 8),
+            LoopEnd = dataLength / (fmt.BitsPerSample / 8),
             SampleRate = (ushort)fmt.SampleRate,
             SampleData = rawData
         };
