@@ -253,7 +253,6 @@
                             <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Width}" Text="{Binding State.File.Width}"/>
                             <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Height}" Text="{Binding State.File.Height}"/>
                             <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Length}" Text="{Binding State.File.Length}"/>
-                            <ui:TextBox hlp:Form.Label="Dynamic stability" Text="{Binding State.File.DynamicStability}"/>
                         </UniformGrid>
                     </Expander>
                     <Expander Header="{x:Static st:FeDataEditorView.Performance}" IsExpanded="True" VerticalAlignment="Stretch">
@@ -265,6 +264,7 @@
                             <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.MaxRpm}" Text="{Binding State.File.MaxEngineSpeed}"/>
                             <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Brakes}" Text="{Binding State.File.Brakes}"/>
                             <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Tires}" Text="{Binding State.File.Tires}"/>
+                            <ui:TextBox hlp:Form.Label="Dynamic stability" Text="{Binding State.File.DynamicStability}"/>
                             <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.TopSpeed}" Text="{Binding State.File.TopSpeed}"/>
                             <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Accel0To60}" Text="{Binding State.File.Accel0To60}"/>
                             <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Accel0To100}" Text="{Binding State.File.Accel0To100}"/>
