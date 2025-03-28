@@ -1,8 +1,7 @@
 ﻿using TheXDS.MCART.Types;
 using TheXDS.Vivianne.Models.Base;
-using TheXDS.Vivianne.Models.Fsh;
 
-namespace TheXDS.Vivianne.Models;
+namespace TheXDS.Vivianne.Models.Fsh;
 
 /// <summary>
 /// Represents the current state of the FSH editor ViewModel.

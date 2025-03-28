@@ -1,5 +1,6 @@
 ﻿using TheXDS.MCART.Helpers;
 using TheXDS.MCART.Types.Extensions;
+using TheXDS.Vivianne.Models.Fe;
 using TheXDS.Vivianne.Models.Viv;
 using static System.Text.Encoding;
 using St = TheXDS.Vivianne.Resources.Strings.Serializers.VivSerializer;
@@ -13,6 +14,11 @@ namespace TheXDS.Vivianne.Serializers.Viv;
 public class VivSerializer : ISerializer<VivFile>
 {
     private static readonly byte[] Header = "BIGF"u8.ToArray();
+
+    /// <summary>
+    /// Gets or sets the directory sorting algorithm to use.
+    /// </summary>
+    public Func<SortType> Sort { get; set; }
 
     /// <inheritdoc/>
     public VivFile Deserialize(Stream stream)
@@ -42,7 +48,7 @@ public class VivSerializer : ISerializer<VivFile>
         {
             // TODO: Define actual course of action - Extra bytes after reading the header, but before the data pool (probably for alignment reasons?)
         }
-        foreach (var j in fileOffsets.OrderBy(p => p.Value.offset))
+        foreach (var j in ApplySort(fileOffsets))
         {
             stream.Seek(j.Value.offset, SeekOrigin.Begin);
             viv.Directory.Add(j.Key, reader.ReadBytes(j.Value.length));
@@ -107,5 +113,34 @@ public class VivSerializer : ISerializer<VivFile>
             sum += j.Key.Length + 9;
         }
         return sum;
+    }
+
+    private IEnumerable<KeyValuePair<string, (int offset, int length)>> ApplySort(IEnumerable<KeyValuePair<string, (int offset, int length)>> dir)
+    {
+        return Sort() switch
+        {
+            SortType.FileName => dir.OrderBy(p => p.Key, StringComparer.InvariantCultureIgnoreCase),
+            SortType.FileType => dir.OrderBy(p => Path.GetExtension(p.Key), StringComparer.InvariantCultureIgnoreCase).ThenBy(p => p.Key, StringComparer.InvariantCultureIgnoreCase),
+            SortType.FileSize => dir.OrderByDescending(p => p.Value.length),
+            SortType.FileKind => dir.OrderBy(GetFileKindOrdinal).ThenBy(p => p.Key, StringComparer.InvariantCultureIgnoreCase),
+            SortType.FileOffset => dir.OrderBy(p => p.Value.offset),
+            _ => dir
+        };
+    }
+
+    private int GetFileKindOrdinal(KeyValuePair<string, (int offset, int length)> element)
+    {
+        string[][] kinds =
+        [
+            [".txt"],
+            FeDataBase.KnownExtensions,
+            [".fsh", ".qfs"],
+            [".tga"],
+            [".fce"],
+            [".bnk"],
+        ];
+        var extension = Path.GetExtension(element.Key).ToLowerInvariant();
+        var kind = kinds.WithIndex().FirstOrDefault(p => p.element.Contains(extension));
+        return kind.element is not null ? kind.index : int.MaxValue;
     }
 }

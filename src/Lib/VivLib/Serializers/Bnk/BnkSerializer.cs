@@ -79,7 +79,6 @@ public class BnkSerializer : ISerializer<BnkFile>
             Magic = "BNKl"u8.ToArray(),
             Version = entity.FileVersion,
             Streams = (short)entity.Streams.Count,
-            PoolOffset = poolOffset
         };
         var headerOffsets = new List<int>();
         foreach (var (index, j) in entity.Streams.WithIndex())
@@ -90,11 +89,18 @@ public class BnkSerializer : ISerializer<BnkFile>
                 continue;
             }
             var pt = WritePtHeaderData(poolBw, j, poolOffset);
-            headerOffsets.Add((int)headersStream.Position + (entity.Streams.Count * 4) - (4*index));
+            headerOffsets.Add((int)headersStream.Position + (entity.Streams.Count * 4) - (4 * index));
             headersBw.Write("PT\0\0"u8.ToArray());
             WritePtHeader(headersBw, pt);
             headersBw.Write((byte)PtHeaderField.EndOfHeader);
+            var padding = 8 - ((int)headersStream.Length % 8);
+            if (padding != 8)
+            { 
+                headersBw.Write(new byte[padding]);
+                //poolOffset += padding;
+            }
         }
+        bnkHeader.PoolOffset = poolOffset;
         fileBw.MarshalWriteStruct(bnkHeader);
         if (entity.FileVersion == 0x04) fileBw.MarshalWriteStruct(new BnkV4Header { PoolSize = (int)poolStream.Length, Unk_1 = -1 });
         fileBw.MarshalWriteStructArray(headerOffsets.ToArray());
@@ -176,13 +182,21 @@ public class BnkSerializer : ISerializer<BnkFile>
         /* The total size of the PT headers should be equal to the calculated
          * size of all of their defined internal values plus 5 bytes, which are
          * the string "PT\0\0" and the marker for the end of header. Further
-         * padding bytes might be permitted (or even necessary, will need to
-         * test and find out)
+         * padding bytes might be necessary to align the PT header to an 8-byte
+         * boundary.
          */
         return entity.Streams.NotNull().Select(ToPtHeader).Sum(CalculatePtHeaderSize) + (entity.Streams.NotNull().Count() * 5);
     }
 
     private static int CalculatePtHeaderSize(PtHeader header)
+    {
+        var sum = CalculatePtHeaderSizeNoAdjust(header);
+        var padding = 8 - ((sum + 4) % 8);
+        sum += padding != 8 ? padding : 0;
+        return sum - 1;
+    }
+
+    private static int CalculatePtHeaderSizeNoAdjust(PtHeader header)
     {
         /* The calculated size for a single PT header is equal to the sum of
          * each defined value, where a single header value includes a 1 byte
@@ -197,10 +211,21 @@ public class BnkSerializer : ISerializer<BnkFile>
          * its own marker with an actual value. Alt stream might be missing,
          * and if included will end on the same end-of-PT-header marker, so no
          * additional bytes are necessary.
+         * 
+         * Another consideraion is that the PT headers must be aligned to
+         * 8-byte boundaries. This means that writing a PT header may require
+         * adding some bytes of padding to make sure those boundaries are
+         * respected.
+         * 
+         * Finally, not all audio properties should be present. If a value is
+         * equal to the defaults then it has to be ommitted. that way, older
+         * parsers won't get confused in terms of how to attempt to load the
+         * data. This is not a requirement *per the spec*, but it's an
+         * unofficial requirement given how the games try to load audio data.
          */
         return header.Values.Sum(p => p.Value.Length + 2) +
-            header.AudioValues.Sum(p => p.Value.Length + 2) + 1 +
-            (header.AltStream is not null ? CalculatePtHeaderSize(header.AltStream) + 1 : 0);
+            header.AudioValues.Where(p => p.Key == PtAudioHeaderField.EndOfHeader || p.Value != PtHeader.Default[p.Key]).Sum(p => p.Value.Length + 2) + 1 +
+            (header.AltStream is not null ? CalculatePtHeaderSizeNoAdjust(header.AltStream) + 1 : 0);
     }
 
     private static PtHeader ToPtHeader(BnkStream blob)
@@ -302,8 +327,11 @@ public class BnkSerializer : ISerializer<BnkFile>
     {
         foreach (var j in header.AudioValues)
         {
-            bw.Write((byte)j.Key);
-            Write(bw, j.Value);
+            if (j.Key == PtAudioHeaderField.EndOfHeader || j.Value != PtHeader.Default[j.Key])
+            {
+                bw.Write((byte)j.Key);
+                Write(bw, j.Value);
+            }
         }
     }
 

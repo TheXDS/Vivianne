@@ -3,7 +3,7 @@ using SixLabors.ImageSharp.PixelFormats;
 using TheXDS.Vivianne.Extensions;
 using TheXDS.Vivianne.Models.Fsh.Nfs3;
 
-namespace TheXDS.Vivianne.Models;
+namespace TheXDS.Vivianne.Models.Fsh;
 
 /// <summary>
 /// Represents a block of data used to preview gauge data.

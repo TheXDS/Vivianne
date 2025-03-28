@@ -3,10 +3,9 @@ using System.Linq;
 using TheXDS.MCART.Types;
 using TheXDS.Vivianne.Extensions;
 using TheXDS.Vivianne.Models.Base;
-using TheXDS.Vivianne.Models.Viv;
 using TheXDS.Vivianne.Serializers.Viv;
 
-namespace TheXDS.Vivianne.Models;
+namespace TheXDS.Vivianne.Models.Viv;
 
 /// <summary>
 /// Represents the current state of the main ViewModel used to manage VIV
@@ -29,7 +28,7 @@ public class VivEditorState : FileStateBase<VivFile>
     /// <summary>
     /// Gets a descriptive friendly name inferred from FeData.
     /// </summary>
-    public string FriendlyName => File.GetFriendlyName() ?? TheXDS.Vivianne.Resources.Strings.Common.VivEditorState_UnknownFriendlyName;
+    public string FriendlyName => File.GetFriendlyName() ?? Resources.Strings.Common.VivEditorState_UnknownFriendlyName;
 
     /// <summary>
     /// Gets a value that indicates if the VIV file contains the 'car.fce'

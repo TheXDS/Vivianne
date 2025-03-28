@@ -1,12 +1,11 @@
 ﻿using System.Linq;
 using TheXDS.Vivianne.Extensions;
 using TheXDS.Vivianne.Models.Base;
-using TheXDS.Vivianne.Models.Fsh;
 using TheXDS.Vivianne.Models.Fsh.Nfs3;
 using TheXDS.Vivianne.Serializers;
 using TheXDS.Vivianne.Serializers.Fsh.Blobs;
 
-namespace TheXDS.Vivianne.Models;
+namespace TheXDS.Vivianne.Models.Fsh;
 
 /// <summary>
 /// Represents the state of the car dashboard editor.

@@ -33,7 +33,7 @@ public abstract class FileEditorViewModelLauncher<TState, TFile, TSerializer, TE
     where TSerializer : ISerializer<TFile>, new()
     where TEditor : IFileEditorViewModel<TState, TFile>, new()
 {
-    private static readonly TSerializer _serializer = new();
+    protected static readonly TSerializer _serializer = new();
     private readonly IEnumerable<FileFilterItem> _openFilter;
     private readonly IEnumerable<FileFilterItem> _saveFilter;
     private readonly Func<IDialogService> _dialogSvc;

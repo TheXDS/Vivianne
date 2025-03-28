@@ -1,7 +1,6 @@
 ﻿using TheXDS.MCART.Types.Base;
-using TheXDS.Vivianne.Models.Fce.Nfs3;
 
-namespace TheXDS.Vivianne.Models;
+namespace TheXDS.Vivianne.Models.Fce;
 
 /// <summary>
 /// Represents an item on a list that allows the user to show/hide FCE parts for the render tree.

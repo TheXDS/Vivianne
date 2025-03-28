@@ -4,6 +4,8 @@ namespace TheXDS.Vivianne.Serializers.Bnk;
 
 internal class PtHeader
 {
+    public static readonly PtHeader Default = new();
+
     public readonly Dictionary<PtHeaderField, PtHeaderValue> Values = [];
     public readonly Dictionary<PtAudioHeaderField, PtHeaderValue> AudioValues = new()
     {

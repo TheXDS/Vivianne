@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using TheXDS.Vivianne.Models;
+using TheXDS.Vivianne.Models.Fsh;
 using TheXDS.Vivianne.Models.Fsh.Nfs3;
 using TheXDS.Vivianne.Serializers;
 using TheXDS.Vivianne.Serializers.Fsh.Blobs;

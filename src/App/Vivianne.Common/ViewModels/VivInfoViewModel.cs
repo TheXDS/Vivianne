@@ -6,7 +6,7 @@ using TheXDS.Ganymede.Helpers;
 using TheXDS.Ganymede.Models;
 using TheXDS.Ganymede.Resources;
 using TheXDS.Ganymede.Types.Base;
-using TheXDS.Vivianne.Models;
+using TheXDS.Vivianne.Models.Viv;
 using St = TheXDS.Vivianne.Resources.Strings.ViewModels.VivInfoViewModel;
 
 namespace TheXDS.Vivianne.ViewModels;

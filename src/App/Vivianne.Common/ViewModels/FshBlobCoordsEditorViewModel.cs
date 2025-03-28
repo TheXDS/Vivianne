@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using TheXDS.Vivianne.Models;
+using TheXDS.Vivianne.Models.Fsh;
 using TheXDS.Vivianne.ViewModels.Base;
 
 namespace TheXDS.Vivianne.ViewModels;

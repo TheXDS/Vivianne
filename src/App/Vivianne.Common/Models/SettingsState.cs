@@ -1,4 +1,5 @@
 ﻿using TheXDS.Vivianne.Models.Base;
+using TheXDS.Vivianne.Models.Viv;
 using TheXDS.Vivianne.Properties;
 
 namespace TheXDS.Vivianne.Models;
@@ -16,6 +17,7 @@ public class SettingsState : EditorViewModelStateBase
     private int _recentFilesCount;
     private bool _bnk_InfoOpenByDefault;
     private bool _fce_CenterModel;
+    private SortType _viv_FileSorting;
 
 
     /// <summary>
@@ -92,6 +94,15 @@ public class SettingsState : EditorViewModelStateBase
     }
 
     /// <summary>
+    /// Gets or sets a value that indicates the file sorting order for the VIV directory.
+    /// </summary>
+    public SortType Viv_FileSorting
+    { 
+        get => _viv_FileSorting;
+        set => Change(ref _viv_FileSorting, value);
+    }
+
+    /// <summary>
     /// Implicitly converts an object of type <see cref="Settings"/> into an
     /// object of type <see cref="SettingsState"/>.
     /// </summary>
@@ -108,6 +119,7 @@ public class SettingsState : EditorViewModelStateBase
             RecentFilesCount = settings.RecentFilesCount,
             Bnk_InfoOpenByDefault = settings.Bnk_InfoOpenByDefault,
             Fce_CenterModel = settings.Fce_CenterModel,
+            Viv_FileSorting = settings.Viv_FileSorting,
         };
     }
 
@@ -128,6 +140,7 @@ public class SettingsState : EditorViewModelStateBase
             RecentFilesCount = settings.RecentFilesCount,
             Bnk_InfoOpenByDefault = settings.Bnk_InfoOpenByDefault,
             Fce_CenterModel = settings.Fce_CenterModel,
+            Viv_FileSorting = settings.Viv_FileSorting,
         };
     }
 }

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using TheXDS.Ganymede.Configuration;
 using TheXDS.Vivianne.Models;
 using TheXDS.MCART.Resources.Strings;
+using TheXDS.Vivianne.Models.Viv;
 
 namespace TheXDS.Vivianne.Properties;
 
@@ -71,6 +72,7 @@ public class Settings
         RecentFshFiles = [];
         RecentFce3Files = [];
         RecentFilesCount = 10;
+        Viv_FileSorting = SortType.FileKind;
     }
 
     /// <summary>
@@ -130,9 +132,14 @@ public class Settings
     public bool Fce_CenterModel { get; set; }
 
     /// <summary>
+    /// Gets or sets a value that indicates the file sorting order for the VIV directory.
+    /// </summary>
+    public SortType Viv_FileSorting { get; set; }
+
+    /// <summary>
     /// Adds a recent VIV file to the recent files collection.
     /// </summary>
-    /// <param name="file"></param>
+    /// <param name="file">File name to add.</param>
     public Task AddRecentVivFile(RecentFileInfo file)
     {
         RecentVivFiles = RecentFilesCount > 0 ? [file, .. (RecentVivFiles?.Where(p => p.FilePath != file.FilePath) ?? []).Take(RecentFilesCount - 1)] : [];
