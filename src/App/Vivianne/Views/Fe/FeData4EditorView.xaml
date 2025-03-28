@@ -89,22 +89,17 @@
                                     IsEditable="False"
                                     SelectedItem="{Binding State.File.PoliceFlag}"
                                     ItemsSource="{ct:EnumValProvider EnumType={x:Type md:PursuitFlag}}"/>
-
-                        </mcart:StretchyWrapPanel>
-                        <!--<mcart:StretchyWrapPanel Margin="5" StretchProportionally="True">
-                            <CheckBox Margin="5" IsChecked="{Binding State.File.IsPolice}">
-                                <TextBlock Text="{x:Static st:FeDataEditorView.IsPolice}"/>
-                            </CheckBox>
                             <CheckBox Margin="5" IsChecked="{Binding State.File.IsBonus}">
                                 <TextBlock Text="{x:Static st:FeDataEditorView.IsBonus}"/>
                             </CheckBox>
-                            <CheckBox Margin="5" IsChecked="{Binding State.File.AvailableToAi}">
-                                <TextBlock Text="{x:Static st:FeDataEditorView.IsAvailableToAI}"/>
+                            <CheckBox Margin="5" IsChecked="{Binding State.File.Upgradable}">
+                                <TextBlock Text="Upgradable"/>
                             </CheckBox>
-                            <CheckBox Margin="5" IsChecked="{Binding State.File.IsDlcCar}">
-                                <TextBlock Text="{x:Static st:FeDataEditorView.IsDlcCar}"/>
+                            <CheckBox Margin="5" IsChecked="{Binding State.File.Convertible}">
+                                <TextBlock Text="Convertible"/>
                             </CheckBox>
-                        </mcart:StretchyWrapPanel>-->
+
+                        </mcart:StretchyWrapPanel>
                     </StackPanel>
                 </Expander>
                 <UniformGrid Margin="0">
