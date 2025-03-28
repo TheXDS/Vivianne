@@ -1,10 +1,6 @@
-﻿using System.Diagnostics;
-using System.Text;
-using TheXDS.MCART.Types.Extensions;
-using TheXDS.Vivianne.Attributes;
+﻿using System.Text;
 using TheXDS.Vivianne.Models.Fe;
 using TheXDS.Vivianne.Models.Fe.Nfs3;
-using St = TheXDS.Vivianne.Resources.Strings.Common;
 
 namespace TheXDS.Vivianne.Serializers.Fe.Nfs3;
 
@@ -69,54 +65,4 @@ public partial class FeDataSerializer
         Unk_0x26 = feData.Unk_0x26,
         Unk_0x2c = feData.Unk_0x2c,
     };
-
-    private static string SeekAndRead(BinaryReader reader, uint offset)
-    {
-        if (offset > reader.BaseStream.Length)
-        {
-            Debug.Print(string.Format(St.FeDataSerializer_StringOutOfBounds, offset));
-            return string.Empty;
-        }
-        reader.BaseStream.Seek(offset, SeekOrigin.Begin);
-        return reader.ReadNullTerminatedString(Encoding.Latin1);
-    }
-
-    private static uint[] GetOffsetTable(BinaryReader reader, ushort entries)
-    {
-        uint[] offsets = new uint[entries];
-        for (int i = 0; i < entries; i++)
-        {
-            offsets[i] = reader.ReadUInt32();
-        }
-        return offsets;
-    }
-
-    private static void ReadStrings(BinaryReader reader, FeData data, uint[] offsets)
-    {
-        foreach (var j in typeof(FeData).GetProperties())
-        {
-            if (j.GetAttribute<OffsetTableIndexAttribute>() is { Value: int offset })
-            {
-                j.SetValue(data, SeekAndRead(reader, offsets[offset]));
-            }
-        }
-    }
-
-    private static byte[] WriteStrings(BinaryWriter offsetsWriter, FeData feData)
-    {
-        uint lastOffset = (uint)(0x2f + feData.StringEntries * 4);
-        using var ms = new MemoryStream();
-        using (var bw = new BinaryWriter(ms))
-        {
-            foreach (var j in typeof(FeData).GetProperties())
-            {
-                if (j.GetAttribute<OffsetTableIndexAttribute>() is not { Value: int offset }) continue;
-                string value = j.GetValue(feData)?.ToString() ?? string.Empty;
-                offsetsWriter.Write(lastOffset);
-                bw.WriteNullTerminatedString(value, Encoding.Latin1);
-                lastOffset += (uint)value.Length + 1;
-            }
-        }
-        return ms.ToArray();
-    }
 }

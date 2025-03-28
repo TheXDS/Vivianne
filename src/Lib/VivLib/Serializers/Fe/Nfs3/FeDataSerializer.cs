@@ -7,7 +7,7 @@ namespace TheXDS.Vivianne.Serializers.Fe.Nfs3;
 /// Implements a serializer that can read and write <see cref="FeData"/>
 /// entities.
 /// </summary>
-public partial class FeDataSerializer : ISerializer<FeData>
+public partial class FeDataSerializer : FeDataSerializerBase<FeData>, ISerializer<FeData>
 {
     /// <inheritdoc/>
     public FeData Deserialize(Stream stream)
@@ -25,6 +25,6 @@ public partial class FeDataSerializer : ISerializer<FeData>
     {
         using var writer = new BinaryWriter(stream);
         writer.MarshalWriteStruct(CreateHeader(entity));
-        writer.Write(WriteStrings(writer, entity));
+        writer.Write(WriteStrings(writer, entity, 0x2f));
     }
 }
