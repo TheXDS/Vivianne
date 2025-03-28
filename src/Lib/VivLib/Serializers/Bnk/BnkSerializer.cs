@@ -224,8 +224,8 @@ public class BnkSerializer : ISerializer<BnkFile>
          * unofficial requirement given how the games try to load audio data.
          */
         return header.Values.Sum(p => p.Value.Length + 2) +
-            header.AudioValues.Where(p => p.Key == PtAudioHeaderField.EndOfHeader || p.Value != PtHeader.Default[p.Key]).Sum(p => p.Value.Length + 2) + 1 +
-            (header.AltStream is not null ? CalculatePtHeaderSizeNoAdjust(header.AltStream) + 1 : 0);
+            header.AudioValues.Where(p => p.Key == PtAudioHeaderField.EndOfHeader || p.Key == PtAudioHeaderField.DataOffset || p.Value.Value != PtHeader.Default[p.Key].Value).Sum(p => p.Value.Length + 2) + 1 +
+            (header.AltStream is not null ? CalculatePtHeaderSizeNoAdjust(header.AltStream) + 1 : 0)+2;
     }
 
     private static PtHeader ToPtHeader(BnkStream blob)
@@ -327,7 +327,7 @@ public class BnkSerializer : ISerializer<BnkFile>
     {
         foreach (var j in header.AudioValues)
         {
-            if (j.Key == PtAudioHeaderField.EndOfHeader || j.Value != PtHeader.Default[j.Key])
+            if (j.Key == PtAudioHeaderField.EndOfHeader || j.Value.Value != PtHeader.Default[j.Key].Value)
             {
                 bw.Write((byte)j.Key);
                 Write(bw, j.Value);

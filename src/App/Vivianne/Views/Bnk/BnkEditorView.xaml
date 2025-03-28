@@ -71,6 +71,7 @@
                     MinWidth="210"
                     Margin="5"
                     hlp:Form.Label="{x:Static st:BnkEditorViewModel.LoopStart}"
+                    Minimum="0"
                     Maximum="{Binding State.LoopEnd}"
                     Value="{Binding State.LoopStart, UpdateSourceTrigger=PropertyChanged}"/>
                 <ui:NumberBox
@@ -78,6 +79,7 @@
                     Margin="5"
                     hlp:Form.Label="Loop end"
                     Minimum="{Binding State.LoopStart}"
+                    Maximum="{Binding State.SelectedStream.TotalSamples, Mode=OneWay}"
                     Value="{Binding State.LoopEnd, UpdateSourceTrigger=PropertyChanged}"/>
             </mcart:StretchyWrapPanel>
             <mcart:StretchyWrapPanel VerticalAlignment="Center">

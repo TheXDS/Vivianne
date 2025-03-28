@@ -11,6 +11,11 @@
         public string Id { get; set; } = string.Empty;
 
         /// <summary>
+        /// Calculates the total number of samples in the file.
+        /// </summary>
+        public int TotalSamples => SampleData.Length * BytesPerSample;
+
+        /// <summary>
         /// Gets or sets a value that lets the app and serializer know if this
         /// stream is an alt stream children to a main BNK audio stream.
         /// </summary>

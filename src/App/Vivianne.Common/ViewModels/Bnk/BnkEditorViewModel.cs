@@ -4,6 +4,8 @@ using System.Media;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using TheXDS.Ganymede.Models;
+using TheXDS.Ganymede.Types.Base;
 using TheXDS.Ganymede.Types.Extensions;
 using TheXDS.MCART.Component;
 using TheXDS.MCART.Types.Base;
@@ -19,7 +21,7 @@ namespace TheXDS.Vivianne.ViewModels.Bnk;
 /// <summary>
 /// ViewModel for the BNK file editor.
 /// </summary>
-public class BnkEditorViewModel : FileEditorViewModelBase<BnkEditorState, BnkFile>
+public class BnkEditorViewModel : FileEditorViewModelBase<BnkEditorState, BnkFile>, IViewModel
 {
     private readonly SoundPlayer _snd = new();
     private bool _isPlaying;
@@ -180,5 +182,11 @@ public class BnkEditorViewModel : FileEditorViewModelBase<BnkEditorState, BnkFil
         _snd.Stop();
         _snd.Stream?.Dispose();
         _snd.Stream = new MemoryStream(data);
+    }
+
+    Task IViewModel.OnNavigateBack(CancelFlag navigation)
+    {
+        OnStopPlayback();
+        return Task.CompletedTask;
     }
 }

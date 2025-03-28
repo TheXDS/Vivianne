@@ -1,4 +1,4 @@
-﻿using System.Windows;
+﻿using System.Windows.Media;
 
 namespace Vivianne;
 
@@ -18,9 +18,13 @@ public partial class MainWindow
         {
             WindowBackdropType = Wpf.Ui.Controls.WindowBackdropType.Acrylic;
         }
-        else if (OperatingSystem.IsWindowsVersionAtLeast(10, build: 19041))
+        else
         {
-            WindowBackdropType = Wpf.Ui.Controls.WindowBackdropType.Auto;
+            Background = new SolidColorBrush(Color.FromArgb(0xff, 0x40, 0x40, 0x40));
+            if (OperatingSystem.IsWindowsVersionAtLeast(10, build: 19041))
+            {
+                WindowBackdropType = Wpf.Ui.Controls.WindowBackdropType.Auto;
+            }
         }
     }
 }
