@@ -128,7 +128,7 @@ namespace TheXDS.Vivianne.Resources.Strings.ViewModels {
         /// </summary>
         public static string LoopLength {
             get {
-                return ResourceManager.GetString("LoopLength", resourceCulture);
+                return ResourceManager.GetString("LoopEnd", resourceCulture);
             }
         }
         

@@ -12,7 +12,7 @@ internal class PtHeader
         { PtAudioHeaderField.SampleRate, new(2, 22050) },
         { PtAudioHeaderField.NumSamples, new(2, 0) },
         { PtAudioHeaderField.LoopOffset, new(2, 0) },
-        { PtAudioHeaderField.LoopLength, new(2, 0) },
+        { PtAudioHeaderField.LoopEnd, new(2, 0) },
         { PtAudioHeaderField.DataOffset, new(4, 0) },
         { PtAudioHeaderField.BytesPerSample, new(1, 2) },
         { PtAudioHeaderField.EndOfHeader, new(4, 0) },

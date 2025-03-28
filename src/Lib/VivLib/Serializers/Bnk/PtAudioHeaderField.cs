@@ -7,7 +7,7 @@ internal enum PtAudioHeaderField : byte
     SampleRate = 0x84,
     NumSamples = 0x85,
     LoopOffset = 0x86,
-    LoopLength = 0x87,
+    LoopEnd = 0x87,
     DataOffset = 0x88,
     BytesPerSample = 0x92,
     EndOfHeader = 0x8A

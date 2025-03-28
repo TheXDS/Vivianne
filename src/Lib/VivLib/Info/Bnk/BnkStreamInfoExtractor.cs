@@ -29,6 +29,7 @@ public class BnkStreamInfoExtractor(bool humanSize) : IEntityInfoExtractor<BnkSt
             string.Format(St.BnkNfo_Format, value.BytesPerSample * 8, value.Compression ? "?" : "PCM"),
             string.Format(St.BnkNfo_SampleRate, value.SampleRate),
             string.Format(St.BnkNfo_Size, value.SampleData.Length.GetSize(humanSize)),
+            string.Format("Data after audio stream: {0}", value.PostAudioStreamData.Length.GetSize(humanSize)),
             value.AltStream is null ? null : St.BnkNfo_AltStream
         }.NotNull()];
     }

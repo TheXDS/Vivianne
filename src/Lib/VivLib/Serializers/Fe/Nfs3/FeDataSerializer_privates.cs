@@ -116,7 +116,6 @@ public partial class FeDataSerializer
                 bw.WriteNullTerminatedString(value, Encoding.Latin1);
                 lastOffset += (uint)value.Length + 1;
             }
-
         }
         return ms.ToArray();
     }

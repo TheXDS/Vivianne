@@ -66,5 +66,11 @@
         /// is damaged)
         /// </summary>
         public BnkStream? AltStream { get; set; }
+
+        /// <summary>
+        /// Gets or sets the raw data that may exist after the end of the audio
+        /// data up until the next audio stream.
+        /// </summary>
+        public byte[] PostAudioStreamData { get; set; } = [];
     }
 }
