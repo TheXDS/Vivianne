@@ -120,6 +120,16 @@ public class Settings
     public int RecentFilesCount { get; set; }
 
     /// <summary>
+    /// gets or sets a value that indicates if the info panel will be opened by default.
+    /// </summary>
+    public bool Bnk_InfoOpenByDefault { get; set; }
+
+    /// <summary>
+    /// gets or sets a value that indicates if the FCE model will be centered automatically when saving an FCE file.
+    /// </summary>
+    public bool Fce_CenterModel { get; set; }
+
+    /// <summary>
     /// Adds a recent VIV file to the recent files collection.
     /// </summary>
     /// <param name="file"></param>

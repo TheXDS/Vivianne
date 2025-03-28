@@ -49,7 +49,7 @@ public partial class BnkCommand
     {
         if (blob is not null)
         {
-            foreach (var j in new BnkStreamInfoExtractor().GetInfo(blob))
+            foreach (var j in new BnkStreamInfoExtractor(humanOpt).GetInfo(blob))
             {
                 Console.WriteLine(j);
             }

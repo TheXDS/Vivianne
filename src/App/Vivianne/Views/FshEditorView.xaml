@@ -31,9 +31,8 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Border Grid.ColumnSpan="2">
-            <ct:FileEditorCommandBar Margin="10,0,0,0" VerticalContentAlignment="Center" Grid.ColumnSpan="2" ShowClose="False" Editor="{Binding}">
-
+        <Border Margin="10,0,0,0" Grid.ColumnSpan="2">
+            <ct:FileEditorCommandBar VerticalContentAlignment="Center" ShowClose="False" Editor="{Binding}">
                 <DockPanel VerticalAlignment="Center">
                     <DockPanel.Resources>
                         <Style TargetType="TextBlock">

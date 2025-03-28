@@ -18,6 +18,7 @@ using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Models.Fce;
 using TheXDS.Vivianne.Models.Fce.Nfs3;
 using TheXDS.Vivianne.Models.Fe;
+using TheXDS.Vivianne.Properties;
 using TheXDS.Vivianne.Serializers;
 using TheXDS.Vivianne.ViewModels.Base;
 using St = TheXDS.Vivianne.Resources.Strings.ViewModels.FceEditorView;
@@ -161,6 +162,16 @@ public class Fce3EditorViewModel : FileEditorViewModelBase<FceEditorState, FceFi
     {
         Subscribe(() => SelectedCarTexture, OnVisibleChanged);
         Subscribe(() => SelectedColor, OnVisibleChanged);
+    }
+
+    /// <inheritdoc/>
+    protected override bool BeforeSave()
+    {
+        if (Settings.Current.Fce_CenterModel)
+        {
+            OnFceCenter();
+        }
+        return base.BeforeSave();
     }
 
     private async Task OnColorEditor()

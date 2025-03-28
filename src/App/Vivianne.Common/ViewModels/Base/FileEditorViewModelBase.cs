@@ -83,6 +83,7 @@ public abstract class FileEditorViewModelBase<TState, TFile> : ViewModel, IViewM
     /// </returns>
     protected virtual Task OnSave()
     {
+        if (!BeforeSave()) return Task.CompletedTask;
         return BackingStore?.WriteAsync(State.File) ?? Task.CompletedTask;
     }
 
@@ -95,6 +96,7 @@ public abstract class FileEditorViewModelBase<TState, TFile> : ViewModel, IViewM
     /// </returns>
     protected virtual Task OnSaveAs()
     {
+        if (!BeforeSave()) return Task.CompletedTask;
         return BackingStore?.WriteNewAsync(State.File) ?? Task.CompletedTask;
     }
 
@@ -107,11 +109,20 @@ public abstract class FileEditorViewModelBase<TState, TFile> : ViewModel, IViewM
     /// </returns>
     protected virtual async Task OnSaveAndClose()
     {
-        if (await (BackingStore?.WriteAsync(State.File) ?? Task.FromResult(false)))
+        if (BeforeSave() && await (BackingStore?.WriteAsync(State.File) ?? Task.FromResult(false)))
         {
             await OnClose();
         }
     }
+
+    /// <summary>
+    /// Invoked right before executing any save operation.
+    /// </summary>
+    /// <returns>
+    /// <see langword="true"/> if the save operation should continue normally,
+    /// <see langword="false"/> to cancel the save operation.
+    /// </returns>
+    protected virtual bool BeforeSave() => true;
 
     private Task OnClose()
     {

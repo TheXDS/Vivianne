@@ -28,7 +28,7 @@ public class SpaUnitTextProvider(ICarPerf carp) : FeDataTextProvider(carp, Cultu
         get
         {
             var (torque, rpm) = Analysis.MaxTorque;
-            return $"{(torque * 1.3558179483).ToString("0", Culture)} M/Kg a {rpm.ToString(Culture)} RPM";
+            return $"{(torque * 1.3558179483).ToString("0", Culture)} Kgm a {rpm.ToString(Culture)} RPM";
         }
     }
 

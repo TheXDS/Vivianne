@@ -14,6 +14,6 @@ public class BnkStreamInformationConverter : IOneWayValueConverter<BnkStream?, s
     /// <inheritdoc/>
     public string Convert(BnkStream? value, object? parameter, CultureInfo? culture)
     {
-        return value is null ? St.NoAudioStreamLoaded : string.Join(Environment.NewLine, new BnkStreamInfoExtractor().GetInfo(value));
+        return value is null ? St.NoAudioStreamLoaded : string.Join(Environment.NewLine, new BnkStreamInfoExtractor(true).GetInfo(value));
     }
 }

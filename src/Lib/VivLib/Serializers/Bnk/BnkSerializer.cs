@@ -142,7 +142,7 @@ public class BnkSerializer : ISerializer<BnkFile>
          * padding bytes might be permitted (or even necessary, will need to
          * test and find out)
          */
-        return entity.Streams.NotNull().Select(ToPtHeader).Sum(CalculatePtHeaderSize) + (entity.Streams.Count * 5);
+        return entity.Streams.NotNull().Select(ToPtHeader).Sum(CalculatePtHeaderSize) + (entity.Streams.NotNull().Count() * 5);
     }
 
     private static int CalculatePtHeaderSize(PtHeader header)

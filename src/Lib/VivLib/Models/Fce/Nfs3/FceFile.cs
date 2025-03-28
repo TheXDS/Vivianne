@@ -1,9 +1,4 @@
-﻿using System.Collections;
-using System.Diagnostics.CodeAnalysis;
-using TheXDS.MCART.Types;
-using TheXDS.MCART.Types.Extensions;
-
-namespace TheXDS.Vivianne.Models.Fce.Nfs3;
+﻿namespace TheXDS.Vivianne.Models.Fce.Nfs3;
 
 /// <summary>
 /// Represents an FCE car model.
@@ -20,7 +15,7 @@ public class FceFile
     public int Unk_0x0 { get; set; }
 
     /// <summary>
-    /// Gets or sets a value that indicates the number of arts contained in the
+    /// Gets or sets a value that indicates the number of arts referenced in the
     /// FCE file.
     /// </summary>
     /// <remarks>

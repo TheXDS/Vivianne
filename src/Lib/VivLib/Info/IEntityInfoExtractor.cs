@@ -12,14 +12,9 @@ public interface IEntityInfoExtractor<in T>
     /// specified entity.
     /// </summary>
     /// <param name="entity">Type of entity to get the properties for.</param>
-    /// <param name="humanSize">
-    /// Optional parameter. If omitted or set to <see langword="true"/>, the
-    /// size of objects will be expressed in human-readable format, otherwise
-    /// the size of the entity in bytes will be displayed directly.
-    /// </param>
     /// <returns>
     /// A <see cref="string"/> array of descriptive properties for the
     /// specified entity.
     /// </returns>
-    string[] GetInfo(T entity, bool humanSize = true);
+    string[] GetInfo(T entity);
 }

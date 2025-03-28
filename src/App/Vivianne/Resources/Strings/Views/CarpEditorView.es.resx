@@ -235,7 +235,7 @@
     <value>Ruedas traseras</value>
   </data>
   <data name="RimSize" xml:space="preserve">
-    <value>Tamaño de la rueda</value>
+    <value>Tamaño de llanta</value>
   </data>
   <data name="AntilockBrakeSystem" xml:space="preserve">
     <value>Frenos ABS</value>
@@ -295,7 +295,7 @@
     <value>Ruedas frontales</value>
   </data>
   <data name="TireWidth" xml:space="preserve">
-    <value>Ancho de rueda</value>
+    <value>Ancho de neumático</value>
   </data>
   <data name="FrontBiasBrakeRatio" xml:space="preserve">
     <value>Relación de frenado frontal</value>
@@ -307,7 +307,7 @@
     <value>Radio de giro</value>
   </data>
   <data name="TireSidewall" xml:space="preserve">
-    <value>Cara de llanta</value>
+    <value>Talón de neumático</value>
   </data>
   <data name="MaxBrakingDecel" xml:space="preserve">
     <value>Decel. de frenado máx</value>

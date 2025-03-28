@@ -11,7 +11,7 @@
     xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings"
     xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
     mc:Ignorable="d"
-    WindowBackdropType="Acrylic"
+    WindowBackdropType="None"
     Background="{DynamicResource SmokeFillColorDefaultBrush}"
     ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
     ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"

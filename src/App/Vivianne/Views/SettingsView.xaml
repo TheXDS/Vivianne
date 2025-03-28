@@ -61,7 +61,7 @@
                             </Grid.RowDefinitions>
                             <ui:TextBlock
                                 Grid.Row="0"
-                                FontTypography="Body"
+                                FontTypography="BodyStrong"
                                 Text="{x:Static st:SettingsView.FileBackup}" />
                             <ui:TextBlock
                                 Grid.Row="1"
@@ -80,7 +80,7 @@
                             </Grid.RowDefinitions>
                             <ui:TextBlock
                                 Grid.Row="0"
-                                FontTypography="Body"
+                                FontTypography="BodyStrong"
                                 Text="{x:Static st:SettingsView.RecentFiles}" />
                             <ui:TextBlock
                                 Grid.Row="1"
@@ -109,7 +109,7 @@
                             </Grid.RowDefinitions>
                             <ui:TextBlock
                                 Grid.Row="0"
-                                FontTypography="Body"
+                                FontTypography="BodyStrong"
                                 Text="{x:Static st:SettingsView.CheckSerialNumbers}" />
                             <ui:TextBlock
                                 Grid.Row="1"
@@ -119,7 +119,11 @@
                     </ui:CardControl.Header>
                     <ui:ToggleSwitch IsChecked="{Binding State.VivCheckSnOnSave}"/>
                 </ui:CardControl>
-                <ui:CardControl Icon="{ui:SymbolIcon Symbol=Document16}">
+            </StackPanel>
+        </TabItem>
+        <TabItem Header="BNK editor">
+            <StackPanel>
+                <ui:CardControl Icon="{ui:SymbolIcon Symbol=Info16}">
                     <ui:CardControl.Header>
                         <Grid>
                             <Grid.RowDefinitions>
@@ -128,18 +132,63 @@
                             </Grid.RowDefinitions>
                             <ui:TextBlock
                                 Grid.Row="0"
-                                FontTypography="Body"
+                                FontTypography="BodyStrong"
+                                Text="Display info panel by default" />
+                            <ui:TextBlock
+                                Grid.Row="1"
+                                Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                Text="When enabled, allows the info panel to be dsplayed by default when opening a BNK file." />
+                        </Grid>
+                    </ui:CardControl.Header>
+                    <ui:ToggleSwitch IsChecked="{Binding State.Bnk_InfoOpenByDefault}"/>
+                </ui:CardControl>
+            </StackPanel>
+        </TabItem>
+        
+        <TabItem Header="FCE editor">
+            <StackPanel>
+                <ui:CardControl Icon="{ui:SymbolIcon Symbol=ArrowMove24}">
+                    <ui:CardControl.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <ui:TextBlock
+                                Grid.Row="0"
+                                FontTypography="BodyStrong"
+                                Text="Center model automatically" />
+                            <ui:TextBlock
+                                Grid.Row="1"
+                                Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                Text="When enabled, the model will be automatically centered when saving an FCE file." />
+                        </Grid>
+                    </ui:CardControl.Header>
+                    <ui:ToggleSwitch IsChecked="{Binding State.Bnk_InfoOpenByDefault}"/>
+                </ui:CardControl>
+                <ui:CardControl Icon="{ui:SymbolIcon Symbol=Broom24}">
+                    <ui:CardControl.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <ui:TextBlock
+                                Grid.Row="0"
+                                FontTypography="BodyStrong"
                                 Text="{x:Static st:SettingsView.FCECleanup}" />
                             <ui:TextBlock
                                 Grid.Row="1"
                                 Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                                Text="{x:Static st:SettingsView.EnableCleanupTasksOnFCEFilesWhenSavingAVIVFile}" />
+                                TextWrapping="Wrap"
+                                Text="When enabled, the FCE data will be cleaned up upon saving (removing unused names, naming unnamed parts, cleaning out invalid triangle flags, etc.)" />
                         </Grid>
                     </ui:CardControl.Header>
-                    <ui:ToggleSwitch IsChecked="{Binding State.AutoBackup}"/>
+                    <ui:ToggleSwitch IsChecked="{Binding State.FceCleanupOnSave}"/>
                 </ui:CardControl>
             </StackPanel>
         </TabItem>
+
         <TabItem Header="About">
             <Grid>
                 <Grid.ColumnDefinitions>

@@ -19,7 +19,7 @@ public partial class BnkCommand
     {
         return FileTransaction(bnkFile, bnk =>
         {
-            foreach (var j in new BnkFileInfoExtractor().GetInfo(bnk))
+            foreach (var j in new BnkFileInfoExtractor(humanOpt).GetInfo(bnk))
             {
                 Console.WriteLine(j);
             }

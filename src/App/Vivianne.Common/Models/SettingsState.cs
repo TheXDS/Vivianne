@@ -14,6 +14,8 @@ public class SettingsState : EditorViewModelStateBase
     private bool _fceCleanupOnSave;
     private string? _nfs3LaunchArgs;
     private int _recentFilesCount;
+    private bool _bnk_InfoOpenByDefault;
+    private bool _fce_CenterModel;
 
 
     /// <summary>
@@ -70,6 +72,25 @@ public class SettingsState : EditorViewModelStateBase
         set => Change(ref _recentFilesCount, value);
     }
 
+
+    /// <summary>
+    /// gets or sets a value that indicates if the info panel will be opened by default.
+    /// </summary>
+    public bool Bnk_InfoOpenByDefault
+    { 
+        get => _bnk_InfoOpenByDefault;
+        set => Change(ref _bnk_InfoOpenByDefault, value);
+    }
+
+    /// <summary>
+    /// gets or sets a value that indicates if the FCE model will be centered automatically when saving an FCE file.
+    /// </summary>
+    public bool Fce_CenterModel
+    { 
+        get => _fce_CenterModel;
+        set => Change(ref _fce_CenterModel, value);
+    }
+
     /// <summary>
     /// Implicitly converts an object of type <see cref="Settings"/> into an
     /// object of type <see cref="SettingsState"/>.
@@ -85,6 +106,8 @@ public class SettingsState : EditorViewModelStateBase
             FceCleanupOnSave = settings.FceCleanupOnSave,
             Nfs3LaunchArgs = settings.Nfs3LaunchArgs,
             RecentFilesCount = settings.RecentFilesCount,
+            Bnk_InfoOpenByDefault = settings.Bnk_InfoOpenByDefault,
+            Fce_CenterModel = settings.Fce_CenterModel,
         };
     }
 
@@ -103,6 +126,8 @@ public class SettingsState : EditorViewModelStateBase
             FceCleanupOnSave = settings.FceCleanupOnSave,
             Nfs3LaunchArgs = settings.Nfs3LaunchArgs,
             RecentFilesCount = settings.RecentFilesCount,
+            Bnk_InfoOpenByDefault = settings.Bnk_InfoOpenByDefault,
+            Fce_CenterModel = settings.Fce_CenterModel,
         };
     }
 }

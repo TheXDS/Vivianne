@@ -10,6 +10,7 @@ using TheXDS.MCART.Types.Base;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Helpers;
 using TheXDS.Vivianne.Models.Bnk;
+using TheXDS.Vivianne.Properties;
 using TheXDS.Vivianne.Resources;
 using TheXDS.Vivianne.ViewModels.Base;
 using St = TheXDS.Vivianne.Resources.Strings.ViewModels.BnkEditorViewModel;
@@ -83,6 +84,7 @@ public class BnkEditorViewModel : FileEditorViewModelBase<BnkEditorState, BnkFil
     protected override Task OnCreated()
     {
         State.SelectedStream = State.Streams.NotNull().FirstOrDefault();
+        State.ShowInfo = Settings.Current.Bnk_InfoOpenByDefault;
         State.Subscribe(OnStateChanged);
         return Task.CompletedTask;
     }
