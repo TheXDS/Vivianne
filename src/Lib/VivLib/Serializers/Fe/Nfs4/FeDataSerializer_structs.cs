@@ -5,10 +5,10 @@ namespace TheXDS.Vivianne.Serializers.Fe.Nfs4;
 
 public partial class FeDataSerializer
 {
-    private const byte Nfs4PursuitFlag_Mask = 0x1c;
+    private const byte Nfs4PursuitFlag_Mask = 0xF0;
     private const byte IsBonus_Mask = 0x01;
     private const byte Upgradable_Mask = 0x40;
-    private const byte Convertible_Mask = 0x01;
+    private const byte Roof_Mask = 0x03;
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     private struct CompareTableItem
@@ -45,7 +45,7 @@ public partial class FeDataSerializer
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 0x5a)]
         public byte[] Padding_0x320;
         public byte PoliceFlag_IsBonus;
-        public byte Upgradable_Convertible;
+        public byte Upgradable_RoofFlags;
         public byte Unk_0x37c;
         public byte Unk_0x37d;
         public byte Unk_0x37e;

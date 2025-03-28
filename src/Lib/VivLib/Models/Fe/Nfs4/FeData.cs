@@ -42,7 +42,7 @@ public class FeData : FeDataBase, IFeData
     /// <summary>
     /// Gets or sets a value that indicates if this vehicle is a convertible.
     /// </summary>
-    public bool Convertible { get; set; }
+    public RoofFlag Roof { get; set; }
 
     /// <summary>
     /// Gets or sets the default compare table for this vehicle.

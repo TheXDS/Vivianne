@@ -56,7 +56,7 @@ internal static class VivTemplates
             PoliceFlag = Models.Fe.Nfs4.PursuitFlag.No,
             VehicleClass = Models.Fe.Nfs4.CarClass.AAA,
             Upgradable = true,
-            Convertible = false,
+            Roof = Models.Fe.Nfs4.RoofFlag.SolidRoof,
             DefaultCompare = new()
             {
                 Acceleration = 10,

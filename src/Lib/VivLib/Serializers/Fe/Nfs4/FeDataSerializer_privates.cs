@@ -12,8 +12,8 @@ public partial class FeDataSerializer
         PoliceFlag = (PursuitFlag)(fedataHeader.PoliceFlag_IsBonus & Nfs4PursuitFlag_Mask),
         VehicleClass = fedataHeader.CarClass,
         IsBonus = (fedataHeader.PoliceFlag_IsBonus & IsBonus_Mask) != 0,
-        Upgradable = (fedataHeader.Upgradable_Convertible & Upgradable_Mask) != 0,
-        Convertible = (fedataHeader.Upgradable_Convertible & Convertible_Mask) != 0,
+        Upgradable = (fedataHeader.Upgradable_RoofFlags & Upgradable_Mask) == 0,
+        Roof = (RoofFlag)(fedataHeader.Upgradable_RoofFlags & Roof_Mask),
         StringEntries = fedataHeader.StringEntries,
         DefaultCompare = new CompareTable()
         {
@@ -59,7 +59,7 @@ public partial class FeDataSerializer
         SerialNumber = feData.SerialNumber,
         PoliceFlag_IsBonus = (byte)(((byte)feData.PoliceFlag) | (byte)(feData.IsBonus ? 0x1 : 0x0)),
         CarClass = feData.VehicleClass,
-        Upgradable_Convertible = (byte)((feData.Upgradable ? Upgradable_Mask : 0x0) | (feData.Convertible ? Convertible_Mask : 0x0)),
+        Upgradable_RoofFlags = (byte)((feData.Upgradable ? Upgradable_Mask : 0x0) | (byte)(feData.Roof)),
         StringEntries = feData.StringEntries,
         CompareCount = 4,
         Acceleration = new CompareTableItem()
