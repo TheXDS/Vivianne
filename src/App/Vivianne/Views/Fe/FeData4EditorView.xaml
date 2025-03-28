@@ -141,7 +141,7 @@
                             <ui:NumberBox Grid.ColumnSpan="3" Grid.Row="5" hlp:Form.Label="Price" Value="{Binding State.File.DefaultCompare.Price}"/>
                         </Grid>
                     </Expander>
-                    <Expander MinWidth="200" Header="{x:Static st:FeDataEditorView.Compare}" VerticalAlignment="Stretch" IsExpanded="True">
+                    <Expander MinWidth="200" Header="Compare (upgrade 1)" VerticalAlignment="Stretch" IsExpanded="True">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
@@ -174,7 +174,7 @@
                             <ui:NumberBox Grid.ColumnSpan="3" Grid.Row="5" hlp:Form.Label="Price" Value="{Binding State.File.CompareUpg1.Price}"/>
                         </Grid>
                     </Expander>
-                    <Expander MinWidth="200" Header="{x:Static st:FeDataEditorView.Compare}" VerticalAlignment="Stretch" IsExpanded="True">
+                    <Expander MinWidth="200" Header="Compare (upgrade 2)" VerticalAlignment="Stretch" IsExpanded="True">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
@@ -207,7 +207,7 @@
                             <ui:NumberBox Grid.ColumnSpan="3" Grid.Row="5" hlp:Form.Label="Price" Value="{Binding State.File.CompareUpg2.Price}"/>
                         </Grid>
                     </Expander>
-                    <Expander MinWidth="200" Header="{x:Static st:FeDataEditorView.Compare}" VerticalAlignment="Stretch" IsExpanded="True">
+                    <Expander MinWidth="200" Header="Compare (upgrade 3)" VerticalAlignment="Stretch" IsExpanded="True">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
@@ -253,7 +253,7 @@
                             <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Width}" Text="{Binding State.File.Width}"/>
                             <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Height}" Text="{Binding State.File.Height}"/>
                             <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Length}" Text="{Binding State.File.Length}"/>
-                            <ui:TextBox hlp:Form.Label="{}{x:Static st:FeDataEditorView.Length}" Text="{Binding State.File.Length}"/>
+                            <ui:TextBox hlp:Form.Label="Dynamic stability" Text="{Binding State.File.DynamicStability}"/>
                         </UniformGrid>
                     </Expander>
                     <Expander Header="{x:Static st:FeDataEditorView.Performance}" IsExpanded="True" VerticalAlignment="Stretch">
