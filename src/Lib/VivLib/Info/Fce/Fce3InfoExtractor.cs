@@ -12,6 +12,9 @@ namespace TheXDS.Vivianne.Info.Fce;
 /// in human-readable format, otherwise the size of the entity in bytes
 /// will be displayed directly.
 /// </param>
+/// <param name="showRsvdContents">
+/// Indicates if the contents of the reserved tables shoudl be read and dumped.
+/// </param>
 public class Fce3InfoExtractor(bool humanSize, bool showRsvdContents) : IEntityInfoExtractor<FceFile>
 {
     /// <inheritdoc/>
