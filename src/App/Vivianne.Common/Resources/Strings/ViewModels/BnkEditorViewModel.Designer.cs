@@ -128,7 +128,7 @@ namespace TheXDS.Vivianne.Resources.Strings.ViewModels {
         /// </summary>
         public static string LoopLength {
             get {
-                return ResourceManager.GetString("LoopEnd", resourceCulture);
+                return ResourceManager.GetString("LoopLength", resourceCulture);
             }
         }
         
@@ -165,6 +165,24 @@ namespace TheXDS.Vivianne.Resources.Strings.ViewModels {
         public static string NoLoop {
             get {
                 return ResourceManager.GetString("NoLoop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove unused data.
+        /// </summary>
+        public static string RemoveUnusedData {
+            get {
+                return ResourceManager.GetString("RemoveUnusedData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removing the unused data from the BNK will reduce its size, but it will remove the data outside of the looping sections of the streams with looping audio. This action cannot be undone. Are you sure you want to optimize the BNK and remove the unused data?.
+        /// </summary>
+        public static string RemoveUnusedDataQuestion {
+            get {
+                return ResourceManager.GetString("RemoveUnusedDataQuestion", resourceCulture);
             }
         }
         

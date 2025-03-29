@@ -13,7 +13,7 @@
         /// <summary>
         /// Calculates the total number of samples in the file.
         /// </summary>
-        public int TotalSamples => SampleData.Length * BytesPerSample;
+        public int TotalSamples => SampleData.Length / BytesPerSample;
 
         /// <summary>
         /// Gets or sets a value that lets the app and serializer know if this

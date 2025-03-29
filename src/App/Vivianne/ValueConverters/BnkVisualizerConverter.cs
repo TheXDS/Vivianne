@@ -59,7 +59,7 @@ public class BnkVisualizerConverter : IOneWayValueConverter<BnkStream?, ImageSou
     {
         short[] samples = new short[rawData.Length / 2];
         Buffer.BlockCopy(rawData, 0, samples, 0, rawData.Length);
-        int maxSample = samples.Select(p => (int)p).Max(Math.Abs);
+        int maxSample = (int)Math.Pow(2, 16) / 2;
         return [.. samples.Select(p => (double)p / maxSample)];
     }
 }

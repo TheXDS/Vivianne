@@ -232,7 +232,9 @@ public class VivEditorViewModel : HostViewModelBase, IFileEditorViewModel<VivEdi
         var result = await DialogService!.GetInputText(CommonDialogTemplates.Input with { Title = St.Rename, Text = St.RenameHelp }, fileName);
         if (result.Success)
         {
+            if (State.Directory.ContainsKey(result.Result) && !await DialogService.AskYn(St.Rename, string.Format("A file with the name '{0}' already exists. Overwrite?", result.Result))) return;
             State.Directory.Remove(fileName);
+            State.Directory.Remove(result.Result);
             State.Directory.Add(result.Result, file);
         }
     }

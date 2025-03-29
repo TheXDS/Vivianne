@@ -4,16 +4,19 @@ using System.Media;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using TheXDS.Ganymede.Helpers;
 using TheXDS.Ganymede.Models;
+using TheXDS.Ganymede.Resources;
 using TheXDS.Ganymede.Types.Base;
 using TheXDS.Ganymede.Types.Extensions;
 using TheXDS.MCART.Component;
+using TheXDS.MCART.Helpers;
 using TheXDS.MCART.Types.Base;
 using TheXDS.MCART.Types.Extensions;
-using TheXDS.Vivianne.Helpers;
 using TheXDS.Vivianne.Models.Bnk;
 using TheXDS.Vivianne.Properties;
 using TheXDS.Vivianne.Resources;
+using TheXDS.Vivianne.Tools.Bnk;
 using TheXDS.Vivianne.ViewModels.Base;
 using St = TheXDS.Vivianne.Resources.Strings.ViewModels.BnkEditorViewModel;
 namespace TheXDS.Vivianne.ViewModels.Bnk;
@@ -68,6 +71,18 @@ public class BnkEditorViewModel : FileEditorViewModelBase<BnkEditorState, BnkFil
     public ICommand ImportAsAltStreamCommand { get; }
 
     /// <summary>
+    /// Gets a reference to the command used to remove all unused data from the
+    /// BNK file.
+    /// </summary>
+    public ICommand RemoveUnusedDataCommand { get; }
+
+    /// <summary>
+    /// Gets a reference to the command used to normalize the selected stream's
+    /// volume.
+    /// </summary>
+    public ICommand NormalizeVolumeCommand { get; }
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="BnkEditorViewModel"/>
     /// class.
     /// </summary>
@@ -80,6 +95,8 @@ public class BnkEditorViewModel : FileEditorViewModelBase<BnkEditorState, BnkFil
         ExportLoopCommand = new SimpleCommand(OnExportLoop);
         ImportWavCommand = new SimpleCommand(OnImportWav);
         ImportAsAltStreamCommand = new SimpleCommand(OnImportAsAltStream);
+        RemoveUnusedDataCommand = new SimpleCommand(OnRemoveUnusedData);
+        NormalizeVolumeCommand = new SimpleCommand(OnNormalizeVolume);
     }
 
     /// <inheritdoc/>
@@ -175,7 +192,41 @@ public class BnkEditorViewModel : FileEditorViewModelBase<BnkEditorState, BnkFil
             await File.WriteAllBytesAsync(path, BnkRender.RenderBnkLoop(sample));
         }
     }
+
+    private async Task OnRemoveUnusedData()
+    {
+        if (!await (DialogService?.AskYn(St.RemoveUnusedData, St.RemoveUnusedDataQuestion) ?? Task.FromResult(true))) return;
+        OnStopPlayback();
+        foreach (var stream in State.AllStreams)
+        {
+            if (stream.LoopEnd > stream.LoopStart)
+            {
+                stream.SampleData = [.. stream.SampleData
+                    .Skip(stream.LoopStart * stream.BytesPerSample)
+                    .Take((stream.LoopEnd - stream.LoopStart) * stream.BytesPerSample)];
+                stream.LoopStart = 0;
+                stream.LoopEnd = stream.TotalSamples;
+            }
+            stream.PostAudioStreamData = [];
+        }
+        State.Refresh();
+    }
     
+    private async Task OnNormalizeVolume()
+    {
+        var result = await DialogService!.GetInputValue(
+            CommonDialogTemplates.Input with 
+            {
+                Icon = "🔊",
+                Title = "Normalize",
+                Text = "Please enter a desired volume level relative to 1.0"
+            }, 0.0, 1.0, 0.85);
+        if (!result.Success) return;
+        OnStopPlayback();
+        UiThread.Invoke(() => State.SelectedStream!.SampleData = BnkNormalizer.NormalizeVolume(State.SelectedStream, result.Result));
+        State.Refresh();
+    }
+
     private void SetSound(byte[] data)
     {
         _isPlaying = false;

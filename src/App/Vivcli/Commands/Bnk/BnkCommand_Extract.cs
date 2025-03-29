@@ -1,5 +1,5 @@
 ﻿using System.CommandLine;
-using TheXDS.Vivianne.Helpers;
+using TheXDS.Vivianne.Tools.Bnk;
 
 namespace TheXDS.Vivianne.Commands.Bnk;
 

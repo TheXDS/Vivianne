@@ -30,12 +30,6 @@ public class BnkEditorState : FileStateBase<BnkFile>
     /// </summary>
     public IEnumerable<BnkStream> AllStreams => Streams.Concat(File.Streams.Select(p => p?.AltStream)).NotNull();
 
-    /// <inheritdoc/>
-    protected override void OnInitialize(IPropertyBroadcastSetup broadcastSetup)
-    {
-        //broadcastSetup.RegisterPropertyChangeTrigger(() => SelectedStream, () => LoopStart, () => LoopEnd);
-    }
-
     /// <summary>
     /// Gets or sets the currently selected stream for editing.
     /// </summary>

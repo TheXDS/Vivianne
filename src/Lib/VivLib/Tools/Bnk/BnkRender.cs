@@ -3,7 +3,7 @@ using System.Text;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models.Bnk;
 
-namespace TheXDS.Vivianne.Helpers;
+namespace TheXDS.Vivianne.Tools.Bnk;
 
 /// <summary>
 /// Includes helper functions to perform Rendering operations on BNK audio

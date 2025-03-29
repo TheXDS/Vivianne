@@ -162,4 +162,10 @@
   <data name="ImportAltStream" xml:space="preserve">
     <value>Import Alt stream</value>
   </data>
+  <data name="RemoveUnusedData" xml:space="preserve">
+    <value>Remove unused data</value>
+  </data>
+  <data name="RemoveUnusedDataQuestion" xml:space="preserve">
+    <value>Removing the unused data from the BNK will reduce its size, but it will remove the data outside of the looping sections of the streams with looping audio. This action cannot be undone. Are you sure you want to optimize the BNK and remove the unused data?</value>
+  </data>
 </root>
