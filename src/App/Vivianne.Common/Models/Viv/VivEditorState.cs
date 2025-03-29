@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using TheXDS.MCART.Types;
 using TheXDS.Vivianne.Extensions;
@@ -14,6 +15,7 @@ namespace TheXDS.Vivianne.Models.Viv;
 public class VivEditorState : FileStateBase<VivFile>
 {
     private ObservableDictionaryWrap<string, byte[]>? _directory;
+    private string? _fileName;
 
     /// <summary>
     /// Calculates the estimated size of the VIV file.
@@ -28,7 +30,19 @@ public class VivEditorState : FileStateBase<VivFile>
     /// <summary>
     /// Gets a descriptive friendly name inferred from FeData.
     /// </summary>
-    public string FriendlyName => File.GetFriendlyName() ?? Resources.Strings.Common.VivEditorState_UnknownFriendlyName;
+    public string FriendlyName
+        => File.GetFriendlyName()
+        ?? (FileName is not null ? Path.GetFileName(Path.GetDirectoryName(FileName)) : null)
+        ?? "New file";
+
+    /// <summary>
+    /// Gets or sets the file path to be displayed.
+    /// </summary>
+    public string? FileName
+    {
+        get => _fileName;
+        set => Change(ref _fileName, value);
+    }
 
     /// <summary>
     /// Gets a value that indicates if the VIV file contains the 'car.fce'

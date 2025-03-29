@@ -18,6 +18,7 @@ public class SettingsState : EditorViewModelStateBase
     private bool _bnk_InfoOpenByDefault;
     private bool _fce_CenterModel;
     private SortType _viv_FileSorting;
+    private bool _fce_ShadowByDefault;
 
 
     /// <summary>
@@ -74,7 +75,6 @@ public class SettingsState : EditorViewModelStateBase
         set => Change(ref _recentFilesCount, value);
     }
 
-
     /// <summary>
     /// gets or sets a value that indicates if the info panel will be opened by default.
     /// </summary>
@@ -91,6 +91,16 @@ public class SettingsState : EditorViewModelStateBase
     { 
         get => _fce_CenterModel;
         set => Change(ref _fce_CenterModel, value);
+    }
+
+    /// <summary>
+    /// Gets or sets a value that indicates if the FCE editor will enable the
+    /// car shadow toggle by default.
+    /// </summary>
+    public bool Fce_ShadowByDefault
+    { 
+        get => _fce_ShadowByDefault;
+        set => Change(ref _fce_ShadowByDefault, value);
     }
 
     /// <summary>

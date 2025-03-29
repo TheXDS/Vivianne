@@ -22,13 +22,13 @@
 //        navigationService.Navigate(CreateViewModel(await LoadFce(fin.Result!), fin.Result!));
 //    }
 
-//    private static async Task<Fce3File> LoadFce(string fileName)
+//    private static async Task<Fce3File> LoadFce(string _fileName)
 //    {
-//        return await ((ISerializer<Fce3File>)new Fce3Serializer()).DeserializeAsync(await File.ReadAllBytesAsync(fileName));
+//        return await ((ISerializer<Fce3File>)new Fce3Serializer()).DeserializeAsync(await File.ReadAllBytesAsync(_fileName));
 //    }
 
-//    private static FceEditorViewModel CreateViewModel(Fce3File fce, string fileName)
+//    private static FceEditorViewModel CreateViewModel(Fce3File fce, string _fileName)
 //    {
-//        return new FceEditorViewModel() {  Title = fileName };
+//        return new FceEditorViewModel() {  Title = _fileName };
 //    }
 //}

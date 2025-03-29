@@ -73,6 +73,7 @@ public class Settings
         RecentFce3Files = [];
         RecentFilesCount = 10;
         Viv_FileSorting = SortType.FileKind;
+        Fce_ShadowByDefault = true;
     }
 
     /// <summary>
@@ -97,7 +98,8 @@ public class Settings
     public string? Nfs3Path { get; set; }
 
     /// <summary>
-    /// Gets or sets a string with the command line arguments to pass onto nfs3.exe upon invocation.
+    /// Gets or sets a string with the command line arguments to pass onto
+    /// <c>nfs3.exe</c> upon invocation.
     /// </summary>
     public string? Nfs3LaunchArgs { get; set; }
 
@@ -122,17 +124,26 @@ public class Settings
     public int RecentFilesCount { get; set; }
 
     /// <summary>
-    /// gets or sets a value that indicates if the info panel will be opened by default.
+    /// Gets or sets a value that indicates if the info panel will be opened by
+    /// default.
     /// </summary>
     public bool Bnk_InfoOpenByDefault { get; set; }
 
     /// <summary>
-    /// gets or sets a value that indicates if the FCE model will be centered automatically when saving an FCE file.
+    /// Gets or sets a value that indicates if the FCE model will be centered
+    /// automatically when saving an FCE file.
     /// </summary>
     public bool Fce_CenterModel { get; set; }
 
     /// <summary>
-    /// Gets or sets a value that indicates the file sorting order for the VIV directory.
+    /// Gets or sets a value that indicates if the FCE editor will enable the
+    /// car shadow toggle by default.
+    /// </summary>
+    public bool Fce_ShadowByDefault { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value that indicates the file sorting order for the VIV
+    /// directory.
     /// </summary>
     public SortType Viv_FileSorting { get; set; }
 

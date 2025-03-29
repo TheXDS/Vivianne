@@ -172,7 +172,6 @@
                 </ui:CardControl>
             </StackPanel>
         </TabItem>
-        
         <TabItem Header="FCE editor">
             <StackPanel>
                 <ui:CardControl Icon="{ui:SymbolIcon Symbol=ArrowMove24}">
@@ -212,7 +211,27 @@
                                 Text="When enabled, the FCE data will be cleaned up upon saving (removing unused names, naming unnamed parts, cleaning out invalid triangle flags, etc.)" />
                         </Grid>
                     </ui:CardControl.Header>
-                    <ui:ToggleSwitch IsChecked="{Binding State.FceCleanupOnSave}"/>
+                    <ui:ToggleSwitch IsChecked="{Binding State.FceCleanupOnSave}" IsEnabled="False"/>
+                </ui:CardControl>
+                <ui:CardControl Icon="{ui:SymbolIcon Symbol=SquareShadow20}">
+                    <ui:CardControl.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <ui:TextBlock
+                                Grid.Row="0"
+                                FontTypography="BodyStrong"
+                                Text="Enable car shadow by default" />
+                            <ui:TextBlock
+                                Grid.Row="1"
+                                Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                TextWrapping="Wrap"
+                                Text="When enabled, the FCE editor will enable rendering of the car bounding box shadow by default." />
+                        </Grid>
+                    </ui:CardControl.Header>
+                    <ui:ToggleSwitch IsChecked="{Binding State.Fce_ShadowByDefault}"/>
                 </ui:CardControl>
             </StackPanel>
         </TabItem>
@@ -231,7 +250,7 @@
                     <TextBlock TextWrapping="Wrap" Width="400">
                         Version <Run Text="{Binding Version, Mode=OneWay}"/>
                         <LineBreak/><LineBreak/>
-                        Created by TheXDS!
+                        Created by TheXDS!<LineBreak/><Hyperlink NavigateUri="https://github.com/TheXDS/Vivianne/" Click="Hyperlink_Click">GitHub Repo</Hyperlink>
                         <LineBreak/><LineBreak/>
                         Released under the <Hyperlink NavigateUri="https://mit-license.org/" Click="Hyperlink_Click">MIT</Hyperlink> license.
                         <LineBreak/><LineBreak/>

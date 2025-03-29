@@ -142,6 +142,7 @@ public class Fce3EditorViewModel : FileEditorViewModelBase<FceEditorState, FceFi
     /// <inheritdoc/>
     protected override async Task OnCreated()
     {
+        RenderShadow = Settings.Current.Fce_ShadowByDefault;
         Parts = GetObservable();
         await foreach (var j in GetTextures(BackingStore?.Store)) CarTextures.Add(j);
         CarTextures.Add(new(null!, St.NoTexture));
