@@ -14,7 +14,7 @@ public partial class MainWindow
     {
         Wpf.Ui.Appearance.SystemThemeWatcher.Watch(this);
         InitializeComponent();
-        if (OperatingSystem.IsWindowsVersionAtLeast(10, build: 22000))
+        if (OperatingSystem.IsWindowsVersionAtLeast(10, build: 26100))
         {
             WindowBackdropType = Wpf.Ui.Controls.WindowBackdropType.Acrylic;
         }

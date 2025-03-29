@@ -184,7 +184,7 @@ public class BnkEditorViewModel : FileEditorViewModelBase<BnkEditorState, BnkFil
         _snd.Stream = new MemoryStream(data);
     }
 
-    Task IViewModel.OnNavigateBack(CancelFlag navigation)
+    Task IViewModel.OnNavigateAway(CancelFlag navigation)
     {
         OnStopPlayback();
         return Task.CompletedTask;

@@ -13,7 +13,7 @@ namespace TheXDS.Vivianne.Models.Bnk;
 public class BnkEditorState : FileStateBase<BnkFile>
 {
     private ObservableListWrap<BnkStream?>? _streams;
-    private BnkStream? selectedSample;
+    private BnkStream? _selectedStream;
     private bool _showInfo = true;
     private int _loopStart;
     private int _loopEnd;
@@ -33,7 +33,7 @@ public class BnkEditorState : FileStateBase<BnkFile>
     /// <inheritdoc/>
     protected override void OnInitialize(IPropertyBroadcastSetup broadcastSetup)
     {
-        broadcastSetup.RegisterPropertyChangeTrigger(() => SelectedStream, () => LoopStart, () => LoopEnd);
+        //broadcastSetup.RegisterPropertyChangeTrigger(() => SelectedStream, () => LoopStart, () => LoopEnd);
     }
 
     /// <summary>
@@ -41,13 +41,14 @@ public class BnkEditorState : FileStateBase<BnkFile>
     /// </summary>
     public BnkStream? SelectedStream
     {
-        get => selectedSample;
+        get => _selectedStream;
         set
         {
-            if (Change(ref selectedSample, value) && value is { LoopStart: int ls, LoopEnd: int ll })
+            if (Change(ref _selectedStream, value) && value is { LoopStart: int ls, LoopEnd: int le })
             {
                 LoopStart = ls;
-                LoopEnd = ll;
+                LoopEnd = le;
+                Refresh();
             }
         }
     }

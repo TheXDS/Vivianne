@@ -126,8 +126,14 @@ public class VivEditorViewModel : HostViewModelBase, IFileEditorViewModel<VivEdi
     /// <inheritdoc/>
     public IBackingStore<VivFile>? BackingStore { get; init; }
 
-    private void OnOpenFile(object? parameter)
+    private async Task OnOpenFile(object? parameter)
     {
+        if (ChildNavService?.CurrentViewModel is IViewModel currVm)
+        {
+            CancelFlag f = new();
+            await currVm.OnNavigateAway(f);
+            if (f.IsCancelled) return;
+        }
         if (parameter is KeyValuePair<string, byte[]> { Key: { } file, Value: { } rawData })
         {
             IViewModel? vm = null;
@@ -148,11 +154,11 @@ public class VivEditorViewModel : HostViewModelBase, IFileEditorViewModel<VivEdi
             }
             vm ??= new FileErrorViewModel();
             vm.Title = file;
-            ChildNavService!.NavigateAndReset(vm);
+            await ChildNavService!.NavigateAndReset(vm);
         }
         else
         {
-            ChildNavService!.NavigateAndReset<VivInfoViewModel, VivEditorState>(State);
+            await ChildNavService!.NavigateAndReset<VivInfoViewModel, VivEditorState>(State);
         }
     }
 
