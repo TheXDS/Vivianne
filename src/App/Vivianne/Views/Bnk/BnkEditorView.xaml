@@ -138,6 +138,11 @@
                 Command="{Binding ImportAsAltStreamCommand, Mode=OneWay}"
                 Content="Import Alt stream"/>
             <ui:Button
+                Icon="{ui:SymbolIcon Symbol=Broom24}"
+                IsEnabled="{Binding State.SelectedStream.AltStream, Converter={StaticResource nn2bc}}"
+                Command="{Binding RemoveAltStreamCommand, Mode=OneWay}"
+                Content="Remove Alt stream"/>
+            <ui:Button
                 Icon="{ui:SymbolIcon Symbol=Save24}"
                 Command="{Binding ExportSampleCommand, Mode=OneWay}"
                 Content="{x:Static st:BnkEditorViewModel.Export}"/>

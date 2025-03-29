@@ -71,6 +71,12 @@ public class BnkEditorViewModel : FileEditorViewModelBase<BnkEditorState, BnkFil
     public ICommand ImportAsAltStreamCommand { get; }
 
     /// <summary>
+    /// Gets a reference to the command used to remove an alt. stream from the
+    /// selected BNK stream.
+    /// </summary>
+    public ICommand RemoveAltStreamCommand { get; }
+
+    /// <summary>
     /// Gets a reference to the command used to remove all unused data from the
     /// BNK file.
     /// </summary>
@@ -97,6 +103,7 @@ public class BnkEditorViewModel : FileEditorViewModelBase<BnkEditorState, BnkFil
         ImportAsAltStreamCommand = new SimpleCommand(OnImportAsAltStream);
         RemoveUnusedDataCommand = new SimpleCommand(OnRemoveUnusedData);
         NormalizeVolumeCommand = new SimpleCommand(OnNormalizeVolume);
+        RemoveAltStreamCommand = new SimpleCommand(OnRemoveAltStream);
     }
 
     /// <inheritdoc/>
@@ -224,6 +231,13 @@ public class BnkEditorViewModel : FileEditorViewModelBase<BnkEditorState, BnkFil
         if (!result.Success) return;
         OnStopPlayback();
         UiThread.Invoke(() => State.SelectedStream!.SampleData = BnkNormalizer.NormalizeVolume(State.SelectedStream, result.Result));
+        State.Refresh();
+    }
+
+    private void OnRemoveAltStream()
+    {
+        if (State.SelectedStream?.AltStream is null) return;
+        State.SelectedStream.AltStream = null;
         State.Refresh();
     }
 
