@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Windows.Media;
 using TheXDS.MCART.Helpers;
 using TheXDS.MCART.ValueConverters.Base;
+using TheXDS.Vivianne.Misc;
 using TheXDS.Vivianne.Models.Bnk;
 
 namespace TheXDS.Vivianne.ValueConverters;
@@ -20,7 +21,7 @@ public class BnkVisualizerConverter : IOneWayValueConverter<BnkStream?, ImageSou
     public ImageSource? Convert(BnkStream? value, object? parameter, CultureInfo? culture)
     {
         if (value is null) return null;
-        double[] normalizedSamples = ParseAudioStream(value.SampleData);
+        double[] normalizedSamples = ParseAudioStream(value.SampleData, value.BytesPerSample * 8);
 #if !EnableBnkCompression
         if (value.Compression)
         {
@@ -55,11 +56,29 @@ public class BnkVisualizerConverter : IOneWayValueConverter<BnkStream?, ImageSou
         return bitmap.ToImage();
     }
 
-    private static double[] ParseAudioStream(byte[] rawData)
+    private static double[] ParseAudioStream(byte[] rawData, int bits)
+    {
+        return bits switch
+        {
+            16 => Parse16bitStream(rawData),
+            8 => Parse8bitStream(rawData),
+            _ => [],
+        };
+    }
+
+    private static double[] Parse8bitStream(byte[] rawData)
+    {
+        var samples = CommonHelpers.MaptoSByte(rawData);
+        int maxSample = sbyte.MaxValue;
+        return [.. samples.Select(p => (double)p / maxSample)];
+
+    }
+    private static double[] Parse16bitStream(byte[] rawData)
     {
         short[] samples = new short[rawData.Length / 2];
         Buffer.BlockCopy(rawData, 0, samples, 0, rawData.Length);
         int maxSample = (int)Math.Pow(2, 16) / 2;
         return [.. samples.Select(p => (double)p / maxSample)];
     }
+
 }

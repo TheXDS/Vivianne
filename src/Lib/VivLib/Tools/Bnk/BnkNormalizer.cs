@@ -55,9 +55,9 @@ public static class BnkNormalizer
         if (!level.IsBetween(0.0, 1.0)) throw Errors.ValueOutOfRange(nameof(level), 0.0, 1.0);
         return bits switch
         {
-            8 => [.. NormalizeSByte([.. data.Select(p => (sbyte)(p - 128))], level).Select(p => (byte)(p + 128))],
-            16 => Internals.MapToByte(NormalizeInt16(Internals.MapToInt16(data), level)),
-            32 => Internals.MapToByte(NormalizeInt32(Internals.MapToInt32(data), level)),
+            8 => CommonHelpers.MapToByte(NormalizeSByte(CommonHelpers.MaptoSByte(data), level)),
+            16 => CommonHelpers.MapToByte(NormalizeInt16(CommonHelpers.MapToInt16(data), level)),
+            32 => CommonHelpers.MapToByte(NormalizeInt32(CommonHelpers.MapToInt32(data), level)),
             _ => throw new InvalidOperationException()
         };
     }

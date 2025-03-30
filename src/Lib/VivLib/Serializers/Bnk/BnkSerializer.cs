@@ -225,7 +225,7 @@ public class BnkSerializer : ISerializer<BnkFile>
          */
         return header.Values.Sum(p => p.Value.Length + 2) +
             header.AudioValues.Where(p => p.Key == PtAudioHeaderField.EndOfHeader || p.Key == PtAudioHeaderField.DataOffset || p.Value.Value != PtHeader.Default[p.Key].Value).Sum(p => p.Value.Length + 2) + 1 +
-            (header.AltStream is not null ? CalculatePtHeaderSizeNoAdjust(header.AltStream) + 1 : 0)+2;
+            (header.AltStream is not null ? CalculatePtHeaderSizeNoAdjust(header.AltStream) + 1 : 0) + (header.AudioValues[PtAudioHeaderField.NumSamples] != 0 ? 2 : 0);
     }
 
     private static PtHeader ToPtHeader(BnkStream blob)

@@ -1,6 +1,8 @@
-﻿namespace TheXDS.Vivianne.Misc;
+﻿using static System.Runtime.InteropServices.JavaScript.JSType;
 
-internal class Internals
+namespace TheXDS.Vivianne.Misc;
+
+public static class CommonHelpers
 {
     public static byte[] MapToByte(short[] inputArray)
     {
@@ -16,6 +18,11 @@ internal class Internals
         return result;
     }
 
+    public static byte[] MapToByte(sbyte[] inputArray)
+    {
+        return [.. inputArray.Select(p => (byte)(p + 128))];
+    }
+
     public static short[] MapToInt16(byte[] inputArray)
     {
         var result = new short[inputArray.Length / 2];
@@ -28,5 +35,9 @@ internal class Internals
         var result = new int[inputArray.Length / 4];
         Buffer.BlockCopy(inputArray, 0, result, 0, inputArray.Length);
         return result;
+    }
+    public static sbyte[] MaptoSByte(byte[] inputArray)
+    {
+        return [.. inputArray.Select(p => (sbyte)(p - 128))];
     }
 }
