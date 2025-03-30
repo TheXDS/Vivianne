@@ -8,7 +8,7 @@ using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Models.Fce.Nfs3;
 using TheXDS.Vivianne.ViewModels.Base;
 
-namespace TheXDS.Vivianne.ViewModels;
+namespace TheXDS.Vivianne.ViewModels.Fce;
 
 /// <summary>
 /// ViewModel that allows the user to edit the color table in an FCE file.
@@ -62,10 +62,14 @@ public class FceColorEditorViewModel : EditorViewModelBase<FceColorTableEditorSt
     protected override Task OnSaveChanges()
     {
         var newColors = State.Colors.Select<MutableFceColorItem, (HsbColor Primary, HsbColor Secondary)>(p => (p.PrimaryColor.ToColor(), p.SecondaryColor.ToColor())).ToArray();
-        for (int i = 0; i < State.Colors.Count; i++)
+        State.Fce.Colors.Clear();
+        State.Fce.File.PrimaryColors.Clear();
+        State.Fce.File.SecondaryColors.Clear();
+        for(int i = 0; i < State.Colors.Count; i++)
         {
-            State.Fce.Colors[i].PrimaryColor = State.Fce.File.PrimaryColors[i] = newColors[i].Primary;
-            State.Fce.Colors[i].SecondaryColor = State.Fce.File.SecondaryColors[i] = newColors[i].Secondary;
+            State.Fce.Colors.Add(new FceColor());
+            State.Fce.File.PrimaryColors.Add(State.Fce.Colors[i].PrimaryColor = newColors[i].Primary);
+            State.Fce.File.SecondaryColors.Add(State.Fce.Colors[i].SecondaryColor = newColors[i].Secondary);
         }
         State.Fce.UnsavedChanges = true;
         return Task.CompletedTask;

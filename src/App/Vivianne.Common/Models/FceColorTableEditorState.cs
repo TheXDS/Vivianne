@@ -5,7 +5,7 @@ using TheXDS.MCART.Types.Base;
 using TheXDS.Vivianne.Extensions;
 using TheXDS.Vivianne.Models.Base;
 using TheXDS.Vivianne.Models.Fce.Nfs3;
-using TheXDS.Vivianne.ViewModels;
+using TheXDS.Vivianne.ViewModels.Fce;
 
 namespace TheXDS.Vivianne.Models;
 

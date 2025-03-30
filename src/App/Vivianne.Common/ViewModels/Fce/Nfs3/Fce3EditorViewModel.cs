@@ -146,10 +146,7 @@ public class Fce3EditorViewModel : FileEditorViewModelBase<FceEditorState, FceFi
         Parts = GetObservable();
         await foreach (var j in GetTextures(BackingStore?.Store)) CarTextures.Add(j);
         CarTextures.Add(new(null!, St.NoTexture));
-        if (await (BackingStore?.Store.ReadAsync("fedata.eng") ?? Task.FromResult<byte[]?>(null)) is { } fedata)
-        {
-            SetColorNames(State.Colors, fedata);
-        }
+        await LoadColorNames();
         _lodPreset = FceLodPreset.High;
         SwitchToLod(_lodPreset);
         if (CarTextures.Count > 0) SelectedCarTexture = CarTextures.First().Value;
@@ -180,6 +177,8 @@ public class Fce3EditorViewModel : FileEditorViewModelBase<FceEditorState, FceFi
         var state = new FceColorTableEditorState(State);
         var vm = new FceColorEditorViewModel(state);
         await DialogService!.Show(vm);
+        await LoadColorNames();
+        SelectedColor = State.Colors.FirstOrDefault();
         OnVisibleChanged(null!, null!, default);
     }
 
@@ -304,6 +303,14 @@ public class Fce3EditorViewModel : FileEditorViewModelBase<FceEditorState, FceFi
         foreach (var (index, element) in colors.WithIndex().Take(10))
         {
             element.Name = colorNames[index];
+        }
+    }
+
+    private async Task LoadColorNames()
+    {
+        if (await (BackingStore?.Store.ReadAsync("fedata.eng") ?? Task.FromResult<byte[]?>(null)) is { } fedata)
+        {
+            SetColorNames(State.Colors, fedata);
         }
     }
 }
