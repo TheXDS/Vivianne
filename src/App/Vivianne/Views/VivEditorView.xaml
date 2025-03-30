@@ -20,6 +20,8 @@
     d:DesignHeight="450" d:DesignWidth="400">
     <UserControl.Resources>
         <vc2:ByteCountConverter x:Key="sizeConv"/>
+        <vc2:FileExtensionToIconConverter x:Key="ficon"/>
+        <vc2:FileExtensionToColorConverter x:Key="fcolor"/>
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -96,6 +98,12 @@
                                                     VerticalAlignment="Center"
                                                     Command="{Binding DataContext.ExportFileCommand, ElementName=ucRoot, Mode=OneWay}"
                                                     CommandParameter="{Binding Mode=OneWay}" Content="💾"/>
+                                                <ui:SymbolIcon
+                                                    Foreground="{Binding Key, Mode=OneWay, Converter={StaticResource fcolor}}"
+                                                    Symbol="{Binding Key, Mode=OneWay, Converter={StaticResource ficon}}"
+                                                    FontSize="24"
+                                                    Filled="True"
+                                                    Margin="0,0,5,0"/>
                                                 <StackPanel Margin="0,0,10,0">
                                                     <TextBlock x:Name="PART_filename" Text="{Binding Key, Mode=OneWay}" FontSize="16"/>
                                                     <TextBlock x:Name="PART_filesize" FontSize="9">

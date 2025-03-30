@@ -123,6 +123,12 @@ public class Fce3RendererConverter : IOneWayValueConverter<FceRenderState?, Mode
             {
                 flipU = tgaHeader.Value.ImageInfo.XOrigin != 0;
                 flipV = tgaHeader.Value.ImageInfo.YOrigin == 0;
+
+                if (tgaHeader.Value.ImageInfo.PixelFormatDescriptor == 40)
+                {
+                    flipU ^= flipU;
+                    flipV ^= flipV;
+                }
             }
         }
         brush ??= Brushes.Gray;

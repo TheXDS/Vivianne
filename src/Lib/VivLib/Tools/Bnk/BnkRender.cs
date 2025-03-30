@@ -81,9 +81,9 @@ public static class BnkRender
         using var ms = new MemoryStream(data);
         using var br = new BinaryReader(ms);
         var fileHeader = br.MarshalReadStruct<RiffFileHeader>();
-        _ = br.ReadInt32();
+        var fmtHeaderLength = br.ReadInt32();
         var fmt = br.MarshalReadStruct<WavFmtHeader>();
-        _ = br.ReadBytes(4);
+        _ = br.ReadBytes(4 + (fmtHeaderLength - Marshal.SizeOf<WavFmtHeader>()));
         var dataLength = br.ReadInt32();
         var rawData = br.ReadBytes(dataLength);
 

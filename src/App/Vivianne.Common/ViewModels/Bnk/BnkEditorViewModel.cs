@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Media;
 using System.Reflection;
@@ -152,18 +153,30 @@ public class BnkEditorViewModel : FileEditorViewModelBase<BnkEditorState, BnkFil
 
     private async Task OnImportWav()
     {
-        if (State.SelectedStream is null) return;
-        if (await DialogService!.GetFileOpenPath(FileFilters.AudioFileFilter) is { Success: true, Result: string path })
+        try
         {
-            var stream = BnkRender.FromWav(await File.ReadAllBytesAsync(path));
-            State.SelectedStream.Channels = stream.Channels;
-            State.SelectedStream.Compression = stream.Compression;
-            State.SelectedStream.SampleRate = stream.SampleRate;
-            State.SelectedStream.BytesPerSample = stream.BytesPerSample;
-            State.SelectedStream.SampleData = stream.SampleData;
-            State.LoopStart = stream.LoopStart;
-            State.LoopEnd = stream.LoopEnd;
-            State.Refresh();
+            if (State.SelectedStream is null) return;
+            if (await DialogService!.GetFileOpenPath(FileFilters.AudioFileFilter) is { Success: true, Result: string path })
+            {
+                var stream = BnkRender.FromWav(await File.ReadAllBytesAsync(path));
+                State.SelectedStream.Channels = stream.Channels;
+                State.SelectedStream.Compression = stream.Compression;
+                State.SelectedStream.SampleRate = stream.SampleRate;
+                State.SelectedStream.BytesPerSample = stream.BytesPerSample;
+                State.SelectedStream.SampleData = stream.SampleData;
+                State.LoopStart = stream.LoopStart;
+                State.LoopEnd = stream.LoopEnd;
+                State.Refresh();
+            }
+        }
+        catch (Exception ex)
+        {
+#if DEBUG
+            await DialogService!.Error(ex);
+#else
+            await DialogService!.Error("Cannot import .WAV", "The file you selected does not appear to be a valid .WAV file.");
+#endif
+            return;
         }
     }
 
