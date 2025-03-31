@@ -74,6 +74,7 @@ public class Settings
         RecentFilesCount = 10;
         Viv_FileSorting = SortType.FileKind;
         Fce_ShadowByDefault = true;
+        Bnk_DefaultNormalization = 1.0;
     }
 
     /// <summary>
@@ -109,7 +110,8 @@ public class Settings
     public bool AutoBackup { get; set; }
 
     /// <summary>
-    /// If enabled, runs a serial number check before saving a VIV file if any FeData file exists.
+    /// If enabled, runs a serial number check before saving a VIV file if any
+    /// FeData file exists.
     /// </summary>
     public bool VivCheckSnOnSave { get; set; }
 
@@ -128,6 +130,24 @@ public class Settings
     /// default.
     /// </summary>
     public bool Bnk_InfoOpenByDefault { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value that indicates the default volume normalization
+    /// for the normalization tool in the BNK editor.
+    /// </summary>
+    public double Bnk_DefaultNormalization { get; set; }
+
+    /// <summary>
+    /// When enabled, forces the BNK editor to keep the trash that might exist
+    /// outside of sample data in BNK files.
+    /// </summary>
+    public bool Bnk_KeepTrash { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value that indicates if the cleanup tool should also
+    /// trim any loops of audio to just the looping sections.
+    /// </summary>
+    public bool Bnk_TrimLoopsOnCleanup { get; set; }
 
     /// <summary>
     /// Gets or sets a value that indicates if the FCE model will be centered

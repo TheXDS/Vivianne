@@ -116,6 +116,19 @@ public class BnkEditorViewModel : FileEditorViewModelBase<BnkEditorState, BnkFil
         return Task.CompletedTask;
     }
 
+    /// <inheritdoc/>
+    protected override bool BeforeSave()
+    {
+        if (!Settings.Current.Bnk_KeepTrash)
+        {
+            foreach (var stream in State.AllStreams)
+            {
+                stream.PostAudioStreamData = [];
+            }
+        }
+        return base.BeforeSave();
+    }
+
     private async void OnStateChanged(object instance, PropertyInfo property, PropertyChangeNotificationType notificationType)
     {
         if (_isPlaying)
@@ -169,11 +182,13 @@ public class BnkEditorViewModel : FileEditorViewModelBase<BnkEditorState, BnkFil
                 State.Refresh();
             }
         }
+#if DEBUG
         catch (Exception ex)
         {
-#if DEBUG
             await DialogService!.Error(ex);
 #else
+        catch
+        {
             await DialogService!.Error("Cannot import .WAV", "The file you selected does not appear to be a valid .WAV file.");
 #endif
             return;
@@ -215,11 +230,11 @@ public class BnkEditorViewModel : FileEditorViewModelBase<BnkEditorState, BnkFil
 
     private async Task OnRemoveUnusedData()
     {
-        if (!await (DialogService?.AskYn(St.RemoveUnusedData, St.RemoveUnusedDataQuestion) ?? Task.FromResult(true))) return;
+        if (Settings.Current.Bnk_TrimLoopsOnCleanup && !await (DialogService?.AskYn(St.RemoveUnusedData, St.RemoveUnusedDataQuestion) ?? Task.FromResult(true))) return;
         OnStopPlayback();
         foreach (var stream in State.AllStreams)
         {
-            if (stream.LoopEnd > stream.LoopStart)
+            if (Settings.Current.Bnk_TrimLoopsOnCleanup && stream.LoopEnd > stream.LoopStart)
             {
                 stream.SampleData = [.. stream.SampleData
                     .Skip(stream.LoopStart * stream.BytesPerSample)
@@ -239,8 +254,8 @@ public class BnkEditorViewModel : FileEditorViewModelBase<BnkEditorState, BnkFil
             {
                 Icon = "🔊",
                 Title = "Normalize",
-                Text = "Please enter a desired volume level relative to 1.0"
-            }, 0.0, 1.0, 0.85);
+                Text = "Please enter a desired max volume level relative to 1.0"
+            }, 0.0, 1.0, Settings.Current.Bnk_DefaultNormalization);
         if (!result.Success) return;
         OnStopPlayback();
         UiThread.Invoke(() => State.SelectedStream!.SampleData = BnkNormalizer.NormalizeVolume(State.SelectedStream, result.Result));

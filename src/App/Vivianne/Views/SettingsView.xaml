@@ -170,6 +170,63 @@
                     </ui:CardControl.Header>
                     <ui:ToggleSwitch IsChecked="{Binding State.Bnk_InfoOpenByDefault}"/>
                 </ui:CardControl>
+                <ui:CardControl Icon="{ui:SymbolIcon Symbol=Speaker224}">
+                    <ui:CardControl.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <ui:TextBlock
+                                Grid.Row="0"
+                                FontTypography="BodyStrong"
+                                Text="Default volume normalization" />
+                            <ui:TextBlock
+                                Grid.Row="1"
+                                Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                Text="Specifies the default max volume when using the 'Normalize Volume' tool in the BNK editor." />
+                        </Grid>
+                    </ui:CardControl.Header>
+                    <ui:NumberBox Value="{Binding State.Bnk_DefaultNormalization}" Width="150" Minimum="0.0" Maximum="1.0"/>
+                </ui:CardControl>
+                <ui:CardControl Icon="{ui:SymbolIcon Symbol=Delete24}">
+                    <ui:CardControl.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <ui:TextBlock
+                                Grid.Row="0"
+                                FontTypography="BodyStrong"
+                                Text="Keep trask outside of sample data" />
+                            <ui:TextBlock
+                                Grid.Row="1"
+                                Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                Text="When enabled, forces the BNK editor to keep any unreferenced trash data that might exist outside of the sample data of all audio streams." />
+                        </Grid>
+                    </ui:CardControl.Header>
+                    <ui:ToggleSwitch IsChecked="{Binding State.Bnk_KeepTrash}"/>
+                </ui:CardControl>
+                <ui:CardControl Icon="{ui:SymbolIcon Symbol=Broom24}">
+                    <ui:CardControl.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <ui:TextBlock
+                                Grid.Row="0"
+                                FontTypography="BodyStrong"
+                                Text="Trim looping audio on cleanup" />
+                            <ui:TextBlock
+                                Grid.Row="1"
+                                Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                Text="When enabled, running the cleanup tool will also trim the looping sections of audio on all streams by removing the sections outside their respective loops." />
+                        </Grid>
+                    </ui:CardControl.Header>
+                    <ui:ToggleSwitch IsChecked="{Binding State.Bnk_TrimLoopsOnCleanup}"/>
+                </ui:CardControl>
             </StackPanel>
         </TabItem>
         <TabItem Header="FCE editor">

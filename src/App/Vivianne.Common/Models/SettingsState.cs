@@ -19,6 +19,9 @@ public class SettingsState : EditorViewModelStateBase
     private bool _fce_CenterModel;
     private SortType _viv_FileSorting;
     private bool _fce_ShadowByDefault;
+    private double _bnk_DefaultNormalization;
+    private bool _bnk_KeepTrash;
+    private bool _bnk_TrimLoopsOnCleanup;
 
 
     /// <summary>
@@ -85,6 +88,36 @@ public class SettingsState : EditorViewModelStateBase
     }
 
     /// <summary>
+    /// Gets or sets a value that indicates the default volume normalization
+    /// for the normalization tool in the BNK editor.
+    /// </summary>
+    public double Bnk_DefaultNormalization
+    { 
+        get => _bnk_DefaultNormalization;
+        set => Change(ref _bnk_DefaultNormalization, value);
+    }
+
+    /// <summary>
+    /// When enabled, forces the BNK editor to keep the trash that might exist
+    /// outside of sample data in BNK files.
+    /// </summary>
+    public bool Bnk_KeepTrash
+    {
+        get => _bnk_KeepTrash;
+        set => Change(ref _bnk_KeepTrash, value);
+    }
+
+    /// <summary>
+    /// Gets or sets a value that indicates if the cleanup tool should also
+    /// trim any loops of audio to just the looping sections.
+    /// </summary>
+    public bool Bnk_TrimLoopsOnCleanup
+    { 
+        get => _bnk_TrimLoopsOnCleanup;
+        set => Change(ref _bnk_TrimLoopsOnCleanup, value);
+    }
+
+    /// <summary>
     /// gets or sets a value that indicates if the FCE model will be centered automatically when saving an FCE file.
     /// </summary>
     public bool Fce_CenterModel
@@ -128,6 +161,9 @@ public class SettingsState : EditorViewModelStateBase
             Nfs3LaunchArgs = settings.Nfs3LaunchArgs,
             RecentFilesCount = settings.RecentFilesCount,
             Bnk_InfoOpenByDefault = settings.Bnk_InfoOpenByDefault,
+            Bnk_DefaultNormalization = settings.Bnk_DefaultNormalization,
+            Bnk_KeepTrash = settings.Bnk_KeepTrash,
+            Bnk_TrimLoopsOnCleanup = settings.Bnk_TrimLoopsOnCleanup,
             Fce_CenterModel = settings.Fce_CenterModel,
             Viv_FileSorting = settings.Viv_FileSorting,
         };
@@ -149,6 +185,9 @@ public class SettingsState : EditorViewModelStateBase
             Nfs3LaunchArgs = settings.Nfs3LaunchArgs,
             RecentFilesCount = settings.RecentFilesCount,
             Bnk_InfoOpenByDefault = settings.Bnk_InfoOpenByDefault,
+            Bnk_DefaultNormalization = settings.Bnk_DefaultNormalization,
+            Bnk_KeepTrash = settings.Bnk_KeepTrash,
+            Bnk_TrimLoopsOnCleanup = settings.Bnk_TrimLoopsOnCleanup,
             Fce_CenterModel = settings.Fce_CenterModel,
             Viv_FileSorting = settings.Viv_FileSorting,
         };
