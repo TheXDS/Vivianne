@@ -70,6 +70,7 @@
                                     FontTypography="BodyStrong"
                                     Text="{x:Static st:SettingsView.FileBackup}" />
                                 <ui:TextBlock
+                                    TextWrapping="Wrap"
                                     Grid.Row="1"
                                     Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
                                     Text="{x:Static st:SettingsView.BackupFilesUponSaving}" />
@@ -89,6 +90,7 @@
                                     FontTypography="BodyStrong"
                                     Text="{x:Static st:SettingsView.RecentFiles}" />
                                 <ui:TextBlock
+                                    TextWrapping="Wrap"
                                     Grid.Row="1"
                                     Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
                                     Text="{x:Static st:SettingsView.NumberOfRecentFilesToKeepOnTheList}" />
@@ -120,6 +122,7 @@
                                     FontTypography="BodyStrong"
                                     Text="{x:Static st:SettingsView.CheckSerialNumbers}" />
                                 <ui:TextBlock
+                                    TextWrapping="Wrap"
                                     Grid.Row="1"
                                     Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
                                     Text="{x:Static st:SettingsView.EnableSerialNumberCheckupWhenSavingAVIVFile}" />
@@ -139,6 +142,7 @@
                                     FontTypography="BodyStrong"
                                     Text="Directory sorting" />
                                 <ui:TextBlock
+                                    TextWrapping="Wrap"
                                     Grid.Row="1"
                                     Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
                                     Text="Specifies the sorting to use on the VIV directory" />
@@ -171,6 +175,7 @@
                                     FontTypography="BodyStrong"
                                     Text="Display info panel by default" />
                                 <ui:TextBlock
+                                    TextWrapping="Wrap"
                                     Grid.Row="1"
                                     Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
                                     Text="When enabled, allows the info panel to be dsplayed by default when opening a BNK file." />
@@ -190,6 +195,7 @@
                                     FontTypography="BodyStrong"
                                     Text="Default volume normalization" />
                                 <ui:TextBlock
+                                    TextWrapping="Wrap"
                                     Grid.Row="1"
                                     Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
                                     Text="Specifies the default max volume when using the 'Normalize Volume' tool in the BNK editor." />
@@ -209,6 +215,7 @@
                                     FontTypography="BodyStrong"
                                     Text="Keep trask outside of sample data" />
                                 <ui:TextBlock
+                                    TextWrapping="Wrap"
                                     Grid.Row="1"
                                     Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
                                     Text="When enabled, forces the BNK editor to keep any unreferenced trash data that might exist outside of the sample data of all audio streams." />
@@ -228,6 +235,7 @@
                                     FontTypography="BodyStrong"
                                     Text="Trim looping audio on cleanup" />
                                 <ui:TextBlock
+                                    TextWrapping="Wrap"
                                     Grid.Row="1"
                                     Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
                                     Text="When enabled, running the cleanup tool will also trim the looping sections of audio on all streams by removing the sections outside their respective loops." />
@@ -253,6 +261,7 @@
                                     FontTypography="BodyStrong"
                                     Text="Center model automatically" />
                                 <ui:TextBlock
+                                    TextWrapping="Wrap"
                                     Grid.Row="1"
                                     Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
                                     Text="When enabled, the model will be automatically centered when saving an FCE file." />
@@ -292,6 +301,7 @@
                                     FontTypography="BodyStrong"
                                     Text="Enable car shadow by default" />
                                 <ui:TextBlock
+                                    TextWrapping="Wrap"
                                     Grid.Row="1"
                                     Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
                                     TextWrapping="Wrap"
