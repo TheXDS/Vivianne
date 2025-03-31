@@ -301,7 +301,6 @@
                                     FontTypography="BodyStrong"
                                     Text="Enable car shadow by default" />
                                 <ui:TextBlock
-                                    TextWrapping="Wrap"
                                     Grid.Row="1"
                                     Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
                                     TextWrapping="Wrap"
