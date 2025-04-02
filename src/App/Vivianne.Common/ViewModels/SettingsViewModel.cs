@@ -63,7 +63,13 @@ public class SettingsViewModel : EditorViewModelBase<SettingsState>
     /// <inheritdoc/>
     protected override Task OnSaveChanges()
     {
+        var recentVivFiles = Settings.Current.RecentVivFiles;
+        var recentFshFiles = Settings.Current.RecentFshFiles;
+        var recentFce3Files = Settings.Current.RecentFce3Files;
         Settings.Current = State;
+        Settings.Current.RecentVivFiles = recentVivFiles;
+        Settings.Current.RecentFshFiles = recentFshFiles;
+        Settings.Current.RecentFce3Files = recentFce3Files;
         return Settings.Save();
     }
 }
