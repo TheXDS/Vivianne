@@ -2,9 +2,12 @@
 using TheXDS.Ganymede.Helpers;
 using TheXDS.Ganymede.Services;
 using TheXDS.Vivianne.Component;
+
+#if !DEBUG
 using System.IO;
 using static TheXDS.MCART.Resources.Strings.ExDumpOptions;
 using static TheXDS.MCART.Resources.Strings.Composition;
+#endif
 
 namespace Vivianne;
 

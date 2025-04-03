@@ -20,6 +20,8 @@ using TheXDS.Vivianne.Resources;
 using TheXDS.Vivianne.Tools.Bnk;
 using TheXDS.Vivianne.ViewModels.Base;
 using St = TheXDS.Vivianne.Resources.Strings.ViewModels.BnkEditorViewModel;
+using Sts = TheXDS.Vivianne.Resources.Strings.ViewModels.StartupViewModel;
+using Stc = TheXDS.Vivianne.Resources.Strings.Common;
 namespace TheXDS.Vivianne.ViewModels.Bnk;
 
 /// <summary>
@@ -64,7 +66,7 @@ public class BnkEditorViewModel : FileEditorViewModelBase<BnkEditorState, BnkFil
     /// current audio stream, replacing its contents.
     /// </summary>
     public ICommand ImportWavCommand { get; }
-    
+
     /// <summary>
     /// Gets a reference to the command used to import a .WAV file as the
     /// alternate stream for the selected BNK stream.
@@ -90,6 +92,18 @@ public class BnkEditorViewModel : FileEditorViewModelBase<BnkEditorState, BnkFil
     public ICommand NormalizeVolumeCommand { get; }
 
     /// <summary>
+    /// Gets a reference to the command used to inject padding bytes in between
+    /// audio stream data.
+    /// </summary>
+    public ICommand InjectPaddingCommand { get; }
+
+    /// <summary>
+    /// Gets a reference to the command used to add padding silence audio
+    /// samples to the audio stream.
+    /// </summary>
+    public ICommand AddAudioPaddingCommand { get; }
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="BnkEditorViewModel"/>
     /// class.
     /// </summary>
@@ -105,6 +119,8 @@ public class BnkEditorViewModel : FileEditorViewModelBase<BnkEditorState, BnkFil
         RemoveUnusedDataCommand = new SimpleCommand(OnRemoveUnusedData);
         NormalizeVolumeCommand = new SimpleCommand(OnNormalizeVolume);
         RemoveAltStreamCommand = new SimpleCommand(OnRemoveAltStream);
+        InjectPaddingCommand = new SimpleCommand(OnInjectPadding);
+        AddAudioPaddingCommand = new SimpleCommand(OnAddAudioPadding);
     }
 
     /// <inheritdoc/>
@@ -213,7 +229,7 @@ public class BnkEditorViewModel : FileEditorViewModelBase<BnkEditorState, BnkFil
     private async Task OnExportSample()
     {
         if (State.SelectedStream is not { } sample) return;
-        if (await DialogService!.GetFileSavePath(FileFilters.AudioFileFilter) is { Success:true, Result: string path })
+        if (await DialogService!.GetFileSavePath(FileFilters.AudioFileFilter) is { Success: true, Result: string path })
         {
             await File.WriteAllBytesAsync(path, BnkRender.RenderBnk(sample));
         }
@@ -246,11 +262,11 @@ public class BnkEditorViewModel : FileEditorViewModelBase<BnkEditorState, BnkFil
         }
         State.Refresh();
     }
-    
+
     private async Task OnNormalizeVolume()
     {
         var result = await DialogService!.GetInputValue(
-            CommonDialogTemplates.Input with 
+            CommonDialogTemplates.Input with
             {
                 Icon = "🔊",
                 Title = "Normalize",
@@ -259,6 +275,53 @@ public class BnkEditorViewModel : FileEditorViewModelBase<BnkEditorState, BnkFil
         if (!result.Success) return;
         OnStopPlayback();
         UiThread.Invoke(() => State.SelectedStream!.SampleData = BnkNormalizer.NormalizeVolume(State.SelectedStream, result.Result));
+        State.Refresh();
+    }
+
+    private async Task OnInjectPadding()
+    {
+        if (!Settings.Current.Bnk_KeepTrash)
+        {
+            await (await DialogService!.Show(CommonDialogTemplates.Message with
+            {
+                Title = "Inject padding",
+                Text = "BNK cleanup upon save is enabled in the settings. Please disable it before using this feature."
+            },
+            [
+                (() => Task.CompletedTask, Stc.Ok),
+                (() => DialogService!.Show<SettingsViewModel>(new DialogTemplate() { Title = Sts.Settings }), "Go to settings")
+            ])).Invoke();
+            return;
+        }
+        var result = await DialogService!.GetInputValue(
+            CommonDialogTemplates.Input with
+            {
+                Icon = "_",
+                Title = "Inject padding",
+                Text = "Please enter the number of padding bytes to add in between this audio stream and the next. This should help alleviate audio stream data to overlap each other in game."
+            }, 0, 1048576, State.SelectedStream!.SampleData.Length);
+        if (!result.Success) return;
+        State.SelectedStream.PostAudioStreamData = new byte[result.Result];
+        State.Refresh();
+    }
+
+    private async Task OnAddAudioPadding()
+    {
+        var result = await DialogService!.GetInputValue(
+            CommonDialogTemplates.Input with
+            {
+                Icon = "_",
+                Title = "Add audio padding",
+                Text = "Please enter the number of samples of silence to add to the beginning and the end of the audio stream."
+            }, 0, int.MaxValue, 500);
+        if (!result.Success) return;
+        var padding = new byte[result.Result * State.SelectedStream!.BytesPerSample];
+        State.SelectedStream.SampleData = [.. padding, ..State.SelectedStream.SampleData, ..padding];
+        if (State.LoopStart < State.LoopEnd)
+        {
+            State.LoopStart += result.Result;
+            State.LoopEnd += result.Result;
+        }
         State.Refresh();
     }
 

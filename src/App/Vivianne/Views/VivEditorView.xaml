@@ -32,17 +32,12 @@
             <RadioButton Margin="0,0,0,5" HorizontalAlignment="Stretch" Height="40" GroupName="VivDirectory" Command="{Binding OpenFileCommand, Mode=OneWay}" DockPanel.Dock="Top" IsChecked="True">
                 <RadioButton.Template>
                     <ControlTemplate TargetType="RadioButton">
-                        <Border CornerRadius="10,0,0,10" x:Name="PART_SelectionBg">
-                            <TextBlock x:Name="PART_title" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{x:Static st:VivInfoView.VIVInformation}" FontSize="16" Foreground="{StaticResource DarkAreaForeground}"/>
+                        <Border CornerRadius="10,0,0,10" x:Name="PART_SelectionBg" BorderThickness="2,2,0,2" BorderBrush="Transparent">
+                            <TextBlock x:Name="PART_title" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{x:Static st:VivInfoView.VIVInformation}" FontSize="16" Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsChecked" Value="true">
-                                <Setter TargetName="PART_SelectionBg" Property="Background" Value="{StaticResource MidBackground}"/>
-                                <Setter TargetName="PART_SelectionBg" Property="Effect">
-                                    <Setter.Value>
-                                        <DropShadowEffect/>
-                                    </Setter.Value>
-                                </Setter>
+                                <Setter TargetName="PART_SelectionBg" Property="BorderBrush" Value="{ui:ThemeResource ControlElevationBorderBrush}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -55,7 +50,7 @@
                 <ui:Button HorizontalAlignment="Stretch" Margin="5" Command="{Binding SaveAsCommand}" Icon="{ui:SymbolIcon Symbol=SaveArrowRight24}"/>
             </mcart:StretchyWrapPanel>
             <ScrollViewer VerticalScrollBarVisibility="Auto">
-                <ItemsControl Margin="0,0,0,0" MinWidth="150" ItemsSource="{Binding State.Directory}">
+                <ItemsControl Margin="0,0,0,0" MinWidth="150" ItemsSource="{Binding State.Directory}" BorderBrush="{ui:ThemeResource ControlElevationBorderBrush}" BorderThickness="0,0,2,0">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <RadioButton
@@ -66,7 +61,7 @@
                                 CommandParameter="{Binding Mode=OneWay}">
                                 <RadioButton.Template>
                                     <ControlTemplate TargetType="RadioButton">
-                                        <Border CornerRadius="10,0,0,10" x:Name="PART_SelectionBg" ToolTip="Alt+click to open externally">
+                                        <Border CornerRadius="10,0,0,10" x:Name="PART_SelectionBg" ToolTip="Alt+click to open externally" BorderThickness="2,2,0,2" BorderBrush="Transparent">
                                             <DockPanel Margin="10,5">
                                                 <Button
                                                     x:Name="PART_btnRemove"
@@ -114,24 +109,25 @@
                                         </Border>
                                         <ControlTemplate.Triggers>
                                             <Trigger Property="IsChecked" Value="true">
-                                                <Setter TargetName="PART_SelectionBg" Property="Effect">
+                                                <!--<Setter TargetName="PART_SelectionBg" Property="Effect">
                                                     <Setter.Value>
                                                         <DropShadowEffect/>
                                                     </Setter.Value>
-                                                </Setter>
-                                                <Setter TargetName="PART_SelectionBg" Property="Background">
-                                                    <Setter.Value>
+                                                </Setter>-->
+                                                <Setter TargetName="PART_SelectionBg" Property="BorderBrush" Value="{ui:ThemeResource ControlElevationBorderBrush}"/>
+                                                <Setter TargetName="PART_SelectionBg" Property="Background" Value="{ui:ThemeResource ControlFillColorDefaultBrush}"/>
+                                                <!--<Setter.Value>
                                                         <LinearGradientBrush>
-                                                            <GradientStop Color="{StaticResource MidBackgroundColor}"/>
+                                                            <GradientStop Color="{ui:ThemeResource ControlFillColorDefaultBrush}"/>
                                                             <GradientStop Color="Transparent" Offset="0.8"/>
                                                         </LinearGradientBrush>
                                                     </Setter.Value>
-                                                </Setter>
-                                                <Setter TargetName="PART_btnRemove" Property="Foreground" Value="{StaticResource DarkAreaForeground}"/>
+                                                </Setter>-->
+                                                <!--<Setter TargetName="PART_btnRemove" Property="Foreground" Value="{StaticResource DarkAreaForeground}"/>
                                                 <Setter TargetName="PART_btnRename" Property="Foreground" Value="{StaticResource DarkAreaForeground}"/>
                                                 <Setter TargetName="PART_btnExport" Property="Foreground" Value="{StaticResource DarkAreaForeground}"/>
                                                 <Setter TargetName="PART_filename" Property="Foreground" Value="{StaticResource DarkAreaForeground}"/>
-                                                <Setter TargetName="PART_filesize" Property="Foreground" Value="{StaticResource DarkAreaForeground}"/>
+                                                <Setter TargetName="PART_filesize" Property="Foreground" Value="{StaticResource DarkAreaForeground}"/>-->
                                             </Trigger>
                                             <Trigger Property="IsEnabled" Value="False">
                                                 <Setter TargetName="PART_btnRemove" Property="Visibility" Value="Hidden"/>
@@ -147,21 +143,22 @@
                 </ItemsControl>
             </ScrollViewer>
         </DockPanel>
-        <gn:NavigationHost
-            Grid.Column="1"
-            UseLayoutRounding="True"
-            SnapsToDevicePixels="True"
-            Navigator="{Binding ChildNavService}">
-            <gn:NavigationHost.VisualResolver>
-                <gn:WpfResolverStack>
-                    <gn:ResolverEntry ViewModel="{x:Type carp3vm:CarpEditorViewModel}" View="{x:Type views:Carp3EditorView}"/>
-                    <gn:ResolverEntry ViewModel="{x:Type carp4vm:CarpEditorViewModel}" View="{x:Type views:Carp4EditorView}"/>
-                    <gn:ResolverEntry ViewModel="{x:Type vm:ExternalFileViewModel}" View="{x:Type Control}"/>
-                    <gn:ResolverEntry ViewModel="{x:Type fce4vm:Fce4EditorViewModel}" View="{x:Type viewsSpec:ComingSoonView}"/>
-                    <gn:WpfConventionVisualResolver/>
-                    <gn:WpfConstResolver View="{x:Type viewsSpec:MissingView}"/>
-                </gn:WpfResolverStack>
-            </gn:NavigationHost.VisualResolver>
-        </gn:NavigationHost>        
+        <Border Grid.Column="1">
+            <gn:NavigationHost
+                UseLayoutRounding="True"
+                SnapsToDevicePixels="True"
+                Navigator="{Binding ChildNavService}">
+                <gn:NavigationHost.VisualResolver>
+                    <gn:WpfResolverStack>
+                        <gn:ResolverEntry ViewModel="{x:Type carp3vm:CarpEditorViewModel}" View="{x:Type views:Carp3EditorView}"/>
+                        <gn:ResolverEntry ViewModel="{x:Type carp4vm:CarpEditorViewModel}" View="{x:Type views:Carp4EditorView}"/>
+                        <gn:ResolverEntry ViewModel="{x:Type vm:ExternalFileViewModel}" View="{x:Type Control}"/>
+                        <gn:ResolverEntry ViewModel="{x:Type fce4vm:Fce4EditorViewModel}" View="{x:Type viewsSpec:ComingSoonView}"/>
+                        <gn:WpfConventionVisualResolver/>
+                        <gn:WpfConstResolver View="{x:Type viewsSpec:MissingView}"/>
+                    </gn:WpfResolverStack>
+                </gn:NavigationHost.VisualResolver>
+            </gn:NavigationHost>        
+        </Border>
     </Grid>
 </UserControl>

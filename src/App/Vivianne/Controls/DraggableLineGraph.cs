@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
+using System.Windows.Media.Effects;
 using System.Windows.Shapes;
 using TheXDS.MCART.Helpers;
 using TheXDS.MCART.Math;
@@ -43,6 +44,8 @@ public class DraggableLineGraph : Control
     /// </summary>
     public static readonly DependencyProperty TitleProperty;
 
+    public static readonly DependencyProperty PointsBrushProperty;
+
     /// <summary>
     /// Identifies the <see cref="Title"/> dependency property.
     /// </summary>
@@ -52,6 +55,7 @@ public class DraggableLineGraph : Control
     {
         SetControlStyle<DraggableLineGraph>(DefaultStyleKeyProperty);
         ItemsSourceProperty = NewDp<IList<double>, DraggableLineGraph>(nameof(ItemsSource), FrameworkPropertyMetadataOptions.AffectsRender, [], OnDataChanged);
+        PointsBrushProperty = NewDp<Brush, DraggableLineGraph>(nameof(PointsBrush), FrameworkPropertyMetadataOptions.AffectsRender);
         MinValueProperty = NewDp2Way<double, DraggableLineGraph>(nameof(MinValue), FrameworkPropertyMetadataOptions.AffectsRender, double.NaN, OnUpdateVisuals);
         MaxValueProperty = NewDp2Way<double, DraggableLineGraph>(nameof(MaxValue), FrameworkPropertyMetadataOptions.AffectsRender, double.NaN, OnUpdateVisuals);
         ForegroundProperty.OverrideMetadata<DraggableLineGraph>(Brushes.Red);
@@ -137,6 +141,11 @@ public class DraggableLineGraph : Control
         get => (CornerRadius)GetValue(CornerRadiusProperty);
         set => SetValue(CornerRadiusProperty, value);
     }
+    public Brush PointsBrush
+    {
+        get => (Brush)GetValue(PointsBrushProperty);
+        set => SetValue(PointsBrushProperty, value);
+    }
 
     /// <summary>
     /// Gets or sets the title of the control.
@@ -189,7 +198,13 @@ public class DraggableLineGraph : Control
     {
         Width = 10,
         Height = 10,
-        Fill = Foreground,
+        Fill = PointsBrush,
+        Effect = new DropShadowEffect()
+        {
+            Color = Colors.Black,
+            BlurRadius = 3,
+            ShadowDepth = 2
+        }
     };
 
     private void UpdateVisuals()

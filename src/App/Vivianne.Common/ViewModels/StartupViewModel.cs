@@ -11,7 +11,6 @@ using TheXDS.Ganymede.Types.Base;
 using TheXDS.Ganymede.Types.Extensions;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Properties;
-using TheXDS.Vivianne.Resources.Strings.ViewModels;
 using TheXDS.Vivianne.ViewModels.Base;
 using St = TheXDS.Vivianne.Resources.Strings.ViewModels.StartupViewModel;
 using Stc = TheXDS.Vivianne.Resources.Strings.Common;

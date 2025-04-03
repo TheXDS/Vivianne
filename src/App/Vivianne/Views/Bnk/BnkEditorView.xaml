@@ -143,6 +143,16 @@
                 Command="{Binding RemoveAltStreamCommand, Mode=OneWay}"
                 Content="Remove Alt stream"/>
             <ui:Button
+                Icon="{ui:SymbolIcon Symbol=Speaker024}"
+                IsEnabled="{Binding State.SelectedStream, Converter={StaticResource nn2bc}}"
+                Command="{Binding AddAudioPaddingCommand, Mode=OneWay}"
+                Content="Add audio padding"/>
+            <ui:Button
+                Icon="{ui:SymbolIcon Symbol=Board24}"
+                IsEnabled="{Binding State.SelectedStream, Converter={StaticResource nn2bc}}"
+                Command="{Binding InjectPaddingCommand, Mode=OneWay}"
+                Content="Inject padding bytes"/>
+            <ui:Button
                 Icon="{ui:SymbolIcon Symbol=Save24}"
                 Command="{Binding ExportSampleCommand, Mode=OneWay}"
                 Content="{x:Static st:BnkEditorViewModel.Export}"/>

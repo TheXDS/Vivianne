@@ -13,6 +13,7 @@ public partial class MainWindow
     public MainWindow()
     {
         Wpf.Ui.Appearance.SystemThemeWatcher.Watch(this);
+        //Wpf.Ui.Appearance.ApplicationThemeManager.Apply(Wpf.Ui.Appearance.ApplicationTheme.Light);
         InitializeComponent();
         if (OperatingSystem.IsWindowsVersionAtLeast(10, build: 26100))
         {

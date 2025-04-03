@@ -213,7 +213,7 @@
                                 <ui:TextBlock
                                     Grid.Row="0"
                                     FontTypography="BodyStrong"
-                                    Text="Keep trask outside of sample data" />
+                                    Text="Keep trash outside of sample data" />
                                 <ui:TextBlock
                                     TextWrapping="Wrap"
                                     Grid.Row="1"

@@ -24,7 +24,7 @@
                     <ui:Button Margin="5" Content="{x:Static st:StartupView.LaunchNFS3}" Icon="{ui:SymbolIcon Symbol=Play24}" Command="{Binding LaunchNfs3Command, Mode=OneWay}"/>
                     <ui:Button Margin="5" Content="{x:Static st:StartupView.Settings}" Icon="{ui:SymbolIcon Symbol=Settings32}" Command="{Binding SettingsCommand, Mode=OneWay}"/>
                 </StackPanel>
-                <TextBlock FontSize="36" Foreground="White" FontFamily="{StaticResource nfsFont}">Vivianne</TextBlock>
+                <TextBlock FontSize="36" Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}" FontFamily="{StaticResource nfsFont}">Vivianne</TextBlock>
             </DockPanel>
             <TabControl TabStripPlacement="Left" Style="{x:Null}" Background="Transparent" BorderThickness="0" Padding="0,2">
                 <TabControl.Resources>
@@ -33,11 +33,11 @@
                             <Setter.Value>
                                 <ControlTemplate TargetType="TabItem">
                                     <Border CornerRadius="10,0,0,10" Padding="10" x:Name="PART_SelectionBg">
-                                        <ContentControl Content="{TemplateBinding Header}" x:Name="PART_title" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource DarkAreaForeground}"/>
+                                        <ContentControl Content="{TemplateBinding Header}" x:Name="PART_title" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"/>
                                     </Border>
                                     <ControlTemplate.Triggers>
                                         <Trigger Property="IsSelected" Value="true">
-                                            <Setter TargetName="PART_SelectionBg" Property="Background" Value="{StaticResource DarkBackground}"/>
+                                            <Setter TargetName="PART_SelectionBg" Property="Background" Value="{ui:ThemeResource ControlFillColorDefaultBrush}"/>
                                         </Trigger>
                                     </ControlTemplate.Triggers>
                                 </ControlTemplate>
