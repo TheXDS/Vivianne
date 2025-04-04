@@ -30,7 +30,7 @@
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <ct:FileEditorCommandBar ShowClose="False" Editor="{Binding}">
+        <ct:FileEditorCommandBar ShowClose="False" Editor="{Binding}" Margin="0,0,10,0">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
@@ -123,51 +123,50 @@
                 Padding="10"/>
         </Grid>
         <Border Padding="5" Grid.Row="3" Grid.ColumnSpan="2" Background="{ui:ThemeResource ControlSolidFillColorDefaultBrush}">
-            
-        <mcart:StretchyWrapPanel IsEnabled="{Binding Source, ElementName=imgPreview, Converter={StaticResource nn2bc}}" VerticalAlignment="Center">
-            <mcart:StretchyWrapPanel.Resources>
-                <Style TargetType="ui:Button" BasedOn="{StaticResource {x:Type ui:Button}}">
-                    <Setter Property="VerticalAlignment" Value="Center"/>
-                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                    <Setter Property="Margin" Value="5"/>
-                </Style>
-            </mcart:StretchyWrapPanel.Resources>
-            <ui:Button
+            <mcart:StretchyWrapPanel IsEnabled="{Binding Source, ElementName=imgPreview, Converter={StaticResource nn2bc}}" VerticalAlignment="Center">
+                <mcart:StretchyWrapPanel.Resources>
+                    <Style TargetType="ui:Button" BasedOn="{StaticResource {x:Type ui:Button}}">
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                        <Setter Property="Margin" Value="5"/>
+                    </Style>
+                </mcart:StretchyWrapPanel.Resources>
+                <ui:Button
                 Icon="{ui:SymbolIcon Symbol=Open24}"
                 Command="{Binding ImportWavCommand, Mode=OneWay}"
                 Content="{x:Static st:BnkEditorViewModel.Import}"/>
-            <ui:Button
+                <ui:Button
                 Icon="{ui:SymbolIcon Symbol=Open24}"
                 Command="{Binding ImportAsAltStreamCommand, Mode=OneWay}"
                 Content="Import Alt stream"/>
-            <ui:Button
+                <ui:Button
                 Icon="{ui:SymbolIcon Symbol=Broom24}"
                 IsEnabled="{Binding State.SelectedStream.AltStream, Converter={StaticResource nn2bc}}"
                 Command="{Binding RemoveAltStreamCommand, Mode=OneWay}"
                 Content="Remove Alt stream"/>
-            <ui:Button
+                <ui:Button
                 Icon="{ui:SymbolIcon Symbol=Speaker024}"
                 IsEnabled="{Binding State.SelectedStream, Converter={StaticResource nn2bc}}"
                 Command="{Binding AddAudioPaddingCommand, Mode=OneWay}"
                 Content="Add audio padding"/>
-            <ui:Button
+                <ui:Button
                 Icon="{ui:SymbolIcon Symbol=Board24}"
                 IsEnabled="{Binding State.SelectedStream, Converter={StaticResource nn2bc}}"
                 Command="{Binding InjectPaddingCommand, Mode=OneWay}"
                 Content="Inject padding bytes"/>
-            <ui:Button
+                <ui:Button
                 Icon="{ui:SymbolIcon Symbol=Speaker224}"
                 Command="{Binding NormalizeVolumeCommand, Mode=OneWay}"
                 Content="Normalize"/>
-            <ui:Button
+                <ui:Button
                 Icon="{ui:SymbolIcon Symbol=Save24}"
                 Command="{Binding ExportSampleCommand, Mode=OneWay}"
                 Content="{x:Static st:BnkEditorViewModel.Export}"/>
-            <ui:Button
+                <ui:Button
                 Icon="{ui:SymbolIcon Symbol=Save24}"
                 Command="{Binding ExportLoopCommand, Mode=OneWay}"
                 Content="{x:Static st:BnkEditorViewModel.ExportLoop}"/>
-        </mcart:StretchyWrapPanel>
+            </mcart:StretchyWrapPanel>
         </Border>
     </Grid>
 </UserControl>

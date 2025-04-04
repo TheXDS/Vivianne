@@ -47,7 +47,7 @@
         </ct:FileEditorCommandBar>
         <Grid Background="{ui:ThemeResource ControlSolidFillColorDefaultBrush}">
             <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
-                <StackPanel>
+                <StackPanel Margin="10,10,15,10">
                     <Expander Header="{x:Static st:CarpEditorView.BasicInformation}" IsExpanded="True">
                         <mcart:StretchyWrapPanel StretchProportionally="False">
                             <ui:NumberBox

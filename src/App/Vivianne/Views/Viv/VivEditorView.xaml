@@ -30,7 +30,7 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <DockPanel>
-            <RadioButton Margin="0,0,0,5" HorizontalAlignment="Stretch" Height="40" GroupName="VivDirectory" Command="{Binding OpenFileCommand, Mode=OneWay}" DockPanel.Dock="Top" IsChecked="True">
+            <RadioButton Margin="0,0,0,5" HorizontalAlignment="Stretch" Height="42" GroupName="VivDirectory" Command="{Binding OpenFileCommand, Mode=OneWay}" DockPanel.Dock="Top" IsChecked="True">
                 <RadioButton.Template>
                     <ControlTemplate TargetType="RadioButton">
                         <Border CornerRadius="10,0,0,10" x:Name="PART_SelectionBg">

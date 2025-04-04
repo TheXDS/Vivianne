@@ -30,189 +30,188 @@
                 <TextBlock Text="{x:Static st:FeDataEditorView.LinkEdits}" Foreground="White"/>
             </CheckBox>-->
         </controls:FileEditorCommandBar>
-        <ScrollViewer>
-            <ScrollViewer.Resources>
-                <Style TargetType="ScrollViewer">
-                    <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
-                </Style>
-                <Style TargetType="ui:TextBox" BasedOn="{StaticResource {x:Type ui:TextBox}}">
-                    <Setter Property="Margin" Value="5"/>
-                </Style>
-                <Style TargetType="ui:NumberBox" BasedOn="{StaticResource {x:Type ui:NumberBox}}">
-                    <Setter Property="Margin" Value="5"/>
-                </Style>
-                <Style TargetType="UniformGrid">
-                    <Setter Property="Margin" Value="5"/>
-                    <Setter Property="VerticalAlignment" Value="Top"/>
-                </Style>
-                <Style TargetType="GroupBox">
-                    <Setter Property="Margin" Value="5"/>
-                </Style>
-            </ScrollViewer.Resources>
-            <StackPanel Background="{ui:ThemeResource ControlSolidFillColorDefaultBrush}">
-                <mcart:StretchyWrapPanel>
-                    <Expander Header="{x:Static st:FeDataEditorView.BasicProperties}" IsExpanded="True">
-                        <StackPanel Margin="5">
-                            <ui:TextBox
-                                hlp:Form.Label="{x:Static st:FeDataEditorView.CarName}"
-                                Margin="5"
-                                Text="{Binding State.File.CarName}"/>
-                            <mcart:StretchyWrapPanel StretchProportionally="True">
+        <Grid Background="{ui:ThemeResource ControlSolidFillColorDefaultBrush}">
+            <ScrollViewer>
+                <ScrollViewer.Resources>
+                    <Style TargetType="ScrollViewer">
+                        <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+                    </Style>
+                    <Style TargetType="ui:TextBox" BasedOn="{StaticResource {x:Type ui:TextBox}}">
+                        <Setter Property="Margin" Value="5"/>
+                    </Style>
+                    <Style TargetType="ui:NumberBox" BasedOn="{StaticResource {x:Type ui:NumberBox}}">
+                        <Setter Property="Margin" Value="5"/>
+                    </Style>
+                    <Style TargetType="UniformGrid">
+                        <Setter Property="Margin" Value="5"/>
+                        <Setter Property="VerticalAlignment" Value="Top"/>
+                    </Style>
+                </ScrollViewer.Resources>
+                <StackPanel Margin="10,10,0,10">
+                    <mcart:StretchyWrapPanel>
+                        <Expander Header="{x:Static st:FeDataEditorView.BasicProperties}" IsExpanded="True">
+                            <StackPanel>
                                 <ui:TextBox
-                                    hlp:Form.Label="{x:Static st:FeDataEditorView.CarId}"
-                                    VerticalAlignment="Center"
-                                    MaxLength="4"
-                                    MinWidth="100"
+                                    hlp:Form.Label="{x:Static st:FeDataEditorView.CarName}"
                                     Margin="5"
-                                    HorizontalAlignment="Stretch"
-                                    Text="{Binding State.File.CarId}"/>
-                                <ui:NumberBox
-                                    hlp:Form.Label="{x:Static st:FeDataEditorView.SerialNumber}"
-                                    VerticalAlignment="Center"
-                                    HorizontalAlignment="Stretch"
-                                    Margin="5"
-                                    Minimum="0"
-                                    Maximum="65535"
-                                    Value="{Binding State.File.SerialNumber}"/>
-                                <ComboBox
-                                    hlp:Form.Label="{x:Static st:FeDataEditorView.CarClass}"
-                                    Margin="5"
-                                    IsEditable="False"
-                                    SelectedItem="{Binding State.File.VehicleClass}"
-                                    ItemsSource="{ct:EnumValProvider EnumType={x:Type md:CarClass}}"/>
-                                <ComboBox
-                                    hlp:Form.Label="{x:Static st:FeDataEditorView.DriverSeat}"
-                                    Margin="5"
-                                    IsEditable="False"
-                                    SelectedItem="{Binding State.File.Seat}"
-                                    ItemsSource="{ct:EnumValProvider EnumType={x:Type mdl:DriverSeatPosition}}"/>
-                            </mcart:StretchyWrapPanel>
-                            <mcart:StretchyWrapPanel Margin="5" StretchProportionally="True">
-                                <CheckBox Margin="5" IsChecked="{Binding State.File.IsPolice}">
-                                    <TextBlock Text="{x:Static st:FeDataEditorView.IsPolice}"/>
-                                </CheckBox>
-                                <CheckBox Margin="5" IsChecked="{Binding State.File.IsBonus}">
-                                    <TextBlock Text="{x:Static st:FeDataEditorView.IsBonus}"/>
-                                </CheckBox>
-                                <CheckBox Margin="5" IsChecked="{Binding State.File.AvailableToAi}">
-                                    <TextBlock Text="{x:Static st:FeDataEditorView.IsAvailableToAI}"/>
-                                </CheckBox>
-                                <CheckBox Margin="5" IsChecked="{Binding State.File.IsDlcCar}">
-                                    <TextBlock Text="{x:Static st:FeDataEditorView.IsDlcCar}"/>
-                                </CheckBox>
-                            </mcart:StretchyWrapPanel>
-                        </StackPanel>
-                    </Expander>
-                    <Expander MinWidth="200" Header="{x:Static st:FeDataEditorView.Compare}" VerticalAlignment="Stretch" IsExpanded="True">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="3*"/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <TextBlock TextAlignment="Right" Margin="5" Text="{x:Static st:FeDataEditorView.Acceleration}"/>
-                            <Slider VerticalAlignment="Center" Grid.Column="1" Maximum="20" Value="{Binding State.File.CarAccel}"/>
-                            <TextBlock TextAlignment="Center" Margin="5" Grid.Column="2" Text="{Binding State.File.CarAccel, Mode=OneWay}"/>
-                            <TextBlock TextAlignment="Right" Margin="5" Grid.Row="1" Text="{x:Static st:FeDataEditorView.TopSpeed}"/>
-                            <Slider VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" Maximum="20" Value="{Binding State.File.CarTopSpeed}"/>
-                            <TextBlock TextAlignment="Center" Margin="5" Grid.Row="1" Grid.Column="2" Text="{Binding State.File.CarTopSpeed, Mode=OneWay}"/>
-                            <TextBlock TextAlignment="Right" Margin="5" Grid.Row="2" Text="{x:Static st:FeDataEditorView.Handling}"/>
-                            <Slider VerticalAlignment="Center" Grid.Row="2" Grid.Column="1" Maximum="20" Value="{Binding State.File.CarHandling}"/>
-                            <TextBlock TextAlignment="Center" Margin="5" Grid.Row="2" Grid.Column="2" Text="{Binding State.File.CarHandling, Mode=OneWay}"/>
-                            <TextBlock TextAlignment="Right" Margin="5" Grid.Row="3" Text="{x:Static st:FeDataEditorView.Braking}"/>
-                            <Slider VerticalAlignment="Center" Grid.Row="3" Grid.Column="1" Maximum="20" Value="{Binding State.File.CarBraking}"/>
-                            <TextBlock TextAlignment="Center" Margin="5" Grid.Row="3" Grid.Column="2" Text="{Binding State.File.CarBraking, Mode=OneWay}"/>
-                        </Grid>
-                    </Expander>
-                </mcart:StretchyWrapPanel>
-                <mcart:StretchyWrapPanel StretchProportionally="False">
-                    <Expander Header="{x:Static st:FeDataEditorView.General}" IsExpanded="True" VerticalAlignment="Stretch">
-                        <mcart:StretchyWrapPanel StretchProportionally="False">
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Manufacturer}" Text="{Binding State.File.Manufacturer}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Model}" Text="{Binding State.File.Model}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Price}" Text="{Binding State.File.Price}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Status}" Text="{Binding State.File.Status}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Weight}" Text="{Binding State.File.Weight}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.WeightDistr}" Text="{Binding State.File.WeightDistribution}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Width}" Text="{Binding State.File.Width}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Height}" Text="{Binding State.File.Height}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Length}" Text="{Binding State.File.Length}"/>
-                        </mcart:StretchyWrapPanel>
-                    </Expander>
-                    <Expander Header="{x:Static st:FeDataEditorView.Performance}" IsExpanded="True" VerticalAlignment="Stretch">
-                        <mcart:StretchyWrapPanel StretchProportionally="False">
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Engine}" Text="{Binding State.File.Engine}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Displacement}" Text="{Binding State.File.Displacement}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Power}" Text="{Binding State.File.Hp}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Torque}" Text="{Binding State.File.Torque}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.MaxRpm}" Text="{Binding State.File.MaxEngineSpeed}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Brakes}" Text="{Binding State.File.Brakes}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Tires}" Text="{Binding State.File.Tires}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.TopSpeed}" Text="{Binding State.File.TopSpeed}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Accel0To60}" Text="{Binding State.File.Accel0To60}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Accel0To100}" Text="{Binding State.File.Accel0To100}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Transmission}" Text="{Binding State.File.Transmission}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Gearbox}" Text="{Binding State.File.Gearbox}"/>
-                        </mcart:StretchyWrapPanel>
-                    </Expander>
-                    <Expander Header="{x:Static st:FeDataEditorView.History}" IsExpanded="True" VerticalAlignment="Stretch">
-                        <mcart:StretchyWrapPanel StretchProportionally="False">
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.History1}" Text="{Binding State.File.History1}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.History2}" Text="{Binding State.File.History2}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.History3}" Text="{Binding State.File.History3}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.History4}" Text="{Binding State.File.History4}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.History5}" Text="{Binding State.File.History5}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.History6}" Text="{Binding State.File.History6}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.History7}" Text="{Binding State.File.History7}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.History8}" Text="{Binding State.File.History8}"/>
-                        </mcart:StretchyWrapPanel>
-                    </Expander>
-                    <Expander Header="{x:Static st:FeDataEditorView.Colors}" IsExpanded="True" VerticalAlignment="Stretch">
-                        <mcart:StretchyWrapPanel StretchProportionally="False">
-                            <mcart:StretchyWrapPanel.Resources>
-                                <valueconverters:DrawingColorToBrushConverter x:Key="dc2bc"/>
-                            </mcart:StretchyWrapPanel.Resources>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color1}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[0], Mode=OneWay}" Text="{Binding State.File.Color1}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color2}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[1], Mode=OneWay}" Text="{Binding State.File.Color2}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color3}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[2], Mode=OneWay}" Text="{Binding State.File.Color3}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color4}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[3], Mode=OneWay}" Text="{Binding State.File.Color4}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color5}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[4], Mode=OneWay}" Text="{Binding State.File.Color5}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color6}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[5], Mode=OneWay}" Text="{Binding State.File.Color6}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color7}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[6], Mode=OneWay}" Text="{Binding State.File.Color7}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color8}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[7], Mode=OneWay}" Text="{Binding State.File.Color8}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color9}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[8], Mode=OneWay}" Text="{Binding State.File.Color9}"/>
-                            <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color10}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[9], Mode=OneWay}" Text="{Binding State.File.Color10}"/>
-                        </mcart:StretchyWrapPanel>
-                    </Expander>
-                </mcart:StretchyWrapPanel>
-                <Expander>
-                    <Expander.Header>
-                        <DockPanel>
-                            <TextBlock>Unknown values (edit at your own risk)</TextBlock>
-                            <CheckBox Style="{StaticResource ToggleSwitch}" x:Name="chkUnknown" Margin="10,0"/>
-                        </DockPanel>
-                    </Expander.Header>
-                    <mcart:StretchyWrapPanel StretchProportionally="False" IsEnabled="{Binding IsChecked, ElementName=chkUnknown}">
-                        <ui:NumberBox hlp:Form.Label="Unk_0x0c" Value="{Binding State.File.Unk_0x0c}"/>
-                        <ui:NumberBox hlp:Form.Label="Unk_0x14" Value="{Binding State.File.Unk_0x14}"/>
-                        <ui:NumberBox hlp:Form.Label="Unk_0x16" Value="{Binding State.File.Unk_0x16}"/>
-                        <ui:NumberBox hlp:Form.Label="Unk_0x1a" Value="{Binding State.File.Unk_0x1a}"/>
-                        <ui:NumberBox hlp:Form.Label="Unk_0x1c" Value="{Binding State.File.Unk_0x1c}"/>
-                        <ui:NumberBox hlp:Form.Label="Unk_0x1e" Value="{Binding State.File.Unk_0x1e}"/>
-                        <ui:NumberBox hlp:Form.Label="Unk_0x20" Value="{Binding State.File.Unk_0x20}"/>
-                        <ui:NumberBox hlp:Form.Label="Unk_0x22" Value="{Binding State.File.Unk_0x22}"/>
-                        <ui:NumberBox hlp:Form.Label="Unk_0x24" Value="{Binding State.File.Unk_0x24}"/>
-                        <ui:NumberBox hlp:Form.Label="Unk_0x26" Value="{Binding State.File.Unk_0x26}"/>
-                        <ui:NumberBox hlp:Form.Label="Unk_0x2c" Value="{Binding State.File.Unk_0x2c}"/>
+                                    Text="{Binding State.File.CarName}"/>
+                                <mcart:StretchyWrapPanel StretchProportionally="True">
+                                    <ui:TextBox
+                                        hlp:Form.Label="{x:Static st:FeDataEditorView.CarId}"
+                                        VerticalAlignment="Center"
+                                        MaxLength="4"
+                                        MinWidth="100"
+                                        Margin="5"
+                                        HorizontalAlignment="Stretch"
+                                        Text="{Binding State.File.CarId}"/>
+                                    <ui:NumberBox
+                                        hlp:Form.Label="{x:Static st:FeDataEditorView.SerialNumber}"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Stretch"
+                                        Margin="5"
+                                        Minimum="0"
+                                        Maximum="65535"
+                                        Value="{Binding State.File.SerialNumber}"/>
+                                    <ComboBox
+                                        hlp:Form.Label="{x:Static st:FeDataEditorView.CarClass}"
+                                        Margin="5"
+                                        IsEditable="False"
+                                        SelectedItem="{Binding State.File.VehicleClass}"
+                                        ItemsSource="{ct:EnumValProvider EnumType={x:Type md:CarClass}}"/>
+                                    <ComboBox
+                                        hlp:Form.Label="{x:Static st:FeDataEditorView.DriverSeat}"
+                                        Margin="5"
+                                        IsEditable="False"
+                                        SelectedItem="{Binding State.File.Seat}"
+                                        ItemsSource="{ct:EnumValProvider EnumType={x:Type mdl:DriverSeatPosition}}"/>
+                                </mcart:StretchyWrapPanel>
+                                <mcart:StretchyWrapPanel Margin="5" StretchProportionally="True">
+                                    <CheckBox Margin="5" IsChecked="{Binding State.File.IsPolice}">
+                                        <TextBlock Text="{x:Static st:FeDataEditorView.IsPolice}"/>
+                                    </CheckBox>
+                                    <CheckBox Margin="5" IsChecked="{Binding State.File.IsBonus}">
+                                        <TextBlock Text="{x:Static st:FeDataEditorView.IsBonus}"/>
+                                    </CheckBox>
+                                    <CheckBox Margin="5" IsChecked="{Binding State.File.AvailableToAi}">
+                                        <TextBlock Text="{x:Static st:FeDataEditorView.IsAvailableToAI}"/>
+                                    </CheckBox>
+                                    <CheckBox Margin="5" IsChecked="{Binding State.File.IsDlcCar}">
+                                        <TextBlock Text="{x:Static st:FeDataEditorView.IsDlcCar}"/>
+                                    </CheckBox>
+                                </mcart:StretchyWrapPanel>
+                            </StackPanel>
+                        </Expander>
+                        <Expander MinWidth="200" Header="{x:Static st:FeDataEditorView.Compare}" VerticalAlignment="Stretch" IsExpanded="True">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <TextBlock TextAlignment="Right" Margin="5" Text="{x:Static st:FeDataEditorView.Acceleration}"/>
+                                <Slider VerticalAlignment="Center" Grid.Column="1" Maximum="20" Value="{Binding State.File.CarAccel}"/>
+                                <TextBlock TextAlignment="Center" Margin="5" Grid.Column="2" Text="{Binding State.File.CarAccel, Mode=OneWay}"/>
+                                <TextBlock TextAlignment="Right" Margin="5" Grid.Row="1" Text="{x:Static st:FeDataEditorView.TopSpeed}"/>
+                                <Slider VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" Maximum="20" Value="{Binding State.File.CarTopSpeed}"/>
+                                <TextBlock TextAlignment="Center" Margin="5" Grid.Row="1" Grid.Column="2" Text="{Binding State.File.CarTopSpeed, Mode=OneWay}"/>
+                                <TextBlock TextAlignment="Right" Margin="5" Grid.Row="2" Text="{x:Static st:FeDataEditorView.Handling}"/>
+                                <Slider VerticalAlignment="Center" Grid.Row="2" Grid.Column="1" Maximum="20" Value="{Binding State.File.CarHandling}"/>
+                                <TextBlock TextAlignment="Center" Margin="5" Grid.Row="2" Grid.Column="2" Text="{Binding State.File.CarHandling, Mode=OneWay}"/>
+                                <TextBlock TextAlignment="Right" Margin="5" Grid.Row="3" Text="{x:Static st:FeDataEditorView.Braking}"/>
+                                <Slider VerticalAlignment="Center" Grid.Row="3" Grid.Column="1" Maximum="20" Value="{Binding State.File.CarBraking}"/>
+                                <TextBlock TextAlignment="Center" Margin="5" Grid.Row="3" Grid.Column="2" Text="{Binding State.File.CarBraking, Mode=OneWay}"/>
+                            </Grid>
+                        </Expander>
                     </mcart:StretchyWrapPanel>
-                </Expander>
-            </StackPanel>
-        </ScrollViewer>
+                    <mcart:StretchyWrapPanel StretchProportionally="False">
+                        <Expander Header="{x:Static st:FeDataEditorView.General}" IsExpanded="True" VerticalAlignment="Stretch">
+                            <mcart:StretchyWrapPanel StretchProportionally="False">
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Manufacturer}" Text="{Binding State.File.Manufacturer}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Model}" Text="{Binding State.File.Model}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Price}" Text="{Binding State.File.Price}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Status}" Text="{Binding State.File.Status}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Weight}" Text="{Binding State.File.Weight}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.WeightDistr}" Text="{Binding State.File.WeightDistribution}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Width}" Text="{Binding State.File.Width}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Height}" Text="{Binding State.File.Height}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Length}" Text="{Binding State.File.Length}"/>
+                            </mcart:StretchyWrapPanel>
+                        </Expander>
+                        <Expander Header="{x:Static st:FeDataEditorView.Performance}" IsExpanded="True" VerticalAlignment="Stretch">
+                            <mcart:StretchyWrapPanel StretchProportionally="False">
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Engine}" Text="{Binding State.File.Engine}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Displacement}" Text="{Binding State.File.Displacement}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Power}" Text="{Binding State.File.Hp}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Torque}" Text="{Binding State.File.Torque}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.MaxRpm}" Text="{Binding State.File.MaxEngineSpeed}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Brakes}" Text="{Binding State.File.Brakes}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Tires}" Text="{Binding State.File.Tires}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.TopSpeed}" Text="{Binding State.File.TopSpeed}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Accel0To60}" Text="{Binding State.File.Accel0To60}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Accel0To100}" Text="{Binding State.File.Accel0To100}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Transmission}" Text="{Binding State.File.Transmission}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Gearbox}" Text="{Binding State.File.Gearbox}"/>
+                            </mcart:StretchyWrapPanel>
+                        </Expander>
+                        <Expander Header="{x:Static st:FeDataEditorView.History}" IsExpanded="True" VerticalAlignment="Stretch">
+                            <mcart:StretchyWrapPanel StretchProportionally="False">
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.History1}" Text="{Binding State.File.History1}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.History2}" Text="{Binding State.File.History2}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.History3}" Text="{Binding State.File.History3}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.History4}" Text="{Binding State.File.History4}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.History5}" Text="{Binding State.File.History5}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.History6}" Text="{Binding State.File.History6}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.History7}" Text="{Binding State.File.History7}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.History8}" Text="{Binding State.File.History8}"/>
+                            </mcart:StretchyWrapPanel>
+                        </Expander>
+                        <Expander Header="{x:Static st:FeDataEditorView.Colors}" IsExpanded="True" VerticalAlignment="Stretch">
+                            <mcart:StretchyWrapPanel StretchProportionally="False">
+                                <mcart:StretchyWrapPanel.Resources>
+                                    <valueconverters:DrawingColorToBrushConverter x:Key="dc2bc"/>
+                                </mcart:StretchyWrapPanel.Resources>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color1}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[0], Mode=OneWay}" Text="{Binding State.File.Color1}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color2}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[1], Mode=OneWay}" Text="{Binding State.File.Color2}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color3}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[2], Mode=OneWay}" Text="{Binding State.File.Color3}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color4}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[3], Mode=OneWay}" Text="{Binding State.File.Color4}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color5}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[4], Mode=OneWay}" Text="{Binding State.File.Color5}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color6}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[5], Mode=OneWay}" Text="{Binding State.File.Color6}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color7}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[6], Mode=OneWay}" Text="{Binding State.File.Color7}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color8}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[7], Mode=OneWay}" Text="{Binding State.File.Color8}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color9}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[8], Mode=OneWay}" Text="{Binding State.File.Color9}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color10}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[9], Mode=OneWay}" Text="{Binding State.File.Color10}"/>
+                            </mcart:StretchyWrapPanel>
+                        </Expander>
+                    </mcart:StretchyWrapPanel>
+                    <Expander>
+                        <Expander.Header>
+                            <DockPanel>
+                                <TextBlock>Unknown values (edit at your own risk)</TextBlock>
+                                <CheckBox Style="{StaticResource ToggleSwitch}" x:Name="chkUnknown" Margin="10,0"/>
+                            </DockPanel>
+                        </Expander.Header>
+                        <mcart:StretchyWrapPanel StretchProportionally="False" IsEnabled="{Binding IsChecked, ElementName=chkUnknown}">
+                            <ui:NumberBox hlp:Form.Label="Unk_0x0c" Value="{Binding State.File.Unk_0x0c}"/>
+                            <ui:NumberBox hlp:Form.Label="Unk_0x14" Value="{Binding State.File.Unk_0x14}"/>
+                            <ui:NumberBox hlp:Form.Label="Unk_0x16" Value="{Binding State.File.Unk_0x16}"/>
+                            <ui:NumberBox hlp:Form.Label="Unk_0x1a" Value="{Binding State.File.Unk_0x1a}"/>
+                            <ui:NumberBox hlp:Form.Label="Unk_0x1c" Value="{Binding State.File.Unk_0x1c}"/>
+                            <ui:NumberBox hlp:Form.Label="Unk_0x1e" Value="{Binding State.File.Unk_0x1e}"/>
+                            <ui:NumberBox hlp:Form.Label="Unk_0x20" Value="{Binding State.File.Unk_0x20}"/>
+                            <ui:NumberBox hlp:Form.Label="Unk_0x22" Value="{Binding State.File.Unk_0x22}"/>
+                            <ui:NumberBox hlp:Form.Label="Unk_0x24" Value="{Binding State.File.Unk_0x24}"/>
+                            <ui:NumberBox hlp:Form.Label="Unk_0x26" Value="{Binding State.File.Unk_0x26}"/>
+                            <ui:NumberBox hlp:Form.Label="Unk_0x2c" Value="{Binding State.File.Unk_0x2c}"/>
+                        </mcart:StretchyWrapPanel>
+                    </Expander>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
     </DockPanel>
 </UserControl>

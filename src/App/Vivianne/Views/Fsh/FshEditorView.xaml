@@ -26,7 +26,7 @@
     <DockPanel>
         <Border DockPanel.Dock="Top">
             <ct:FileEditorCommandBar VerticalContentAlignment="Center" ShowClose="False" Editor="{Binding}">
-                <DockPanel VerticalAlignment="Center">
+                <DockPanel VerticalAlignment="Center" Margin="0,0,10,0">
                     <DockPanel.Resources>
                         <Style TargetType="TextBlock">
                             <Setter Property="Foreground" Value="White"/>
@@ -43,16 +43,16 @@
                         </Style>
                     </DockPanel.Resources>
                     <ComboBox
-                    Width="180"
-                    VerticalAlignment="Center"
-                    IsEditable="False"
-                    ItemsSource="{Binding State.Entries, Mode=OneWay}"
-                    DisplayMemberPath="Key"
-                    SelectedValuePath="Value"
-                    SelectedValue="{Binding CurrentImage}"/>
+                        Width="180"
+                        VerticalAlignment="Center"
+                        IsEditable="False"
+                        ItemsSource="{Binding State.Entries, Mode=OneWay}"
+                        DisplayMemberPath="Key"
+                        SelectedValuePath="Value"
+                        SelectedValue="{Binding CurrentImage}"/>
                     <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                            <TextBlock><Run Text="{x:Static st:FshEditorView.Zoom}"/><Run Text="{Binding ZoomLevel, Mode=OneWay}"/></TextBlock>
+                            <TextBlock><Run Text="{x:Static st:FshEditorView.Zoom}"/> <Run Text="{Binding ZoomLevel, Mode=OneWay}"/></TextBlock>
                             <Slider x:Name="sldZoom" Minimum="1.0" Maximum="10.0" Value="{Binding ZoomLevel}" Margin="5" Width="100" SmallChange="0.5" LargeChange="1" TickFrequency="0.125" IsSnapToTickEnabled="True"/>
                             <CheckBox Style="{StaticResource ToggleSwitch}" Padding="10,0" IsChecked="{Binding Alpha}">
                                 <TextBlock Text="{x:Static st:FshEditorView.Alpha}"/>
@@ -77,15 +77,14 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <ScrollViewer
-            Width="180"
-            VerticalScrollBarVisibility="Auto"
-            Grid.Row="1">
+                Margin="10"
+                VerticalScrollBarVisibility="Auto"
+                Grid.Row="1">
                 <StackPanel
-                Background="{StaticResource FadeInBackground}"
-                Margin="0">
+                    Margin="0,0,15,0">
                     <Expander
-                    IsExpanded="True"
-                    Header="{x:Static st:FshEditorView.FshOptions}">
+                        IsExpanded="True"
+                        Header="{x:Static st:FshEditorView.FshOptions}">
                         <StackPanel>
                             <Button
                             HorizontalAlignment="Stretch"
@@ -151,16 +150,16 @@
                 </StackPanel>
             </ScrollViewer>
             <ScrollViewer
-            x:Name="scvContent"
-            VerticalScrollBarVisibility="Auto"
-            HorizontalScrollBarVisibility="Auto"
-            Grid.Row="1"
-            Grid.Column="1">
+                x:Name="scvContent"
+                VerticalScrollBarVisibility="Auto"
+                HorizontalScrollBarVisibility="Auto"
+                Grid.Row="1"
+                Grid.Column="1">
                 <Border
-                x:Name="brdContent"
-                Cursor="ScrollAll"
-                HorizontalAlignment="Center" VerticalAlignment="Center"
-                Background="{Binding Background, Converter={StaticResource bg2b}, Mode=OneWay}">
+                    x:Name="brdContent"
+                    Cursor="ScrollAll"
+                    HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Background="{Binding Background, Converter={StaticResource bg2b}, Mode=OneWay}">
                     <Image Stretch="None">
                         <Image.LayoutTransform>
                             <ScaleTransform ScaleX="{Binding ZoomLevel}" ScaleY="{Binding ZoomLevel}"/>
