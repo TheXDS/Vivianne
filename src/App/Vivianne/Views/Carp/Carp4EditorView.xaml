@@ -45,8 +45,7 @@
                 </StackPanel>
             </ScrollViewer>
         </ct:FileEditorCommandBar>
-        <Grid>
-            <ct:EditorBackdrop/>
+        <Grid Background="{ui:ThemeResource ControlSolidFillColorDefaultBrush}">
             <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
                 <StackPanel>
                     <Expander Header="{x:Static st:CarpEditorView.BasicInformation}" IsExpanded="True">

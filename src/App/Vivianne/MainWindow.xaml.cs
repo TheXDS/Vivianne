@@ -12,12 +12,11 @@ public partial class MainWindow
     /// </summary>
     public MainWindow()
     {
-        Wpf.Ui.Appearance.SystemThemeWatcher.Watch(this);
-        //Wpf.Ui.Appearance.ApplicationThemeManager.Apply(Wpf.Ui.Appearance.ApplicationTheme.Light);
+        //Wpf.Ui.Appearance.SystemThemeWatcher.Watch(this);
         InitializeComponent();
         if (OperatingSystem.IsWindowsVersionAtLeast(10, build: 26100))
         {
-            WindowBackdropType = Wpf.Ui.Controls.WindowBackdropType.Acrylic;
+            WindowBackdropType = Wpf.Ui.Controls.WindowBackdropType.Mica;
         }
         else
         {
@@ -27,5 +26,12 @@ public partial class MainWindow
                 WindowBackdropType = Wpf.Ui.Controls.WindowBackdropType.Auto;
             }
         }
+    }
+
+    private int currentTheme;
+
+    private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
+    {
+        Wpf.Ui.Appearance.ApplicationThemeManager.Apply((Wpf.Ui.Appearance.ApplicationTheme)((currentTheme = 1 - currentTheme) + 1));
     }
 }

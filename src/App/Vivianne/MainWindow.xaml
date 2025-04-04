@@ -12,9 +12,9 @@
     xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
     mc:Ignorable="d"
     WindowBackdropType="None"
-    Background="{DynamicResource SmokeFillColorDefaultBrush}"
-    ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
-    ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+    Background="{ui:ThemeResource SmokeFillColorDefaultBrush}"
+    ui:Design.Background="{ui:ThemeResource ApplicationBackgroundBrush}"
+    ui:Design.Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"
     ExtendsContentIntoTitleBar="true"
     Height="450" Width="800" Icon="/vivianne.ico">
     <Grid>
@@ -41,6 +41,7 @@
                         BorderThickness="0"
                         Padding="10,7"
                         Icon="{ui:SymbolIcon Symbol=ArrowLeft32}"/>
+                    <ui:Button Icon="{ui:SymbolIcon Symbol=DarkTheme24}" Click="Button_Click"/>
                 </DockPanel>
             </ui:TitleBar.TrailingContent>
         </ui:TitleBar>

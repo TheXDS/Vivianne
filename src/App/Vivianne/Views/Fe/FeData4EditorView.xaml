@@ -24,18 +24,13 @@
     d:DataContext="{d:DesignInstance Type=vm:FeData4EditorViewModel}"
     mc:Ignorable="d"
     d:DesignWidth="600">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <ct:EditorBackdrop Grid.Row="1"/>
-        <controls:FileEditorCommandBar Editor="{Binding}" ShowClose="False">
+    <DockPanel>
+        <controls:FileEditorCommandBar DockPanel.Dock="Top" Editor="{Binding}" ShowClose="False">
             <!--<CheckBox Margin="10,0" Style="{StaticResource ToggleSwitch}" HorizontalAlignment="Right" IsEnabled="False">
                 <TextBlock Text="{x:Static st:FeDataEditorView.LinkEdits}" Foreground="White"/>
             </CheckBox>-->
         </controls:FileEditorCommandBar>
-        <ScrollViewer Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" BorderThickness="0">
+        <ScrollViewer>
             <ScrollViewer.Resources>
                 <Style TargetType="ScrollViewer">
                     <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
@@ -54,7 +49,7 @@
                     <Setter Property="Margin" Value="5"/>
                 </Style>
             </ScrollViewer.Resources>
-            <StackPanel Margin="5">
+            <StackPanel Background="{ui:ThemeResource ControlSolidFillColorDefaultBrush}">
                 <Expander Header="{x:Static st:FeDataEditorView.BasicProperties}" IsExpanded="True">
                     <StackPanel Margin="5">
                         <ui:TextBox
@@ -303,28 +298,7 @@
                         </UniformGrid>
                     </Expander>
                 </UniformGrid>
-                <!--<Expander>
-                    <Expander.Header>
-                        <DockPanel>
-                            <TextBlock>Unknown values (edit at your own risk)</TextBlock>
-                            <CheckBox Style="{StaticResource ToggleSwitch}" x:Name="chkUnknown" Margin="10,0"/>
-                        </DockPanel>
-                    </Expander.Header>
-                    <UniformGrid Columns="4" IsEnabled="{Binding IsChecked, ElementName=chkUnknown}">
-                        <ui:NumberBox hlp:Form.Label="Unk_0x0c" Value="{Binding State.File.Unk_0x0c}"/>
-                        <ui:NumberBox hlp:Form.Label="Unk_0x14" Value="{Binding State.File.Unk_0x14}"/>
-                        <ui:NumberBox hlp:Form.Label="Unk_0x16" Value="{Binding State.File.Unk_0x16}"/>
-                        <ui:NumberBox hlp:Form.Label="Unk_0x1a" Value="{Binding State.File.Unk_0x1a}"/>
-                        <ui:NumberBox hlp:Form.Label="Unk_0x1c" Value="{Binding State.File.Unk_0x1c}"/>
-                        <ui:NumberBox hlp:Form.Label="Unk_0x1e" Value="{Binding State.File.Unk_0x1e}"/>
-                        <ui:NumberBox hlp:Form.Label="Unk_0x20" Value="{Binding State.File.Unk_0x20}"/>
-                        <ui:NumberBox hlp:Form.Label="Unk_0x22" Value="{Binding State.File.Unk_0x22}"/>
-                        <ui:NumberBox hlp:Form.Label="Unk_0x24" Value="{Binding State.File.Unk_0x24}"/>
-                        <ui:NumberBox hlp:Form.Label="Unk_0x26" Value="{Binding State.File.Unk_0x26}"/>
-                        <ui:NumberBox hlp:Form.Label="Unk_0x2c" Value="{Binding State.File.Unk_0x2c}"/>
-                    </UniformGrid>
-                </Expander>-->
             </StackPanel>
         </ScrollViewer>
-    </Grid>
+    </DockPanel>
 </UserControl>

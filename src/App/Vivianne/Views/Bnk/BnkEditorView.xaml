@@ -30,12 +30,7 @@
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
-        <ct:EditorBackdrop Grid.Row="1" Grid.RowSpan="3" Grid.ColumnSpan="2"/>
-        <ct:FileEditorCommandBar Margin="10,0,0,0" Grid.ColumnSpan="2" ShowClose="False" Editor="{Binding}">
+        <ct:FileEditorCommandBar ShowClose="False" Editor="{Binding}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
@@ -73,34 +68,40 @@
                     Grid.ColumnSpan="2"/>
             </Grid>
         </ct:FileEditorCommandBar>
-        <mcart:StretchyWrapPanel HorizontalAlignment="Stretch" Margin="5" Grid.Row="1">
-            <ui:NumberBox 
-                MinWidth="210"
-                Margin="5"
-                hlp:Form.Label="{x:Static st:BnkEditorViewModel.LoopStart}"
-                Minimum="0"
-                Maximum="{Binding State.LoopEnd}"
-                Value="{Binding State.LoopStart, UpdateSourceTrigger=PropertyChanged}"/>
-            <ui:NumberBox
-                MinWidth="210"
-                Margin="5"
-                hlp:Form.Label="Loop end"
-                Minimum="{Binding State.LoopStart}"
-                Maximum="{Binding State.SelectedStream.TotalSamples, Mode=OneWay}"
-                Value="{Binding State.LoopEnd, UpdateSourceTrigger=PropertyChanged}"/>
+        <Grid Grid.Row="1" Background="{ui:ThemeResource ControlSolidFillColorDefaultBrush}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <mcart:StretchyWrapPanel HorizontalAlignment="Stretch" Margin="5">
+                <ui:NumberBox 
+                    MinWidth="210"
+                    Margin="5"
+                    hlp:Form.Label="{x:Static st:BnkEditorViewModel.LoopStart}"
+                    Minimum="0"
+                    Maximum="{Binding State.LoopEnd}"
+                    Value="{Binding State.LoopStart, UpdateSourceTrigger=PropertyChanged}"/>
+                <ui:NumberBox
+                    MinWidth="210"
+                    Margin="5"
+                    hlp:Form.Label="Loop end"
+                    Minimum="{Binding State.LoopStart}"
+                    Maximum="{Binding State.SelectedStream.TotalSamples, Mode=OneWay}"
+                    Value="{Binding State.LoopEnd, UpdateSourceTrigger=PropertyChanged}"/>
             </mcart:StretchyWrapPanel>
-        <StackPanel
-            Orientation="Horizontal" Margin="5" Grid.Column="1" Grid.Row="1"
-            IsEnabled="{Binding Source, ElementName=imgPreview, Converter={StaticResource nn2bc}}">
-            <ui:Button Margin="5" Icon="{ui:SymbolIcon Symbol=Play24}" Command="{Binding PlaySampleCommand, Mode=OneWay}"/>
-            <ui:Button Margin="5" Icon="{ui:SymbolIcon Symbol=PlayMultiple16}" Command="{Binding PlayLoopingSampleCommand, Mode=OneWay}"/>
-            <ui:Button Margin="5" Icon="{ui:SymbolIcon Symbol=Stop24}" Command="{Binding StopPlaybackCommand, Mode=OneWay}"/>
-        </StackPanel>
+            <StackPanel
+                Orientation="Horizontal" Margin="5" Grid.Column="1" Grid.Row="1"
+                IsEnabled="{Binding Source, ElementName=imgPreview, Converter={StaticResource nn2bc}}">
+                <ui:Button Margin="5" Icon="{ui:SymbolIcon Symbol=Play24}" Command="{Binding PlaySampleCommand, Mode=OneWay}"/>
+                <ui:Button Margin="5" Icon="{ui:SymbolIcon Symbol=PlayMultiple16}" Command="{Binding PlayLoopingSampleCommand, Mode=OneWay}"/>
+                <ui:Button Margin="5" Icon="{ui:SymbolIcon Symbol=Stop24}" Command="{Binding StopPlaybackCommand, Mode=OneWay}"/>
+            </StackPanel>
+        </Grid>
         <Grid Grid.ColumnSpan="2" Grid.Row="2" Background="#202530">
             <Viewbox>
                 <TextBlock 
                     Opacity="0.25"
-                    Foreground="White"
+                    Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"
                     Margin="20"
                     Visibility="{Binding Source, ElementName=imgPreview, Converter={StaticResource n2vc}}"
                     Text="{x:Static st:BnkEditorViewModel.UnsupportedAudioStream}"/>
@@ -114,14 +115,16 @@
             <TextBlock 
                 Visibility="{Binding State.ShowInfo, Mode=OneWay, Converter={StaticResource b2vc}}"
                 Text="{Binding State.SelectedStream, Converter={StaticResource bnkNfo}}"
-                Opacity="0.65"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                Background="Black"
+                Background="{ui:ThemeResource ControlFillColorTertiaryBrush}"
+                Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"
                 Margin="10"
                 Padding="10"/>
         </Grid>
-        <mcart:StretchyWrapPanel Margin="5" Grid.Row="3" Grid.ColumnSpan="2" IsEnabled="{Binding Source, ElementName=imgPreview, Converter={StaticResource nn2bc}}" VerticalAlignment="Center">
+        <Border Padding="5" Grid.Row="3" Grid.ColumnSpan="2" Background="{ui:ThemeResource ControlSolidFillColorDefaultBrush}">
+            
+        <mcart:StretchyWrapPanel IsEnabled="{Binding Source, ElementName=imgPreview, Converter={StaticResource nn2bc}}" VerticalAlignment="Center">
             <mcart:StretchyWrapPanel.Resources>
                 <Style TargetType="ui:Button" BasedOn="{StaticResource {x:Type ui:Button}}">
                     <Setter Property="VerticalAlignment" Value="Center"/>
@@ -153,6 +156,10 @@
                 Command="{Binding InjectPaddingCommand, Mode=OneWay}"
                 Content="Inject padding bytes"/>
             <ui:Button
+                Icon="{ui:SymbolIcon Symbol=Speaker224}"
+                Command="{Binding NormalizeVolumeCommand, Mode=OneWay}"
+                Content="Normalize"/>
+            <ui:Button
                 Icon="{ui:SymbolIcon Symbol=Save24}"
                 Command="{Binding ExportSampleCommand, Mode=OneWay}"
                 Content="{x:Static st:BnkEditorViewModel.Export}"/>
@@ -160,10 +167,7 @@
                 Icon="{ui:SymbolIcon Symbol=Save24}"
                 Command="{Binding ExportLoopCommand, Mode=OneWay}"
                 Content="{x:Static st:BnkEditorViewModel.ExportLoop}"/>
-            <ui:Button
-                Icon="{ui:SymbolIcon Symbol=Speaker224}"
-                Command="{Binding NormalizeVolumeCommand, Mode=OneWay}"
-                Content="Normalize"/>
         </mcart:StretchyWrapPanel>
+        </Border>
     </Grid>
 </UserControl>

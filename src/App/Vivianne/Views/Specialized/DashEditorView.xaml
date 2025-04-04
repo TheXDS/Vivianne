@@ -11,7 +11,7 @@
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings.Views"
     xmlns:hlp="clr-namespace:TheXDS.Vivianne.Helpers"
-    Background="{StaticResource DarkBackground}"
+    Background="{ui:ThemeResource ControlSolidFillColorDefaultBrush}"
     d:DataContext="{d:DesignInstance Type=vm:DashEditorViewModel}"
     mc:Ignorable="d">
     <UserControl.Resources>

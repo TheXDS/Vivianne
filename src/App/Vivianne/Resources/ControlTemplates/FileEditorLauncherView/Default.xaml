@@ -11,7 +11,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:FileEditorLauncherView}">
-                    <DockPanel Background="{StaticResource DarkBackground}">
+                    <DockPanel Background="{DynamicResource ControlSolidFillColorDefaultBrush}">
                         <DockPanel.Resources>
                             <mcart:CountVisibilityConverter x:Key="a2vc"/>
                             <BooleanToVisibilityConverter x:Key="b2vc"/>
@@ -30,7 +30,7 @@
                                 </Button>
                             </StackPanel>
                             <Separator Margin="5,0" Visibility="{Binding Launcher.AdditionalInteractions.Count, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource a2vc}}"/>
-                            <ItemsControl Background="{StaticResource DarkBackground}" ItemsSource="{Binding Launcher.AdditionalInteractions, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}">
+                            <ItemsControl ItemsSource="{Binding Launcher.AdditionalInteractions, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <StackPanel Margin="5"/>
@@ -55,8 +55,8 @@
                                         <DataTemplate>
                                             <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Command="{Binding Launcher.OpenFileCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:FileEditorLauncherView}}" CommandParameter="{Binding Mode=OneWay}">
                                                 <StackPanel HorizontalAlignment="Left">
-                                                    <TextBlock HorizontalAlignment="Left" x:Name="PART_friendlyName" Text="{Binding FriendlyName, Mode=OneWay}" FontSize="16" Foreground="Gray"/>
-                                                    <TextBlock HorizontalAlignment="Left" x:Name="PART_filePath" FontSize="9" Foreground="Gray" Text="{Binding FilePath, Mode=OneWay}"/>
+                                                    <TextBlock HorizontalAlignment="Left" x:Name="PART_friendlyName" Text="{Binding FriendlyName, Mode=OneWay}" FontSize="16" />
+                                                    <TextBlock HorizontalAlignment="Left" x:Name="PART_filePath" FontSize="9" Text="{Binding FilePath, Mode=OneWay}"/>
                                                 </StackPanel>
                                             </Button>
                                         </DataTemplate>

@@ -24,29 +24,22 @@
     d:DataContext="{d:DesignInstance Type=vm:FeData3EditorViewModel}"
     mc:Ignorable="d"
     d:DesignWidth="600">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <ct:EditorBackdrop Grid.Row="1"/>
-        <controls:FileEditorCommandBar Editor="{Binding}" ShowClose="False">
+    <DockPanel>
+        <controls:FileEditorCommandBar DockPanel.Dock="Top" Editor="{Binding}" ShowClose="False">
             <!--<CheckBox Margin="10,0" Style="{StaticResource ToggleSwitch}" HorizontalAlignment="Right" IsEnabled="False">
                 <TextBlock Text="{x:Static st:FeDataEditorView.LinkEdits}" Foreground="White"/>
             </CheckBox>-->
         </controls:FileEditorCommandBar>
-        <ScrollViewer Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" BorderThickness="0">
+        <ScrollViewer>
             <ScrollViewer.Resources>
                 <Style TargetType="ScrollViewer">
                     <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
                 </Style>
                 <Style TargetType="ui:TextBox" BasedOn="{StaticResource {x:Type ui:TextBox}}">
                     <Setter Property="Margin" Value="5"/>
-                    <Setter Property="MinWidth" Value="200"/>
                 </Style>
                 <Style TargetType="ui:NumberBox" BasedOn="{StaticResource {x:Type ui:NumberBox}}">
                     <Setter Property="Margin" Value="5"/>
-                    <Setter Property="MinWidth" Value="200"/>
                 </Style>
                 <Style TargetType="UniformGrid">
                     <Setter Property="Margin" Value="5"/>
@@ -56,7 +49,7 @@
                     <Setter Property="Margin" Value="5"/>
                 </Style>
             </ScrollViewer.Resources>
-            <StackPanel Margin="0">
+            <StackPanel Background="{ui:ThemeResource ControlSolidFillColorDefaultBrush}">
                 <mcart:StretchyWrapPanel>
                     <Expander Header="{x:Static st:FeDataEditorView.BasicProperties}" IsExpanded="True">
                         <StackPanel Margin="5">
@@ -221,5 +214,5 @@
                 </Expander>
             </StackPanel>
         </ScrollViewer>
-    </Grid>
+    </DockPanel>
 </UserControl>

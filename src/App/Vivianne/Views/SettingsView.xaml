@@ -201,7 +201,7 @@
                                     Text="Specifies the default max volume when using the 'Normalize Volume' tool in the BNK editor." />
                             </Grid>
                         </ui:CardControl.Header>
-                        <ui:NumberBox Value="{Binding State.Bnk_DefaultNormalization}" Width="150" Minimum="0.0" Maximum="1.0" LargeChange="0.1" SmallChange="0.01"/>
+                        <ui:NumberBox Value="{Binding State.Bnk_DefaultNormalization, StringFormat={}{0:0.00}}" Width="150" Minimum="0.0" Maximum="1.0" LargeChange="0.1" SmallChange="0.01"/>
                     </ui:CardControl>
                     <ui:CardControl Icon="{ui:SymbolIcon Symbol=Delete24}">
                         <ui:CardControl.Header>
@@ -267,7 +267,7 @@
                                     Text="When enabled, the model will be automatically centered when saving an FCE file." />
                             </Grid>
                         </ui:CardControl.Header>
-                        <ui:ToggleSwitch IsChecked="{Binding State.Bnk_InfoOpenByDefault}"/>
+                        <ui:ToggleSwitch IsChecked="{Binding State.Fce_CenterModel}"/>
                     </ui:CardControl>
                     <ui:CardControl Icon="{ui:SymbolIcon Symbol=Broom24}">
                         <ui:CardControl.Header>

@@ -32,12 +32,12 @@
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="TabItem">
-                                    <Border CornerRadius="10,0,0,10" Padding="10" x:Name="PART_SelectionBg">
+                                    <Border CornerRadius="10,0,0,10" Padding="10" x:Name="PART_SelectionBg" Background="Transparent">
                                         <ContentControl Content="{TemplateBinding Header}" x:Name="PART_title" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"/>
                                     </Border>
                                     <ControlTemplate.Triggers>
                                         <Trigger Property="IsSelected" Value="true">
-                                            <Setter TargetName="PART_SelectionBg" Property="Background" Value="{ui:ThemeResource ControlFillColorDefaultBrush}"/>
+                                            <Setter TargetName="PART_SelectionBg" Property="Background" Value="{ui:ThemeResource ControlSolidFillColorDefaultBrush}"/>
                                         </Trigger>
                                     </ControlTemplate.Triggers>
                                 </ControlTemplate>
@@ -55,7 +55,7 @@
                     <ct:FileEditorLauncherView Launcher="{Binding Launchers[2], Mode=OneWay}"/>
                 </TabItem>
                 <TabItem Header="{x:Static st:StartupView.ExtraTools}">
-                    <ItemsControl Background="{StaticResource DarkBackground}" ItemsSource="{Binding Launchers[3].AdditionalInteractions, Mode=OneWay}">
+                    <ItemsControl Background="{ui:ThemeResource ControlSolidFillColorDefaultBrush}" ItemsSource="{Binding Launchers[3].AdditionalInteractions, Mode=OneWay}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <UniformGrid VerticalAlignment="Top" Margin="20"/>
@@ -64,7 +64,7 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Button HorizontalAlignment="Stretch" Margin="5" Command="{Binding Command, Mode=OneWay}">
-                                    <TextBlock Foreground="White" FontSize="14" Text="{Binding Text, Mode=OneWay}"/>
+                                    <TextBlock FontSize="14" Text="{Binding Text, Mode=OneWay}"/>
                                 </Button>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>

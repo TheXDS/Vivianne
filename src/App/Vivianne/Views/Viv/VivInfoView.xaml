@@ -10,10 +10,11 @@
     xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings.Views"
     xmlns:stc="clr-namespace:TheXDS.Vivianne.Resources.Strings;assembly=Vivianne.Common"
     xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     d:DataContext="{d:DesignInstance Type=vm:VivInfoViewModel}"
     mc:Ignorable="d"
-    Background="{StaticResource DashboardDarkBackground}"
-    TextBlock.Foreground="{StaticResource DarkAreaForeground}"
+    Background="{ui:ThemeResource ControlSolidFillColorDefaultBrush}"
+    TextBlock.Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"
     d:DesignHeight="350" d:DesignWidth="600">
     <UserControl.Resources>
         <vc2:ByteSizeConverter x:Key="sizeConv"/>
@@ -36,7 +37,7 @@
         <StackPanel VerticalAlignment="Center" Grid.Column="1" Margin="20">
             <StackPanel.Resources>
                 <Style TargetType="CheckBox" BasedOn="{StaticResource LedIndicator}">
-                    <Setter Property="Foreground" Value="{StaticResource DarkAreaForeground}"/>
+                    <Setter Property="Foreground" Value="{ui:ThemeResource TextFillColorPrimaryBrush}"/>
                 </Style>
             </StackPanel.Resources>
             <TextBlock FontSize="14" Text="{x:Static st:VivInfoView.Features}"/>

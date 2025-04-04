@@ -13,21 +13,23 @@
         HorizontalAlignment="Center"
         Margin="50"
         CornerRadius="10"
-        Background="{StaticResource DarkBackground}">
+        Background="{ui:ThemeResource ControlSolidFillColorDefaultBrush}">
         <Border.Effect>
             <DropShadowEffect/>
         </Border.Effect>
-        <Grid Margin="20">
+        <Grid Margin="10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
-            <ui:FontIcon Glyph="⚠️" Foreground="Orange" FontSize="48"/>
+            <Border Background="{ui:ThemeResource SystemFillColorCautionBackgroundBrush}">
+                <ui:FontIcon VerticalAlignment="Top" Margin="0,0,0,10" Glyph="⚠️" Foreground="{ui:ThemeResource SystemFillColorCautionBrush}" FontSize="48"/>
+            </Border>
             <TextBlock
                 TextWrapping="Wrap"
                 VerticalAlignment="Center"
-                Foreground="White"
-                Margin="20,0,0,0"
+                Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"
+                Margin="20,0,10,0"
                 Grid.Column="1"
                 Text="{x:Static st:FileErrorView.ErrorMessage}"/>
         </Grid>

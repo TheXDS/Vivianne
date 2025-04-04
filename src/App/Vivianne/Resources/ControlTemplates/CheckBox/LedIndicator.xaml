@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-     xmlns:local="clr-namespace:TheXDS.Vivianne.Controls">
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:local="clr-namespace:TheXDS.Vivianne.Controls">
     <Style x:Key="LedIndicator" TargetType="{x:Type CheckBox}">
         <Setter Property="IsEnabled" Value="False"/>
         <Setter Property="IsHitTestVisible" Value="False"/>
@@ -27,14 +28,14 @@
                             <Ellipse x:Name="redLed">
                                 <Ellipse.Stroke>
                                     <LinearGradientBrush EndPoint="0,1">
-                                        <GradientStop Color="{DynamicResource ledOffColor}"/>
+                                        <GradientStop Color="{ui:ThemeResource  SystemAccentColorTertiary}"/>
                                         <GradientStop Color="{DynamicResource shadowColor}" Offset="1"/>
                                     </LinearGradientBrush>
                                 </Ellipse.Stroke>
                                 <Ellipse.Fill>
                                     <LinearGradientBrush EndPoint="0,1">
                                         <GradientStop Color="White"/>
-                                        <GradientStop Color="{DynamicResource ledOffColor}" Offset="0.5"/>
+                                        <GradientStop Color="{ui:ThemeResource  SystemAccentColorTertiary}" Offset="0.5"/>
                                     </LinearGradientBrush>
                                 </Ellipse.Fill>
                             </Ellipse>
@@ -43,21 +44,21 @@
                                 x:Name="greenLed">
                                 <Ellipse.Stroke>
                                     <LinearGradientBrush EndPoint="0,1">
-                                        <GradientStop Color="{DynamicResource ledOnColor}" Offset="0.5"/>
+                                        <GradientStop Color="{ui:ThemeResource  SystemAccentColor}" Offset="0.5"/>
                                         <GradientStop Color="{DynamicResource shadowColor}" Offset="1"/>
                                     </LinearGradientBrush>
                                 </Ellipse.Stroke>
                                 <Ellipse.Fill>
                                     <LinearGradientBrush EndPoint="0,1">
                                         <GradientStop Color="White"/>
-                                        <GradientStop Color="{DynamicResource ledOnColor}" Offset="0.5"/>
+                                        <GradientStop Color="{ui:ThemeResource SystemAccentColor}" Offset="0.5"/>
                                     </LinearGradientBrush>
                                 </Ellipse.Fill>
                                 <Ellipse.Effect>
                                     <DropShadowEffect                                        
                                         ShadowDepth="0"
                                         BlurRadius="10"
-                                        Color="{DynamicResource ledOnColor}">
+                                        Color="{ui:ThemeResource SystemAccentColor}">
                                     </DropShadowEffect>
                                 </Ellipse.Effect>
                             </Ellipse>

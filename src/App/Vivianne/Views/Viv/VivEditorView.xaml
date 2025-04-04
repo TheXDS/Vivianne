@@ -13,7 +13,8 @@
     xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings.Views"
     xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
     xmlns:vc2="clr-namespace:TheXDS.Vivianne.ValueConverters"
-    xmlns:mcart="http://schemas.thexds.local/mcart" xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:mcart="http://schemas.thexds.local/mcart"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     x:Name="ucRoot"
     d:DataContext="{d:DesignInstance Type=vm:VivEditorViewModel}"
     mc:Ignorable="d" 
@@ -32,12 +33,12 @@
             <RadioButton Margin="0,0,0,5" HorizontalAlignment="Stretch" Height="40" GroupName="VivDirectory" Command="{Binding OpenFileCommand, Mode=OneWay}" DockPanel.Dock="Top" IsChecked="True">
                 <RadioButton.Template>
                     <ControlTemplate TargetType="RadioButton">
-                        <Border CornerRadius="10,0,0,10" x:Name="PART_SelectionBg" BorderThickness="2,2,0,2" BorderBrush="Transparent">
+                        <Border CornerRadius="10,0,0,10" x:Name="PART_SelectionBg">
                             <TextBlock x:Name="PART_title" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{x:Static st:VivInfoView.VIVInformation}" FontSize="16" Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsChecked" Value="true">
-                                <Setter TargetName="PART_SelectionBg" Property="BorderBrush" Value="{ui:ThemeResource ControlElevationBorderBrush}"/>
+                                <Setter TargetName="PART_SelectionBg" Property="Background" Value="{ui:ThemeResource ControlSolidFillColorDefaultBrush}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -50,7 +51,7 @@
                 <ui:Button HorizontalAlignment="Stretch" Margin="5" Command="{Binding SaveAsCommand}" Icon="{ui:SymbolIcon Symbol=SaveArrowRight24}"/>
             </mcart:StretchyWrapPanel>
             <ScrollViewer VerticalScrollBarVisibility="Auto">
-                <ItemsControl Margin="0,0,0,0" MinWidth="150" ItemsSource="{Binding State.Directory}" BorderBrush="{ui:ThemeResource ControlElevationBorderBrush}" BorderThickness="0,0,2,0">
+                <ItemsControl MinWidth="150" ItemsSource="{Binding State.Directory}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <RadioButton
@@ -61,7 +62,7 @@
                                 CommandParameter="{Binding Mode=OneWay}">
                                 <RadioButton.Template>
                                     <ControlTemplate TargetType="RadioButton">
-                                        <Border CornerRadius="10,0,0,10" x:Name="PART_SelectionBg" ToolTip="Alt+click to open externally" BorderThickness="2,2,0,2" BorderBrush="Transparent">
+                                        <Border CornerRadius="10,0,0,10" x:Name="PART_SelectionBg" ToolTip="Alt+click to open externally">
                                             <DockPanel Margin="10,5">
                                                 <Button
                                                     x:Name="PART_btnRemove"
@@ -109,20 +110,7 @@
                                         </Border>
                                         <ControlTemplate.Triggers>
                                             <Trigger Property="IsChecked" Value="true">
-                                                <!--<Setter TargetName="PART_SelectionBg" Property="Effect">
-                                                    <Setter.Value>
-                                                        <DropShadowEffect/>
-                                                    </Setter.Value>
-                                                </Setter>-->
-                                                <Setter TargetName="PART_SelectionBg" Property="BorderBrush" Value="{ui:ThemeResource ControlElevationBorderBrush}"/>
-                                                <Setter TargetName="PART_SelectionBg" Property="Background" Value="{ui:ThemeResource ControlFillColorDefaultBrush}"/>
-                                                <!--<Setter.Value>
-                                                        <LinearGradientBrush>
-                                                            <GradientStop Color="{ui:ThemeResource ControlFillColorDefaultBrush}"/>
-                                                            <GradientStop Color="Transparent" Offset="0.8"/>
-                                                        </LinearGradientBrush>
-                                                    </Setter.Value>
-                                                </Setter>-->
+                                                <Setter TargetName="PART_SelectionBg" Property="Background" Value="{ui:ThemeResource ControlSolidFillColorDefaultBrush}"/>
                                                 <!--<Setter TargetName="PART_btnRemove" Property="Foreground" Value="{StaticResource DarkAreaForeground}"/>
                                                 <Setter TargetName="PART_btnRename" Property="Foreground" Value="{StaticResource DarkAreaForeground}"/>
                                                 <Setter TargetName="PART_btnExport" Property="Foreground" Value="{StaticResource DarkAreaForeground}"/>

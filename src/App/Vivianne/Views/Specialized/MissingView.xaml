@@ -18,35 +18,42 @@
         HorizontalAlignment="Center"
         Margin="50"
         CornerRadius="10"
-        Background="{StaticResource DarkBackground}">
+        Background="{ui:ThemeResource ControlSolidFillColorDefaultBrush}">
         <Border.Effect>
             <DropShadowEffect/>
         </Border.Effect>
-        <Grid Margin="20">
+        <Grid Margin="10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
-            <ui:FontIcon VerticalAlignment="top" Glyph="⚠️" Foreground="Orange" FontSize="48"/>
-            <TextBlock TextWrapping="Wrap" VerticalAlignment="Center" Foreground="White" Margin="20,0,0,0" Grid.Column="1">
+            <Border Background="{ui:ThemeResource SystemFillColorCautionBackgroundBrush}">
+                <ui:FontIcon VerticalAlignment="Top" Glyph="⚠️" Foreground="{ui:ThemeResource SystemFillColorCautionBrush}" FontSize="48"/>
+            </Border>
+            <TextBlock
+                TextWrapping="Wrap"
+                VerticalAlignment="Center"
+                Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"
+                Margin="20,0,10,0"
+                Grid.Column="1">
                 Could not find a View to display the specified ViewModel.<LineBreak/><LineBreak/>
                 <Run FontFamily="Consolas" Text="{Binding Mode=OneWay}"/><LineBreak/><LineBreak/>
                 If you see this message, then:<LineBreak/>
                 <BulletDecorator>
                     <BulletDecorator.Bullet>
-                        <Ellipse Fill="White" Width="4" Height="4"/>
+                        <Ellipse Fill="{ui:ThemeResource TextFillColorPrimaryBrush}" Width="4" Height="4"/>
                     </BulletDecorator.Bullet>
                     <TextBlock Margin="5,0,0,0" TextWrapping="Wrap">A compiler optimization removed the related View and you're relying on a convention resolver for your view.</TextBlock>
                 </BulletDecorator><LineBreak/>
                 <BulletDecorator>
                     <BulletDecorator.Bullet>
-                        <Ellipse Fill="White" Width="4" Height="4"/>
+                        <Ellipse Fill="{ui:ThemeResource TextFillColorPrimaryBrush}" Width="4" Height="4"/>
                     </BulletDecorator.Bullet>
                     <TextBlock Margin="5,0,0,0" TextWrapping="Wrap">You forgot to implement your view.</TextBlock>
                 </BulletDecorator><LineBreak/>
                 <BulletDecorator>
                     <BulletDecorator.Bullet>
-                        <Ellipse Fill="White" Width="4" Height="4"/>
+                        <Ellipse Fill="{ui:ThemeResource TextFillColorPrimaryBrush}" Width="4" Height="4"/>
                     </BulletDecorator.Bullet>
                     <TextBlock Margin="5,0,0,0" TextWrapping="Wrap">You tried to navigate to the incorrect ViewModel.</TextBlock>
                 </BulletDecorator> 
