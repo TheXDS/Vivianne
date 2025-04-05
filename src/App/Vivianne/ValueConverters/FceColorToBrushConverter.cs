@@ -2,7 +2,7 @@
 using System.Windows.Media;
 using TheXDS.MCART.ValueConverters.Base;
 using TheXDS.Vivianne.Helpers;
-using TheXDS.Vivianne.Models.Fce;
+using TheXDS.Vivianne.Models.Fce.Common;
 
 namespace TheXDS.Vivianne.ValueConverters;
 

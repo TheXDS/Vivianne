@@ -1,4 +1,4 @@
-﻿namespace TheXDS.Vivianne.Models.Fce;
+﻿namespace TheXDS.Vivianne.Models.Fce.Common;
 
 /// <summary>
 /// Defines an interface for a color in HSBA color space that can expose its

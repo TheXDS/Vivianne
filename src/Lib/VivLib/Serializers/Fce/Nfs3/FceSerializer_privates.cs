@@ -1,4 +1,4 @@
-﻿using TheXDS.Vivianne.Models.Fce;
+﻿using TheXDS.Vivianne.Models.Fce.Common;
 using TheXDS.Vivianne.Models.Fce.Nfs3;
 
 namespace TheXDS.Vivianne.Serializers.Fce.Nfs3;

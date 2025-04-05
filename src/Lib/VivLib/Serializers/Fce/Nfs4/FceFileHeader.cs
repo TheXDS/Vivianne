@@ -1,5 +1,5 @@
 ﻿using System.Runtime.InteropServices;
-using TheXDS.Vivianne.Models.Fce;
+using TheXDS.Vivianne.Models.Fce.Common;
 using TheXDS.Vivianne.Models.Fce.Nfs4;
 
 namespace TheXDS.Vivianne.Serializers.Fce.Nfs4;

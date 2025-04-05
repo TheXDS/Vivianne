@@ -2,7 +2,7 @@
 using System.Text;
 using TheXDS.MCART.Types.Extensions;
 
-namespace TheXDS.Vivianne.Models.Fce;
+namespace TheXDS.Vivianne.Models.Fce.Common;
 
 /// <summary>
 /// Represents a null-terminated string with up to 64 bytes in length.

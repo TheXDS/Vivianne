@@ -1,6 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using TheXDS.MCART.Math;
 using TheXDS.Vivianne.Helpers;
+using TheXDS.Vivianne.Models.Fce.Common;
 
 namespace TheXDS.Vivianne.Models.Fce.Nfs3;
 

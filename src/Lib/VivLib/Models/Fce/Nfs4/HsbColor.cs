@@ -1,5 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 using TheXDS.Vivianne.Helpers;
+using TheXDS.Vivianne.Models.Fce.Common;
 
 namespace TheXDS.Vivianne.Models.Fce.Nfs4;
 

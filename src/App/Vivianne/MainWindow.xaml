@@ -41,6 +41,7 @@
                         BorderThickness="0"
                         Padding="10,7"
                         Icon="{ui:SymbolIcon Symbol=ArrowLeft32}"/>
+                    <ui:Button Icon="{ui:SymbolIcon Symbol=DarkTheme24}" Click="Button_Click"/>
                 </DockPanel>
             </ui:TitleBar.TrailingContent>
         </ui:TitleBar>

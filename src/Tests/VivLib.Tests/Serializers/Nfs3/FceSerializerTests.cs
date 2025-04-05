@@ -1,6 +1,6 @@
 ﻿#pragma warning disable CS1591
 
-using TheXDS.Vivianne.Models.Fce;
+using TheXDS.Vivianne.Models.Fce.Common;
 using TheXDS.Vivianne.Models.Fce.Nfs3;
 using TheXDS.Vivianne.Serializers.Fce.Nfs3;
 

@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace TheXDS.Vivianne.Models.Fce;
+namespace TheXDS.Vivianne.Models.Fce.Common;
 
 /// <summary>
 /// Generic structure that represents a tridimensional vector with X, Y and Z components.

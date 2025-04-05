@@ -7,7 +7,7 @@ using System.Windows.Media.Media3D;
 using TheXDS.MCART.Exceptions;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.MCART.ValueConverters.Base;
-using TheXDS.Vivianne.Models.Fce;
+using TheXDS.Vivianne.Models.Fce.Common;
 using TheXDS.Vivianne.Models.Fce.Nfs3;
 using TheXDS.Vivianne.Models.Tga;
 

@@ -1,6 +1,6 @@
 ﻿using TheXDS.Vivianne.Models.Base;
 
-namespace TheXDS.Vivianne.Models.Fce;
+namespace TheXDS.Vivianne.Models.Fce.Common;
 
 /// <summary>
 /// Represents a single FCE dummy with a name and a position.

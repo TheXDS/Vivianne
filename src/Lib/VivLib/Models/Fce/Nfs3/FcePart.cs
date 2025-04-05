@@ -1,4 +1,4 @@
-﻿using TheXDS.Vivianne.Models.Base;
+﻿using TheXDS.Vivianne.Models.Fce.Common;
 
 namespace TheXDS.Vivianne.Models.Fce.Nfs3;
 
@@ -6,37 +6,4 @@ namespace TheXDS.Vivianne.Models.Fce.Nfs3;
 /// Represents a single FCE part with all of its vertices, triangles, normals
 /// and Origin data.
 /// </summary>
-public class FcePart : INameable
-{
-    /// <summary>
-    /// Gets or sets the name of the FCE part.
-    /// </summary>
-    public string Name { get; set; } = string.Empty;
-
-    /// <summary>
-    /// Gets or sets the FCE part origin.
-    /// </summary>
-    public Vector3d Origin { get; set; }
-
-    /// <summary>
-    /// Gets or sets the collection of vertices associated to this FCE part.
-    /// </summary>
-    public Vector3d[] Vertices { get; set; } = [];
-
-    /// <summary>
-    /// Gets an array of the part vertices with a pre-applied origin
-    /// transformation.
-    /// </summary>
-    public Vector3d[] TransformedVertices => [.. Vertices.Select(p => new Vector3d(p.X + Origin.X, p.Y + Origin.Y, p.Z + Origin.Z))];
-
-    /// <summary>
-    /// Gets or sets the collection of normals for vertices associated to this
-    /// FCE part.
-    /// </summary>
-    public Vector3d[] Normals { get; set; } = [];
-
-    /// <summary>
-    /// Gets or sets the collection of triangles associated to this FCE part.
-    /// </summary>
-    public FceTriangle[] Triangles { get; set; } = [];
-}
+public class FcePart : FcePartBase<FceTriangle>;

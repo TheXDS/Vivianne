@@ -23,4 +23,12 @@ public partial class MainWindow
             WindowBackdropType = Wpf.Ui.Controls.WindowBackdropType.Acrylic;
         }
     }
+
+
+    private int currentTheme;
+
+    private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
+    {
+        Wpf.Ui.Appearance.ApplicationThemeManager.Apply((Wpf.Ui.Appearance.ApplicationTheme)((currentTheme = 1 - currentTheme) + 1));
+    }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+using TheXDS.Vivianne.Models.Fce.Common;
 
 namespace TheXDS.Vivianne.Models.Fce.Nfs3;
 
@@ -6,7 +7,7 @@ namespace TheXDS.Vivianne.Models.Fce.Nfs3;
 /// Represents a single triangle as defined in the FCE format.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
-public struct FceTriangle
+public struct FceTriangle : IFceTriangle
 {
     /// <summary>
     /// Gets the texture page associated with this triangle.
@@ -68,4 +69,22 @@ public struct FceTriangle
     /// Gets the V component of the UV coordinates for the third vertex of this triangle.
     /// </summary>
     public float V3;
+
+    readonly int IFceTriangle.I1 => I1;
+
+    readonly int IFceTriangle.I2 => I2;
+
+    readonly int IFceTriangle.I3 => I3;
+
+    readonly float IFceTriangle.U1 => U1;
+
+    readonly float IFceTriangle.U2 => U2;
+
+    readonly float IFceTriangle.U3 => U3;
+
+    readonly float IFceTriangle.V1 => V1;
+
+    readonly float IFceTriangle.V2 => V2;
+
+    readonly float IFceTriangle.V3 => V3;
 }

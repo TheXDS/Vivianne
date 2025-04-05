@@ -27,7 +27,6 @@
             <TextBlock
                 TextWrapping="Wrap"
                 VerticalAlignment="Center"
-                Foreground="White"
                 Margin="20,0,10,0"
                 Grid.Column="1">
                 Support for this file is coming soon(ish)
