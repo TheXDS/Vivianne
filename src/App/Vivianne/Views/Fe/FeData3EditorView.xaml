@@ -54,7 +54,7 @@
                                 <ui:TextBox
                                     hlp:Form.Label="{x:Static st:FeDataEditorView.CarName}"
                                     Margin="5"
-                                    Text="{Binding State.File.CarName}"/>
+                                    Text="{Binding State.File.CarName, UpdateSourceTrigger=PropertyChanged}"/>
                                 <mcart:StretchyWrapPanel StretchProportionally="True">
                                     <ui:TextBox
                                         hlp:Form.Label="{x:Static st:FeDataEditorView.CarId}"
@@ -63,7 +63,7 @@
                                         MinWidth="100"
                                         Margin="5"
                                         HorizontalAlignment="Stretch"
-                                        Text="{Binding State.File.CarId}"/>
+                                        Text="{Binding State.File.CarId, UpdateSourceTrigger=PropertyChanged}"/>
                                     <ui:NumberBox
                                         hlp:Form.Label="{x:Static st:FeDataEditorView.SerialNumber}"
                                         VerticalAlignment="Center"
@@ -71,31 +71,31 @@
                                         Margin="5"
                                         Minimum="0"
                                         Maximum="65535"
-                                        Value="{Binding State.File.SerialNumber}"/>
+                                        Value="{Binding State.File.SerialNumber, UpdateSourceTrigger=PropertyChanged}"/>
                                     <ComboBox
                                         hlp:Form.Label="{x:Static st:FeDataEditorView.CarClass}"
                                         Margin="5"
                                         IsEditable="False"
-                                        SelectedItem="{Binding State.File.VehicleClass}"
+                                        SelectedItem="{Binding State.File.VehicleClass, UpdateSourceTrigger=PropertyChanged}"
                                         ItemsSource="{ct:EnumValProvider EnumType={x:Type md:CarClass}}"/>
                                     <ComboBox
                                         hlp:Form.Label="{x:Static st:FeDataEditorView.DriverSeat}"
                                         Margin="5"
                                         IsEditable="False"
-                                        SelectedItem="{Binding State.File.Seat}"
+                                        SelectedItem="{Binding State.File.Seat, UpdateSourceTrigger=PropertyChanged}"
                                         ItemsSource="{ct:EnumValProvider EnumType={x:Type mdl:DriverSeatPosition}}"/>
                                 </mcart:StretchyWrapPanel>
                                 <mcart:StretchyWrapPanel Margin="5" StretchProportionally="True">
-                                    <CheckBox Margin="5" IsChecked="{Binding State.File.IsPolice}">
+                                    <CheckBox Margin="5" IsChecked="{Binding State.File.IsPolice, UpdateSourceTrigger=PropertyChanged}">
                                         <TextBlock Text="{x:Static st:FeDataEditorView.IsPolice}"/>
                                     </CheckBox>
-                                    <CheckBox Margin="5" IsChecked="{Binding State.File.IsBonus}">
+                                    <CheckBox Margin="5" IsChecked="{Binding State.File.IsBonus, UpdateSourceTrigger=PropertyChanged}">
                                         <TextBlock Text="{x:Static st:FeDataEditorView.IsBonus}"/>
                                     </CheckBox>
-                                    <CheckBox Margin="5" IsChecked="{Binding State.File.AvailableToAi}">
+                                    <CheckBox Margin="5" IsChecked="{Binding State.File.AvailableToAi, UpdateSourceTrigger=PropertyChanged}">
                                         <TextBlock Text="{x:Static st:FeDataEditorView.IsAvailableToAI}"/>
                                     </CheckBox>
-                                    <CheckBox Margin="5" IsChecked="{Binding State.File.IsDlcCar}">
+                                    <CheckBox Margin="5" IsChecked="{Binding State.File.IsDlcCar, UpdateSourceTrigger=PropertyChanged}">
                                         <TextBlock Text="{x:Static st:FeDataEditorView.IsDlcCar}"/>
                                     </CheckBox>
                                 </mcart:StretchyWrapPanel>
@@ -130,6 +130,11 @@
                         </Expander>
                     </mcart:StretchyWrapPanel>
                     <mcart:StretchyWrapPanel StretchProportionally="False">
+                        <mcart:StretchyWrapPanel.Resources>
+                            <Style TargetType="ui:TextBox" BasedOn="{StaticResource {x:Type ui:TextBox}}">
+                                <Setter Property="MinWidth" Value="200"/>
+                            </Style>
+                        </mcart:StretchyWrapPanel.Resources>
                         <Expander Header="{x:Static st:FeDataEditorView.General}" IsExpanded="True" VerticalAlignment="Stretch">
                             <mcart:StretchyWrapPanel StretchProportionally="False">
                                 <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Manufacturer}" Text="{Binding State.File.Manufacturer}"/>
