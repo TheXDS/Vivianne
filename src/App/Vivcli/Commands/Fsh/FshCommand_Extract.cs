@@ -2,7 +2,9 @@
 using System.Text.RegularExpressions;
 using TheXDS.Vivianne.Extensions;
 using TheXDS.Vivianne.Models;
+using TheXDS.Vivianne.Models.Fsh;
 using TheXDS.Vivianne.Resources;
+using TheXDS.Vivianne.Serializers.Fsh;
 using St = TheXDS.Vivianne.Resources.Strings.FshCommand;
 
 namespace TheXDS.Vivianne.Commands.Fsh;
@@ -26,7 +28,7 @@ public partial class FshCommand
 
     private static Task ExtractCommand(FileInfo fshFile, string regex, DirectoryInfo outDir, ImageFormat format)
     {
-        return FileTransaction(fshFile, fsh =>
+        return ReadOnlyFileTransaction<FshFile, FshSerializer>(fshFile, fsh =>
         {
             if (!outDir.Exists) outDir.Create();
             foreach (var j in fsh.Entries.Keys.Where(p => Regex.IsMatch(p, regex)))
@@ -42,6 +44,6 @@ public partial class FshCommand
                     File.WriteAllBytes(Path.Combine(outDir.FullName, $"{j}.footer"), blob.Footer);
                 }
             }
-        }, true);
+        });
     }
 }

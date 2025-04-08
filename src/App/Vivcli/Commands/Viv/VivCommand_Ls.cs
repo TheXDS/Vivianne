@@ -27,18 +27,18 @@ public partial class VivCommand
         return cmd;
     }
     
-    private static async Task LsCommand(FileInfo vivFile, bool sizeOpt, bool offsetOpt, bool humanOpt, bool decOpt)
+    private static Task LsCommand(FileInfo vivFile, bool sizeOpt, bool offsetOpt, bool humanOpt, bool decOpt)
     {
-        ISerializer<VivFileHeader> parser = new VivHeaderSerializer();
-        await using var fs = vivFile.OpenRead();
-        var viv = await parser.DeserializeAsync(fs);
-        int fLen = viv.Entries.Max(p => p.Key.Length);
-        foreach (var j in viv.Entries)
+        return ReadOnlyFileTransaction<VivFileHeader, VivHeaderSerializer>(vivFile, viv =>
         {
-            Console.WriteLine(string.Join("\t", ((string?[])[
-                j.Key.PadRight(fLen),
-                offsetOpt ? (decOpt ? j.Value.Offset.ToString().PadRight(10): $"0x{j.Value.Offset:X8}") : null,
-                sizeOpt ? (humanOpt ? ((long)j.Value.Length).ByteUnits() : j.Value.Length.ToString()) : null]).NotEmpty()));
-        }
+            int fLen = viv.Entries.Max(p => p.Key.Length);
+            foreach (var j in viv.Entries)
+            {
+                Console.WriteLine(string.Join("\t", ((string?[])[
+                    j.Key.PadRight(fLen),
+                    offsetOpt ? (decOpt ? j.Value.Offset.ToString().PadRight(10): $"0x{j.Value.Offset:X8}") : null,
+                    sizeOpt ? (humanOpt ? ((long)j.Value.Length).ByteUnits() : j.Value.Length.ToString()) : null]).NotEmpty()));
+            }
+        });
     }
 }

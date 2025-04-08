@@ -1,7 +1,4 @@
-using TheXDS.MCART.Helpers;
 using TheXDS.Vivianne.Commands.Base;
-using TheXDS.Vivianne.Models.Fsh;
-using TheXDS.Vivianne.Serializers.Fsh;
 using St = TheXDS.Vivianne.Resources.Strings.FshCommand;
 
 namespace TheXDS.Vivianne.Commands.Fsh;
@@ -9,7 +6,7 @@ namespace TheXDS.Vivianne.Commands.Fsh;
 /// <summary>
 /// Defines a command that allows the user to interact with a FSH or QFS file.
 /// </summary>
-public partial class FshCommand() : FileCommandBase<FshFile, FshSerializer>(
+public partial class FshCommand() : FileCommandBase(
     "fsh",
     St.Description,
     St.Arg1,

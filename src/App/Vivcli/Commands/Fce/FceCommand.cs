@@ -1,10 +1,11 @@
 ﻿using TheXDS.Vivianne.Commands.Base;
-using TheXDS.Vivianne.Models.Fce.Nfs3;
-using TheXDS.Vivianne.Serializers.Fce.Nfs3;
 
 namespace TheXDS.Vivianne.Commands.Fce;
 
-public partial class FceCommand() : FileCommandBase<FceFile, FceSerializer>(
+/// <summary>
+/// Defines a command that allows the user to interact with an FCE file.
+/// </summary>
+public partial class FceCommand() : FileCommandBase(
     "fce",
     "Performs operations on FCE files.",
     "fce file",

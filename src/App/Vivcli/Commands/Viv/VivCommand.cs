@@ -8,7 +8,7 @@ namespace TheXDS.Vivianne.Commands.Viv;
 /// <summary>
 /// Defines a command that allows the user to interact with a VIV file.
 /// </summary>
-public partial class VivCommand() : FileCommandBase<VivFile, VivSerializer>(
+public partial class VivCommand() : FileCommandBase(
     "viv",
     St.Description,
     St.Arg1,

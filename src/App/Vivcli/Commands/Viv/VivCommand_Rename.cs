@@ -1,4 +1,6 @@
 ﻿using System.CommandLine;
+using TheXDS.Vivianne.Models.Viv;
+using TheXDS.Vivianne.Serializers.Viv;
 using St = TheXDS.Vivianne.Resources.Strings.VivCommand;
 
 namespace TheXDS.Vivianne.Commands.Viv;
@@ -20,16 +22,16 @@ public partial class VivCommand
 
     private static Task RenameCommand(FileInfo vivFile, string oldName, string newName)
     {
-        return FileTransaction(vivFile, viv =>
+        return FileTransaction<VivFile, VivSerializer>(vivFile, viv =>
         {
             var contents = viv[oldName];
-            if (!viv.Remove(oldName))
+            if (viv.Remove(oldName))
             {
-                Fail(string.Format(St.Rm_Fail, oldName));
+                viv.Add(newName, contents);
             }
             else
             {
-                viv.Add(newName, contents);
+                Fail(string.Format(St.Rm_Fail, oldName));
             }
         });
     }

@@ -19,25 +19,24 @@ public partial class FshCommand
         return cmd;
     }
     
-    private static async Task InfoCommand(FileInfo fshFile, bool humanOpt)
+    private static Task InfoCommand(FileInfo fshFile, bool humanOpt)
     {
-        ISerializer<FshFile> parser = new FshSerializer();
-        var rawData = File.ReadAllBytes(fshFile.FullName);
-        var uncompressed = QfsCodec.Decompress(rawData);
-        var fsh = await parser.DeserializeAsync(uncompressed);
-        fsh.IsCompressed = QfsCodec.IsCompressed(rawData);
-        Console.WriteLine(string.Format(St.Info_Info1, fsh.Entries.Count));
-        Console.WriteLine(string.Format(St.Info_Info2, fsh.DirectoryId));
-        Console.WriteLine(string.Format(St.Info_Info3, rawData.Length.GetSize(humanOpt)));
-        if (fsh.IsCompressed)
+        return ReadOnlyFileTransaction<FshFile, FshSerializer>(fshFile, async fsh =>
         {
-            Console.WriteLine(St.Info_Info4);
-            Console.WriteLine(string.Format(St.Info_Info5, uncompressed.Length.GetSize(humanOpt)));
-            Console.WriteLine(string.Format(St.Info_Info6, (double)uncompressed.Length / rawData.Length));
-        }
-        else
-        {
-            Console.WriteLine(St.Info_Info7);
-        }
+            Console.WriteLine(string.Format(St.Info_Info1, fsh.Entries.Count));
+            Console.WriteLine(string.Format(St.Info_Info2, fsh.DirectoryId));
+            Console.WriteLine(string.Format(St.Info_Info3, fshFile.Length.GetSize(humanOpt)));
+            if (fsh.IsCompressed)
+            {
+                var uncompressedDataLength = QfsCodec.Decompress(await File.ReadAllBytesAsync(fshFile.FullName)).Length;
+                Console.WriteLine(St.Info_Info4);
+                Console.WriteLine(string.Format(St.Info_Info5, uncompressedDataLength.GetSize(humanOpt)));
+                Console.WriteLine(string.Format(St.Info_Info6, (double)uncompressedDataLength / fshFile.Length));
+            }
+            else
+            {
+                Console.WriteLine(St.Info_Info7);
+            }
+        });
     }
 }

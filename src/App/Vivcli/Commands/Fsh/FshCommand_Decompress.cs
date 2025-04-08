@@ -20,11 +20,10 @@ public partial class FshCommand
     
     private static async Task DecompressCommand(FileInfo fshFile, FileInfo? outOpt)
     {
-        ISerializer<FshFile> parser = new FshSerializer();
         var rawContents = await File.ReadAllBytesAsync(fshFile.FullName);
         try
         {
-            _ = await parser.DeserializeAsync(rawContents);
+            _ = await ((ISerializer<FshFile>)new FshSerializer()).DeserializeAsync(rawContents);
         }
         catch (Exception ex)
         {

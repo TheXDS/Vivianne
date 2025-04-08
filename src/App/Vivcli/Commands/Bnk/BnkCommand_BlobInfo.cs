@@ -2,6 +2,7 @@ using System.CommandLine;
 using TheXDS.MCART.Helpers;
 using TheXDS.Vivianne.Info.Bnk;
 using TheXDS.Vivianne.Models.Bnk;
+using TheXDS.Vivianne.Serializers.Bnk;
 using St = TheXDS.Vivianne.Resources.Strings.FshCommand;
 
 namespace TheXDS.Vivianne.Commands.Bnk;
@@ -23,14 +24,14 @@ public partial class BnkCommand
 
     private static Task BlobInfoCommand(FileInfo bnkFile, int? blobArg, bool humanOpt, bool altOpt)
     {
-        return FileTransaction(bnkFile, bnk =>
+        return ReadOnlyFileTransaction<BnkFile, BnkSerializer>(bnkFile, bnk =>
         {
             if (blobArg is null)
             {
-                foreach (var j in bnk.Streams.WithIndex())
+                foreach (var (index, element) in bnk.Streams.WithIndex())
                 {
-                    Console.WriteLine(string.Format(St.BlobInfo_BlobName, j.index));
-                    PrintBlobInfo(j.element, humanOpt, altOpt);
+                    Console.WriteLine(string.Format(St.BlobInfo_BlobName, index));
+                    PrintBlobInfo(element, humanOpt, altOpt);
                     Console.WriteLine();
                 }
             }
@@ -42,7 +43,7 @@ public partial class BnkCommand
             {
                 Fail("No such blob exists inside the BNK file.");
             }
-        }, true);
+        });
     }
 
     private static void PrintBlobInfo(BnkStream? blob, bool humanOpt, bool altOpt)

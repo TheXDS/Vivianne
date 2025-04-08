@@ -19,17 +19,17 @@ public partial class VivCommand
         return cmd;
     }
 
-    private static async Task InfoCommand(FileInfo vivFile)
+    private static Task InfoCommand(FileInfo vivFile)
     {
-        ISerializer<VivFileHeader> parser = new VivHeaderSerializer();
-        using var fs = vivFile.OpenRead();
-        var viv = await parser.DeserializeAsync(fs);
-        var calcFileSize = VivSerializer.GetFileSize(viv.Entries.Select(p => new KeyValuePair<string, int>(p.Key, p.Value.Length)));
-        Console.WriteLine(string.Format(St.Info_1, string.Join("", viv.Header.Magic.Select(p => p.ToString("X"))), System.Text.Encoding.Latin1.GetString(viv.Header.Magic)));
-        Console.WriteLine(string.Format(St.Info_2, viv.Header.VivLength, ((long)viv.Header.VivLength).ByteUnits()));
-        Console.WriteLine(string.Format(St.Info_3, calcFileSize, ((long)calcFileSize).ByteUnits()));
-        Console.WriteLine(string.Format(St.Info_4, vivFile.Length, vivFile.Length.ByteUnits()));
-        Console.WriteLine(string.Format(St.Info_5, viv.Header.Entries));
-        Console.WriteLine(string.Format(St.Info_6, viv.Header.PoolOffset));
+        return ReadOnlyFileTransaction<VivFileHeader, VivHeaderSerializer>(vivFile, viv =>
+        {
+            var calcFileSize = VivSerializer.GetFileSize(viv.Entries.Select(p => new KeyValuePair<string, int>(p.Key, p.Value.Length)));
+            Console.WriteLine(string.Format(St.Info_1, string.Join("", viv.Header.Magic.Select(p => p.ToString("X"))), System.Text.Encoding.Latin1.GetString(viv.Header.Magic)));
+            Console.WriteLine(string.Format(St.Info_2, viv.Header.VivLength, ((long)viv.Header.VivLength).ByteUnits()));
+            Console.WriteLine(string.Format(St.Info_3, calcFileSize, ((long)calcFileSize).ByteUnits()));
+            Console.WriteLine(string.Format(St.Info_4, vivFile.Length, vivFile.Length.ByteUnits()));
+            Console.WriteLine(string.Format(St.Info_5, viv.Header.Entries));
+            Console.WriteLine(string.Format(St.Info_6, viv.Header.PoolOffset));
+        });
     }
 }

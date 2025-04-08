@@ -1,4 +1,6 @@
 using System.CommandLine;
+using TheXDS.Vivianne.Models.Viv;
+using TheXDS.Vivianne.Serializers.Viv;
 using St = TheXDS.Vivianne.Resources.Strings.VivCommand;
 
 namespace TheXDS.Vivianne.Commands.Viv;
@@ -18,7 +20,7 @@ public partial class VivCommand
 
     private static Task RmCommand(FileInfo vivFile, string name)
     {
-        return FileTransaction(vivFile, viv =>
+        return FileTransaction<VivFile, VivSerializer>(vivFile, viv =>
         {
             if (!viv.Remove(name))
             {

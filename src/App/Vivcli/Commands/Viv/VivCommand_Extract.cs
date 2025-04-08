@@ -1,5 +1,7 @@
 using System.CommandLine;
 using System.Text.RegularExpressions;
+using TheXDS.Vivianne.Models.Viv;
+using TheXDS.Vivianne.Serializers.Viv;
 using St = TheXDS.Vivianne.Resources.Strings.VivCommand;
 
 namespace TheXDS.Vivianne.Commands.Viv;
@@ -23,7 +25,7 @@ public partial class VivCommand
 
     private static Task ExtractCommand(FileInfo vivFile, string regex, DirectoryInfo outDir)
     {
-        return FileTransaction(vivFile, viv =>
+        return ReadOnlyFileTransaction<VivFile, VivSerializer>(vivFile, viv =>
         {
             if (!outDir.Exists) outDir.Create();
             foreach (var j in viv.Keys.Where(p => Regex.IsMatch(p, regex)))
@@ -32,6 +34,6 @@ public partial class VivCommand
                 using var bw = new BinaryWriter(fs);
                 bw.Write(viv[j]);
             }
-        }, true);
+        });
     }
 }

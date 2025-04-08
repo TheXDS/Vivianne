@@ -1,4 +1,6 @@
 using System.CommandLine;
+using TheXDS.Vivianne.Models.Viv;
+using TheXDS.Vivianne.Serializers.Viv;
 using St = TheXDS.Vivianne.Resources.Strings.VivCommand;
 
 namespace TheXDS.Vivianne.Commands.Viv;
@@ -23,7 +25,7 @@ public partial class VivCommand
     
     private static Task AddCommand(FileInfo vivFile, FileInfo fileToAdd, bool force, string? name)
     {
-        return FileTransaction(vivFile, async viv => {
+        return FileTransaction<VivFile, VivSerializer>(vivFile, async viv => {
             name ??= fileToAdd.Name;
             if (!viv.ContainsKey(name) || force)
             {

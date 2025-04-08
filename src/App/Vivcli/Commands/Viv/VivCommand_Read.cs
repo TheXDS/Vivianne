@@ -1,5 +1,7 @@
 using System.CommandLine;
 using TheXDS.MCART.Types.Extensions;
+using TheXDS.Vivianne.Models.Viv;
+using TheXDS.Vivianne.Serializers.Viv;
 using St = TheXDS.Vivianne.Resources.Strings.VivCommand;
 
 namespace TheXDS.Vivianne.Commands.Viv;
@@ -23,7 +25,7 @@ public partial class VivCommand
     private static Task ReadCommand(FileInfo vivFile, string fileName, FileInfo? outputStream)
     {
         if (fileName.IsEmpty()) Fail(St.Read_Fail1);
-        return FileTransaction(vivFile, viv =>
+        return ReadOnlyFileTransaction<VivFile, VivSerializer>(vivFile, viv =>
         {
             if (viv.TryGetValue(fileName, out var contents))
             {
@@ -34,6 +36,6 @@ public partial class VivCommand
             {
                 Fail(string.Format(St.Read_Fail2, fileName));
             }
-        }, true);
+        });
     }
 }

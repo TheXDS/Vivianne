@@ -1,8 +1,8 @@
-using Microsoft.VisualBasic;
 using System.CommandLine;
 using TheXDS.Vivianne.Extensions;
 using TheXDS.Vivianne.Models.Fsh;
 using TheXDS.Vivianne.Resources;
+using TheXDS.Vivianne.Serializers.Fsh;
 using St = TheXDS.Vivianne.Resources.Strings.FshCommand;
 
 namespace TheXDS.Vivianne.Commands.Fsh;
@@ -22,7 +22,7 @@ public partial class FshCommand
 
     private static Task BlobInfoCommand(FileInfo fshFile, string? blobArg, bool humanOpt)
     {
-        return FileTransaction(fshFile, fsh =>
+        return ReadOnlyFileTransaction<FshFile, FshSerializer>(fshFile, fsh =>
         {
             if (blobArg is null)
             {
@@ -41,7 +41,7 @@ public partial class FshCommand
             {
                 Fail(St.BlobInfo_Fail);
             }
-        }, true);
+        });
     }
 
     private static void PrintBlobInfo(FshBlob blob, bool humanOpt)

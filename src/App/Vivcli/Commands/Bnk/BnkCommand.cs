@@ -1,13 +1,11 @@
 using TheXDS.Vivianne.Commands.Base;
-using TheXDS.Vivianne.Models.Bnk;
-using TheXDS.Vivianne.Serializers.Bnk;
 
 namespace TheXDS.Vivianne.Commands.Bnk;
 
 /// <summary>
-/// Defines a command that allows the user to interact with a FSH or QFS file.
+/// Defines a command that allows the user to interact with a BNK file.
 /// </summary>
-public partial class BnkCommand() : FileCommandBase<BnkFile, BnkSerializer>(
+public partial class BnkCommand() : FileCommandBase(
     "bnk",
     "Performs operations on BNK files.",
     "bnk file",
@@ -16,4 +14,5 @@ public partial class BnkCommand() : FileCommandBase<BnkFile, BnkSerializer>(
         BuildInfoCommand,
         BuildBlobInfoCommand,
         BuildExtractCommand,
+        BuildReplaceCommand,
     ]) { }

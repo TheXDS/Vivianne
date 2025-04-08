@@ -15,13 +15,12 @@ namespace TheXDS.Vivianne.Commands.Base;
 /// Collection of internal methods to search for sub-command definition methods
 /// to be invoked.
 /// </param>
-public abstract class FileCommandBase<TFile, TSerializer>(
+public abstract class FileCommandBase(
     string alias,
     string help,
     string fileArgName,
     string fileArgHelp,
-    IEnumerable<Func<Argument<FileInfo>, Command>> exposedCommands)
-    : VivianneCommand where TSerializer : ISerializer<TFile>, new()
+    IEnumerable<Func<Argument<FileInfo>, Command>> exposedCommands) : VivianneCommand
 {
     private readonly string _alias = alias;
     private readonly string _help = help;
@@ -46,15 +45,79 @@ public abstract class FileCommandBase<TFile, TSerializer>(
     /// <param name="action">
     /// Action to execute on the deserialized contents of the file.
     /// </param>
-    /// <param name="readOnly">
-    /// If set to <see langword="true"/>, the file transaction will be
-    /// read-only.
+    /// <returns>
+    /// A <see cref="Task"/> that can be used to <see langword="await"/> the
+    /// <see langword="async"/> operation.
+    /// </returns>
+    protected static Task FileTransaction<TFile, TSerializer>(FileInfo file, Action<TFile> action)
+        where TSerializer : ISerializer<TFile>, new()
+    {
+        return FileTransaction<TFile, TSerializer>(file, f => Task.Run(() => action.Invoke(f)));
+    }
+
+    /// <summary>
+    /// Executes a read/write file transaction.
+    /// </summary>
+    /// <param name="file">File to be read/written.</param>
+    /// <param name="action">
+    /// Action to execute on the deserialized contents of the file.
     /// </param>
     /// <returns>
     /// A <see cref="Task"/> that can be used to <see langword="await"/> the
     /// <see langword="async"/> operation.
     /// </returns>
-    protected static async Task FileTransaction(FileInfo file, Func<TFile, Task> action, bool readOnly = false)
+    protected static async Task FileTransaction<TFile, TSerializer>(FileInfo file, Func<TFile, Task> action)
+        where TSerializer : ISerializer<TFile>, new()
+    {
+        ISerializer<TFile> serializer = new TSerializer();
+        TFile value;
+        try
+        {
+            using (var inFs = file.OpenRead())
+            {
+                value = await serializer.DeserializeAsync(inFs);
+            }
+            await action.Invoke(value);
+            using var outFs = file.OpenWrite();
+            outFs.Destroy();
+            await serializer.SerializeToAsync(value, outFs);
+        }
+        catch (Exception ex)
+        {
+            Fail(ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// Executes a read-only file transaction.
+    /// </summary>
+    /// <param name="file">File to be read.</param>
+    /// <param name="action">
+    /// Action to execute on the deserialized contents of the file.
+    /// </param>
+    /// <returns>
+    /// A <see cref="Task"/> that can be used to <see langword="await"/> the
+    /// <see langword="async"/> operation.
+    /// </returns>
+    protected static Task ReadOnlyFileTransaction<TFile, TSerializer>(FileInfo file, Action<TFile> action)
+        where TSerializer : ISerializer<TFile>, new()
+{
+        return ReadOnlyFileTransaction<TFile, TSerializer>(file, f => Task.Run(() => action.Invoke(f)));
+    }
+
+    /// <summary>
+    /// Executes a read-only file transaction.
+    /// </summary>
+    /// <param name="file">File to be read.</param>
+    /// <param name="action">
+    /// Action to execute on the deserialized contents of the file.
+    /// </param>
+    /// <returns>
+    /// A <see cref="Task"/> that can be used to <see langword="await"/> the
+    /// <see langword="async"/> operation.
+    /// </returns>
+    protected static async Task ReadOnlyFileTransaction<TFile, TSerializer>(FileInfo file, Func<TFile, Task> action)
+        where TSerializer : ISerializer<TFile>, new()
     {
         ISerializer<TFile> serializer = new TSerializer();
         TFile value;
@@ -65,36 +128,10 @@ public abstract class FileCommandBase<TFile, TSerializer>(
                 value = await serializer.DeserializeAsync(fs);
             }
             await action.Invoke(value);
-            if (!readOnly)
-            {
-                using var fs = file.OpenWrite();
-                fs.Destroy();
-                await serializer.SerializeToAsync(value, fs);
-            }
         }
         catch (Exception ex)
         {
             Fail(ex.Message);
         }
-    }
-
-    /// <summary>
-    /// Executes a file transaction.
-    /// </summary>
-    /// <param name="file">File to be read/written.</param>
-    /// <param name="action">
-    /// Action to execute on the deserialized contents of the file.
-    /// </param>
-    /// <param name="readOnly">
-    /// If set to <see langword="true"/>, the file transaction will be
-    /// read-only.
-    /// </param>
-    /// <returns>
-    /// A <see cref="Task"/> that can be used to <see langword="await"/> the
-    /// <see langword="async"/> operation.
-    /// </returns>
-    protected static Task FileTransaction(FileInfo file, Action<TFile> action, bool readOnly = false)
-    {
-        return FileTransaction(file, f => Task.Run(() => action.Invoke(f)), readOnly);
     }
 }
