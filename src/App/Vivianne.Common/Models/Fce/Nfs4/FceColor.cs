@@ -1,18 +1,22 @@
-﻿using TheXDS.MCART.Types.Base;
-using TheXDS.Vivianne.Models.Fce.Nfs3;
+﻿using System.Collections.Generic;
+using TheXDS.MCART.Types.Base;
+using TheXDS.Vivianne.ViewModels.Fce.Common;
 
 namespace TheXDS.Vivianne.Models.Fce.Nfs4;
 
 /// <summary>
 /// Represents an inmutable FCE color set for NFS4 cars.
 /// </summary>
-public class FceColor : NotifyPropertyChanged
+public class FceColor : NotifyPropertyChanged, IFceColor<HsbColor>
 {
     private string? _name;
     private HsbColor _primaryColor;
     private HsbColor _interiorColor;
     private HsbColor _secondaryColor;
     private HsbColor _driverHairColor;
+
+    /// <inheritdoc/>
+    public IEnumerable<HsbColor> Colors => [PrimaryColor, InteriorColor, SecondaryColor, DriverHairColor];
 
     /// <summary>
     /// Gets or sets the name of the color.

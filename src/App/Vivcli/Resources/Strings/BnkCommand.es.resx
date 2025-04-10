@@ -117,55 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BNKv2_AltStreamWarning" xml:space="preserve">
-    <value>Los lectores de archivos BNK v2 no soportan (o al menos no deberían soportar) flujos de audio alternos. Si continúa, estos flujos alternos se perderán. ¿Está seguro de que desea guardar este archivo BNK utilizando el formato v2?</value>
+  <data name="Arg1" xml:space="preserve">
+    <value>archivo bnk</value>
   </data>
-  <data name="BNKStream" xml:space="preserve">
-    <value>Flujo BNK</value>
-  </data>
-  <data name="NoLoop" xml:space="preserve">
-    <value>El flujo de audio no contiene una sección de repetición.</value>
-  </data>
-  <data name="UnsupportedAudioStream" xml:space="preserve">
-    <value>Flujo de audio no soportado.</value>
-  </data>
-  <data name="NoAudioStreamLoaded" xml:space="preserve">
-    <value>No se ha cargado un flujo de audio</value>
-  </data>
-  <data name="BNKVersion" xml:space="preserve">
-    <value>Versión de BNK</value>
-  </data>
-  <data name="Stream" xml:space="preserve">
-    <value>Flujo</value>
-  </data>
-  <data name="ShowInfo" xml:space="preserve">
-    <value>Mostrar info</value>
-  </data>
-  <data name="LoopStart" xml:space="preserve">
-    <value>Inicio de repetición</value>
-  </data>
-  <data name="LoopLength" xml:space="preserve">
-    <value>Duración de repetición</value>
-  </data>
-  <data name="Import" xml:space="preserve">
-    <value>Importar</value>
-  </data>
-  <data name="Export" xml:space="preserve">
-    <value>Exportar</value>
-  </data>
-  <data name="ExportLoop" xml:space="preserve">
-    <value>Exportar repetición</value>
-  </data>
-  <data name="NestedAltStreamsError" xml:space="preserve">
-    <value>El formato BNK no soporta flujos alternativos anidados.</value>
-  </data>
-  <data name="ImportAltStream" xml:space="preserve">
-    <value>Importar flujo alternativo</value>
-  </data>
-  <data name="RemoveUnusedData" xml:space="preserve">
-    <value>Remover datos no utilizados</value>
-  </data>
-  <data name="RemoveUnusedDataQuestion" xml:space="preserve">
-    <value>Remover los datos no utilizados de un BNK reducirá su tamaño, pero también removerá los datos fuera del rango del ciclo de audio. Esta acción no se puede deshacer. ¿Está seguro que desea optimizar el BNK y remover los datos no utilizados?</value>
+  <data name="Arg1Description" xml:space="preserve">
+    <value>Ruta al archivo BNK</value>
   </data>
 </root>

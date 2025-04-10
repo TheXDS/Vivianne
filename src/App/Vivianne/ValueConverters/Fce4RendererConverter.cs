@@ -1,6 +1,6 @@
 ﻿using System.Windows.Media;
 using System.Windows.Media.Media3D;
-using TheXDS.Vivianne.Models.Fce.Nfs3;
+using TheXDS.Vivianne.Models.Fce.Nfs4;
 
 namespace TheXDS.Vivianne.ValueConverters;
 
@@ -8,7 +8,7 @@ namespace TheXDS.Vivianne.ValueConverters;
 /// Implements a part converter that converts a <see cref="FceRenderState"/>
 /// into a <see cref="Model3DGroup"/> that can be rendered by WPF.
 /// </summary>
-public class Fce3RendererConverter : FceRendererConverterBase<FceRenderState, FcePart, FceTriangle, FceColor, HsbColor, FceFile, TriangleFlags>
+public class Fce4RendererConverter : FceRendererConverterBase<FceRenderState, FcePart, FceTriangle, FceColor, HsbColor, FceFile, TriangleFlags>
 {
     /// <inheritdoc/>
     protected override IDictionary<TriangleFlags, (Material, bool)> EnumerateMaterials(Brush brush, Brush semiBrush) => new Dictionary<TriangleFlags, (Material, bool)>()

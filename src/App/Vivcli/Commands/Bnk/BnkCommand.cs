@@ -1,4 +1,5 @@
 using TheXDS.Vivianne.Commands.Base;
+using St = TheXDS.Vivianne.Resources.Strings.BnkCommand;
 
 namespace TheXDS.Vivianne.Commands.Bnk;
 
@@ -7,9 +8,9 @@ namespace TheXDS.Vivianne.Commands.Bnk;
 /// </summary>
 public partial class BnkCommand() : FileCommandBase(
     "bnk",
-    "Performs operations on BNK files.",
-    "bnk file",
-    "Path to the BNK file",
+    St.Description,
+    St.Arg1,
+    St.Arg1Description,
     [
         BuildInfoCommand,
         BuildBlobInfoCommand,

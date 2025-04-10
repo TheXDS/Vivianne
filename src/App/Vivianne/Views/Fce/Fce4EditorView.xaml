@@ -9,10 +9,127 @@
     xmlns:mdl="clr-namespace:TheXDS.Vivianne.Models.Fce;assembly=Vivianne.Common"
     xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings.Views"
     xmlns:vc="clr-namespace:TheXDS.Vivianne.ValueConverters"
-    xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels.Fce.Nfs3;assembly=Vivianne.Common"
+    xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels.Fce.Nfs4;assembly=Vivianne.Common"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     mc:Ignorable="d" 
-    d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
-    </Grid>
+    d:DataContext="{d:DesignInstance Type=vm:Fce4EditorViewModel}"
+    x:Name="pgRoot"
+    d:DesignHeight="500" d:DesignWidth="500">
+    <UserControl.Resources>
+        <vc:Fce4RendererConverter x:Key="fcevm2mesh"/>
+        <vc:FceColorToBrushConverter x:Key="dc2bc"/>
+    </UserControl.Resources>
+    <DockPanel>
+        <ct:FileEditorCommandBar DockPanel.Dock="Top" ShowClose="False" Editor="{Binding}">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <ComboBox
+                    hlp:Form.Label="{x:Static st:FceEditorView.Texture}"
+                    MinWidth="150"
+                    Margin="5"
+                    ItemsSource="{Binding CarTextures, Mode=OneWay}"
+                    SelectedValuePath="Value"
+                    DisplayMemberPath="Name"
+                    SelectedValue="{Binding SelectedCarTexture}"/>
+                <ComboBox
+                    hlp:Form.Label="{x:Static st:FceEditorView.Color}"
+                    Width="230"
+                    Margin="5"
+                    SelectedValue="{Binding SelectedColor}"
+                    ItemsSource="{Binding State.Colors, Mode=OneWay}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Rectangle Width="5" Height="10" Fill="{Binding PrimaryColor, Mode=OneWay, Converter={StaticResource dc2bc}}"/>
+                                <Rectangle Width="5" Height="10" Grid.Column="1" Fill="{Binding InteriorColor, Mode=OneWay, Converter={StaticResource dc2bc}}"/>
+                                <Rectangle Width="5" Height="10" Grid.Column="2" Fill="{Binding SecondaryColor, Mode=OneWay, Converter={StaticResource dc2bc}}"/>
+                                <Rectangle Width="5" Height="10" Grid.Column="3" Fill="{Binding DriverHairColor, Mode=OneWay, Converter={StaticResource dc2bc}}"/>
+                                <TextBlock Margin="5,0,0,0" Grid.Column="4" Text="{Binding Name, Mode=OneWay}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </StackPanel>
+        </ct:FileEditorCommandBar>
+        <Grid Background="{ui:ThemeResource ControlSolidFillColorDefaultBrush}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Viewport3D Grid.ColumnSpan="1" Grid.Column="1" Grid.Row="1">
+                <Viewport3D.Camera>
+                    <PerspectiveCamera x:Name="ptcMain" UpDirection="1,0,0" LookDirection="-30,50,50" Position="30,-50,-50"/>
+                </Viewport3D.Camera>
+                <ModelVisual3D Content="{Binding RenderTree, Mode=OneWay, Converter={StaticResource fcevm2mesh}}"/>
+            </Viewport3D>
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <Expander Margin="10" IsExpanded="True" Header="View options">
+                        <StackPanel>
+                            <ComboBox
+                                hlp:Form.Label="Preset"
+                                Margin="0,0,0,10"
+                                IsEditable="False"
+                                SelectedItem="{Binding FceLodPreset}"
+                                ItemsSource="{ct:EnumValProvider EnumType={x:Type mdl:FceLodPreset}}"/>
+                            <CheckBox Content="Car shadow" IsChecked="{Binding RenderShadow}" />
+                            <CheckBox Content="Damaged model" IsChecked="{Binding State.ShowDamagedModel}" />
+                        </StackPanel>
+                    </Expander>
+                    <Expander Margin="10,0" IsExpanded="True" Header="Tools">
+                        <StackPanel>
+                            <Button Margin="5" HorizontalAlignment="Stretch" Command="{Binding ColorEditorCommand, Mode=OneWay}" Content="{x:Static st:FceEditorView.EditColors}"/>
+                            <Button Margin="5" HorizontalAlignment="Stretch" Command="{Binding FceCenterCommand, Mode=OneWay}" Content="Fce Center"/>
+                        </StackPanel>
+                    </Expander>
+                    <Expander Margin="10" IsExpanded="True" Header="Parts">
+                        <ItemsControl
+                            ItemsSource="{Binding Parts, Mode=OneWay}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <DockPanel>
+                                        <Button
+                                            Command="{Binding DataContext.RenamePartCommand, ElementName=pgRoot, Mode=OneWay}"
+                                            CommandParameter="{Binding}"
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            DockPanel.Dock="Right"
+                                            ToolTip="{x:Static st:FceEditorView.Rename}">✏️</Button>
+                                        <CheckBox IsChecked="{Binding IsVisible}" Style="{StaticResource ToggleSwitch}">
+                                            <TextBlock Text="{Binding Part.Name, Mode=OneWay}" Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"/>
+                                        </CheckBox>
+                                    </DockPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Expander>
+                    <Expander Margin="10" IsExpanded="True" Header="Dummies">
+                        <ItemsControl
+                            ItemsSource="{Binding State.Dummies, Mode=OneWay}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <DockPanel>
+                                        <Button
+                                            Command="{Binding DataContext.RenameDummyCommand, ElementName=pgRoot, Mode=OneWay}"
+                                            CommandParameter="{Binding}"
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            DockPanel.Dock="Right"
+                                            ToolTip="{x:Static st:FceEditorView.Rename}">✏️</Button>
+                                        <TextBlock Text="{Binding Name, Mode=OneWay}" Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"/>
+                                    </DockPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Expander>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </DockPanel>
 </UserControl>

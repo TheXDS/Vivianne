@@ -70,11 +70,24 @@ public struct FceTriangle : IFceTriangle
     /// </summary>
     public float V3;
 
-    readonly int IFceTriangle.I1 => I1;
+    int IFceTriangle.I1
+    {
+        readonly get => I1;
+        set => I1 = value;
+    }
 
-    readonly int IFceTriangle.I2 => I2;
+    int IFceTriangle.I2
+    {
+        readonly get => I2;
+        set => I2 = value;
+    }
 
-    readonly int IFceTriangle.I3 => I3;
+
+    int IFceTriangle.I3
+    {
+        readonly get => I3;
+        set => I3 = value;
+    }
 
     readonly float IFceTriangle.U1 => U1;
 

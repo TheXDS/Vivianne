@@ -2,9 +2,9 @@
 
 public interface IFceTriangle
 {
-    int I1 { get; }
-    int I2 { get; }
-    int I3 { get; }
+    int I1 { get; set; }
+    int I2 { get; set; }
+    int I3 { get; set; }
     float U1 { get; }
     float U2 { get; }
     float U3 { get; }

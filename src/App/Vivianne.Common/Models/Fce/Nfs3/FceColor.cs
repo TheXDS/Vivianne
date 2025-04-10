@@ -1,11 +1,13 @@
-﻿using TheXDS.MCART.Types.Base;
+﻿using System.Collections.Generic;
+using TheXDS.MCART.Types.Base;
+using TheXDS.Vivianne.ViewModels.Fce.Common;
 
 namespace TheXDS.Vivianne.Models.Fce.Nfs3;
 
 /// <summary>
 /// Represents an inmutable FCE color set for NFS3 cars.
 /// </summary>
-public class FceColor : NotifyPropertyChanged
+public class FceColor : NotifyPropertyChanged, IFceColor<HsbColor>
 {
     private HsbColor _primaryColor;
     private HsbColor _secondaryColor;
@@ -37,4 +39,9 @@ public class FceColor : NotifyPropertyChanged
         get => _secondaryColor;
         set => Change(ref _secondaryColor, value);
     }
+
+    /// <summary>
+    /// Enumerates the color definitions present in a single color instance.
+    /// </summary>
+    public IEnumerable<HsbColor> Colors => [PrimaryColor, SecondaryColor];
 }

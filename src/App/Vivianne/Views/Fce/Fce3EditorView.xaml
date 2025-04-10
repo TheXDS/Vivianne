@@ -11,8 +11,8 @@
     xmlns:vc="clr-namespace:TheXDS.Vivianne.ValueConverters"
     xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels.Fce.Nfs3;assembly=Vivianne.Common"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-    d:DataContext="{d:DesignInstance Type=vm:Fce3EditorViewModel}"
     mc:Ignorable="d"
+    d:DataContext="{d:DesignInstance Type=vm:Fce3EditorViewModel}"
     x:Name="pgRoot"
     d:DesignHeight="500" d:DesignWidth="500">
     <UserControl.Resources>

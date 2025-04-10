@@ -13,6 +13,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Compile Update="Resources\Strings\BnkCommand.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>BnkCommand.resx</DependentUpon>
+		</Compile>
 		<Compile Update="Resources\Strings\VivCli.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
@@ -31,6 +36,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<EmbeddedResource Update="Resources\Strings\BnkCommand.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>BnkCommand.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Strings\VivCli.resx">
 			<Generator>ResXFileCodeGenerator</Generator>
 			<LastGenOutput>VivCli.Designer.cs</LastGenOutput>

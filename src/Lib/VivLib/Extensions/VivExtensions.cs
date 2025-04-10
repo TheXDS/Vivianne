@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Runtime.Serialization;
 using TheXDS.Vivianne.Models.Fe;
 using TheXDS.Vivianne.Models.Viv;
 using TheXDS.Vivianne.Serializers;
@@ -53,9 +52,7 @@ public static class VivExtensions
             {
                 return ((IOutSerializer<Models.Fe.Nfs4.FeData>)new Serializers.Fe.Nfs4.FeDataSerializer()).Deserialize(feData).CarName;
             }
-            {
-                return ((IOutSerializer<Models.Fe.Nfs3.FeData>)new Serializers.Fe.Nfs3.FeDataSerializer()).Deserialize(feData).CarName;
-            }
+            return ((IOutSerializer<Models.Fe.Nfs3.FeData>)new Serializers.Fe.Nfs3.FeDataSerializer()).Deserialize(feData).CarName;
         }
         catch (Exception ex)
         {

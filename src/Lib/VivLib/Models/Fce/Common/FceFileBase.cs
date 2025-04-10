@@ -2,7 +2,6 @@
 
 public abstract class FceFileBase<TColor, TFcePart, TTriangle> where TColor : IHsbColor where TFcePart : FcePartBase<TTriangle> where TTriangle : IFceTriangle
 {
-
     /// <summary>
     /// Gets or sets a value that indicates the number of arts contained in the
     /// FCE file.
