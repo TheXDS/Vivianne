@@ -1,5 +1,6 @@
 ﻿using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using TheXDS.Vivianne.Models.Fce.Common;
 using TheXDS.Vivianne.Models.Fce.Nfs4;
 
 namespace TheXDS.Vivianne.ValueConverters;
@@ -31,5 +32,11 @@ public class Fce4RendererConverter : FceRendererConverterBase<FceRenderState, Fc
     protected override TriangleFlags GetFlags(FceTriangle triangle)
     {
         return triangle.Flags & (TriangleFlags)15;
+    }
+
+    /// <inheritdoc/>
+    protected override Vector3d GetVector(FceRenderState render, FcePart part, int index)
+    {
+        return render.ViewDamaged ? part.DamagedVertices[index] : part.Vertices[index];
     }
 }

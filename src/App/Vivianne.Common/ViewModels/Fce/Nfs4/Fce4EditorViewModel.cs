@@ -1,4 +1,6 @@
-﻿using TheXDS.Vivianne.Models.Fce.Nfs4;
+﻿using System.Collections.Generic;
+using System.Linq;
+using TheXDS.Vivianne.Models.Fce.Nfs4;
 using TheXDS.Vivianne.ViewModels.Fce.Common;
 
 namespace TheXDS.Vivianne.ViewModels.Fce.Nfs4;
@@ -14,4 +16,17 @@ public class Fce4EditorViewModel : FceEditorViewModelBase<
     HsbColor,
     FcePart,
     FceTriangle,
-    FceRenderState>;
+    FceRenderState>
+{
+    protected override FceRenderState GetRenderTree(IEnumerable<FcePart> visibleParts)
+    {
+        return new()
+        {
+            VisibleParts = Parts.Where(p => p.IsVisible).Select(p => p.Part),
+            SelectedColor = SelectedColor,
+            Texture = SelectedCarTexture,
+            FceFile = RenderShadow ? State.File : null,
+            ViewDamaged = State.ShowDamagedModel,
+        };
+    }
+}

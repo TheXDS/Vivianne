@@ -141,7 +141,7 @@ public abstract class FceRendererConverterBase<TRender, TFcePart, TFceTriangle, 
         }
     };
 
-    private MeshGeometry3D? FcePartToGeometry(TFcePart value, bool flipU, bool flipV, TTriangleFlags flags)
+    private MeshGeometry3D? FcePartToGeometry(TRender render, TFcePart value, bool flipU, bool flipV, TTriangleFlags flags)
     {
         /* This convoluted method has a reason for being
          * =============================================
@@ -176,9 +176,9 @@ public abstract class FceRendererConverterBase<TRender, TFcePart, TFceTriangle, 
             var j = filteredTriangles[i];
             var uFlip = flipU ? -1 : 1;
             var vFlip = flipV ? -1 : 1;
-            var vert1 = Vector3dToPoint3D(value.Vertices[j.I1], value.Origin);
-            var vert2 = Vector3dToPoint3D(value.Vertices[j.I2], value.Origin);
-            var vert3 = Vector3dToPoint3D(value.Vertices[j.I3], value.Origin);
+            var vert1 = Vector3dToPoint3D(GetVector(render, value, j.I1), value.Origin);
+            var vert2 = Vector3dToPoint3D(GetVector(render, value, j.I2), value.Origin);
+            var vert3 = Vector3dToPoint3D(GetVector(render, value, j.I3), value.Origin);
             var uv1 = new Point(uFlip * j.U1, vFlip * j.V1);
             var uv2 = new Point(uFlip * j.U2, vFlip * j.V2);
             var uv3 = new Point(uFlip * j.U3, vFlip * j.V3);
@@ -198,6 +198,20 @@ public abstract class FceRendererConverterBase<TRender, TFcePart, TFceTriangle, 
             TextureCoordinates = [.. vertex.Select(p => p?.Uv ?? default)],
         };
     }
+
+    /// <summary>
+    /// Gets the vector at the specified index based on the current render
+    /// state data.
+    /// </summary>
+    /// <param name="render">
+    /// State that contains the current render state data.
+    /// </param>
+    /// <param name="part">FCE part from which to get the vector.</param>
+    /// <param name="index">Index of the vector to get.</param>
+    /// <returns>
+    /// A vector at the specified index in the vector table of the FCE part.
+    /// </returns>
+    protected abstract Vector3d GetVector(TRender render, TFcePart part, int index);
 
     /// <summary>
     /// Gets the triangle flags from the specified FCE triangle.
@@ -236,7 +250,7 @@ public abstract class FceRendererConverterBase<TRender, TFcePart, TFceTriangle, 
         {
             foreach (var part in value.VisibleParts)
             {
-                group.Children.Add(new GeometryModel3D(FcePartToGeometry(part, flipU, flipV, flags), material) { BackMaterial = noCulling ? material : null });
+                group.Children.Add(new GeometryModel3D(FcePartToGeometry(value, part, flipU, flipV, flags), material) { BackMaterial = noCulling ? material : null });
             }
         }
 

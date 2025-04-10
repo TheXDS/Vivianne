@@ -200,14 +200,10 @@ public abstract class FceEditorViewModelBase<TState, TFile, TFceColor, THsbColor
     private void OnVisibleChanged(object? instance, PropertyInfo? property, PropertyChangeNotificationType notificationType)
     {
         if (!_refreshEnabled) return;
-        RenderTree = new()
-        {
-            VisibleParts = Parts.Where(p => p.IsVisible).Select(p => p.Part),
-            SelectedColor = SelectedColor,
-            Texture = SelectedCarTexture,
-            FceFile = _renderShadow ? State.File : null
-        };
+        RenderTree = GetRenderTree(Parts.Where(p => p.IsVisible).Select(p => p.Part));
     }
+
+    protected abstract TFceRenderTree GetRenderTree(IEnumerable<TFcePart> visibleParts);
 
     private void SwitchToLod(FceLodPreset preset)
     {
