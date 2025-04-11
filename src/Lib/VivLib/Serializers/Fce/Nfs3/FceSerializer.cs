@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Numerics;
+using System.Runtime.InteropServices;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models.Fce.Common;
 using TheXDS.Vivianne.Models.Fce.Nfs3;
@@ -41,8 +42,8 @@ public partial class FceSerializer : ISerializer<FceFile>
     {
         using BinaryReader br = new(stream);
         var header = br.MarshalReadStruct<FceFileHeader>();
-        var vertices = br.MarshalReadArray<Vector3d>(header.VertexTblOffset + DataOffset, header.Vertices);
-        var normals = br.MarshalReadArray<Vector3d>(header.NormalsTblOffset + DataOffset, header.Vertices);
+        var vertices = br.MarshalReadArray<Vector3>(header.VertexTblOffset + DataOffset, header.Vertices);
+        var normals = br.MarshalReadArray<Vector3>(header.NormalsTblOffset + DataOffset, header.Vertices);
         var triangles = br.MarshalReadArray<FceTriangle>(header.TriangleTblOffset + DataOffset, header.Triangles);
         var data = new FceData(header, vertices, normals, triangles);
         return new FceFile()
@@ -53,8 +54,8 @@ public partial class FceSerializer : ISerializer<FceFile>
             YHalfSize = header.YHalfSize,
             ZHalfSize = header.ZHalfSize,
             RsvdTable1 = br.ReadBytesAt(header.Rsvd1Offset + DataOffset, header.Vertices * 32),
-            RsvdTable2 = br.ReadBytesAt(header.Rsvd2Offset + DataOffset, header.Vertices * Vector3d.SizeOf),
-            RsvdTable3 = br.ReadBytesAt(header.Rsvd3Offset + DataOffset, header.Vertices * Vector3d.SizeOf),
+            RsvdTable2 = br.ReadBytesAt(header.Rsvd2Offset + DataOffset, header.Vertices * Marshal.SizeOf<Vector3>()),
+            RsvdTable3 = br.ReadBytesAt(header.Rsvd3Offset + DataOffset, header.Vertices * Marshal.SizeOf<Vector3>()),
             PrimaryColors = [.. header.PrimaryColorTable.Take(header.PrimaryColors)],
             SecondaryColors = [.. header.SecondaryColorTable.Take(header.SecondaryColors)],
             Parts = [.. GetParts(data)],
@@ -72,7 +73,7 @@ public partial class FceSerializer : ISerializer<FceFile>
         List<int> vertexOffsets = [];
         foreach (var j in fce.Parts.Select((FcePart p) => p.Vertices))
         {
-            vertexOffsets.Add((int)poolStream.Position / Marshal.SizeOf<Vector3d>());
+            vertexOffsets.Add((int)poolStream.Position / Marshal.SizeOf<Vector3>());
             pool.MarshalWriteStructArray(j);
         }
         header.PartVertexOffset = ArrayOfSize(vertexOffsets, 64);

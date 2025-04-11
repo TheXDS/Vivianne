@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Numerics;
+using System.Runtime.InteropServices;
 using TheXDS.Vivianne.Models.Fce.Common;
 using TheXDS.Vivianne.Models.Fce.Nfs3;
 
@@ -6,7 +7,7 @@ namespace TheXDS.Vivianne.Serializers.Fce.Nfs3;
 
 public partial class FceSerializer
 {
-    private readonly record struct FceData(in FceFileHeader Header, in Vector3d[] Vertices, in Vector3d[] Normals, in FceTriangle[] Triangles);
+    private readonly record struct FceData(in FceFileHeader Header, in Vector3[] Vertices, in Vector3[] Normals, in FceTriangle[] Triangles);
 
     [StructLayout(LayoutKind.Sequential)]
     private  struct FceFileHeader
@@ -25,9 +26,9 @@ public partial class FceSerializer
         public float YHalfSize;
         public float ZHalfSize;
         public int DummyCount;
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)] public Vector3d[] Dummies;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)] public Vector3[] Dummies;
         public int CarPartCount;
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 64)] public Vector3d[] CarPartsCoords;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 64)] public Vector3[] CarPartsCoords;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 64)] public int[] PartVertexOffset;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 64)] public int[] PartVertexCount;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 64)] public int[] PartTriangleOffset;

@@ -1,5 +1,6 @@
 ﻿#pragma warning disable CS1591
 
+using System.Numerics;
 using TheXDS.Vivianne.Models.Fce.Common;
 using TheXDS.Vivianne.Models.Fce.Nfs3;
 using TheXDS.Vivianne.Serializers.Fce.Nfs3;
@@ -35,7 +36,7 @@ public class FceSerializerTests() : SerializerTestsBase<FceSerializer, FceFile>(
             new FcePart()
             {
                 Name = ":HB",
-                Origin = new Vector3d(0f, 0f, 0f),
+                Origin = new Vector3(0f, 0f, 0f),
                 Vertices =
                 [
                     new(0.5f, 0.5f, 0.5f),
@@ -236,12 +237,12 @@ public class FceSerializerTests() : SerializerTestsBase<FceSerializer, FceFile>(
             new FceDummy()
             {
                 Name = ":HLFO",
-                Position = new Vector3d(0f, 0.5f, 0f)
+                Position = new Vector3(0f, 0.5f, 0f)
             },
             new FceDummy()
             {
                 Name = ":HFRE",
-                Position = new Vector3d(0f, -0.5f, 0f)
+                Position = new Vector3(0f, -0.5f, 0f)
             }
         },
         Unk_0x1e04 = new byte[64]

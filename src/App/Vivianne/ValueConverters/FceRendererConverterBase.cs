@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
+using System.Numerics;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
@@ -33,11 +34,11 @@ public abstract class FceRendererConverterBase<TRender, TFcePart, TFceTriangle, 
     where TFceTriangle : IFceTriangle, new()
     where TTriangleFlags : unmanaged, Enum
 {
-    private record VertexUv(Point3D Vertex, Point Uv, Vector3d Normal);
+    private record VertexUv(Point3D Vertex, Point Uv, Vector3 Normal);
 
     private const double SizeFactor = 10.0;
 
-    private static Point3D Vector3dToPoint3D(Vector3d vertex, Vector3d partOrigin)
+    private static Point3D Vector3ToPoint3D(Vector3 vertex, Vector3 partOrigin)
     {
         return new Point3D(SizeFactor * (vertex.Y + partOrigin.Y), SizeFactor * (-vertex.Z + -partOrigin.Z), SizeFactor * (vertex.X + partOrigin.X));
     }
@@ -176,9 +177,9 @@ public abstract class FceRendererConverterBase<TRender, TFcePart, TFceTriangle, 
             var j = filteredTriangles[i];
             var uFlip = flipU ? -1 : 1;
             var vFlip = flipV ? -1 : 1;
-            var vert1 = Vector3dToPoint3D(GetVector(render, value, j.I1), value.Origin);
-            var vert2 = Vector3dToPoint3D(GetVector(render, value, j.I2), value.Origin);
-            var vert3 = Vector3dToPoint3D(GetVector(render, value, j.I3), value.Origin);
+            var vert1 = Vector3ToPoint3D(GetVector(render, value, j.I1), value.Origin);
+            var vert2 = Vector3ToPoint3D(GetVector(render, value, j.I2), value.Origin);
+            var vert3 = Vector3ToPoint3D(GetVector(render, value, j.I3), value.Origin);
             var uv1 = new Point(uFlip * j.U1, vFlip * j.V1);
             var uv2 = new Point(uFlip * j.U2, vFlip * j.V2);
             var uv3 = new Point(uFlip * j.U3, vFlip * j.V3);
@@ -211,7 +212,7 @@ public abstract class FceRendererConverterBase<TRender, TFcePart, TFceTriangle, 
     /// <returns>
     /// A vector at the specified index in the vector table of the FCE part.
     /// </returns>
-    protected abstract Vector3d GetVector(TRender render, TFcePart part, int index);
+    protected abstract Vector3 GetVector(TRender render, TFcePart part, int index);
 
     /// <summary>
     /// Gets the triangle flags from the specified FCE triangle.

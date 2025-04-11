@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Numerics;
+using System.Runtime.InteropServices;
 using TheXDS.Vivianne.Models.Fce.Common;
 using TheXDS.Vivianne.Models.Fce.Nfs4;
 
@@ -167,11 +168,11 @@ public struct FceFileHeader
     /// Gets the entire Dummy vector table.
     /// </summary>
     /// <remarks>
-    /// This table will have a static size of 16 <see cref="Vector3d"/>
+    /// This table will have a static size of 16 <see cref="Vector3"/>
     /// elements. The correct number of existing Dummies is indicated by
     /// <see cref="DummyCount"/>.
     /// </remarks>
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)] public Vector3d[] Dummies;
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)] public Vector3[] Dummies;
 
     /// <summary>
     /// Gets a value that indicates the total number of car parts in the FCE file.
@@ -183,11 +184,11 @@ public struct FceFileHeader
     /// Gets the entire car part origin vector table.
     /// </summary>
     /// <remarks>
-    /// This table will have a static size of 64 <see cref="Vector3d"/>
+    /// This table will have a static size of 64 <see cref="Vector3"/>
     /// elements. The correct number of existing car part origin elements is
     /// indicated by <see cref="CarPartCount"/>.
     /// </remarks>
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 64)] public Vector3d[] CarPartsCoords;
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 64)] public Vector3[] CarPartsCoords;
 
     /// <summary>
     /// Gets a 64-element table with the offsets for each car part in the

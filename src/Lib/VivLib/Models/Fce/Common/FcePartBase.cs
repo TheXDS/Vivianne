@@ -1,4 +1,5 @@
-﻿using TheXDS.Vivianne.Models.Base;
+﻿using System.Numerics;
+using TheXDS.Vivianne.Models.Base;
 
 namespace TheXDS.Vivianne.Models.Fce.Common;
 
@@ -16,32 +17,37 @@ public class FcePartBase<T> : INameable where T : IFceTriangle
     /// <summary>
     /// Gets or sets the FCE part origin.
     /// </summary>
-    public Vector3d Origin { get; set; }
+    public Vector3 Origin { get; set; }
 
     /// <summary>
     /// Gets or sets the collection of vertices associated to this FCE part.
     /// </summary>
-    public Vector3d[] Vertices { get; set; } = [];
+    public Vector3[] Vertices { get; set; } = [];
 
     /// <summary>
     /// Gets an array of the part vertices with a pre-applied origin
     /// transformation.
     /// </summary>
-    public Vector3d[] TransformedVertices => [.. Vertices.Select(Transform)];
+    public Vector3[] TransformedVertices => [.. Vertices.Select(Transform)];
 
     /// <summary>
     /// Gets or sets the collection of normals for vertices associated to this
     /// FCE part.
     /// </summary>
-    public Vector3d[] Normals { get; set; } = [];
+    public Vector3[] Normals { get; set; } = [];
 
     /// <summary>
     /// Gets or sets the collection of triangles associated to this FCE part.
     /// </summary>
     public T[] Triangles { get; set; } = [];
 
-    protected Vector3d Transform(Vector3d vector)
+    /// <summary>
+    /// Performs vector transformations based on the object's origin.
+    /// </summary>
+    /// <param name="vector">Vector to transform.</param>
+    /// <returns>A transformed vector in respect to the object's origin.</returns>
+    protected Vector3 Transform(Vector3 vector)
     {
-        return new Vector3d(vector.X + Origin.X, vector.Y + Origin.Y, vector.Z + Origin.Z);
+        return vector + Origin;
     }
 }

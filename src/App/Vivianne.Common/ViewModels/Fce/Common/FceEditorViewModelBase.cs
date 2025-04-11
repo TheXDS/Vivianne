@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Numerics;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -203,6 +204,11 @@ public abstract class FceEditorViewModelBase<TState, TFile, TFceColor, THsbColor
         RenderTree = GetRenderTree(Parts.Where(p => p.IsVisible).Select(p => p.Part));
     }
 
+    /// <summary>
+    /// Gets the render tree to be used to represent the FCE model visually.
+    /// </summary>
+    /// <param name="visibleParts">Visible parts to be displayed.</param>
+    /// <returns></returns>
     protected abstract TFceRenderTree GetRenderTree(IEnumerable<TFcePart> visibleParts);
 
     private void SwitchToLod(FceLodPreset preset)
@@ -269,7 +275,7 @@ public abstract class FceEditorViewModelBase<TState, TFile, TFceColor, THsbColor
         if (((IEnumerable<float>)[xDiff, yDiff, zDiff]).AreZero()) return;
         foreach (var j in State.File.Parts)
         {
-            j.Origin = new Vector3d
+            j.Origin = new Vector3
             {
                 X = j.Origin.X - xDiff,
                 Y = j.Origin.Y - yDiff,
@@ -377,3 +383,9 @@ public abstract class FceRenderStateBase<TFcePart, TFceTriangle, TFceColor, THsb
     /// </summary>
     public TFceFile? FceFile { get; init; }
 }
+
+public interface IFceRenderStateBuilder<in TState>
+{
+    RenderState Build(TState state);
+}
+

@@ -1,6 +1,6 @@
-﻿using System.Windows.Media;
+﻿using System.Numerics;
+using System.Windows.Media;
 using System.Windows.Media.Media3D;
-using TheXDS.Vivianne.Models.Fce.Common;
 using TheXDS.Vivianne.Models.Fce.Nfs4;
 
 namespace TheXDS.Vivianne.ValueConverters;
@@ -35,7 +35,7 @@ public class Fce4RendererConverter : FceRendererConverterBase<FceRenderState, Fc
     }
 
     /// <inheritdoc/>
-    protected override Vector3d GetVector(FceRenderState render, FcePart part, int index)
+    protected override Vector3 GetVector(FceRenderState render, FcePart part, int index)
     {
         return render.ViewDamaged ? part.DamagedVertices[index] : part.Vertices[index];
     }

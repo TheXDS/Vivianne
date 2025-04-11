@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Numerics;
+using System.Runtime.InteropServices;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models.Fce.Common;
 using TheXDS.Vivianne.Models.Fce.Nfs4;
@@ -17,10 +18,10 @@ public class FceSerializer : ISerializer<FceFile>
     {
         using BinaryReader br = new(stream);
         var header = br.MarshalReadStruct<FceFileHeader>();
-        var vertices = br.MarshalReadArray<Vector3d>(header.VertexTblOffset + DataOffset, header.Vertices);
-        var damagedVertices = br.MarshalReadArray<Vector3d>(header.DamagedVertexTblOffset + DataOffset, header.Vertices);
-        var normals = br.MarshalReadArray<Vector3d>(header.NormalsTblOffset + DataOffset, header.Vertices);
-        var damagedNormals = br.MarshalReadArray<Vector3d>(header.DamagedNormalsTblOffset + DataOffset, header.Vertices);
+        var vertices = br.MarshalReadArray<Vector3>(header.VertexTblOffset + DataOffset, header.Vertices);
+        var damagedVertices = br.MarshalReadArray<Vector3>(header.DamagedVertexTblOffset + DataOffset, header.Vertices);
+        var normals = br.MarshalReadArray<Vector3>(header.NormalsTblOffset + DataOffset, header.Vertices);
+        var damagedNormals = br.MarshalReadArray<Vector3>(header.DamagedNormalsTblOffset + DataOffset, header.Vertices);
         var triangles = br.MarshalReadArray<FceTriangle>(header.TriangleTblOffset + DataOffset, header.Triangles);
         var data = new FceData(header, vertices, damagedVertices, normals, damagedNormals, triangles);
         return new FceFile()
@@ -32,8 +33,8 @@ public class FceSerializer : ISerializer<FceFile>
             YHalfSize = header.YHalfSize,
             ZHalfSize = header.ZHalfSize,
             RsvdTable1 = br.ReadBytesAt(header.Rsvd1Offset + DataOffset, header.Vertices * 32),
-            RsvdTable2 = br.ReadBytesAt(header.Rsvd2Offset + DataOffset, header.Vertices * Vector3d.SizeOf),
-            RsvdTable3 = br.ReadBytesAt(header.Rsvd3Offset + DataOffset, header.Vertices * Vector3d.SizeOf),
+            RsvdTable2 = br.ReadBytesAt(header.Rsvd2Offset + DataOffset, header.Vertices * Marshal.SizeOf<Vector3>()),
+            RsvdTable3 = br.ReadBytesAt(header.Rsvd3Offset + DataOffset, header.Vertices * Marshal.SizeOf<Vector3>()),
             RsvdTable4 = br.ReadBytesAt(header.Rsvd4Offset + DataOffset, header.Vertices * 4),
             RsvdTable5 = br.ReadBytesAt(header.Rsvd5Offset + DataOffset, header.Vertices * 4),
             RsvdTable6 = br.ReadBytesAt(header.Rsvd6Offset + DataOffset, header.Triangles * 12),
@@ -55,7 +56,6 @@ public class FceSerializer : ISerializer<FceFile>
     {
         throw new NotImplementedException();
     }
-
 
     private static FcePart LoadPart(FceData data, int index)
     {
@@ -84,5 +84,5 @@ public class FceSerializer : ISerializer<FceFile>
         return Enumerable.Range(0, data.Header.CarPartCount).Select(p => LoadPart(data, p));
     }
 
-    private readonly record struct FceData(in FceFileHeader Header, in Vector3d[] Vertices, in Vector3d[] DamagedVertices, in Vector3d[] Normals, in Vector3d[] DamagedNormals, in FceTriangle[] Triangles);
+    private readonly record struct FceData(in FceFileHeader Header, in Vector3[] Vertices, in Vector3[] DamagedVertices, in Vector3[] Normals, in Vector3[] DamagedNormals, in FceTriangle[] Triangles);
 }

@@ -1,4 +1,5 @@
-﻿using TheXDS.Vivianne.Models.Base;
+﻿using System.Numerics;
+using TheXDS.Vivianne.Models.Base;
 
 namespace TheXDS.Vivianne.Models.Fce.Common;
 
@@ -15,5 +16,5 @@ public class FceDummy : INameable
     /// <summary>
     /// Gets or sets the position of the FCE Dummy.
     /// </summary>
-    public Vector3d Position { get; set; }
+    public Vector3 Position { get; set; }
 }
