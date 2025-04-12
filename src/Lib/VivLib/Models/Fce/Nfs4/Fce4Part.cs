@@ -4,10 +4,9 @@ using TheXDS.Vivianne.Models.Fce.Common;
 namespace TheXDS.Vivianne.Models.Fce.Nfs4;
 
 /// <summary>
-/// Represents a single FCE part with all of its vertices, triangles, normals
-/// and Origin data.
+/// Represents a extended FCE part that includes additional data sets used by FCE4.
 /// </summary>
-public class FcePart : FcePartBase<FceTriangle>
+public class Fce4Part : FcePart
 {
     /// <summary>
     /// Gets or sets the collection of vertices associated to this FCE part.

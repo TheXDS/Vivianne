@@ -13,14 +13,14 @@ namespace TheXDS.Vivianne.ViewModels.Fce;
 /// <summary>
 /// ViewModel that allows the user to edit the color table in an FCE file.
 /// </summary>
-public class FceColorEditorViewModel : EditorViewModelBase<FceColorTableEditorState>
+public class FceColorEditorViewModel : EditorViewModelBase<Fce3ColorTableEditorState>
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="FceColorEditorViewModel"/>
     /// class.
     /// </summary>
     /// <param name="state">State to associate with this ViewModel.</param>
-    public FceColorEditorViewModel(FceColorTableEditorState state) : base(state)
+    public FceColorEditorViewModel(Fce3ColorTableEditorState state) : base(state)
     {
         AddNewColorCommand = new SimpleCommand(OnAddNewColor);
         RemoveColorCommand = new SimpleCommand(OnRemoveColor);

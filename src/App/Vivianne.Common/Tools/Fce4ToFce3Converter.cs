@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TheXDS.Ganymede.Services;
 using TheXDS.Ganymede.Types.Extensions;
+using TheXDS.Vivianne.Models.Fce.Common;
 using TheXDS.Vivianne.Resources;
 using TheXDS.Vivianne.Serializers;
 
@@ -28,7 +29,7 @@ public class Fce4ToFce3Converter : IVivianneTool
             Models.Fce.Nfs4.FceFile fce4File = await fce4Serializer.DeserializeAsync(Fce4Stream);
             Models.Fce.Nfs3.FceFile fce3File = new()
             {
-                Unk_0x0 = fce4File.Unk_0x0004,
+                Magic = fce4File.Unk_0x0004,
                 Arts = fce4File.Arts,
                 Dummies = fce4File.Dummies,
                 PrimaryColors = [.. fce4File.PrimaryColors.Select(ToNfs3Color)],
@@ -57,34 +58,15 @@ public class Fce4ToFce3Converter : IVivianneTool
         }
     }
 
-    private static Models.Fce.Nfs3.FcePart ToNfs3Parts(Models.Fce.Nfs4.FcePart part)
+    private static FcePart ToNfs3Parts(Models.Fce.Nfs4.Fce4Part part)
     {
-        return new Models.Fce.Nfs3.FcePart()
+        return new FcePart()
         {
             Name = part.Name,
             Normals = part.Normals,
             Origin = part.Origin,
-            Triangles = [.. part.Triangles.Select(ToNfs3Triangles)],
+            Triangles = [.. part.Triangles],
             Vertices = [.. part.Vertices]
-        };
-    }
-
-    private static Models.Fce.Nfs3.FceTriangle ToNfs3Triangles(Models.Fce.Nfs4.FceTriangle triangle)
-    {
-        return new Models.Fce.Nfs3.FceTriangle()
-        {
-            I1 = triangle.I1,
-            I2 = triangle.I2,
-            I3 = triangle.I3,
-            Flags = (Models.Fce.Nfs3.TriangleFlags)(((int)triangle.Flags) & 15),
-            TexturePage = triangle.TexturePage,
-            U1 = triangle.U1,
-            U2 = triangle.U2,
-            U3 = triangle.U3,
-            V1 = triangle.V1,
-            V2 = triangle.V2,
-            V3 = triangle.V3,
-            Unk_0x10 = triangle.Unk_0x10
         };
     }
 

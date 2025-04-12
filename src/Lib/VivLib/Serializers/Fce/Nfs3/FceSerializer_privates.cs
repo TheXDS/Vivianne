@@ -11,7 +11,7 @@ public partial class FceSerializer
     {
         return new FceFileHeader()
         {
-            Unk_0x0 = entity.Unk_0x0,
+            Unk_0x0 = entity.Magic,
             Triangles = entity.Parts.Sum(p => p.Triangles.Length),
             Vertices = entity.Parts.Sum(p => p.Vertices.Length),
             Arts = entity.Arts,

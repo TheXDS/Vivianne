@@ -162,6 +162,13 @@ public class Settings
     public bool Fce_ShadowByDefault { get; set; }
 
     /// <summary>
+    /// Gets or sets a value that indicates whether all compatible images in
+    /// the data store will be listed as textures or if only <c>.tga</c> files
+    /// will be listed.
+    /// </summary>
+    public bool Fce_EnumerateAllImages { get; set; }
+
+    /// <summary>
     /// Gets or sets a value that indicates the file sorting order for the VIV
     /// directory.
     /// </summary>

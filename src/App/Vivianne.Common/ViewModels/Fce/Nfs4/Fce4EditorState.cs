@@ -1,15 +1,19 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using TheXDS.MCART.Types;
+using TheXDS.Vivianne.Models.Base;
+using TheXDS.Vivianne.Models.Fce;
 using TheXDS.Vivianne.Models.Fce.Common;
+using TheXDS.Vivianne.Models.Fce.Nfs4;
 using TheXDS.Vivianne.ViewModels.Fce.Common;
 
-namespace TheXDS.Vivianne.Models.Fce.Nfs4;
+namespace TheXDS.Vivianne.ViewModels.Fce.Nfs4;
 
 /// <summary>
-/// Represents the FCE editor state.
+/// Represents the current state of the Fce3 editor.
 /// </summary>
-public class FceEditorState : FceEditorStateBase<FceFile, FceColor, HsbColor, FcePart, FceTriangle>
+public class Fce4EditorState : FceEditorStateBase<FceFile, FceColor, HsbColor, Fce4Part>
 {
     private bool _showDamagedModel;
 
@@ -18,7 +22,7 @@ public class FceEditorState : FceEditorStateBase<FceFile, FceColor, HsbColor, Fc
     {
         return [.. fce.PrimaryColors.Zip(fce.InteriorColors, fce.SecondaryColors).Zip(fce.DriverHairColors)
             .Select(p => new FceColor
-            { 
+            {
                 Name = p.First.First.ToString(),
                 PrimaryColor = p.First.First,
                 InteriorColor = p.First.Second,
@@ -32,7 +36,7 @@ public class FceEditorState : FceEditorStateBase<FceFile, FceColor, HsbColor, Fc
     /// damaged version of the FCE model.
     /// </summary>
     public bool ShowDamagedModel
-    { 
+    {
         get => _showDamagedModel;
         set => Change(ref _showDamagedModel, value);
     }

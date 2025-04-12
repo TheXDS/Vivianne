@@ -11,13 +11,14 @@ using TheXDS.Vivianne.Serializers.Fsh;
 using TheXDS.Vivianne.ViewModels;
 using TheXDS.Vivianne.ViewModels.Base;
 using TheXDS.Vivianne.ViewModels.Bnk;
+using TheXDS.Vivianne.ViewModels.Fce.Nfs3;
+using TheXDS.Vivianne.ViewModels.Fce.Nfs4;
 using MFce3 = TheXDS.Vivianne.Models.Fce.Nfs3;
 using MFce4 = TheXDS.Vivianne.Models.Fce.Nfs4;
-using VmFce3 = TheXDS.Vivianne.ViewModels.Fce.Nfs3.Fce3EditorViewModel;
-using VmFce4 = TheXDS.Vivianne.ViewModels.Fce.Nfs4.Fce4EditorViewModel;
 using SNfs3 = TheXDS.Vivianne.Serializers.Fce.Nfs3.FceSerializer;
 using SNfs4 = TheXDS.Vivianne.Serializers.Fce.Nfs4.FceSerializer;
-
+using VmFce3 = TheXDS.Vivianne.ViewModels.Fce.Nfs3.Fce3EditorViewModel;
+using VmFce4 = TheXDS.Vivianne.ViewModels.Fce.Nfs4.Fce4EditorViewModel;
 
 namespace TheXDS.Vivianne.Data;
 
@@ -108,9 +109,9 @@ internal static class ContentVisualizerConfiguration
     {
         if (knownFce4Headers.Any(data[0..4].SequenceEqual))
         {
-            return CreateEditorViewModel<VmFce4, MFce4.FceEditorState, MFce4.FceFile, SNfs4>(data, vm, name);
+            return CreateEditorViewModel<VmFce4, Fce4EditorState, MFce4.FceFile, SNfs4>(data, vm, name);
         }
-        return CreateEditorViewModel<VmFce3, MFce3.FceEditorState, MFce3.FceFile, SNfs3>(data, vm, name);
+        return CreateEditorViewModel<VmFce3, Fce3EditorState, MFce3.FceFile, SNfs3>(data, vm, name);
     }
 
     private static FshEditorViewModel? CreateFshEditorViewModel(byte[] data, VivEditorViewModel vm, string name)

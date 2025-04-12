@@ -11,7 +11,7 @@ namespace TheXDS.Vivianne.ViewModels.Fce.Common;
 /// material is a single textured diffuse map with semi-gloss effects applied.
 /// </remarks>
 [Flags]
-public enum MaterialFlags : byte
+public enum MaterialFlags
 {
     /// <summary>
     /// Default material. Rendered as semi-glossy, textured surface.
@@ -49,26 +49,32 @@ public enum MaterialFlags : byte
     /// <summary>
     /// Identifies the material as having no shading.
     /// </summary>
-    NoShading = 16,
+    NoShading = 0x010000,
 
     /// <summary>
     /// Identifies the material as including a red color channel component.
     /// </summary>
-    RedChannel = 32,
+    RedChannel = 0x020000,
 
     /// <summary>
     /// Identifies the material as including a green color channel component.
     /// </summary>
-    GreenChannel = 64,
+    GreenChannel = 0x040000,
 
     /// <summary>
     /// Identifies the material as including a blue color channel component.
     /// </summary>
-    BlueChannel = 128,
+    BlueChannel = 0x080000,
 
     /// <summary>
     /// Quick shortcut to indicate a white dummy with red, green and blue
     /// color components.
     /// </summary>
     WhiteDummy = NoShading | RedChannel | GreenChannel | BlueChannel,
+
+    /// <summary>
+    /// Identifies the mask used to extract extended material properties used
+    /// internally by Vivianne for rendering special objects, such as dummies.
+    /// </summary>
+    ExtendedMaterialProps = 0x7fff0000
 }

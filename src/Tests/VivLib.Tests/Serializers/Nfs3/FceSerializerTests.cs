@@ -12,7 +12,7 @@ public class FceSerializerTests() : SerializerTestsBase<FceSerializer, FceFile>(
 {
     private static FceFile GetDefaultFile() => new()
     {
-        Unk_0x0 = 0,
+        Magic = 0,
         Arts = 1,
         XHalfSize = 0.5f,
         YHalfSize = 0.5f,
@@ -252,7 +252,7 @@ public class FceSerializerTests() : SerializerTestsBase<FceSerializer, FceFile>(
     {
         Assert.Multiple(() =>
         {
-            Assert.That(actual.Unk_0x0, Is.EqualTo(expected.Unk_0x0));
+            Assert.That(actual.Magic, Is.EqualTo(expected.Magic));
             Assert.That(actual.Arts, Is.EqualTo(expected.Arts));
             Assert.That(actual.XHalfSize, Is.EqualTo(expected.XHalfSize));
             Assert.That(actual.YHalfSize, Is.EqualTo(expected.YHalfSize));

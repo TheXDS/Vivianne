@@ -13,7 +13,7 @@ namespace TheXDS.Vivianne.Models.Base;
 /// <typeparam name="T">
 /// Type for which this state represents an editor state.
 /// </typeparam>
-public abstract class   FileStateBase<T> : EditorViewModelStateBase, IFileState<T>
+public abstract class FileStateBase<T> : EditorViewModelStateBase, IFileState<T>
 {
     /// <inheritdoc/>
     public T File { get; init; } = default!;

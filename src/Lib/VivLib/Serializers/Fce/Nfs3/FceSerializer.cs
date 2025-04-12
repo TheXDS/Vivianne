@@ -48,7 +48,7 @@ public partial class FceSerializer : ISerializer<FceFile>
         var data = new FceData(header, vertices, normals, triangles);
         return new FceFile()
         {
-            Unk_0x0 = header.Unk_0x0,
+            Magic = header.Unk_0x0,
             Arts = header.Arts,
             XHalfSize = header.XHalfSize,
             YHalfSize = header.YHalfSize,

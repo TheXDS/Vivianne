@@ -1,7 +1,19 @@
 ﻿namespace TheXDS.Vivianne.Models.Fce.Common;
 
-public abstract class FceFileBase<TColor, TFcePart, TTriangle> where TColor : IHsbColor where TFcePart : FcePartBase<TTriangle> where TTriangle : IFceTriangle
+/// <summary>
+/// Base class for all FCE files independently of the game version.
+/// </summary>
+/// <typeparam name="TColor">
+/// Type definition for the colors inside the file.
+/// </typeparam>
+/// <typeparam name="TPart">Type definition for the FCE parts contained in the FCE file.</typeparam>
+public abstract class FceFileBase<TColor, TPart> : IFceFile<TPart> where TColor : IHsbColor where TPart : FcePart
 {
+    /// <summary>
+    /// Gets or sets the current magic header of the FCE file.
+    /// </summary>
+    public int Magic { get; set; }
+    
     /// <summary>
     /// Gets or sets a value that indicates the number of arts contained in the
     /// FCE file.
@@ -78,10 +90,10 @@ public abstract class FceFileBase<TColor, TFcePart, TTriangle> where TColor : IH
     /// </summary>
     /// <remarks>
     /// This table should never exceed <c>64</c>
-    /// <typeparamref name="TFcePart"/> elements.
+    /// <typeparamref name="TPart"/> elements.
     /// elements.
     /// </remarks>
-    public IList<TFcePart> Parts { get; set; } = [];
+    public IList<TPart> Parts { get; set; } = [];
 
     /// <summary>
     /// Gets a table containing all the Dummies.
@@ -100,7 +112,7 @@ public abstract class FceFileBase<TColor, TFcePart, TTriangle> where TColor : IH
     /// A part with the specified name, or <see langword="null"/> if no such
     /// part exists.
     /// </returns>
-    public TFcePart? GetPart(string partName) => Parts.FirstOrDefault(p => p.Name == partName);
+    public TPart? GetPart(string partName) => Parts.FirstOrDefault(p => p.Name == partName);
 
     /// <summary>
     /// Gets a dummy with the specified name.

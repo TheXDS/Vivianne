@@ -57,7 +57,7 @@ public class FceSerializer : ISerializer<FceFile>
         throw new NotImplementedException();
     }
 
-    private static FcePart LoadPart(FceData data, int index)
+    private static Fce4Part LoadPart(FceData data, int index)
     {
         return index < data.Header.CarPartCount ? new()
         {
@@ -79,7 +79,7 @@ public class FceSerializer : ISerializer<FceFile>
             .Select(p => new FceDummy() { Name = p.Second, Position = p.First });
     }
 
-    private static IEnumerable<FcePart> GetParts(FceData data)
+    private static IEnumerable<Fce4Part> GetParts(FceData data)
     {
         return Enumerable.Range(0, data.Header.CarPartCount).Select(p => LoadPart(data, p));
     }

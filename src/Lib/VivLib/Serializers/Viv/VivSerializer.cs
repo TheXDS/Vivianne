@@ -18,7 +18,7 @@ public class VivSerializer : ISerializer<VivFile>
     /// <summary>
     /// Gets or sets the directory sorting algorithm to use.
     /// </summary>
-    public Func<SortType> Sort { get; set; }
+    public Func<SortType>? Sort { get; set; }
 
     /// <inheritdoc/>
     public VivFile Deserialize(Stream stream)
@@ -117,7 +117,7 @@ public class VivSerializer : ISerializer<VivFile>
 
     private IEnumerable<KeyValuePair<string, (int offset, int length)>> ApplySort(IEnumerable<KeyValuePair<string, (int offset, int length)>> dir)
     {
-        return Sort() switch
+        return Sort?.Invoke() switch
         {
             SortType.FileName => dir.OrderBy(p => p.Key, StringComparer.InvariantCultureIgnoreCase),
             SortType.FileType => dir.OrderBy(p => Path.GetExtension(p.Key), StringComparer.InvariantCultureIgnoreCase).ThenBy(p => p.Key, StringComparer.InvariantCultureIgnoreCase),

@@ -6,6 +6,7 @@ using TheXDS.Vivianne.Extensions;
 using TheXDS.Vivianne.Models.Base;
 using TheXDS.Vivianne.Models.Fce.Nfs3;
 using TheXDS.Vivianne.ViewModels.Fce;
+using TheXDS.Vivianne.ViewModels.Fce.Nfs3;
 
 namespace TheXDS.Vivianne.Models;
 
@@ -13,12 +14,12 @@ namespace TheXDS.Vivianne.Models;
 /// Represents the state of the <see cref="FceColorEditorViewModel"/>.
 /// </summary>
 /// <param name="fce">FCE whose colors will be edited.</param>
-public class FceColorTableEditorState(FceEditorState fce) : EditorViewModelStateBase
+public class Fce3ColorTableEditorState(Fce3EditorState fce) : EditorViewModelStateBase
 {
     /// <summary>
     /// Gets a reference to the FCE file whose color table is being edited.
     /// </summary>
-    public FceEditorState Fce { get; } = fce;
+    public Fce3EditorState Fce { get; } = fce;
 
     /// <summary>
     /// Gets the collection of colors that are being edited on the FCE file.

@@ -21,7 +21,7 @@ public class Fce3InfoExtractor(bool humanSize, bool showRsvdContents) : IEntityI
     public string[] GetInfo(FceFile entity)
     {
         return [.. (string[])[
-            string.Format("File signature: 0x{0:x8}", entity.Unk_0x0),
+            string.Format("File signature: 0x{0:x8}", entity.Magic),
             string.Format("Number of arts: {0}", entity.Arts),
             string.Format("Bounding box size: X={0}, Y={1}, Z={2}", entity.XHalfSize * 2, entity.YHalfSize * 2, entity.ZHalfSize * 2),
             DumpTable(entity.RsvdTable1, "Reserved table 1"),

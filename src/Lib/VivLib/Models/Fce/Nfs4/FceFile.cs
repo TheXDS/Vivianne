@@ -5,13 +5,8 @@ namespace TheXDS.Vivianne.Models.Fce.Nfs4;
 /// <summary>
 /// Represents an FCE car model.
 /// </summary>
-public class FceFile : FceFileBase<HsbColor, FcePart, FceTriangle>
+public class FceFile : FceFileBase<HsbColor, Fce4Part>
 {
-    /// <summary>
-    /// Gets or sets the current magic header of the FCE file.
-    /// </summary>
-    public int Magic { get; set; }
-
     /// <summary>
     /// Gets or sets the unknown 0x0004 value.
     /// </summary>

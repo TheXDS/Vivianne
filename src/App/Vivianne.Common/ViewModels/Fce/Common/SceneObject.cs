@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Numerics;
+using TheXDS.Vivianne.Models.Fce.Common;
 
 namespace TheXDS.Vivianne.ViewModels.Fce.Common;
 
@@ -23,5 +24,5 @@ public sealed class SceneObject
     /// <summary>
     /// Gets all the defined triangles for the object.
     /// </summary>
-    public required IEnumerable<RenderTriangle> Triangles { get; init; }
+    public required IEnumerable<FceTriangle> Triangles { get; init; }
 }

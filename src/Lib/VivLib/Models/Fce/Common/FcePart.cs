@@ -7,7 +7,7 @@ namespace TheXDS.Vivianne.Models.Fce.Common;
 /// Represents a single FCE part with all of its vertices, triangles, normals
 /// and Origin data.
 /// </summary>
-public class FcePartBase<T> : INameable where T : IFceTriangle
+public class FcePart : INameable
 {
     /// <summary>
     /// Gets or sets the name of the FCE part.
@@ -39,7 +39,7 @@ public class FcePartBase<T> : INameable where T : IFceTriangle
     /// <summary>
     /// Gets or sets the collection of triangles associated to this FCE part.
     /// </summary>
-    public T[] Triangles { get; set; } = [];
+    public FceTriangle[] Triangles { get; set; } = [];
 
     /// <summary>
     /// Performs vector transformations based on the object's origin.
