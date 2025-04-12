@@ -26,7 +26,7 @@ public abstract class FceRenderStateBuilderBase<TState, TPart>
     /// </returns>
     public RenderState Build(TState state) => new()
     {
-        Objects = state.Parts.Select(ToSceneObject)
+        Objects = state.Parts.Select(p => ToSceneObject(state, p))
             .Concat(state.Dummies.Select(CreateDummy))
             .Append(CreateShadow(state)).NotNull(),
         Texture = state.SelectedTexture,
@@ -139,12 +139,13 @@ public abstract class FceRenderStateBuilderBase<TState, TPart>
     /// <summary>
     /// Converts an FCE part into a <see cref="SceneObject"/>.
     /// </summary>
+    /// <param name="state">FCE editor state data.</param>
     /// <param name="part">Part to be converted.</param>
     /// <returns>
     /// The converted part as a <see cref="SceneObject"/>, or
     /// <see langword="null"/> if the part was not visible in the render tree.
     /// </returns>
-    protected virtual SceneObject? ToSceneObject(FcePartListItem<TPart> part) => part.IsVisible ? new()
+    protected virtual SceneObject? ToSceneObject(TState state, FcePartListItem<TPart> part) => part.IsVisible ? new()
     {
         Normals = part.Part.Normals,
         Vertices = part.Part.TransformedVertices,

@@ -1,4 +1,5 @@
-﻿using TheXDS.Vivianne.Models.Fce.Nfs4;
+﻿using TheXDS.Vivianne.Models.Fce;
+using TheXDS.Vivianne.Models.Fce.Nfs4;
 using TheXDS.Vivianne.ViewModels.Fce.Common;
 
 namespace TheXDS.Vivianne.ViewModels.Fce.Nfs4;
@@ -24,6 +25,14 @@ public class Fce4RenderStateBuilder : FceRenderStateBuilderBase<Fce4EditorState,
             new(driverHair, new(0.6f,0.7f)),
         ] : null;
     }
+
+    /// <inheritdoc/>
+    protected override SceneObject? ToSceneObject(Fce4EditorState state, FcePartListItem<Fce4Part> part) => part.IsVisible ? new()
+    {
+        Normals = state.ShowDamagedModel ? part.Part.DamagedNormals : part.Part.Normals,
+        Vertices = state.ShowDamagedModel ? part.Part.TransformedDamagedVertices : part.Part.TransformedVertices,
+        Triangles = part.Part.Triangles
+    } : null;
 
     /// <inheritdoc/>
     protected override MaterialFlags InferMaterial(string dummyName)

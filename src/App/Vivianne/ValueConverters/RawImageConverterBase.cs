@@ -5,8 +5,8 @@ using System.IO;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using TheXDS.MCART.Helpers;
-using TheXDS.Vivianne.Models.Fce.Nfs3;
 using TheXDS.Vivianne.Models.Fsh;
+using TheXDS.Vivianne.ViewModels.Fce.Common;
 
 namespace TheXDS.Vivianne.ValueConverters;
 
@@ -35,7 +35,7 @@ public abstract class RawImageConverterBase
     /// surface, or <see langword="null"/> if the byte array could not be
     /// parsed as an image in any known format.
     /// </returns>
-    protected static BitmapSource? GetBitmap(byte[] value, FceColor? textureColor, bool enableAlpha = true)
+    protected static BitmapSource? GetBitmap(byte[] value, RenderColor[]? textureColor, bool enableAlpha = true)
     {
         if (value is null) return null;
         try
@@ -54,7 +54,7 @@ public abstract class RawImageConverterBase
         }
     }
 
-    private static BitmapSource ConvertImageToBitmapSource<T>(FshBlobFormat format, Image<T> image, FceColor? textureColor, bool enableAlpha) where T : unmanaged, IPixel<T>
+    private static BitmapSource ConvertImageToBitmapSource<T>(FshBlobFormat format, Image<T> image, RenderColor[]? textureColor, bool enableAlpha) where T : unmanaged, IPixel<T>
     {
         var width = image.Width;
         var height = image.Height;
@@ -73,7 +73,7 @@ public abstract class RawImageConverterBase
         return BitmapSource.Create(width, height, 96, 96, GetFormat(format), null, ms.ToArray(), width * (image.PixelType.BitsPerPixel / 8));
     }
 
-    private static ReadOnlyDictionary<FshBlobFormat, Func<object, FceColor?, bool, byte[]>> FshBlobToPixelWriter { get; } = new Dictionary<FshBlobFormat, Func<object, FceColor?, bool, byte[]>>()
+    private static ReadOnlyDictionary<FshBlobFormat, Func<object, RenderColor[]?, bool, byte[]>> FshBlobToPixelWriter { get; } = new Dictionary<FshBlobFormat, Func<object, RenderColor[]?, bool, byte[]>>()
     {
         { FshBlobFormat.Argb32,         GetColoredPixel  },
         { FshBlobFormat.Rgb24,          (c, f, _) => { var x = (Rgb24)c; return [x.B, x.G, x.R]; }},
@@ -86,20 +86,16 @@ public abstract class RawImageConverterBase
         { FshBlobFormat.Palette16,      (c, f, _) => { var x = (Bgr565)c; return BitConverter.GetBytes(x.PackedValue); }},
     }.AsReadOnly();
 
-    private static byte[] GetColoredPixel(object color, FceColor? carColor, bool enableAlpha)
+    private static byte[] GetColoredPixel(object color, RenderColor[]? carColor, bool enableAlpha)
     {
         var x = (Rgba32)color;
-        if (carColor is not null)
+        foreach (var c in carColor ?? [])
         {
-            var primary = carColor.PrimaryColor.ToRgba();
-            var secondary = carColor.SecondaryColor.ToRgba();
-            if (x.A.IsBetween<byte>(30, 120))
+            if ((x.A / 255f).IsBetween(c.AlphaRange.Minimum, c.AlphaRange.Maximum))
             {
-                return [(byte)(x.B * (primary.B / 255.0)), (byte)(x.G * (primary.G / 255.0)), (byte)(x.R * (primary.R / 255.0)), 255];
-            }
-            else if (x.A.IsBetween<byte>(120, 220))
-            {
-                return [(byte)(x.B * (secondary.B / 255.0)), (byte)(x.G * (secondary.G / 255.0)), (byte)(x.R * (secondary.R / 255.0)), 255];
+                // Yes, both NFS3 and NFS4 support alpha for the car colors, but they don't use it.
+                var (R, G, B, _) = c.Color.ToRgba();
+                return [(byte)(x.B * (B / 255.0)), (byte)(x.G * (G / 255.0)), (byte)(x.R * (R / 255.0)), 255];
             }
         }
         return [x.B, x.G, x.R, enableAlpha ? x.A : (byte)255];

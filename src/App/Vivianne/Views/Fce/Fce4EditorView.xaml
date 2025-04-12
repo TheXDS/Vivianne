@@ -16,7 +16,7 @@
     x:Name="pgRoot"
     d:DesignHeight="500" d:DesignWidth="500">
     <UserControl.Resources>
-        <vc:Fce4RendererConverter x:Key="fcevm2mesh"/>
+        <vc:FceRendererConverter x:Key="fcevm2mesh"/>
         <vc:FceColorToBrushConverter x:Key="dc2bc"/>
     </UserControl.Resources>
     <DockPanel>
@@ -26,15 +26,15 @@
                     hlp:Form.Label="{x:Static st:FceEditorView.Texture}"
                     MinWidth="150"
                     Margin="5"
-                    ItemsSource="{Binding CarTextures, Mode=OneWay}"
+                    ItemsSource="{Binding State.CarTextures, Mode=OneWay}"
                     SelectedValuePath="Value"
                     DisplayMemberPath="Name"
-                    SelectedValue="{Binding SelectedCarTexture}"/>
+                    SelectedValue="{Binding State.SelectedTexture}"/>
                 <ComboBox
                     hlp:Form.Label="{x:Static st:FceEditorView.Color}"
                     Width="230"
                     Margin="5"
-                    SelectedValue="{Binding SelectedColor}"
+                    SelectedValue="{Binding State.SelectedColor}"
                     ItemsSource="{Binding State.Colors, Mode=OneWay}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
@@ -66,7 +66,7 @@
                 <Viewport3D.Camera>
                     <PerspectiveCamera x:Name="ptcMain" UpDirection="1,0,0" LookDirection="-30,50,50" Position="30,-50,-50"/>
                 </Viewport3D.Camera>
-                <ModelVisual3D Content="{Binding RenderTree, Mode=OneWay, Converter={StaticResource fcevm2mesh}}"/>
+                <ModelVisual3D Content="{Binding State.RenderTree, Mode=OneWay, Converter={StaticResource fcevm2mesh}}"/>
             </Viewport3D>
             <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
                 <StackPanel>
@@ -76,21 +76,21 @@
                                 hlp:Form.Label="Preset"
                                 Margin="0,0,0,10"
                                 IsEditable="False"
-                                SelectedItem="{Binding FceLodPreset}"
+                                SelectedItem="{Binding State.FceLodPreset}"
                                 ItemsSource="{ct:EnumValProvider EnumType={x:Type mdl:FceLodPreset}}"/>
-                            <CheckBox Content="Car shadow" IsChecked="{Binding RenderShadow}" />
+                            <CheckBox Content="Car shadow" IsChecked="{Binding State.RenderShadow}" />
                             <CheckBox Content="Damaged model" IsChecked="{Binding State.ShowDamagedModel}" />
                         </StackPanel>
                     </Expander>
                     <Expander Margin="10,0" IsExpanded="True" Header="Tools">
                         <StackPanel>
-                            <Button Margin="5" HorizontalAlignment="Stretch" Command="{Binding ColorEditorCommand, Mode=OneWay}" Content="{x:Static st:FceEditorView.EditColors}"/>
+                            <!--<Button Margin="5" HorizontalAlignment="Stretch" Command="{Binding ColorEditorCommand, Mode=OneWay}" Content="{x:Static st:FceEditorView.EditColors}"/>-->
                             <Button Margin="5" HorizontalAlignment="Stretch" Command="{Binding FceCenterCommand, Mode=OneWay}" Content="Fce Center"/>
                         </StackPanel>
                     </Expander>
                     <Expander Margin="10" IsExpanded="True" Header="Parts">
                         <ItemsControl
-                            ItemsSource="{Binding Parts, Mode=OneWay}">
+                            ItemsSource="{Binding State.Parts, Mode=OneWay}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <DockPanel>
@@ -122,7 +122,9 @@
                                             BorderThickness="0"
                                             DockPanel.Dock="Right"
                                             ToolTip="{x:Static st:FceEditorView.Rename}">✏️</Button>
-                                        <TextBlock Text="{Binding Name, Mode=OneWay}" Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"/>
+                                        <CheckBox IsChecked="{Binding IsVisible}" Style="{StaticResource ToggleSwitch}">
+                                            <TextBlock Text="{Binding Part.Name, Mode=OneWay}" Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"/>
+                                        </CheckBox>
                                     </DockPanel>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>

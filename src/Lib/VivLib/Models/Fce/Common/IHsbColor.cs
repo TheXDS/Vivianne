@@ -25,4 +25,10 @@ public interface IHsbColor
     /// Gets the saturation value for the color.
     /// </summary>
     byte Saturation { get; }
+
+    /// <summary>
+    /// Converts a <see cref="HsbColor"/> instance to RGBA color space.
+    /// </summary>
+    /// <returns>A tuple of the RGBA components of this color.</returns>
+    (int R, int G, int B, int A) ToRgba();
 }
