@@ -112,6 +112,8 @@ public abstract class FceRenderStateBuilderBase<TState, TPart>
         var sizeVector = new Vector3(size);
         return
         [
+#if NET9_0_OR_GREATER
+            // These FMA calls are hardware accelerated in .NET 9 and later.
             Vector3.FusedMultiplyAdd(new Vector3( 1,  1,  1), sizeVector, location),
             Vector3.FusedMultiplyAdd(new Vector3( 1,  1, -1), sizeVector, location),
             Vector3.FusedMultiplyAdd(new Vector3( 1, -1,  1), sizeVector, location),
@@ -120,6 +122,17 @@ public abstract class FceRenderStateBuilderBase<TState, TPart>
             Vector3.FusedMultiplyAdd(new Vector3(-1,  1, -1), sizeVector, location),
             Vector3.FusedMultiplyAdd(new Vector3(-1, -1,  1), sizeVector, location),
             Vector3.FusedMultiplyAdd(new Vector3(-1, -1, -1), sizeVector, location),
+#else
+            // .NET 8 and earlier did not support hardware-accelerated FMA.
+            (new Vector3( 1,  1,  1) * sizeVector) + location,
+            (new Vector3( 1,  1, -1) * sizeVector) + location,
+            (new Vector3( 1, -1,  1) * sizeVector) + location,
+            (new Vector3( 1, -1, -1) * sizeVector) + location,
+            (new Vector3(-1,  1,  1) * sizeVector) + location,
+            (new Vector3(-1,  1, -1) * sizeVector) + location,
+            (new Vector3(-1, -1,  1) * sizeVector) + location,
+            (new Vector3(-1, -1, -1) * sizeVector) + location,
+#endif
         ];
     }
 
