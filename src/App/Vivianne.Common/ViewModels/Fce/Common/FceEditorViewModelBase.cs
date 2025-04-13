@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
@@ -125,6 +126,7 @@ public abstract class FceEditorViewModelBase<TState, TFile, TFceColor, THsbColor
         ObserveCollection(State.Dummies);
         ObserveCollection(State.Parts);
         State.UnsavedChanges = false;
+        State.Subscribe(OnVisibleChanged);
         await base.OnCreated();
     }
 
@@ -142,7 +144,9 @@ public abstract class FceEditorViewModelBase<TState, TFile, TFceColor, THsbColor
     private void OnVisibleChanged(object? instance, PropertyInfo? property, PropertyChangeNotificationType notificationType)
     {
         if (!_refreshEnabled) return;
+        _refreshEnabled = false;
         State.RenderTree = _render.Build(State);
+        _refreshEnabled = true;
     }
 
     private void SwitchToLod(FceLodPreset preset)
@@ -187,12 +191,16 @@ public abstract class FceEditorViewModelBase<TState, TFile, TFceColor, THsbColor
         OnVisibleChanged();
     }
 
-    private void ObserveCollection(INotifyCollectionChanged collection)
+    private void ObserveCollection<T>(ObservableCollection<FcePartListItem<T>> collection)
     {
+        foreach (var j in collection)
+        {
+            j.Subscribe(() => j.IsVisible, OnVisibleChanged);
+        }
         collection.CollectionChanged += (_, e) =>
         {
-            if (e.OldItems is not null) foreach (var j in e.OldItems.Cast<FcePartListItem<TFcePart>>()) j.Unsubscribe(() => j.IsVisible);
-            if (e.NewItems is not null) foreach (var j in e.NewItems.Cast<FcePartListItem<TFcePart>>()) j.Subscribe(() => j.IsVisible, OnVisibleChanged);
+            if (e.OldItems is not null) foreach (var j in e.OldItems.Cast<FcePartListItem<T>>()) j.Unsubscribe(() => j.IsVisible);
+            if (e.NewItems is not null) foreach (var j in e.NewItems.Cast<FcePartListItem<T>>()) j.Subscribe(() => j.IsVisible, OnVisibleChanged);
         };
     }
 

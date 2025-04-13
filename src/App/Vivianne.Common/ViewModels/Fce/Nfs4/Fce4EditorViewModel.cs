@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using TheXDS.Vivianne.Models.Fce;
 using TheXDS.Vivianne.Models.Fce.Nfs4;
 using TheXDS.Vivianne.ViewModels.Fce.Common;
@@ -26,6 +27,13 @@ public class Fce4EditorViewModel : FceEditorViewModelBase<
         { FceLodPreset.Low, [":LB"] },
         { FceLodPreset.Tiny, [":TB"] },
     }.AsReadOnly();
+
+    /// <inheritdoc/>
+    protected override Task OnCreated()
+    {
+        State.SelectedColor = State.Colors.FirstOrDefault();
+        return base.OnCreated();
+    }
 
     /// <inheritdoc/>
     protected override void OnSwitchToLod(FceLodPreset preset)

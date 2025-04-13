@@ -101,7 +101,7 @@ public class FceRendererConverter : IOneWayValueConverter<RenderState?, Model3DG
                 flipU = tgaHeader.Value.ImageInfo.XOrigin != 0;
                 flipV = tgaHeader.Value.ImageInfo.YOrigin == 0;
 
-                if (tgaHeader.Value.ImageInfo.PixelFormatDescriptor == 40)
+                if (((byte[])[40, 8]).Contains(tgaHeader.Value.ImageInfo.PixelFormatDescriptor))
                 {
                     flipU ^= flipU;
                     flipV ^= flipV;
