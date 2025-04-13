@@ -149,7 +149,7 @@ public abstract class FceRenderStateBuilderBase<TState, TPart>
     {
         Normals = part.Part.Normals,
         Vertices = part.Part.TransformedVertices,
-        Triangles = part.Part.Triangles
+        Triangles = [.. part.Part.Triangles.Select(NormalizeMaterial)]
     } : null;
 
     /// <summary>
@@ -171,4 +171,29 @@ public abstract class FceRenderStateBuilderBase<TState, TPart>
 
         // TODO: add more faces
     ];
+
+    /// <summary>
+    /// Creates a copy of the triangle normalizing its material flags for
+    /// rendering.
+    /// </summary>
+    /// <param name="triangle">Triangle to normalize.</param>
+    /// <returns>
+    /// A triangle with the same data as the original, but with its flags
+    /// masked to expose only those which affect material selection.
+    /// </returns>
+    protected static FceTriangle NormalizeMaterial(FceTriangle triangle) => new()
+    {
+        I1 = triangle.I1,
+        I2 = triangle.I2,
+        I3 = triangle.I3,
+        Flags = triangle.Flags & (int)MaterialFlags.FceMaterialMask,
+        TexturePage = triangle.TexturePage,
+        U1 = triangle.U1,
+        U2 = triangle.U2,
+        U3 = triangle.U3,
+        V1 = triangle.V1,
+        V2 = triangle.V2,
+        V3 = triangle.V3,
+        Unk_0x10 = triangle.Unk_0x10,
+    };
 }

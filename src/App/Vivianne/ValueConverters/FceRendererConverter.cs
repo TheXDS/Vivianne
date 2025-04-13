@@ -41,6 +41,21 @@ public class FceRendererConverter : IOneWayValueConverter<RenderState?, Model3DG
         { MaterialFlags.Semitrans | MaterialFlags.Matte | MaterialFlags.NoCulling, (new DiffuseMaterial(semiBrush), true) },
         { MaterialFlags.Semitrans | MaterialFlags.High, (CreateMaterialGroup(semiBrush, 1), false) },
         { MaterialFlags.Semitrans | MaterialFlags.High | MaterialFlags.NoCulling, (CreateMaterialGroup(semiBrush, 1), true) },
+        { MaterialFlags.NoShading, (new DiffuseMaterial(Brushes.Black){ AmbientColor = Colors.Black }, false)},
+        { MaterialFlags.RedChannel, (new DiffuseMaterial(Brushes.Red), false)},
+        { MaterialFlags.GreenChannel, (new DiffuseMaterial(Brushes.Green), false)},
+        { MaterialFlags.BlueChannel, (new DiffuseMaterial(Brushes.Blue), false)},
+        { MaterialFlags.RedChannel | MaterialFlags.GreenChannel, (new DiffuseMaterial(Brushes.Yellow), false)},
+        { MaterialFlags.RedChannel | MaterialFlags.BlueChannel, (new DiffuseMaterial(Brushes.Magenta), false)},
+        { MaterialFlags.GreenChannel | MaterialFlags.BlueChannel, (new DiffuseMaterial(Brushes.Cyan), false)},
+        { MaterialFlags.RedChannel | MaterialFlags.GreenChannel | MaterialFlags.BlueChannel, (new DiffuseMaterial(Brushes.White), false)},
+        { MaterialFlags.NoShading | MaterialFlags.RedChannel, (new EmissiveMaterial(Brushes.Red), false)},
+        { MaterialFlags.NoShading | MaterialFlags.GreenChannel, (new EmissiveMaterial(Brushes.Green), false)},
+        { MaterialFlags.NoShading | MaterialFlags.BlueChannel, (new EmissiveMaterial(Brushes.Blue), false)},
+        { MaterialFlags.NoShading | MaterialFlags.RedChannel | MaterialFlags.GreenChannel, (new EmissiveMaterial(Brushes.Yellow), false)},
+        { MaterialFlags.NoShading | MaterialFlags.RedChannel | MaterialFlags.BlueChannel, (new EmissiveMaterial(Brushes.Magenta), false)},
+        { MaterialFlags.NoShading | MaterialFlags.GreenChannel | MaterialFlags.BlueChannel, (new EmissiveMaterial(Brushes.Cyan), false)},
+        { MaterialFlags.WhiteDummy, (new EmissiveMaterial(Brushes.White), false)},
     }.AsReadOnly();
 
     private static Point3D Vector3ToPoint3D(Vector3 vertex)
@@ -185,7 +200,10 @@ public class FceRendererConverter : IOneWayValueConverter<RenderState?, Model3DG
         {
             foreach (var part in value.Objects)
             {
-                group.Children.Add(new GeometryModel3D(FcePartToGeometry(part, flipU, flipV, flags), material) { BackMaterial = noCulling ? material : null });
+                if (FcePartToGeometry(part, flipU, flipV, flags) is { } geometry)
+                {
+                    group.Children.Add(new GeometryModel3D(geometry, material) { BackMaterial = noCulling ? material : null });
+                }
             }
         }
         return group;

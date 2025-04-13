@@ -1,4 +1,5 @@
-﻿using TheXDS.Vivianne.Models.Fce;
+﻿using System.Linq;
+using TheXDS.Vivianne.Models.Fce;
 using TheXDS.Vivianne.Models.Fce.Nfs4;
 using TheXDS.Vivianne.ViewModels.Fce.Common;
 
@@ -18,7 +19,7 @@ public class Fce4RenderStateBuilder : FceRenderStateBuilderBase<Fce4EditorState,
             InteriorColor: { } interior,
             SecondaryColor: { } secondary,
             DriverHairColor: { } driverHair,
-        } ? (RenderColor[]) [
+        } ? (RenderColor[])[
             new(primary, new(0.3f,0.4f)),
             new(interior, new(0.4f,0.5f)),
             new(secondary, new(0.5f,0.6f)),
@@ -31,7 +32,7 @@ public class Fce4RenderStateBuilder : FceRenderStateBuilderBase<Fce4EditorState,
     {
         Normals = state.ShowDamagedModel ? part.Part.DamagedNormals : part.Part.Normals,
         Vertices = state.ShowDamagedModel ? part.Part.TransformedDamagedVertices : part.Part.TransformedVertices,
-        Triangles = part.Part.Triangles
+        Triangles = [.. part.Part.Triangles.Select(NormalizeMaterial)]
     } : null;
 
     /// <inheritdoc/>
