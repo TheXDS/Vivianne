@@ -51,7 +51,7 @@ public abstract class FceEditorStateBase<TFceFile, TFceColor, THsbColor, TFcePar
     public ObservableCollection<FcePartListItem<FceDummy>> Dummies => _dummies ??= [.. GetListItem(File.Dummies)];
 
     /// <summary>
-    /// Gets a collection of all available parts from the FCE file.
+    /// Gets a collection of all available elements from the FCE file.
     /// </summary>
     public ObservableCollection<FcePartListItem<TFcePart>> Parts => _parts ??= [.. GetListItem(File.Parts)];
 
@@ -110,15 +110,22 @@ public abstract class FceEditorStateBase<TFceFile, TFceColor, THsbColor, TFcePar
         set => Change(ref _renderTree, value);
     }
 
-    IEnumerable<FcePartListItem<TFcePart>> IFceEditorState<TFcePart>.Parts => Parts;
-
-    IEnumerable<FcePartListItem<FceDummy>> IFceEditorState<TFcePart>.Dummies => Dummies;
-
     /// <inheritdoc/>
     public Vector3 HalfSize => new(File.YHalfSize, File.ZHalfSize, File.XHalfSize);
 
-    protected static IEnumerable<FcePartListItem<T>> GetListItem<T>(IList<T> parts)
+    /// <summary>
+    /// Builds a hideable list for object lists where each element may be
+    /// hidden from view.
+    /// </summary>
+    /// <typeparam name="T">Type of elements to expose.</typeparam>
+    /// <param name="elements">original element list.</param>
+    /// <returns></returns>
+    protected static IEnumerable<FcePartListItem<T>> GetListItem<T>(IList<T> elements)
     {
-        return parts.Select(p => new FcePartListItem<T>(p));
+        return elements.Select(p => new FcePartListItem<T>(p));
     }
+
+    IEnumerable<FcePartListItem<TFcePart>> IFceEditorState<TFcePart>.Parts => Parts;
+
+    IEnumerable<FcePartListItem<FceDummy>> IFceEditorState<TFcePart>.Dummies => Dummies;
 }

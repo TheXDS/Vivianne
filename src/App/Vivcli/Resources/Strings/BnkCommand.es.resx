@@ -123,4 +123,7 @@
   <data name="Arg1Description" xml:space="preserve">
     <value>Ruta al archivo BNK</value>
   </data>
+  <data name="Description" xml:space="preserve">
+    <value>Ejecuta operaciones sobre archivos BNK.</value>
+  </data>
 </root>

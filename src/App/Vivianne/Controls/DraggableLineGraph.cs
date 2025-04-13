@@ -44,6 +44,9 @@ public class DraggableLineGraph : Control
     /// </summary>
     public static readonly DependencyProperty TitleProperty;
 
+    /// <summary>
+    /// Identifies the <see cref="PointsBrush"/> dependency property.
+    /// </summary>
     public static readonly DependencyProperty PointsBrushProperty;
 
     /// <summary>
@@ -141,6 +144,10 @@ public class DraggableLineGraph : Control
         get => (CornerRadius)GetValue(CornerRadiusProperty);
         set => SetValue(CornerRadiusProperty, value);
     }
+
+    /// <summary>
+    /// Gets or sets the brush to use when drawing the points on the graph.
+    /// </summary>
     public Brush PointsBrush
     {
         get => (Brush)GetValue(PointsBrushProperty);
@@ -218,12 +225,12 @@ public class DraggableLineGraph : Control
             e.MouseDown -= PointTick_MouseDown;
         }
         pointTicks.Clear();
-        Point[] points = ItemsSource.WithIndex().Select(p => CalculatePosition(p.index, p.element)).ToArray();
+        Point[] points = [.. ItemsSource.WithIndex().Select(p => CalculatePosition(p.index, p.element))];
         Polyline polyline = new()
         {
             Stroke = Brushes.Gray,
             StrokeThickness = 2,
-            Points = new PointCollection(points)
+            Points = [.. points]
         };
         canvas.Children.Add(polyline);
         foreach ((var position, var value) in points.Zip(ItemsSource))

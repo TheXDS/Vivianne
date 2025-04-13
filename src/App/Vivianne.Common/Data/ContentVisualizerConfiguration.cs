@@ -2,6 +2,7 @@
 using System.Linq;
 using TheXDS.Ganymede.Types.Base;
 using TheXDS.Vivianne.Component;
+using TheXDS.Vivianne.Info;
 using TheXDS.Vivianne.Models.Bnk;
 using TheXDS.Vivianne.Models.Fe;
 using TheXDS.Vivianne.Models.Fsh;
@@ -46,7 +47,6 @@ internal static class ContentVisualizerConfiguration
         yield return new(".bmp", CreateTexturePreviewViewModel);
         yield return new(".gif", CreateTexturePreviewViewModel);
 
-        // FSH/QFS need to be properly decoded before displaying - do not use TexturePreviewViewModel.
         yield return new(".fsh", CreateFshEditorViewModel);
         yield return new(".qfs", CreateFshEditorViewModel);
 
@@ -70,26 +70,22 @@ internal static class ContentVisualizerConfiguration
 
     private static IViewModel? CreateFeDataEditorViewModel(byte[] data, VivEditorViewModel vm, string name)
     {
-        if (data[0] == 4)
+        return VersionIdentifier.FeDataVersion(data) switch
         {
-            return CreateEditorViewModel<FeData4EditorViewModel, FeData4EditorState, Models.Fe.Nfs4.FeData, Serializers.Fe.Nfs4.FeDataSerializer>(data, vm, name);
-        }
-        else
-        {
-            return CreateEditorViewModel<FeData3EditorViewModel, FeData3EditorState, Models.Fe.Nfs3.FeData, Serializers.Fe.Nfs3.FeDataSerializer>(data, vm, name);
-        }
+            NfsVersion.Nfs3 => CreateEditorViewModel<FeData3EditorViewModel, FeData3EditorState, Models.Fe.Nfs3.FeData, Serializers.Fe.Nfs3.FeDataSerializer>(data, vm, name),
+            NfsVersion.Nfs4 =>CreateEditorViewModel<FeData4EditorViewModel, FeData4EditorState, Models.Fe.Nfs4.FeData, Serializers.Fe.Nfs4.FeDataSerializer>(data, vm, name),
+            _ => null
+        };
     }
 
     private static IViewModel? CreateCarpEditorViewModel(byte[] data, VivEditorViewModel vm, string name)
     {
-        if (System.Text.Encoding.Latin1.GetString(data).Contains("understeer gradient(80)"))
+        return VersionIdentifier.CarpVersion(data) switch
         {
-            return CreateEditorViewModel<ViewModels.Carp.Nfs4.CarpEditorViewModel, Models.Carp.Nfs4.CarpEditorState, Models.Carp.Nfs4.CarPerf, Serializers.Carp.Nfs4.CarpSerializer>(data, vm, name);
-        }
-        else
-        {
-            return CreateEditorViewModel<ViewModels.Carp.Nfs3.CarpEditorViewModel, Models.Carp.Nfs3.CarpEditorState, Models.Carp.Nfs3.CarPerf, Serializers.Carp.Nfs3.CarpSerializer>(data, vm, name);
-        }
+            NfsVersion.Nfs3 => CreateEditorViewModel<ViewModels.Carp.Nfs3.CarpEditorViewModel, Models.Carp.Nfs3.CarpEditorState, Models.Carp.Nfs3.CarPerf, Serializers.Carp.Nfs3.CarpSerializer>(data, vm, name),
+            NfsVersion.Nfs4 => CreateEditorViewModel<ViewModels.Carp.Nfs4.CarpEditorViewModel, Models.Carp.Nfs4.CarpEditorState, Models.Carp.Nfs4.CarPerf, Serializers.Carp.Nfs4.CarpSerializer>(data, vm, name),
+            _ => null
+        };
     }
 
     private static TexturePreviewViewModel CreateTexturePreviewViewModel(byte[] data, VivEditorViewModel vm, string name)
@@ -97,21 +93,14 @@ internal static class ContentVisualizerConfiguration
         return new(data) { Title = name };
     }
 
-    private static readonly byte[][] knownFce4Headers =
-    [
-        [0x00, 0x10, 0x10, 0x14],
-        [0x00, 0x10, 0x10, 0x15],
-        [0x14, 0x10, 0x10, 0x00],
-        [0x15, 0x10, 0x10, 0x00],
-    ];
-
     private static IViewModel? CreateFceEditorViewModel(byte[] data, VivEditorViewModel vm, string name)
     {
-        if (knownFce4Headers.Any(data[0..4].SequenceEqual))
+        return VersionIdentifier.FceVersion(data) switch
         {
-            return CreateEditorViewModel<VmFce4, Fce4EditorState, MFce4.FceFile, SNfs4>(data, vm, name);
-        }
-        return CreateEditorViewModel<VmFce3, Fce3EditorState, MFce3.FceFile, SNfs3>(data, vm, name);
+            NfsVersion.Nfs3 => CreateEditorViewModel<VmFce3, Fce3EditorState, MFce3.FceFile, SNfs3>(data, vm, name),
+            NfsVersion.Nfs4 or NfsVersion.Mco=> CreateEditorViewModel<VmFce4, Fce4EditorState, MFce4.FceFile, SNfs4>(data, vm, name),            
+            _ => null
+        };
     }
 
     private static FshEditorViewModel? CreateFshEditorViewModel(byte[] data, VivEditorViewModel vm, string name)

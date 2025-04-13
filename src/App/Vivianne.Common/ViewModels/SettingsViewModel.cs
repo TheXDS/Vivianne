@@ -65,11 +65,11 @@ public class SettingsViewModel : EditorViewModelBase<SettingsState>
     {
         var recentVivFiles = Settings.Current.RecentVivFiles;
         var recentFshFiles = Settings.Current.RecentFshFiles;
-        var recentFce3Files = Settings.Current.RecentFce3Files;
+        var recentFce3Files = Settings.Current.RecentFceFiles;
         Settings.Current = State;
         Settings.Current.RecentVivFiles = recentVivFiles;
         Settings.Current.RecentFshFiles = recentFshFiles;
-        Settings.Current.RecentFce3Files = recentFce3Files;
+        Settings.Current.RecentFceFiles = recentFce3Files;
         return Settings.Save();
     }
 }

@@ -33,7 +33,11 @@ public abstract class FileEditorViewModelLauncher<TState, TFile, TSerializer, TE
     where TSerializer : ISerializer<TFile>, new()
     where TEditor : IFileEditorViewModel<TState, TFile>, new()
 {
-    protected static readonly TSerializer _serializer = new();
+    /// <summary>
+    /// Gets a reference to the serializer used to serialize and deserialize files of type <typeparamref name="TFile"/>.
+    /// </summary>
+    protected static readonly TSerializer Serializer = new();
+
     private readonly IEnumerable<FileFilterItem> _openFilter;
     private readonly IEnumerable<FileFilterItem> _saveFilter;
     private readonly Func<IDialogService> _dialogSvc;
@@ -110,7 +114,7 @@ public abstract class FileEditorViewModelLauncher<TState, TFile, TSerializer, TE
     public async Task OnOpen(object? parameter)
     {
         if (await GetFilePath(parameter, [], _openFilter) is not string filePath) return;
-        var file = await _serializer.DeserializeAsync(File.OpenRead(filePath));
+        var file = await Serializer.DeserializeAsync(File.OpenRead(filePath));
         var recentFile = CreateRecentFileInfo(filePath, file);
         RecentFiles = Settings.Current.RecentFilesCount > 0 ? [recentFile, .. (RecentFiles?.Where(p => p.FilePath != filePath) ?? []).Take(Settings.Current.RecentFilesCount - 1)] : [];
         Notify(nameof(RecentFiles));
@@ -141,21 +145,6 @@ public abstract class FileEditorViewModelLauncher<TState, TFile, TSerializer, TE
             FilePath = path,
             FriendlyName = Path.GetFileName(path),
         };
-    }
-
-    /// <summary>
-    /// When overriden in a derived class, allows for final adjustments to be
-    /// performed on the file to be saved right before commiting the changes to
-    /// disk.
-    /// </summary>
-    /// <param name="file">File to be saved.</param>
-    /// <param name="filePath">Path in which the file will be saved.</param>
-    protected virtual void BeforeSave(TFile file, string filePath)
-    {
-        if (Settings.Current.AutoBackup)
-        {
-            FileBackup.Create(filePath);
-        }
     }
 
     private void OnNew(object? parameter)

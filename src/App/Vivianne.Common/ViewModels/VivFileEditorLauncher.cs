@@ -21,7 +21,7 @@ public class VivFileEditorLauncher : FileEditorViewModelLauncher<VivEditorState,
     /// </summary>
     public VivFileEditorLauncher(Func<IDialogService> dialogSvc) : base(dialogSvc, "VIV", FileFilters.VivFileFilter)
     {
-        _serializer.Sort = () => Settings.Current.Viv_FileSorting;
+        Serializer.Sort = () => Settings.Current.Viv_FileSorting;
     }
 
     /// <inheritdoc/>

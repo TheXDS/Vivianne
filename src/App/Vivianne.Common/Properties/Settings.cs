@@ -70,7 +70,7 @@ public class Settings
     {
         RecentVivFiles = [];
         RecentFshFiles = [];
-        RecentFce3Files = [];
+        RecentFceFiles = [];
         RecentFilesCount = 10;
         Viv_FileSorting = SortType.FileKind;
         Fce_ShadowByDefault = true;
@@ -91,7 +91,7 @@ public class Settings
     /// <summary>
     /// Gets or sets the list of recent FCE3 files.
     /// </summary>
-    public RecentFileInfo[] RecentFce3Files { get; set; }
+    public RecentFileInfo[] RecentFceFiles { get; set; }
 
     /// <summary>
     /// Gets or sets the path to the NFS3 main directory.
@@ -105,6 +105,17 @@ public class Settings
     public string? Nfs3LaunchArgs { get; set; }
 
     /// <summary>
+    /// Gets or sets the path to the NFS4 main directory.
+    /// </summary>
+    public string? Nfs4Path { get; set; }
+
+    /// <summary>
+    /// Gets or sets a string with the command line arguments to pass onto
+    /// <c>nfs4.exe</c> upon invocation.
+    /// </summary>
+    public string? Nfs4LaunchArgs { get; set; }
+
+    /// <summary>
     /// If enabled, generates backups whenever a file is saved.
     /// </summary>
     public bool AutoBackup { get; set; }
@@ -113,12 +124,12 @@ public class Settings
     /// If enabled, runs a serial number check before saving a VIV file if any
     /// FeData file exists.
     /// </summary>
-    public bool VivCheckSnOnSave { get; set; }
+    public bool Viv_CheckSnOnSave { get; set; }
 
     /// <summary>
     /// If enabled, runs cleanup tasks on an FCE file before saving a VIV file.
     /// </summary>
-    public bool FceCleanupOnSave { get; set; }
+    public bool Fce_CleanupOnSave { get; set; }
 
     /// <summary>
     /// Gets or sets the number of recent files to be recalled by Vivianne.

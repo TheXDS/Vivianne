@@ -133,6 +133,15 @@ namespace TheXDS.Vivianne.Resources.Strings.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Launcher settings.
+        /// </summary>
+        public static string LauncherSettings {
+            get {
+                return ResourceManager.GetString("LauncherSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to nfs3.exe launch arguments.
         /// </summary>
         public static string Nfs3ExeLaunchArguments {
@@ -147,15 +156,6 @@ namespace TheXDS.Vivianne.Resources.Strings.Views {
         public static string NFS3RootDirectory {
             get {
                 return ResourceManager.GetString("NFS3RootDirectory", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to NFS3 settings.
-        /// </summary>
-        public static string NFS3Settings {
-            get {
-                return ResourceManager.GetString("NFS3Settings", resourceCulture);
             }
         }
         

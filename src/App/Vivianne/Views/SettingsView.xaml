@@ -13,9 +13,9 @@
     d:DataContext="{d:DesignInstance Type=viewmodels:SettingsViewModel}"
     mc:Ignorable="d" 
     d:DesignWidth="750"
-    Height="350">
+    Height="400">
     <TabControl Grid.Row="1" Margin="10">
-        <TabItem Header="{x:Static st:SettingsView.NFS3Settings}">
+        <TabItem Header="{x:Static st:SettingsView.LauncherSettings}">
             <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                 <StackPanel>
                     <ui:CardControl Icon="{ui:SymbolIcon Symbol=Folder16}">
@@ -37,7 +37,26 @@
                         </ui:CardControl.Header>
                         <ui:Button Content="{x:Static st:SettingsView.Browse}" Command="{Binding BrowseNfs3PathCommand, Mode=OneWay}"/>
                     </ui:CardControl>
-                    <ui:CardControl Icon="{ui:SymbolIcon Symbol=Window16}">
+                    <ui:CardControl Icon="{ui:SymbolIcon Symbol=Folder16}">
+                        <ui:CardControl.Header>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <ui:TextBlock
+                                    Grid.Row="0"
+                                    FontTypography="Body"
+                                    Text="NFS4 root directory" />
+                                <ui:TextBlock
+                                    Grid.Row="1"
+                                    Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                    Text="{Binding State.Nfs3Path, Mode=OneWay}" />
+                            </Grid>
+                        </ui:CardControl.Header>
+                        <ui:Button Content="{x:Static st:SettingsView.Browse}" Command="{Binding BrowseNfs3PathCommand, Mode=OneWay}"/>
+                    </ui:CardControl>
+                    <ui:CardControl Icon="{ui:SymbolIcon Symbol=WindowConsole20}">
                         <ui:CardControl.Header>
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -48,7 +67,22 @@
                                     Grid.Row="0"
                                     FontTypography="Body"
                                     Text="{x:Static st:SettingsView.Nfs3ExeLaunchArguments}" />
-                                <ui:TextBox Grid.Row="1" Margin="0,5,0,0" Text="{Binding State.Nfs3LaunchArgs}"/>
+                                <ui:TextBox Grid.Row="1" Margin="0,5,0,0" Text="{Binding State.Nfs4LaunchArgs}"/>
+                            </Grid>
+                        </ui:CardControl.Header>
+                    </ui:CardControl>
+                    <ui:CardControl Icon="{ui:SymbolIcon Symbol=WindowConsole20}">
+                        <ui:CardControl.Header>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <ui:TextBlock
+                                    Grid.Row="0"
+                                    FontTypography="Body"
+                                    Text="nfs4.exe/nfshs.exe launch arguments" />
+                                <ui:TextBox Grid.Row="1" Margin="0,5,0,0" Text="{Binding State.Nfs4LaunchArgs}"/>
                             </Grid>
                         </ui:CardControl.Header>
                     </ui:CardControl>
@@ -128,7 +162,7 @@
                                     Text="{x:Static st:SettingsView.EnableSerialNumberCheckupWhenSavingAVIVFile}" />
                             </Grid>
                         </ui:CardControl.Header>
-                        <ui:ToggleSwitch IsChecked="{Binding State.VivCheckSnOnSave}"/>
+                        <ui:ToggleSwitch IsChecked="{Binding State.Viv_CheckSnOnSave}"/>
                     </ui:CardControl>
                     <ui:CardControl Icon="{ui:SymbolIcon Symbol=ArrowSort24}">
                         <ui:CardControl.Header>
@@ -178,7 +212,7 @@
                                     TextWrapping="Wrap"
                                     Grid.Row="1"
                                     Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                                    Text="When enabled, allows the info panel to be dsplayed by default when opening a BNK file." />
+                                    Text="When enabled, allows the info panel to be displayed by default when opening a BNK file." />
                             </Grid>
                         </ui:CardControl.Header>
                         <ui:ToggleSwitch IsChecked="{Binding State.Bnk_InfoOpenByDefault}"/>
@@ -287,7 +321,7 @@
                                     Text="When enabled, the FCE data will be cleaned up upon saving (removing unused names, naming unnamed parts, cleaning out invalid triangle flags, etc.)" />
                             </Grid>
                         </ui:CardControl.Header>
-                        <ui:ToggleSwitch IsChecked="{Binding State.FceCleanupOnSave}" IsEnabled="False"/>
+                        <ui:ToggleSwitch IsChecked="{Binding State.Fce_CleanupOnSave}" IsEnabled="False"/>
                     </ui:CardControl>
                     <ui:CardControl Icon="{ui:SymbolIcon Symbol=SquareShadow20}">
                         <ui:CardControl.Header>
@@ -309,6 +343,26 @@
                         </ui:CardControl.Header>
                         <ui:ToggleSwitch IsChecked="{Binding State.Fce_ShadowByDefault}"/>
                     </ui:CardControl>
+                    <ui:CardControl Icon="{ui:SymbolIcon Symbol=Image24}">
+                        <ui:CardControl.Header>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <ui:TextBlock
+                                    Grid.Row="0"
+                                    FontTypography="BodyStrong"
+                                    Text="Enumerate all images as textures" />
+                                <ui:TextBlock
+                                    Grid.Row="1"
+                                    Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                    TextWrapping="Wrap"
+                                    Text="When enabled, lists all compatible images as textures for rendering FCE models instead of .TGA files only." />
+                            </Grid>
+                        </ui:CardControl.Header>
+                        <ui:ToggleSwitch IsChecked="{Binding State.Fce_EnumerateAllImages}"/>
+                    </ui:CardControl>
                 </StackPanel>
             </ScrollViewer>
         </TabItem>
@@ -319,6 +373,7 @@
                     <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
                 <Image Source="/Resources/Images/vivianne.png" Margin="50"/>
+                <TextBlock Opacity="0.3" VerticalAlignment="Bottom" FontSize="8">Powered by MCART / Ganymede</TextBlock>
                 <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" TextBlock.FontFamily="{StaticResource MuliLight}">
                     <TextBlock HorizontalAlignment="Center" FontSize="24" FontFamily="{StaticResource nfsFont}">Vivianne</TextBlock>
                     <TextBlock HorizontalAlignment="Center">A NFS3 modding tool</TextBlock>

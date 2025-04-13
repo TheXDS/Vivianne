@@ -1,5 +1,4 @@
 ﻿using TheXDS.Vivianne.Models.Fce.Nfs3;
-using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Extensions;
 
 namespace TheXDS.Vivianne.Info.Fce;

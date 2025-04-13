@@ -117,8 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="NFS3Settings" xml:space="preserve">
-    <value>Config. de NFS3</value>
+  <data name="LauncherSettings" xml:space="preserve">
+    <value>Config. de lanzador</value>
   </data>
   <data name="NFS3RootDirectory" xml:space="preserve">
     <value>Directorio raíz de NFS3</value>

@@ -80,7 +80,7 @@ public class StartupViewModel : ViewModel
         _Launchers = [
             new VivFileEditorLauncher(() => DialogService!),
             new FshFileEditorLauncher(() => DialogService!),
-            new Fce3FileEditorLauncher(() => DialogService!),
+            new FceFileEditorLauncher(() => DialogService!),
             new ExtraToolsViewModelLauncher()
         ];
         Title = St.StartupPage;

@@ -68,11 +68,4 @@ public class FshFileEditorLauncher(Func<IDialogService> dialogSvc)
         new(new SimpleCommand(OnCompress), St.ToolName),
         new(new SimpleCommand(OnDecompress), St2.ToolName),
         ];
-
-    /// <inheritdoc/>
-    protected override void BeforeSave(FshFile state, string fileExtension)
-    {
-        base.BeforeSave(state, fileExtension);
-        state.IsCompressed = Path.GetExtension(fileExtension).Equals(".qfs", System.StringComparison.InvariantCultureIgnoreCase);
-    }
 }

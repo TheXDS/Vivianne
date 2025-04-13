@@ -22,7 +22,28 @@ public class SettingsState : EditorViewModelStateBase
     private double _bnk_DefaultNormalization;
     private bool _bnk_KeepTrash;
     private bool _bnk_TrimLoopsOnCleanup;
+    private bool _fce_EnumerateAllImages;
+    private string? _nfs4Path;
+    private string? _nfs4LaunchArgs;
 
+    /// <summary>
+    /// Gets or sets the path to the NFS4 main directory.
+    /// </summary>
+    public string? Nfs4Path
+    { 
+        get => _nfs4Path;
+        set => Change(ref _nfs4Path, value);
+    }
+
+    /// <summary>
+    /// Gets or sets a string with the command line arguments to pass onto
+    /// <c>nfs4.exe</c> upon invocation.
+    /// </summary>
+    public string? Nfs4LaunchArgs
+    { 
+        get => _nfs4LaunchArgs;
+        set => Change(ref _nfs4LaunchArgs, value);
+    }
 
     /// <summary>
     /// Gets or sets the path to the NFS3 main directory.
@@ -45,7 +66,7 @@ public class SettingsState : EditorViewModelStateBase
     /// <summary>
     /// If enabled, runs a serial number check before saving a VIV file if any FeData file exists.
     /// </summary>
-    public bool VivCheckSnOnSave
+    public bool Viv_CheckSnOnSave
     {
         get => _vivCheckSnOnSave;
         set => Change(ref _vivCheckSnOnSave, value);
@@ -54,7 +75,7 @@ public class SettingsState : EditorViewModelStateBase
     /// <summary>
     /// If enabled, runs cleanup tasks on an FCE file before saving a VIV file.
     /// </summary>
-    public bool FceCleanupOnSave
+    public bool Fce_CleanupOnSave
     {
         get => _fceCleanupOnSave;
         set => Change(ref _fceCleanupOnSave, value);
@@ -137,6 +158,17 @@ public class SettingsState : EditorViewModelStateBase
     }
 
     /// <summary>
+    /// Gets or sets a value that indicates whether all compatible images in
+    /// the data store will be listed as textures or if only <c>.tga</c> files
+    /// will be listed.
+    /// </summary>
+    public bool Fce_EnumerateAllImages
+    { 
+        get => _fce_EnumerateAllImages;
+        set => Change(ref _fce_EnumerateAllImages, value);
+    }
+
+    /// <summary>
     /// Gets or sets a value that indicates the file sorting order for the VIV directory.
     /// </summary>
     public SortType Viv_FileSorting
@@ -155,16 +187,20 @@ public class SettingsState : EditorViewModelStateBase
         return new SettingsState
         {
             Nfs3Path = settings.Nfs3Path,
-            AutoBackup = settings.AutoBackup,
-            VivCheckSnOnSave = settings.VivCheckSnOnSave,
-            FceCleanupOnSave = settings.FceCleanupOnSave,
             Nfs3LaunchArgs = settings.Nfs3LaunchArgs,
+            Nfs4Path = settings.Nfs4Path,
+            Nfs4LaunchArgs = settings.Nfs4LaunchArgs,
+            AutoBackup = settings.AutoBackup,
             RecentFilesCount = settings.RecentFilesCount,
             Bnk_InfoOpenByDefault = settings.Bnk_InfoOpenByDefault,
             Bnk_DefaultNormalization = settings.Bnk_DefaultNormalization,
             Bnk_KeepTrash = settings.Bnk_KeepTrash,
             Bnk_TrimLoopsOnCleanup = settings.Bnk_TrimLoopsOnCleanup,
+            Fce_CleanupOnSave = settings.Fce_CleanupOnSave,
             Fce_CenterModel = settings.Fce_CenterModel,
+            Fce_EnumerateAllImages = settings.Fce_EnumerateAllImages,
+            Fce_ShadowByDefault = settings.Fce_ShadowByDefault,
+            Viv_CheckSnOnSave = settings.Viv_CheckSnOnSave,
             Viv_FileSorting = settings.Viv_FileSorting,
         };
     }
@@ -179,16 +215,20 @@ public class SettingsState : EditorViewModelStateBase
         return new Settings
         {
             Nfs3Path = settings.Nfs3Path,
-            AutoBackup = settings.AutoBackup,
-            VivCheckSnOnSave = settings.VivCheckSnOnSave,
-            FceCleanupOnSave = settings.FceCleanupOnSave,
             Nfs3LaunchArgs = settings.Nfs3LaunchArgs,
+            Nfs4Path = settings.Nfs4Path,
+            Nfs4LaunchArgs = settings.Nfs4LaunchArgs,
+            AutoBackup = settings.AutoBackup,
+            Viv_CheckSnOnSave = settings.Viv_CheckSnOnSave,
             RecentFilesCount = settings.RecentFilesCount,
             Bnk_InfoOpenByDefault = settings.Bnk_InfoOpenByDefault,
             Bnk_DefaultNormalization = settings.Bnk_DefaultNormalization,
             Bnk_KeepTrash = settings.Bnk_KeepTrash,
             Bnk_TrimLoopsOnCleanup = settings.Bnk_TrimLoopsOnCleanup,
+            Fce_CleanupOnSave = settings.Fce_CleanupOnSave,
             Fce_CenterModel = settings.Fce_CenterModel,
+            Fce_EnumerateAllImages = settings.Fce_EnumerateAllImages,
+            Fce_ShadowByDefault = settings.Fce_ShadowByDefault,
             Viv_FileSorting = settings.Viv_FileSorting,
         };
     }

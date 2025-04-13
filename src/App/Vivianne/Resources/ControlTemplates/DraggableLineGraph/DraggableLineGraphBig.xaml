@@ -7,6 +7,7 @@
     xmlns:sys="clr-namespace:System;assembly=netstandard"
     xmlns:local="clr-namespace:TheXDS.Vivianne.Controls">
     <Style x:Key="DraggableLineGraphBig" TargetType="{x:Type local:DraggableLineGraph}">
+        <Setter Property="PointsBrush" Value="{ui:ThemeResource SystemAccentColorPrimaryBrush}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:DraggableLineGraph}">

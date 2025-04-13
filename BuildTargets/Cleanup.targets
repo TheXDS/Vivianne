@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<Target Name="AfterBuildCleanup" AfterTargets="Build" Condition="'$(OS)'=='Windows_NT'">
-		<Exec Command="powershell -Command &quot;Remove-Item -Force -Recurse '$(Root)Build\bin\$(MSBuildProjectName)_*_wpftmp'&quot;" />
+		<Exec Command="powershell -Command &quot;Remove-Item -Force -Recurse '$(Root)Build\bin\$(MSBuildProjectName)_*_wpftmp -ErrorAction SilentlyContinue'&quot;" />
 	</Target>
 </Project>
