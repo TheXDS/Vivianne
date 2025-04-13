@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using Microsoft.VisualBasic;
+using System.Linq;
 using System.Numerics;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models.Fce;
@@ -83,28 +84,53 @@ public abstract class FceRenderStateBuilderBase<TState, TPart>
     /// non-shaded material that represents the shadow of the FCE model based
     /// on its half-size bounding box.
     /// </returns>
-    protected static SceneObject CreateShadow(Vector3 modelHalfSize) => new()
+    protected static SceneObject CreateShadow(Vector3 modelHalfSize)
     {
-        Normals =
+        var verts = CreateCube(-modelHalfSize, Vector3.Zero);
+        var tris = GetCubeTriangles(MaterialFlags.NoShading)[6..8];
+        return new()
+        {
+            Normals = verts,
+            Triangles = tris,
+            Vertices = verts,
+        };
+    }
+
+    /// <summary>
+    /// Creates a cube vertex array.
+    /// </summary>
+    /// <param name="size">Size of the cube.</param>
+    /// <param name="location">Intended center location of the cube.</param>
+    /// <returns>
+    /// The vertex array for a cube.
+    /// </returns>
+    protected static Vector3[] CreateCube(Vector3 size, Vector3 location)
+    {
+        return
         [
-            new Vector3(1, 1, 1) * modelHalfSize,
-            new Vector3(1, 1, -1) * modelHalfSize,
-            new Vector3(1, -1, 1) * modelHalfSize,
-            new Vector3(1, -1, -1) * modelHalfSize,
-        ],
-        Triangles =
-        [
-            new() { I1 = 1, I2 = 0, I3 = 2, Flags = (int)MaterialFlags.NoShading },
-            new() { I1 = 1, I2 = 2, I3 = 3, Flags = (int)MaterialFlags.NoShading }
-        ],
-        Vertices =
-        [
-            new Vector3(-1, 1, 1) * modelHalfSize,
-            new Vector3(-1, 1, -1) * modelHalfSize,
-            new Vector3(-1, -1, 1) * modelHalfSize,
-            new Vector3(-1, -1, -1) * modelHalfSize,
-        ],
-    };
+#if NET9_0_OR_GREATER
+            // These FMA calls are hardware accelerated in .NET 9 and later.
+            Vector3.FusedMultiplyAdd(new Vector3( 1,  1,  1), size, location),
+            Vector3.FusedMultiplyAdd(new Vector3( 1,  1, -1), size, location),
+            Vector3.FusedMultiplyAdd(new Vector3( 1, -1,  1), size, location),
+            Vector3.FusedMultiplyAdd(new Vector3( 1, -1, -1), size, location),
+            Vector3.FusedMultiplyAdd(new Vector3(-1,  1,  1), size, location),
+            Vector3.FusedMultiplyAdd(new Vector3(-1,  1, -1), size, location),
+            Vector3.FusedMultiplyAdd(new Vector3(-1, -1,  1), size, location),
+            Vector3.FusedMultiplyAdd(new Vector3(-1, -1, -1), size, location),
+#else
+            // .NET 8 and earlier did not support hardware-accelerated FMA.
+            (new Vector3( 1,  1,  1) * size) + location,
+            (new Vector3( 1,  1, -1) * size) + location,
+            (new Vector3( 1, -1,  1) * size) + location,
+            (new Vector3( 1, -1, -1) * size) + location,
+            (new Vector3(-1,  1,  1) * size) + location,
+            (new Vector3(-1,  1, -1) * size) + location,
+            (new Vector3(-1, -1,  1) * size) + location,
+            (new Vector3(-1, -1, -1) * size) + location,
+#endif
+        ];
+    }
 
     /// <summary>
     /// Creates a cube vertex array.
@@ -116,31 +142,7 @@ public abstract class FceRenderStateBuilderBase<TState, TPart>
     /// </returns>
     protected static Vector3[] CreateCube(float size, Vector3 location)
     {
-        var sizeVector = new Vector3(size);
-        return
-        [
-#if NET9_0_OR_GREATER
-            // These FMA calls are hardware accelerated in .NET 9 and later.
-            Vector3.FusedMultiplyAdd(new Vector3( 1,  1,  1), sizeVector, location),
-            Vector3.FusedMultiplyAdd(new Vector3( 1,  1, -1), sizeVector, location),
-            Vector3.FusedMultiplyAdd(new Vector3( 1, -1,  1), sizeVector, location),
-            Vector3.FusedMultiplyAdd(new Vector3( 1, -1, -1), sizeVector, location),
-            Vector3.FusedMultiplyAdd(new Vector3(-1,  1,  1), sizeVector, location),
-            Vector3.FusedMultiplyAdd(new Vector3(-1,  1, -1), sizeVector, location),
-            Vector3.FusedMultiplyAdd(new Vector3(-1, -1,  1), sizeVector, location),
-            Vector3.FusedMultiplyAdd(new Vector3(-1, -1, -1), sizeVector, location),
-#else
-            // .NET 8 and earlier did not support hardware-accelerated FMA.
-            (new Vector3( 1,  1,  1) * sizeVector) + location,
-            (new Vector3( 1,  1, -1) * sizeVector) + location,
-            (new Vector3( 1, -1,  1) * sizeVector) + location,
-            (new Vector3( 1, -1, -1) * sizeVector) + location,
-            (new Vector3(-1,  1,  1) * sizeVector) + location,
-            (new Vector3(-1,  1, -1) * sizeVector) + location,
-            (new Vector3(-1, -1,  1) * sizeVector) + location,
-            (new Vector3(-1, -1, -1) * sizeVector) + location,
-#endif
-        ];
+        return CreateCube(new Vector3(size), location);
     }
 
     /// <summary>

@@ -106,32 +106,5 @@ public partial class FceSerializer : ISerializer<FceFile>
         fileWriter.Write(poolStream.ToArray());
     }
 
-    private static Fce4Part LoadPart(FceData data, int index)
-    {
-        return index < data.Header.CarPartCount ? new()
-        {
-            Name = data.Header.PartNames[index],
-            Origin = data.Header.CarPartsCoords[index],
-            Vertices = data.Vertices[data.Header.PartVertexOffset[index]..(data.Header.PartVertexOffset[index] + data.Header.PartVertexCount[index])],
-            DamagedVertices = data.DamagedVertices[data.Header.PartVertexOffset[index]..(data.Header.PartVertexOffset[index] + data.Header.PartVertexCount[index])],
-            Normals = data.Normals[data.Header.PartVertexOffset[index]..(data.Header.PartVertexOffset[index] + data.Header.PartVertexCount[index])],
-            DamagedNormals = data.DamagedNormals[data.Header.PartVertexOffset[index]..(data.Header.PartVertexOffset[index] + data.Header.PartVertexCount[index])],
-            Triangles = data.Triangles[data.Header.PartTriangleOffset[index]..(data.Header.PartTriangleOffset[index] + data.Header.PartTriangleCount[index])]
-        } : throw new IndexOutOfRangeException();
-    }
-
-    private static IEnumerable<FceDummy> GetDummies(FceFileHeader header)
-    {
-        return header.Dummies
-            .Zip(header.DummyNames)
-            .Take(header.DummyCount)
-            .Select(p => new FceDummy() { Name = p.Second, Position = p.First });
-    }
-
-    private static IEnumerable<Fce4Part> GetParts(FceData data)
-    {
-        return Enumerable.Range(0, data.Header.CarPartCount).Select(p => LoadPart(data, p));
-    }
-
     private readonly record struct FceData(in FceFileHeader Header, in Vector3[] Vertices, in Vector3[] DamagedVertices, in Vector3[] Normals, in Vector3[] DamagedNormals, in FceTriangle[] Triangles);
 }

@@ -1,7 +1,4 @@
-﻿using System.Numerics;
-using System.Runtime.InteropServices;
-using TheXDS.MCART.Types.Extensions;
-using TheXDS.Vivianne.Extensions;
+﻿using TheXDS.Vivianne.Extensions;
 using TheXDS.Vivianne.Models.Fce.Common;
 using TheXDS.Vivianne.Models.Fce.Nfs4;
 
@@ -40,5 +37,32 @@ public partial class FceSerializer
             PartNames = entity.Parts.Select(p => (FceAsciiBlob)p.Name).ArrayOfSize(64, FceAsciiBlob.Empty),
             Unk_0x1e28 = entity.Unk_0x1e28.ArrayOfSize(528)
         };
+    }
+
+    private static Fce4Part LoadPart(FceData data, int index)
+    {
+        return index < data.Header.CarPartCount ? new()
+        {
+            Name = data.Header.PartNames[index],
+            Origin = data.Header.CarPartsCoords[index],
+            Vertices = data.Vertices[data.Header.PartVertexOffset[index]..(data.Header.PartVertexOffset[index] + data.Header.PartVertexCount[index])],
+            DamagedVertices = data.DamagedVertices[data.Header.PartVertexOffset[index]..(data.Header.PartVertexOffset[index] + data.Header.PartVertexCount[index])],
+            Normals = data.Normals[data.Header.PartVertexOffset[index]..(data.Header.PartVertexOffset[index] + data.Header.PartVertexCount[index])],
+            DamagedNormals = data.DamagedNormals[data.Header.PartVertexOffset[index]..(data.Header.PartVertexOffset[index] + data.Header.PartVertexCount[index])],
+            Triangles = data.Triangles[data.Header.PartTriangleOffset[index]..(data.Header.PartTriangleOffset[index] + data.Header.PartTriangleCount[index])]
+        } : throw new IndexOutOfRangeException();
+    }
+
+    private static IEnumerable<FceDummy> GetDummies(FceFileHeader header)
+    {
+        return header.Dummies
+            .Zip(header.DummyNames)
+            .Take(header.DummyCount)
+            .Select(p => new FceDummy() { Name = p.Second, Position = p.First });
+    }
+
+    private static IEnumerable<Fce4Part> GetParts(FceData data)
+    {
+        return Enumerable.Range(0, data.Header.CarPartCount).Select(p => LoadPart(data, p));
     }
 }

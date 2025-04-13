@@ -111,7 +111,7 @@ public abstract class FceEditorStateBase<TFceFile, TFceColor, THsbColor, TFcePar
     }
 
     /// <inheritdoc/>
-    public Vector3 HalfSize => new(File.YHalfSize, File.ZHalfSize, File.XHalfSize);
+    public Vector3 HalfSize => new(File.XHalfSize, File.YHalfSize, File.ZHalfSize);
 
     /// <summary>
     /// Builds a hideable list for object lists where each element may be

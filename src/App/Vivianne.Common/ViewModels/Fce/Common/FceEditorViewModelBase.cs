@@ -86,7 +86,7 @@ public abstract class FceEditorViewModelBase<TState, TFile, TFceColor, THsbColor
     {
         var cb = CommandBuilder.For(this);
         RenamePartCommand = cb.BuildSimple(OnElementRename<TFcePart>);
-        RenameDummyCommand = cb.BuildSimple(OnElementRename<FceDummy>);
+        RenameDummyCommand = cb.BuildSimple(async p => { if (await OnElementRename<FceDummy>(p)) OnVisibleChanged(); });
         FceCenterCommand = cb.BuildSimple(OnFceCenter);
     }
 
@@ -157,15 +157,16 @@ public abstract class FceEditorViewModelBase<TState, TFile, TFceColor, THsbColor
         OnVisibleChanged();
     }
 
-    private async Task OnElementRename<T>(object? parameter) where T : Models.Base.INameable
+    private async Task<bool> OnElementRename<T>(object? parameter) where T : Models.Base.INameable
     {
-        if (parameter is not FcePartListItem<T> { Part: Models.Base.INameable nameable } part || DialogService is null) return;
+        if (parameter is not FcePartListItem<T> { Part: Models.Base.INameable nameable } part || DialogService is null) return false;
         var result = await DialogService.GetInputText(CommonDialogTemplates.Input with { Title = St.RenamePart, Text = St.RenamePartHelp }, nameable.Name);
         if (result.Success)
         {
             nameable.Name = result.Result;
             part.Refresh();
         }
+        return result.Success;
     }
 
     private void OnFceCenter()
