@@ -20,12 +20,15 @@ public class Fce4RenderStateBuilder : FceRenderStateBuilderBase<Fce4EditorState,
             SecondaryColor: { } secondary,
             DriverHairColor: { } driverHair,
         } ? (RenderColor[])[
-            new(primary, new(0.3f,0.4f)),
-            new(interior, new(0.4f,0.5f)),
-            new(secondary, new(0.5f,0.6f)),
-            new(driverHair, new(0.6f,0.7f)),
+            new(driverHair, new(0.1f,0.3f)),
+            new(secondary, new(0.3f,0.5f)),
+            new(interior, new(0.5f,0.7f)),
+            new(primary, new(0.7f,0.9f)),
         ] : null;
     }
+
+    /// <inheritdoc/>
+    protected override bool? FlipUvY() => false;
 
     /// <inheritdoc/>
     protected override SceneObject? ToSceneObject(Fce4EditorState state, FcePartListItem<Fce4Part> part) => part.IsVisible ? new()

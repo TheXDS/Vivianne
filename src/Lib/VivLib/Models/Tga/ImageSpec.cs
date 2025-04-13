@@ -34,7 +34,7 @@ public struct ImageSpec
     public byte BitsPerPixel;
 
     /// <summary>
-    /// Descriptor that indicates pixel ordering and alpha channel depth.
+    /// Descriptor that indicates additional image properties.
     /// </summary>
-    public byte PixelFormatDescriptor;
+    public ImageDescriptor PixelFormatDescriptor;
 }

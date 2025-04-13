@@ -92,20 +92,14 @@ public class FceRendererConverter : IOneWayValueConverter<RenderState?, Model3DG
     private static (Brush brush, bool flipU, bool flipV) CheckUvFlip(RenderState value)
     {
         Brush? brush = null;
-        bool flipU = false, flipV = true; // FCE models has the V coordinate flipped by default.
+        bool flipU = false, flipV = false;
         if (value.Texture is byte[] textureData)
         {
             brush = new RawImageToBrushConverter().Convert(textureData, value.TextureColors, CultureInfo.InvariantCulture);
             if (IsTextureLikelyTga(value, out var tgaHeader))
             {
                 flipU = tgaHeader.Value.ImageInfo.XOrigin != 0;
-                flipV = tgaHeader.Value.ImageInfo.YOrigin == 0;
-
-                if (((byte[])[40, 8]).Contains(tgaHeader.Value.ImageInfo.PixelFormatDescriptor))
-                {
-                    flipU ^= flipU;
-                    flipV ^= flipV;
-                }
+                flipV = value.ForceVFlip ?? !tgaHeader.Value.ImageInfo.PixelFormatDescriptor.HasFlag(ImageDescriptor.TopLeftOrigin);
             }
         }
         brush ??= Brushes.Gray;

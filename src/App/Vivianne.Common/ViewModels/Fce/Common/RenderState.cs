@@ -37,4 +37,10 @@ public sealed class RenderState
     /// used for rendering.
     /// </summary>
     public required byte[]? Texture { get; init; }
+
+    /// <summary>
+    /// Gets or sets a value that forces the UV vertical flip to a specific
+    /// value.
+    /// </summary>
+    public bool? ForceVFlip { get; init; }
 }

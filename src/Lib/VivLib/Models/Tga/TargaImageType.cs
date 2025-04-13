@@ -41,3 +41,15 @@ public enum TargaImageType : byte
     /// </summary>
     RleGrayscale = 11,
 }
+
+[Flags]
+public enum ImageDescriptor : byte
+{
+    PixelAttrMask = 0x0f,
+    Rsvd = 0x10,
+    TopLeftOrigin = 0x20,
+    InterleavingMask = 0xc0,
+    NonInterleaved = 0x00,
+    TwoWayInterleaving = 0x40,
+    FourWayInterleaving = 0x80,
+}
