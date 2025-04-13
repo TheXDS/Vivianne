@@ -1,6 +1,7 @@
 ﻿using System.Numerics;
 using System.Runtime.InteropServices;
 using TheXDS.MCART.Types.Extensions;
+using TheXDS.Vivianne.Extensions;
 using TheXDS.Vivianne.Models.Fce.Common;
 using TheXDS.Vivianne.Models.Fce.Nfs3;
 
@@ -48,7 +49,7 @@ public partial class FceSerializer : ISerializer<FceFile>
         var data = new FceData(header, vertices, normals, triangles);
         return new FceFile()
         {
-            Magic = header.Unk_0x0,
+            Magic = header.Magic,
             Arts = header.Arts,
             XHalfSize = header.XHalfSize,
             YHalfSize = header.YHalfSize,
@@ -71,24 +72,24 @@ public partial class FceSerializer : ISerializer<FceFile>
         using BinaryWriter pool = new(poolStream);
         FceFileHeader header = CreateHeader(fce);
         List<int> vertexOffsets = [];
-        foreach (var j in fce.Parts.Select((FcePart p) => p.Vertices))
+        foreach (var j in fce.Parts.Select(p => p.Vertices))
         {
             vertexOffsets.Add((int)poolStream.Position / Marshal.SizeOf<Vector3>());
             pool.MarshalWriteStructArray(j);
         }
-        header.PartVertexOffset = ArrayOfSize(vertexOffsets, 64);
+        header.PartVertexOffset = vertexOffsets.ArrayOfSize(64);
         header.NormalsTblOffset = (int)poolStream.Position;
-        foreach (var j in fce.Parts.Select((FcePart p) => p.Normals))
+        foreach (var j in fce.Parts.Select(p => p.Normals))
         {
             pool.MarshalWriteStructArray(j);
         }
         header.TriangleTblOffset = (int)poolStream.Position;
         List<int> triangleOffsets = [0];
-        foreach (var j in fce.Parts.Select((FcePart p) => p.Triangles))
+        foreach (var j in fce.Parts.Select(p => p.Triangles))
         {
             triangleOffsets.Add(triangleOffsets.Last() + ((pool.MarshalWriteStructArray(j)) / Marshal.SizeOf<FceTriangle>()));
         }
-        header.PartTriangleOffset = ArrayOfSize(triangleOffsets[..^1], 64);
+        header.PartTriangleOffset = triangleOffsets[..^1].ArrayOfSize(64);
         header.Rsvd1Offset = (int)poolStream.Position;
         pool.Write(fce.RsvdTable1);
         header.Rsvd2Offset = (int)poolStream.Position;

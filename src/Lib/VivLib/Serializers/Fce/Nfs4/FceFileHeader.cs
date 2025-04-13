@@ -332,5 +332,5 @@ public struct FceFileHeader
     /// <summary>
     /// Gets a 528-byte table with data whose purpose is currently unknown.
     /// </summary>
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 528)] public byte[] Unk_0x1e04;
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 528)] public byte[] Unk_0x1e28;
 }

@@ -9,7 +9,7 @@ namespace TheXDS.Vivianne.Controls;
 /// <summary>
 /// Implements a Beta status adorner that displays an overlay text on top of visual elements with a message.
 /// </summary>
-public class BetaIndicator : Adorner
+public class ImportantOverlayIndicator : Adorner
 {
     private readonly FrameworkElement _control;
     private readonly string _message;
@@ -22,7 +22,7 @@ public class BetaIndicator : Adorner
     /// Message to be displayed as an overlay to inform about a beta-related
     /// topic.
     /// </param>
-    public BetaIndicator(FrameworkElement control, string message) : base(control)
+    public ImportantOverlayIndicator(FrameworkElement control, string message) : base(control)
     {
         _control = control;
         _message = message;
@@ -33,8 +33,8 @@ public class BetaIndicator : Adorner
     protected override void OnRender(DrawingContext drawingContext)
     {
         if (!_control.IsVisible) return;
-        var textGeometry = new FormattedText(_message, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI"), 24, new SolidColorBrush(new Color() { A = 48, R = 127, G = 127, B = 127 }), 1);
-        var point = _control.TranslatePoint(new Point((_control.ActualWidth.OrIfInvalid(0) - textGeometry.Width) / 2, (((double[])[_control.Height.OrIfInvalid(0), _control.ActualHeight.OrIfInvalid(0), 24]).Max() - 40)), _control);
+        var textGeometry = new FormattedText(_message, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI"), 48, new SolidColorBrush(new Color() { A = 255, R = 255, G = 0, B = 0 }), 1);
+        var point = _control.TranslatePoint(new Point((_control.ActualWidth.OrIfInvalid(0) - textGeometry.Width) / 2, (_control.ActualHeight.OrIfInvalid(0) - textGeometry.Height) / 2), _control);
         drawingContext.DrawText(textGeometry, point);
     }
 }

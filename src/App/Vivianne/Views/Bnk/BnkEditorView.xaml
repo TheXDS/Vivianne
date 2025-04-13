@@ -15,6 +15,8 @@
     xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings.ViewModels;assembly=Vivianne.Common"
     d:DataContext="{d:DesignInstance Type=vm:BnkEditorViewModel}"
     mc:Ignorable="d"
+    hlp:Form.ImportantMessage="Feature is currently broken"
+    hlp:Form.BetaMessage="This app will likely corrupt BNK files. Do not use."
     d:DesignWidth="700">
     <UserControl.Resources>
         <vc:BnkVisualizerConverter x:Key="bnkvis"/>

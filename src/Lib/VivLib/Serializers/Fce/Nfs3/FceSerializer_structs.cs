@@ -12,7 +12,7 @@ public partial class FceSerializer
     [StructLayout(LayoutKind.Sequential)]
     private  struct FceFileHeader
     {
-        public int Unk_0x0;
+        public int Magic;
         public int Triangles;
         public int Vertices;
         public int Arts;

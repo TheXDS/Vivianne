@@ -19,12 +19,18 @@ public static class Form
     /// </summary>
     public static readonly DependencyProperty LabelProperty =
         DependencyProperty.RegisterAttached("Label", typeof(string), typeof(Form), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender, OnLabelChanged));
-    
+
     /// <summary>
     /// Identifies the "<c>BetaMessage</c>" attached property.
     /// </summary>
     public static readonly DependencyProperty BetaMessageProperty =
         DependencyProperty.RegisterAttached("BetaMessage", typeof(string), typeof(Form), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender, OnBetaMessageChanged));
+
+    /// <summary>
+    /// Identifies the "<c>BetaMessage</c>" attached property.
+    /// </summary>
+    public static readonly DependencyProperty ImportantMessageProperty =
+        DependencyProperty.RegisterAttached("ImportantMessage", typeof(string), typeof(Form), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender, OnImportantMessageChanged));
 
     /// <summary>
     /// Identifies the "<c>FceColorPreview</c>" attached property.
@@ -86,6 +92,31 @@ public static class Form
     public static void SetBetaMessage(DependencyObject obj, string value)
     {
         obj.SetValue(BetaMessageProperty, value);
+    }
+
+    /// <summary>
+    /// Gets the value of the "<c>BetaMessage</c>" attached property.
+    /// </summary>
+    /// <param name="obj">
+    /// Object for which to get the value of the attached property.
+    /// </param>
+    /// <returns>The value of the "<c>BetaMessage</c>" attached property.
+    /// </returns>
+    public static string GetImportantMessage(DependencyObject obj)
+    {
+        return (string)obj.GetValue(ImportantMessageProperty);
+    }
+
+    /// <summary>
+    /// Sets the value of the "<c>BetaMessage</c>" attached property.
+    /// </summary>
+    /// <param name="obj">
+    /// Object onto which to set the value of the attached property.
+    /// </param>
+    /// <param name="value">Value of the attached property.</param>
+    public static void SetImportantMessage(DependencyObject obj, string value)
+    {
+        obj.SetValue(ImportantMessageProperty, value);
     }
 
     /// <summary>
@@ -152,6 +183,11 @@ public static class Form
     private static void OnBetaMessageChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
     {
         AttachAdorner<BetaIndicator, string>(obj, e, (control, text) => new BetaIndicator(control, text));
+    }
+
+    private static void OnImportantMessageChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
+    {
+        AttachAdorner<ImportantOverlayIndicator, string>(obj, e, (control, text) => new ImportantOverlayIndicator(control, text));
     }
 
     private static void OnFceColorPreviewChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)

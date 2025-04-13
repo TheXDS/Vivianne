@@ -6,6 +6,29 @@
 public static class ArrayExtensions
 {
     /// <summary>
+    /// Creates an array from the specified collection, ensuring that the new
+    /// array will contain at least the specified number of elements.
+    /// </summary>
+    /// <typeparam name="T">Type of array to generate.</typeparam>
+    /// <param name="collection">
+    /// Elements to include starting at the beginning of the array.</param>
+    /// <param name="size">Desired size of the array.</param>
+    /// <param name="defaultValue">
+    /// Value to set on each empty entry of the array.
+    /// </param>
+    /// <returns>
+    /// An array of at least <paramref name="size"/> elements.
+    /// </returns>
+    public static T[] ArrayOfSize<T>(this IEnumerable<T> collection, int size, T defaultValue = default) where T : struct
+    {
+        var arr = collection.ToArray();
+        var appendSize = size - arr.Length;
+        return appendSize <= size
+            ? [.. arr, .. Enumerable.Repeat(defaultValue, appendSize)]
+            : [.. arr.Take(size)];
+    }
+
+    /// <summary>
     /// Enumerates the array wrapping the index around to the number of
     /// elements available.
     /// </summary>
