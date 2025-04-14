@@ -51,7 +51,7 @@
                                 <ui:TextBlock
                                     Grid.Row="1"
                                     Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                                    Text="{Binding State.Nfs3Path, Mode=OneWay}" />
+                                    Text="{Binding State.Nfs4Path, Mode=OneWay}" />
                             </Grid>
                         </ui:CardControl.Header>
                         <ui:Button Content="{x:Static st:SettingsView.Browse}" Command="{Binding BrowseNfs3PathCommand, Mode=OneWay}"/>
