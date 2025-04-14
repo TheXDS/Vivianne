@@ -46,4 +46,9 @@ public class VivBackingStore(VivEditorViewModel viv) : IBackingStore
     {
         return _viv.State.Directory.Keys;
     }
+
+    IDictionary<string, byte[]> IBackingStore.AsDictionary()
+    {
+        return _viv.State.File.Directory;
+    }
 }

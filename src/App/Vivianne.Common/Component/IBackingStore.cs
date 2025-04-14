@@ -63,4 +63,13 @@ public interface IBackingStore
     /// </summary>
     /// <returns>An enumeration of all files in the backing store.</returns>
     IEnumerable<string> EnumerateFiles();
+
+    /// <summary>
+    /// Exposes the backing store as a dictionary.
+    /// </summary>
+    /// <returns>
+    /// A new dictionary that allows access to the files accesible through the
+    /// backing store.
+    /// </returns>
+    IDictionary<string, byte[]> AsDictionary();
 }

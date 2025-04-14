@@ -26,17 +26,17 @@ public static class FeData3SyncTool
     /// File extension of <paramref name="source"/>. Used to exclude it from
     /// sync destinations.
     /// </param>
-    /// <param name="vivDirectory">
+    /// <param name="directory">
     /// Directory of the VIV file. Changes will be synced on all supported
     /// files inside the directory.
     /// </param>
-    public static void Sync(FeData source, string sourceExt, IDictionary<string, byte[]> vivDirectory)
+    public static void Sync(FeData source, string sourceExt, IDictionary<string, byte[]> directory)
     {
         ISerializer<FeData> fs = new FeDataSerializer();
         ISerializer<CarPerf> cs = new CarpSerializer();
         foreach (var j in FeDataBase.KnownExtensions.ExceptFor(sourceExt))
         {
-            if (vivDirectory.TryGetValue($"fedata{j}", out var content))
+            if (directory.TryGetValue($"fedata{j}", out var content))
             {
                 var f = fs.Deserialize(content);
                 f.CarName = source.CarName;
@@ -63,15 +63,15 @@ public static class FeData3SyncTool
                 f.Unk_0x24 = source.Unk_0x24;
                 f.Unk_0x26 = source.Unk_0x26;
                 f.Unk_0x2c = source.Unk_0x2c;
-                vivDirectory[$"fedata{j}"] = fs.Serialize(f);
+                directory[$"fedata{j}"] = fs.Serialize(f);
             }
         }
-        if (vivDirectory.TryGetValue("carp.txt", out var carpContent))
+        if (directory.TryGetValue("carp.txt", out var carpContent))
         {
             var c = cs.Deserialize(carpContent);
             c.SerialNumber = source.SerialNumber;
             c.CarClass = source.VehicleClass;
-            vivDirectory["carp.txt"] = cs.Serialize(c);
+            directory["carp.txt"] = cs.Serialize(c);
         }
     }
 
@@ -80,13 +80,13 @@ public static class FeData3SyncTool
     /// performance information from the specified <see cref="CarPerf"/>.
     /// </summary>
     /// <param name="source">Performance data source.</param>
-    /// <param name="vivDirectory">VIV Directory to modify.</param>
-    public static void Sync(CarPerf source, IDictionary<string, byte[]> vivDirectory)
+    /// <param name="directory">VIV Directory to modify.</param>
+    public static void Sync(CarPerf source, IDictionary<string, byte[]> directory)
     {
         ISerializer<FeData> serializer = new FeDataSerializer();
         foreach (var j in Mappings.FeDataToTextProvider)
         {
-            if (vivDirectory.TryGetValue($"fedata{j.Key}", out var content))
+            if (directory.TryGetValue($"fedata{j.Key}", out var content))
             {
                 var f = serializer.Deserialize(content);
                 f.SerialNumber = source.SerialNumber;
@@ -101,7 +101,7 @@ public static class FeData3SyncTool
                 f.Gearbox = perfDataSource.Gearbox;
                 f.Accel0To60 = perfDataSource.Accel0To60;
                 f.Accel0To100 = perfDataSource.Accel0To100;
-                vivDirectory[$"fedata{j.Key}"] = serializer.Serialize(f);
+                directory[$"fedata{j.Key}"] = serializer.Serialize(f);
             }
         }
     }
