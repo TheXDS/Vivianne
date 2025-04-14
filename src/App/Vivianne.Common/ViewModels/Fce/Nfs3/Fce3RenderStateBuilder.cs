@@ -24,8 +24,8 @@ public class Fce3RenderStateBuilder : FceRenderStateBuilderBase<Fce3EditorState,
         {
             'H' => MaterialFlags.WhiteDummy,
             'T' => MaterialFlags.RedChannel | MaterialFlags.NoShading,
-            'S' when dummyName[2] == 'L' => MaterialFlags.RedChannel | MaterialFlags.NoShading,
-            'S' when dummyName[2] == 'R' => MaterialFlags.BlueChannel | MaterialFlags.NoShading,
+            'S' when dummyName[2] == 'R' => MaterialFlags.RedChannel | MaterialFlags.NoShading,
+            'S' when dummyName[2] == 'L' => MaterialFlags.BlueChannel | MaterialFlags.NoShading,
             _ => MaterialFlags.GreenChannel
         };
     }
