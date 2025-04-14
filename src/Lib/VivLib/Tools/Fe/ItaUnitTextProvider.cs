@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using TheXDS.Vivianne.Models.Carp;
 
-namespace TheXDS.Vivianne.Tools;
+namespace TheXDS.Vivianne.Tools.Fe;
 
 /// <summary>
 /// Implements a <see cref="FeDataTextProvider"/> for ITA fedata files.

@@ -1,24 +1,23 @@
 ﻿using TheXDS.MCART.Types.Extensions;
-using TheXDS.Vivianne.Models.Carp.Base;
-using TheXDS.Vivianne.Models.Carp.Nfs3;
+using TheXDS.Vivianne.Models.Carp.Nfs4;
 using TheXDS.Vivianne.Models.Fe;
-using TheXDS.Vivianne.Models.Fe.Nfs3;
+using TheXDS.Vivianne.Models.Fe.Nfs4;
 using TheXDS.Vivianne.Models.Viv;
 using TheXDS.Vivianne.Resources;
 using TheXDS.Vivianne.Serializers;
-using TheXDS.Vivianne.Serializers.Carp.Nfs3;
-using TheXDS.Vivianne.Serializers.Fe.Nfs3;
+using TheXDS.Vivianne.Serializers.Carp.Nfs4;
+using TheXDS.Vivianne.Serializers.Fe.Nfs4;
 
-namespace TheXDS.Vivianne.Tools;
+namespace TheXDS.Vivianne.Tools.Fe;
 
 /// <summary>
 /// Includes a set of methods used to sync changes between FeData files and
 /// Carp.
 /// </summary>
-public static class FeData3SyncTool
+public static class FeData4SyncTool
 {
     /// <summary>
-    /// Syncs changes between FeData files and Carp.
+    /// Syncs changes between all FeData files and Carp.
     /// </summary>
     /// <param name="source">
     /// Source <see cref="FeData"/> to sync all supported values from.
@@ -43,27 +42,15 @@ public static class FeData3SyncTool
                 f.CarName = source.CarName;
                 f.CarId = source.CarId;
                 f.SerialNumber = source.SerialNumber;
+                f.PoliceFlag = source.PoliceFlag;
                 f.VehicleClass = source.VehicleClass;
-                f.Seat = source.Seat;
-                f.IsPolice = source.IsPolice;
+                f.Upgradable = source.Upgradable;
+                f.Roof = source.Roof;
+                f.DefaultCompare = source.DefaultCompare;
+                f.CompareUpg1 = source.CompareUpg1;
+                f.CompareUpg2 = source.CompareUpg2;
+                f.CompareUpg3 = source.CompareUpg3;
                 f.IsBonus = source.IsBonus;
-                f.AvailableToAi = source.AvailableToAi;
-                f.IsDlcCar = source.IsDlcCar;
-                f.CarAccel = source.CarAccel;
-                f.CarTopSpeed = source.CarTopSpeed;
-                f.CarHandling = source.CarHandling;
-                f.CarBraking = source.CarBraking;
-                f.Unk_0x0c = source.Unk_0x0c;
-                f.Unk_0x14 = source.Unk_0x14;
-                f.Unk_0x16 = source.Unk_0x16;
-                f.Unk_0x1a = source.Unk_0x1a;
-                f.Unk_0x1c = source.Unk_0x1c;
-                f.Unk_0x1e = source.Unk_0x1e;
-                f.Unk_0x20 = source.Unk_0x20;
-                f.Unk_0x22 = source.Unk_0x22;
-                f.Unk_0x24 = source.Unk_0x24;
-                f.Unk_0x26 = source.Unk_0x26;
-                f.Unk_0x2c = source.Unk_0x2c;
                 vivDirectory[$"fedata{j}"] = fs.Serialize(f);
             }
         }
@@ -82,17 +69,17 @@ public static class FeData3SyncTool
     /// </summary>
     /// <param name="source">Performance data source.</param>
     /// <param name="vivDirectory">VIV Directory to modify.</param>
-    public static void Sync(CarPerf<CarClass> source, IDictionary<string, byte[]> vivDirectory)
+    public static void Sync(CarPerf source, IDictionary<string, byte[]> vivDirectory)
     {
-        ISerializer<FeData> fedataSerializer = new FeDataSerializer();        
+        ISerializer<FeData> serializer = new FeDataSerializer();
         foreach (var j in Mappings.FeDataToTextProvider)
         {
             if (vivDirectory.TryGetValue($"fedata{j.Key}", out var content))
             {
-                var f = fedataSerializer.Deserialize(content);
+                var f = serializer.Deserialize(content);
                 f.SerialNumber = source.SerialNumber;
                 f.VehicleClass = source.CarClass;
-                var perfDataSource = j.Value(source);
+                var perfDataSource = j.Value.Invoke(source);
                 f.Weight = perfDataSource.Weight;
                 f.TopSpeed = perfDataSource.TopSpeed;
                 f.Hp = perfDataSource.Power;
@@ -102,7 +89,7 @@ public static class FeData3SyncTool
                 f.Gearbox = perfDataSource.Gearbox;
                 f.Accel0To60 = perfDataSource.Accel0To60;
                 f.Accel0To100 = perfDataSource.Accel0To100;
-                vivDirectory[$"fedata{j.Key}"] = fedataSerializer.Serialize(f);
+                vivDirectory[$"fedata{j.Key}"] = serializer.Serialize(f);
             }
         }
     }

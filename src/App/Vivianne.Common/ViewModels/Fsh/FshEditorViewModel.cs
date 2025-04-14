@@ -17,7 +17,7 @@ using TheXDS.Vivianne.Resources;
 using TheXDS.Vivianne.ViewModels.Base;
 using St = TheXDS.Vivianne.Resources.Strings.ViewModels.FshEditorViewModel;
 
-namespace TheXDS.Vivianne.ViewModels;
+namespace TheXDS.Vivianne.ViewModels.Fsh;
 
 /// <summary>
 /// Implements a ViewModel that allows a user to preview a FSH texture file.
@@ -207,7 +207,7 @@ public class FshEditorViewModel : FileEditorViewModelBase<FshEditorState, FshFil
 
     private async Task OnExport()
     {
-        var r = await DialogService!.GetFileSavePath(CommonDialogTemplates.FileSave with { Title = St.SaveTextureAs }, Resources.FileFilters.CommonBitmapSaveFormats);
+        var r = await DialogService!.GetFileSavePath(CommonDialogTemplates.FileSave with { Title = St.SaveTextureAs }, FileFilters.CommonBitmapSaveFormats);
         if (!r.Success) return;
         CurrentImage!.ToImage(Palette)!.Save(r.Result, Mappings.ExportEnconder[Path.GetExtension(r.Result)]);
     }
@@ -280,7 +280,7 @@ public class FshEditorViewModel : FileEditorViewModelBase<FshEditorState, FshFil
         {
             Title = string.Format(St.ReplaceFsh, CurrentFshBlobId),
             Text = string.Format(St.ReplaceFshPrompt, CurrentFshBlobId)
-        }, Resources.FileFilters.CommonBitmapOpenFormats);
+        }, FileFilters.CommonBitmapOpenFormats);
         if (r.Success)
         {
             try
@@ -329,7 +329,7 @@ public class FshEditorViewModel : FileEditorViewModelBase<FshEditorState, FshFil
             {
                 Title = St.AddTexture,
                 Text = St.AddTexturePrompt
-            }, Resources.FileFilters.CommonBitmapOpenFormats)!),
+            }, FileFilters.CommonBitmapOpenFormats)!),
             new InputItemDescriptor<string>(d => d.GetInputText(CommonDialogTemplates.Input with
             {
                 Title = St.FshId,
@@ -341,7 +341,7 @@ public class FshEditorViewModel : FileEditorViewModelBase<FshEditorState, FshFil
                 Text = St.FshPixelFormatPrompt
             }, Mappings.FshBlobToLabel.Values.ToArray()))
         ];
-        return (await DialogService!.AskSequentially(inputs) is { } data && (int)data[2] != -1) ? ((string)data[0], (string)data[1], (int)data[2]) : null;
+        return await DialogService!.AskSequentially(inputs) is { } data && (int)data[2] != -1 ? ((string)data[0], (string)data[1], (int)data[2]) : null;
     }
 
     private string InferNewFshBlobName()

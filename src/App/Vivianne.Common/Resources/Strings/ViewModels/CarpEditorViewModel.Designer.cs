@@ -70,7 +70,7 @@ namespace TheXDS.Vivianne.Resources.Strings.ViewModels {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to FeData Sync.
+        ///   Looks up a localized string similar to FeData SyncFeData3.
         /// </summary>
         internal static string FeDataSync {
             get {

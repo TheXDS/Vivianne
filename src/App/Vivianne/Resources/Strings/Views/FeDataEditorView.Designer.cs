@@ -448,7 +448,7 @@ namespace TheXDS.Vivianne.Resources.Strings.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sync edits on other FeData files / Carp.
+        ///   Looks up a localized string similar to SyncFeData3 edits on other FeData files / Carp.
         /// </summary>
         public static string LinkEdits {
             get {

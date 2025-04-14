@@ -9,7 +9,7 @@ using TheXDS.Ganymede.Types.Base;
 using TheXDS.Vivianne.Models.Viv;
 using St = TheXDS.Vivianne.Resources.Strings.ViewModels.VivInfoViewModel;
 
-namespace TheXDS.Vivianne.ViewModels;
+namespace TheXDS.Vivianne.ViewModels.Viv;
 
 /// <summary>
 /// Implements a ViewModel that displays information about the current VIV

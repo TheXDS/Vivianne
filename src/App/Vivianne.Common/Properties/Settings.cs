@@ -161,6 +161,12 @@ public class Settings
     public bool Bnk_TrimLoopsOnCleanup { get; set; }
 
     /// <summary>
+    /// Gets or sets a value that indicates whether data sync to FeData files
+    /// is enabled when editing a Carp file.
+    /// </summary>
+    public bool Carp_SyncChanges { get; set; }
+
+    /// <summary>
     /// Gets or sets a value that indicates if the FCE model will be centered
     /// automatically when saving an FCE file.
     /// </summary>
@@ -178,6 +184,12 @@ public class Settings
     /// will be listed.
     /// </summary>
     public bool Fce_EnumerateAllImages { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value that indicates whether data sync is enabled
+    /// between FeData files and carp when editing a FeData file.
+    /// </summary>
+    public bool Fe_SyncChanges { get; set; }
 
     /// <summary>
     /// Gets or sets a value that indicates the file sorting order for the VIV

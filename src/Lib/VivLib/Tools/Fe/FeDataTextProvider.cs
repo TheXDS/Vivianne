@@ -1,7 +1,8 @@
 ﻿using System.Globalization;
 using TheXDS.Vivianne.Models.Carp;
+using TheXDS.Vivianne.Tools.Carp;
 
-namespace TheXDS.Vivianne.Tools;
+namespace TheXDS.Vivianne.Tools.Fe;
 
 /// <summary>
 /// Base class for all FeData text providers.

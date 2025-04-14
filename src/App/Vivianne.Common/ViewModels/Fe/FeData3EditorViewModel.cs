@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models.Fce.Nfs3;
 using TheXDS.Vivianne.Models.Fe;
 using TheXDS.Vivianne.Models.Fe.Nfs3;
 using TheXDS.Vivianne.Serializers.Fce.Nfs3;
 using TheXDS.Vivianne.ViewModels.Base;
 
-namespace TheXDS.Vivianne.ViewModels;
+namespace TheXDS.Vivianne.ViewModels.Fe;
 
 /// <summary>
 /// Implements a ViewModel that allows the user to see and edit FeData car

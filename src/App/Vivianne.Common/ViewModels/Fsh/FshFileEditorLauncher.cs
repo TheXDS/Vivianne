@@ -16,7 +16,7 @@ using TheXDS.Vivianne.ViewModels.Base;
 using St = TheXDS.Vivianne.Resources.Strings.Tools.FshCompressTool;
 using St2 = TheXDS.Vivianne.Resources.Strings.Tools.QfsDecompressTool;
 
-namespace TheXDS.Vivianne.ViewModels;
+namespace TheXDS.Vivianne.ViewModels.Fsh;
 
 /// <summary>
 /// Implements a launcher to create and/or edit FSH and QFS files.

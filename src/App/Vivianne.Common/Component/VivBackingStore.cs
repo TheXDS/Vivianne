@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using TheXDS.Ganymede.Models;
 using TheXDS.Ganymede.Resources;
-using TheXDS.Vivianne.ViewModels;
+using TheXDS.Vivianne.ViewModels.Viv;
 
 namespace TheXDS.Vivianne.Component;
 

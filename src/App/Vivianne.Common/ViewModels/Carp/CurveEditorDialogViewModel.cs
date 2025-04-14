@@ -5,7 +5,7 @@ using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.ViewModels.Base;
 
-namespace TheXDS.Vivianne.ViewModels;
+namespace TheXDS.Vivianne.ViewModels.Carp;
 
 /// <summary>
 /// Implements a ViewModel for a dialog that allows the user to edit a

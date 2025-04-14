@@ -1,7 +1,7 @@
 ﻿using TheXDS.Vivianne.Models.Base;
 using TheXDS.Vivianne.Models.Fce.Nfs3;
 using TheXDS.Vivianne.Models.Fe.Nfs3;
-using TheXDS.Vivianne.ViewModels;
+using TheXDS.Vivianne.ViewModels.Fe;
 
 namespace TheXDS.Vivianne.Models.Fe;
 

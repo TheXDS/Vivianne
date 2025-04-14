@@ -130,7 +130,7 @@ public class CarpEditorViewModel<TState, TFile, TCarClass> : FileEditorViewModel
         //throw new NotImplementedException();
         //if (_vivFileRef is not null)
         //{
-        //    UiThread.Invoke(() => FeData3SyncTool.Sync(State.ToCarp(), _vivFileRef.Directory));
+        //    UiThread.Invoke(() => FeData3SyncTool.SyncFeData3(State.ToCarp(), _vivFileRef.Directory));
         //    await DialogService!.Message(St.FeDataSync, St.OperationCompletedSuccessfully);
         //}
     }

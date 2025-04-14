@@ -2,7 +2,7 @@
 using TheXDS.Vivianne.Models.Fe.Nfs4;
 using TheXDS.Vivianne.ViewModels.Base;
 
-namespace TheXDS.Vivianne.ViewModels;
+namespace TheXDS.Vivianne.ViewModels.Fe;
 
 /// <summary>
 /// Implements a ViewModel that allows the user to edit FeData files for NFS4.

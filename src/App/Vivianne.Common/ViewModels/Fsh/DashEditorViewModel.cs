@@ -5,7 +5,7 @@ using TheXDS.Vivianne.Serializers;
 using TheXDS.Vivianne.Serializers.Fsh.Blobs;
 using TheXDS.Vivianne.ViewModels.Base;
 
-namespace TheXDS.Vivianne.ViewModels;
+namespace TheXDS.Vivianne.ViewModels.Fsh;
 
 /// <summary>
 /// ViewModel that allows the user to modify Gauge data information.

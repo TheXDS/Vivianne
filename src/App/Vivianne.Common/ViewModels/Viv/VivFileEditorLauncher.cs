@@ -9,7 +9,7 @@ using TheXDS.Vivianne.Resources;
 using TheXDS.Vivianne.Serializers.Viv;
 using TheXDS.Vivianne.ViewModels.Base;
 
-namespace TheXDS.Vivianne.ViewModels;
+namespace TheXDS.Vivianne.ViewModels.Viv;
 
 /// <summary>
 /// Implements a launcher to create and/or edit VIV files.

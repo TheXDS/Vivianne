@@ -1,7 +1,7 @@
 ﻿using TheXDS.MCART.Math;
 using TheXDS.Vivianne.Models.Carp;
 
-namespace TheXDS.Vivianne.Tools;
+namespace TheXDS.Vivianne.Tools.Carp;
 
 /// <summary>
 /// Analyzes the performance data from a <see cref="ICarPerf"/>.
@@ -50,19 +50,19 @@ public class CarpAnalysis
     /// </returns>
     public double EstimateAcceleration(double targetMphSpeed, bool withShiftDelay = false)
     {
-        var shiftDelay = withShiftDelay ? carp.GearShiftDelay * carp.VelocityToRpmManual.Count(p => carp.EngineMaxRpm / p > (targetMphSpeed * 0.44704)) : 0.0;
+        var shiftDelay = withShiftDelay ? carp.GearShiftDelay * carp.VelocityToRpmManual.Count(p => carp.EngineMaxRpm / p > targetMphSpeed * 0.44704) : 0.0;
         var torque = withShiftDelay ? carp.TorqueCurve.Median() : carp.TorqueCurve.Max();
         const double FtLbToNewton = 4.448222;
         const double rollingResistance = 0.02;
-        var a = (torque * FtLbToNewton / carp.Mass) - rollingResistance;
-        return Math.Sqrt(2 * 0.3048 * targetMphSpeed / a) + (shiftDelay / 1000.0);
+        var a = torque * FtLbToNewton / carp.Mass - rollingResistance;
+        return Math.Sqrt(2 * 0.3048 * targetMphSpeed / a) + shiftDelay / 1000.0;
     }
 
     private static (double torque, int rpm)[] TorqueWithRpmCurve(ICarPerf carp)
     {
         var rpmStep = (carp.EngineMaxRpm / carp.TorqueCurve.Count).Clamp(256, carp.EngineMaxRpm);
         return carp.TorqueCurve
-            .Zip(Enumerable.Range(0, carp.TorqueCurve.Count).Select(p => (p * rpmStep) + carp.EngineMinRpm))
+            .Zip(Enumerable.Range(0, carp.TorqueCurve.Count).Select(p => p * rpmStep + carp.EngineMinRpm))
             .Where(p => p.Second <= carp.EngineMaxRpm)
             .ToArray();
     }

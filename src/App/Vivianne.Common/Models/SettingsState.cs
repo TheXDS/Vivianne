@@ -25,6 +25,8 @@ public class SettingsState : EditorViewModelStateBase
     private bool _fce_EnumerateAllImages;
     private string? _nfs4Path;
     private string? _nfs4LaunchArgs;
+    private bool _carp_SyncChanges;
+    private bool _fe_SyncChanges;
 
     /// <summary>
     /// Gets or sets the path to the NFS4 main directory.
@@ -139,6 +141,16 @@ public class SettingsState : EditorViewModelStateBase
     }
 
     /// <summary>
+    /// Gets or sets a value that indicates whether data sync to FeData files
+    /// is enabled when editing a Carp file.
+    /// </summary>
+    public bool Carp_SyncChanges
+    { 
+        get => _carp_SyncChanges;
+        set => Change(ref _carp_SyncChanges, value);
+    }
+
+    /// <summary>
     /// gets or sets a value that indicates if the FCE model will be centered automatically when saving an FCE file.
     /// </summary>
     public bool Fce_CenterModel
@@ -166,6 +178,16 @@ public class SettingsState : EditorViewModelStateBase
     { 
         get => _fce_EnumerateAllImages;
         set => Change(ref _fce_EnumerateAllImages, value);
+    }
+
+    /// <summary>
+    /// Gets or sets a value that indicates whether data sync is enabled
+    /// between FeData files and carp when editing a FeData file.
+    /// </summary>
+    public bool Fe_SyncChanges
+    { 
+        get => _fe_SyncChanges;
+        set => Change(ref _fe_SyncChanges, value);
     }
 
     /// <summary>

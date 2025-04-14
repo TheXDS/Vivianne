@@ -21,7 +21,7 @@ using TheXDS.Vivianne.Properties;
 using TheXDS.Vivianne.ViewModels.Base;
 using St = TheXDS.Vivianne.Resources.Strings.ViewModels.VivEditorViewModel;
 
-namespace TheXDS.Vivianne.ViewModels;
+namespace TheXDS.Vivianne.ViewModels.Viv;
 
 /// <summary>
 /// ViewModel that serves as the main view for interacting with a VIV file.

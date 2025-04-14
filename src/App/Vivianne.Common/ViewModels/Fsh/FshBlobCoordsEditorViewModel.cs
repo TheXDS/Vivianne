@@ -2,7 +2,7 @@
 using TheXDS.Vivianne.Models.Fsh;
 using TheXDS.Vivianne.ViewModels.Base;
 
-namespace TheXDS.Vivianne.ViewModels;
+namespace TheXDS.Vivianne.ViewModels.Fsh;
 
 /// <summary>
 /// ViewModel that allows the user to modify the FSH blob coordinates.

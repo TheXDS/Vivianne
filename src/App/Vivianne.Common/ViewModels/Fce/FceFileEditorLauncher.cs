@@ -20,21 +20,20 @@ using TheXDS.Vivianne.Properties;
 using TheXDS.Vivianne.Resources;
 using TheXDS.Vivianne.Serializers;
 using TheXDS.Vivianne.ViewModels.Base;
-using St = TheXDS.Vivianne.Resources.Strings.Common;
 using M3 = TheXDS.Vivianne.Models.Fce.Nfs3;
 using M4 = TheXDS.Vivianne.Models.Fce.Nfs4;
 using S3 = TheXDS.Vivianne.Serializers.Fce.Nfs3;
 using S4 = TheXDS.Vivianne.Serializers.Fce.Nfs4;
+using St = TheXDS.Vivianne.Resources.Strings.Common;
 using Vm3 = TheXDS.Vivianne.ViewModels.Fce.Nfs3;
 using Vm4 = TheXDS.Vivianne.ViewModels.Fce.Nfs4;
 
-namespace TheXDS.Vivianne.ViewModels;
+namespace TheXDS.Vivianne.ViewModels.Fce;
 
 /// <summary>
 /// Implements a launcher to create and/or edit FCE files for NFS3.
 /// </summary>
 public class FceFileEditorLauncher : ViewModel, IFileEditorViewModelLauncher
-    // FileEditorViewModelLauncher<Fce3EditorState, FceFile, FceSerializer, Fce3EditorViewModel>(dialogSvc, "FCE3", FileFilters.FceFileFilter, false)
 {
     private readonly Func<IDialogService> _dialogSvc;
 
@@ -86,7 +85,7 @@ public class FceFileEditorLauncher : ViewModel, IFileEditorViewModelLauncher
         {
             NfsVersion.Nfs3 => OnOpen<M3.FceFile, FcePart, S3.FceSerializer, Vm3.Fce3EditorViewModel, Vm3.Fce3EditorState>(filePath, fileContents),
             NfsVersion.Nfs4 or NfsVersion.Mco => OnOpen<M4.FceFile, M4.Fce4Part, S4.FceSerializer, Vm4.Fce4EditorViewModel, Vm4.Fce4EditorState>(filePath, fileContents),
-            _ => (DialogService?.Error("Unsupported file format.") ?? Task.CompletedTask)
+            _ => DialogService?.Error("Unsupported file format.") ?? Task.CompletedTask
         });
     }
 
