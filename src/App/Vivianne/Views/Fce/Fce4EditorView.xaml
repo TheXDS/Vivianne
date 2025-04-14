@@ -102,7 +102,7 @@
                     </Expander>
                     <Expander Margin="10,0" IsExpanded="True" Header="Tools">
                         <StackPanel>
-                            <!--<Button Margin="5" HorizontalAlignment="Stretch" Command="{Binding ColorEditorCommand, Mode=OneWay}" Content="{x:Static st:FceEditorView.EditColors}"/>-->
+                            <Button Margin="5" HorizontalAlignment="Stretch" Command="{Binding ColorEditorCommand, Mode=OneWay}" Content="{x:Static st:FceEditorView.EditColors}"/>
                             <Button Margin="5" HorizontalAlignment="Stretch" Command="{Binding FceCenterCommand, Mode=OneWay}" Content="Fce Center"/>
                         </StackPanel>
                     </Expander>

@@ -43,6 +43,8 @@ public class VivFileEditorLauncher : FileEditorViewModelLauncher<VivEditorState,
 
     private static string InferFromPath(string path)
     {
-        return Path.GetFileName(Path.GetDirectoryName(path)) ?? Path.GetFileName(path);
+        return path.Equals("car.viv", StringComparison.InvariantCultureIgnoreCase)
+            ? Path.GetFileName(Path.GetDirectoryName(path)) ?? Path.GetFileName(path)
+            : Path.GetFileName(path);
     }
 }

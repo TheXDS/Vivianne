@@ -1,4 +1,4 @@
-﻿namespace TheXDS.Vivianne.Models;
+﻿namespace TheXDS.Vivianne.Models.Fce.Nfs3;
 
 /// <summary>
 /// Represents a mutable class equivalent to a car color set, including the

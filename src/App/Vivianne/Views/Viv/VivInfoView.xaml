@@ -9,7 +9,7 @@
     xmlns:local="clr-namespace:TheXDS.Vivianne.Views"
     xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings.Views"
     xmlns:stc="clr-namespace:TheXDS.Vivianne.Resources.Strings;assembly=Vivianne.Common"
-    xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
+    xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels.Viv;assembly=Vivianne.Common"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     d:DataContext="{d:DesignInstance Type=vm:VivInfoViewModel}"
     mc:Ignorable="d"

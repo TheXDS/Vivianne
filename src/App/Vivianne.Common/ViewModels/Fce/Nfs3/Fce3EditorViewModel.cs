@@ -1,15 +1,12 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TheXDS.Ganymede.Helpers;
-using TheXDS.Vivianne.Models;
+using TheXDS.Vivianne.Extensions;
 using TheXDS.Vivianne.Models.Fce;
 using TheXDS.Vivianne.Models.Fce.Common;
 using TheXDS.Vivianne.Models.Fce.Nfs3;
 using TheXDS.Vivianne.ViewModels.Fce.Common;
-using TheXDS.Vivianne.Extensions;
 
 namespace TheXDS.Vivianne.ViewModels.Fce.Nfs3;
 
@@ -69,7 +66,7 @@ public class Fce3EditorViewModel : FceEditorViewModelBase<
     private async Task OnColorEditor()
     {
         var state = new Fce3ColorTableEditorState(State);
-        var vm = new FceColorEditorViewModel(state);
+        var vm = new Fce3ColorEditorViewModel(state) { Title = "Color editor" };
         await DialogService!.Show(vm);
         await LoadColorNames();
         State.SelectedColor = State.Colors.FirstOrDefault();

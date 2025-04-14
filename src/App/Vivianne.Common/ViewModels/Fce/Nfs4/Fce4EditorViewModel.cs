@@ -2,7 +2,10 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using TheXDS.Ganymede.Helpers;
 using TheXDS.Vivianne.Models.Fce;
+using TheXDS.Vivianne.Models.Fce.Common;
 using TheXDS.Vivianne.Models.Fce.Nfs4;
 using TheXDS.Vivianne.ViewModels.Fce.Common;
 
@@ -28,6 +31,21 @@ public class Fce4EditorViewModel : FceEditorViewModelBase<
         { FceLodPreset.Tiny, [":TB"] },
     }.AsReadOnly();
 
+    /// <summary>
+    /// Gets a reference to the command used to open a dialog to edit the FCE
+    /// color tables.
+    /// </summary>
+    public ICommand ColorEditorCommand { get; }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Fce4EditorViewModel"/> class.
+    /// </summary>
+    public Fce4EditorViewModel()
+    {
+        var cb = CommandBuilder.For(this);
+        ColorEditorCommand = cb.BuildSimple(OnColorEditor);
+    }
+
     /// <inheritdoc/>
     protected override Task OnCreated()
     {
@@ -43,5 +61,14 @@ public class Fce4EditorViewModel : FceEditorViewModelBase<
         {
             j.IsVisible = mapping.Contains(j.Part.Name);
         }
+    }
+    private async Task OnColorEditor()
+    {
+        var state = new Fce4ColorTableEditorState(State);
+        var vm = new Fce4ColorEditorViewModel(state) { Title = "Color editor" };
+        await DialogService!.Show(vm);
+        await LoadColorNames();
+        State.SelectedColor = State.Colors.FirstOrDefault();
+        OnVisibleChanged();
     }
 }

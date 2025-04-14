@@ -5,6 +5,7 @@
         <ResourceDictionary Source="/Resources/ControlTemplates/EditorBackdrop.xaml"/>
         <ResourceDictionary Source="/Resources/ControlTemplates/FileEditorCommandBar.xaml"/>
         <ResourceDictionary Source="/Resources/ControlTemplates/FileEditorLauncherView.xaml"/>
+        <ResourceDictionary Source="/Resources/ControlTemplates/HsbColorEditor.xaml"/>
         <ResourceDictionary Source="/Resources/ControlTemplates/ProcessMonitor.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

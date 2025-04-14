@@ -13,7 +13,7 @@ public class MutableFceColorToBrushConverter : IOneWayValueConverter<MutableFceC
     /// <inheritdoc/>
     public Brush Convert(MutableFceColor value, object? parameter, CultureInfo? culture)
     {
-        var (r, g, b) = value.ToColor().ToRgb();
+        var (r, g, b, _) = value.ToRgba();
         return new SolidColorBrush(Color.FromRgb((byte)r, (byte)g, (byte)b));
     }
 }
