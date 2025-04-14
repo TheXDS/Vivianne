@@ -1,4 +1,5 @@
-﻿using TheXDS.Vivianne.Extensions;
+﻿using System.Numerics;
+using TheXDS.Vivianne.Extensions;
 using TheXDS.Vivianne.Models.Fce.Common;
 using TheXDS.Vivianne.Models.Fce.Nfs4;
 

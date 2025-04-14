@@ -105,6 +105,4 @@ public partial class FceSerializer : ISerializer<FceFile>
         fileWriter.MarshalWriteStruct(header);
         fileWriter.Write(poolStream.ToArray());
     }
-
-    private readonly record struct FceData(in FceFileHeader Header, in Vector3[] Vertices, in Vector3[] DamagedVertices, in Vector3[] Normals, in Vector3[] DamagedNormals, in FceTriangle[] Triangles);
 }
