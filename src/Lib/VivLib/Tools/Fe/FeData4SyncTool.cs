@@ -89,16 +89,21 @@ public static class FeData4SyncTool
                 var f = fs.Deserialize(content);
                 f.SerialNumber = source.SerialNumber;
                 f.VehicleClass = source.CarClass;
-                var perfDataSource = j.Value.Invoke(source);
-                f.Weight = perfDataSource.Weight;
-                f.TopSpeed = perfDataSource.TopSpeed;
-                f.Hp = perfDataSource.Power;
-                f.Torque = perfDataSource.Torque;
-                f.MaxEngineSpeed = perfDataSource.MaxRpm;
-                f.Tires = perfDataSource.Tires;
-                f.Gearbox = perfDataSource.Gearbox;
-                f.Accel0To60 = perfDataSource.Accel0To60;
-                f.Accel0To100 = perfDataSource.Accel0To100;
+
+                // Only allow perf data sync from the stock carperf.
+                if (name == "carp.txt")
+                {
+                    var perfDataSource = j.Value.Invoke(source);
+                    f.Weight = perfDataSource.Weight;
+                    f.TopSpeed = perfDataSource.TopSpeed;
+                    f.Hp = perfDataSource.Power;
+                    f.Torque = perfDataSource.Torque;
+                    f.MaxEngineSpeed = perfDataSource.MaxRpm;
+                    f.Tires = perfDataSource.Tires;
+                    f.Gearbox = perfDataSource.Gearbox;
+                    f.Accel0To60 = perfDataSource.Accel0To60;
+                    f.Accel0To100 = perfDataSource.Accel0To100;
+                }
                 directory[$"fedata{j.Key}"] = fs.Serialize(f);
             }
         }
