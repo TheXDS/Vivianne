@@ -6,13 +6,14 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="clr-namespace:TheXDS.Vivianne.Controls"
     xmlns:vc="clr-namespace:TheXDS.Vivianne.ValueConverters"
+    xmlns:vmFsh="clr-namespace:TheXDS.Vivianne.ViewModels.Fsh;assembly=Vivianne.Common"
     xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
     xmlns:ct="clr-namespace:TheXDS.Vivianne.Controls"
     xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings.Views"
     xmlns:st2="clr-namespace:TheXDS.Vivianne.Resources.Strings;assembly=Vivianne.Common"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:mcart="http://schemas.thexds.local/mcart"
-    d:DataContext="{d:DesignInstance Type=vm:FshEditorViewModel}"
+    d:DataContext="{d:DesignInstance Type=vmFsh:FshEditorViewModel}"
     mc:Ignorable="d" d:DesignHeight="500">
     <UserControl.Resources>
         <vc:ByteCountConverter x:Key="bc2str"/>
