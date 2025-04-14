@@ -32,6 +32,7 @@ public abstract class FceRenderStateBuilderBase<TState, TPart>
             .Append(CreateShadow(state)).NotNull(),
         Texture = state.SelectedTexture,
         TextureColors = GetRenderColors(state),
+        ForceUFlip = FlipUvX(state),
         ForceVFlip = FlipUvY()
     };
 
@@ -40,6 +41,12 @@ public abstract class FceRenderStateBuilderBase<TState, TPart>
     /// </summary>
     /// <returns></returns>
     protected virtual bool? FlipUvY() => null;
+
+    /// <summary>
+    /// When overriden in a derivate class, allows the inheritor to force the UV X flip value.
+    /// </summary>
+    /// <returns></returns>
+    protected virtual bool? FlipUvX(TState state) => null;
 
     private static SceneObject? CreateShadow(TState state) => state.RenderShadow ? CreateShadow(state.HalfSize) : null;
 

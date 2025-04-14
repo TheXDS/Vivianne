@@ -5,7 +5,11 @@ using System.IO;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using TheXDS.MCART.Helpers;
+using TheXDS.Vivianne.Extensions;
 using TheXDS.Vivianne.Models.Fsh;
+using TheXDS.Vivianne.Serializers;
+using TheXDS.Vivianne.Serializers.Fsh;
+using TheXDS.Vivianne.Tools.Fsh;
 using TheXDS.Vivianne.ViewModels.Fce.Common;
 
 namespace TheXDS.Vivianne.ValueConverters;
@@ -40,6 +44,7 @@ public abstract class RawImageConverterBase
         if (value is null) return null;
         try
         {
+            if (System.Text.Encoding.Latin1.GetString(value[0..4]) == "SHPI" || QfsCodec.IsCompressed(value)) return TryLoadFsh(value, textureColor, enableAlpha);        
             return Image.Load(value) switch
             {
                 Image<Rgba32> i => ConvertImageToBitmapSource(FshBlobFormat.Argb32, i, textureColor, enableAlpha),
@@ -52,6 +57,16 @@ public abstract class RawImageConverterBase
         {
             return null;
         }
+    }
+
+    private static BitmapSource? TryLoadFsh(byte[] value, RenderColor[]? textureColor, bool enableAlpha)
+    {
+        ISerializer<FshFile> serializer = new FshSerializer();
+        var fsh = serializer.Deserialize(value);
+        var blob = fsh.Entries.FirstOrDefault().Value;
+        var image = blob.ToImage(blob.ReadLocalPalette() ?? fsh.GetPalette());
+        if (image == null) return null;
+        return ConvertImageToBitmapSource(FshBlobFormat.Argb32, image.CloneAs<Rgba32>(), textureColor, enableAlpha);
     }
 
     private static BitmapSource ConvertImageToBitmapSource<T>(FshBlobFormat format, Image<T> image, RenderColor[]? textureColor, bool enableAlpha) where T : unmanaged, IPixel<T>

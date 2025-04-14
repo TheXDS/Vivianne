@@ -1,4 +1,7 @@
-﻿using System.Numerics;
+﻿using System.Diagnostics;
+using System.Numerics;
+using System.Runtime.InteropServices;
+using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Extensions;
 using TheXDS.Vivianne.Models.Fce.Common;
 using TheXDS.Vivianne.Models.Fce.Nfs4;
@@ -7,6 +10,8 @@ namespace TheXDS.Vivianne.Serializers.Fce.Nfs4;
 
 public partial class FceSerializer
 {
+    private static readonly int DataOffset = Marshal.SizeOf<FceFileHeader>();
+
     private static FceFileHeader CreateHeader(FceFile entity)
     {
         return new FceFileHeader()
@@ -65,5 +70,21 @@ public partial class FceSerializer
     private static IEnumerable<Fce4Part> GetParts(FceData data)
     {
         return Enumerable.Range(0, data.Header.CarPartCount).Select(p => LoadPart(data, p));
+    }
+
+    private static byte[] TryReadBytesAt(in BinaryReader br, in long offset, in int count, string tableName)
+    {
+        try
+        {
+            return br.ReadBytesAt(offset + DataOffset, count);
+        }
+        catch (Exception ex)
+        {
+            Debug.Print($"Could not read {tableName} (asked for {count} bytes at offset 0x{offset:X8}). Skipping...");
+#if DEBUG
+            Debug.Print(TheXDS.MCART.Resources.Strings.Composition.ExDump(ex, MCART.Resources.Strings.ExDumpOptions.AllFormatted));
+#endif
+            return new byte[count];
+        }
     }
 }

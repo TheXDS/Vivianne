@@ -12,8 +12,6 @@ namespace TheXDS.Vivianne.Serializers.Fce.Nfs4;
 /// </summary>
 public partial class FceSerializer : ISerializer<FceFile>
 {
-    private static readonly int DataOffset = Marshal.SizeOf<FceFileHeader>();
-
     /// <inheritdoc />
     public FceFile Deserialize(Stream stream)
     {
@@ -25,7 +23,8 @@ public partial class FceSerializer : ISerializer<FceFile>
         var damagedNormals = br.MarshalReadArray<Vector3>(header.DamagedNormalsTblOffset + DataOffset, header.Vertices);
         var triangles = br.MarshalReadArray<FceTriangle>(header.TriangleTblOffset + DataOffset, header.Triangles);
         var data = new FceData(header, vertices, damagedVertices, normals, damagedNormals, triangles);
-        return new FceFile()
+
+        var fce = new FceFile()
         {
             Magic = header.Magic,
             Unk_0x0004 = header.Unk_0x4,
@@ -33,13 +32,13 @@ public partial class FceSerializer : ISerializer<FceFile>
             XHalfSize = header.XHalfSize,
             YHalfSize = header.YHalfSize,
             ZHalfSize = header.ZHalfSize,
-            RsvdTable1 = br.ReadBytesAt(header.Rsvd1Offset + DataOffset, header.Vertices * 32),
-            RsvdTable2 = br.ReadBytesAt(header.Rsvd2Offset + DataOffset, header.Vertices * Marshal.SizeOf<Vector3>()),
-            RsvdTable3 = br.ReadBytesAt(header.Rsvd3Offset + DataOffset, header.Vertices * Marshal.SizeOf<Vector3>()),
-            RsvdTable4 = br.ReadBytesAt(header.Rsvd4Offset + DataOffset, header.Vertices * 4),
-            RsvdTable5 = br.ReadBytesAt(header.Rsvd5Offset + DataOffset, header.Vertices * 4),
-            RsvdTable6 = br.ReadBytesAt(header.Rsvd6Offset + DataOffset, header.Triangles * 12),
-            AnimationTable = br.ReadBytesAt(header.AnimationTblOffset + DataOffset, header.Vertices * 4),
+            RsvdTable1 = TryReadBytesAt(br, header.Rsvd1Offset, header.Vertices * 32, nameof(FceFile.RsvdTable1)),
+            RsvdTable2 = TryReadBytesAt(br, header.Rsvd2Offset, header.Vertices * Marshal.SizeOf<Vector3>(), nameof(FceFile.RsvdTable2)),
+            RsvdTable3 = TryReadBytesAt(br, header.Rsvd3Offset, header.Vertices * Marshal.SizeOf<Vector3>(), nameof(FceFile.RsvdTable3)),
+            RsvdTable4 = TryReadBytesAt(br, header.Rsvd4Offset, header.Vertices * 4, nameof(FceFile.RsvdTable4)),
+            RsvdTable5 = TryReadBytesAt(br, header.Rsvd5Offset, header.Vertices * 4, nameof(FceFile.RsvdTable5)),
+            RsvdTable6 = TryReadBytesAt(br, header.Rsvd6Offset, header.Triangles * 12, nameof(FceFile.RsvdTable6)),
+            AnimationTable = TryReadBytesAt(br, header.AnimationTblOffset, header.Vertices * 4, nameof(FceFile.AnimationTable)),
             PrimaryColors = [.. header.PrimaryColorTable.Take(header.Colors)],
             InteriorColors = [.. header.InteriorColorTable.Take(header.Colors)],
             SecondaryColors = [.. header.SecondaryColorTable.Take(header.Colors)],
@@ -50,6 +49,8 @@ public partial class FceSerializer : ISerializer<FceFile>
             Unk_0x0928 = header.Unk_0x0928,
             Unk_0x1e28 = header.Unk_0x1e28,
         };
+
+        return fce;
     }
 
     /// <inheritdoc />

@@ -1,4 +1,6 @@
-﻿namespace TheXDS.Vivianne.Info;
+﻿using TheXDS.Vivianne.Models.Fce.Nfs4;
+
+namespace TheXDS.Vivianne.Info;
 
 /// <summary>
 /// Contains functions that help identify the game version for which a file is
@@ -29,6 +31,19 @@ public static class VersionIdentifier
     {
         if (knownFce4Headers.Any(file[0..4].SequenceEqual)) return NfsVersion.Nfs4;
         return knownFce4MHeaders.Any(file[0..4].SequenceEqual) ? NfsVersion.Mco : NfsVersion.Nfs3;
+    }
+
+    /// <summary>
+    /// Infers the game file version for the specified FCE contents.
+    /// </summary>
+    /// <param name="file">FCE4 File to check.</param>
+    /// <returns>
+    /// A value that indicates the game for which this file is intended.
+    /// </returns>
+    public static NfsVersion FceVersion(FceFile file)
+    {
+        if (knownFce4Headers.Any(p => file.Magic == BitConverter.ToInt32(p))) return NfsVersion.Nfs4;
+        return knownFce4MHeaders.Any(p => file.Magic == BitConverter.ToInt32(p)) ? NfsVersion.Mco : NfsVersion.Nfs3;
     }
 
     /// <summary>

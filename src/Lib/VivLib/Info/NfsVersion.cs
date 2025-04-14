@@ -6,6 +6,10 @@
 public enum NfsVersion
 {
     /// <summary>
+    /// Unable to determine the target file version.
+    /// </summary>
+    Unknown,
+    /// <summary>
     /// The file is intended for Need For Speed 3.
     /// </summary>
     Nfs3,

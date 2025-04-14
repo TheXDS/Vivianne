@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using TheXDS.MCART.Exceptions;
+using TheXDS.MCART.Helpers;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.MCART.ValueConverters.Base;
 using TheXDS.Vivianne.Models.Fce.Common;
@@ -86,7 +87,12 @@ public class FceRendererConverter : IOneWayValueConverter<RenderState?, Model3DG
         {
             header = null;
         }
-        return header is not null;
+        return header is not null
+            && Enum.IsDefined(header.Value.ImageType)
+            && Enum.IsDefined(header.Value.ColorMapType)
+            && ((byte[])[8,16,24,32,48,64,96,128]).Contains(header.Value.ImageInfo.BitsPerPixel)
+            && ((int)header.Value.ImageInfo.XOrigin).IsBetween(0, header.Value.ImageInfo.Width)
+            && ((int)header.Value.ImageInfo.YOrigin).IsBetween(0, header.Value.ImageInfo.Height);
     }
 
     private static (Brush brush, bool flipU, bool flipV) CheckUvFlip(RenderState value)
@@ -98,8 +104,13 @@ public class FceRendererConverter : IOneWayValueConverter<RenderState?, Model3DG
             brush = new RawImageToBrushConverter().Convert(textureData, value.TextureColors, CultureInfo.InvariantCulture);
             if (IsTextureLikelyTga(value, out var tgaHeader))
             {
-                flipU = tgaHeader.Value.ImageInfo.XOrigin != 0;
+                flipU = value.ForceUFlip ?? tgaHeader.Value.ImageInfo.XOrigin != 0;
                 flipV = value.ForceVFlip ?? !tgaHeader.Value.ImageInfo.PixelFormatDescriptor.HasFlag(ImageDescriptor.TopLeftOrigin);
+            }
+            else
+            {
+                flipU = value.ForceUFlip ?? false;
+                flipV = value.ForceVFlip ?? false;
             }
         }
         brush ??= Brushes.Gray;

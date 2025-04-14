@@ -119,7 +119,10 @@ public abstract class FceEditorViewModelBase<TState, TFile, TFceColor, THsbColor
         State.RenderShadow = Settings.Current.Fce_ShadowByDefault;
         await foreach (var j in GetTextures(BackingStore?.Store)) State.CarTextures.Add(j);
         State.CarTextures.Add(new(null!, St.NoTexture));
-        State.SelectedTexture = State.CarTextures.First().Value;
+        if (State.CarTextures.FirstOrDefault(p => p.Name.StartsWith(Path.GetFileNameWithoutExtension(BackingStore!.FileName)!)) is { Value: byte[] texture })
+        {
+            State.SelectedTexture = texture;
+        }
         await LoadColorNames();
         State.FceLodPreset = FceLodPreset.High;
         SwitchToLod(State.FceLodPreset);
@@ -217,7 +220,7 @@ public abstract class FceEditorViewModelBase<TState, TFile, TFceColor, THsbColor
 
     private static async IAsyncEnumerable<NamedObject<byte[]>> GetTextures(IBackingStore? store)
     {
-        var extensions = (Settings.Current.Fce_EnumerateAllImages ? Mappings.ExportEnconder.Keys : [".tga"]).ToArray();
+        var extensions = (Settings.Current.Fce_EnumerateAllImages ? Mappings.ExportEnconder.Keys.Concat([".fsh", ".qfs"]) : [".tga"]).ToArray();
         foreach (var file in store?.EnumerateFiles().Where(p => extensions.Contains(Path.GetExtension(p).ToLowerInvariant())) ?? [])
         {
             if (await store!.ReadAsync(file) is byte[] contents)

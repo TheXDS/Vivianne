@@ -43,4 +43,10 @@ public sealed class RenderState
     /// value.
     /// </summary>
     public bool? ForceVFlip { get; init; }
+
+    /// <summary>
+    /// Gets or sets a value that forces the UV horizontal flip to a specific
+    /// value.
+    /// </summary>
+    public bool? ForceUFlip { get; init; }
 }

@@ -120,4 +120,7 @@
   <data name="RootNFS3GamePath" xml:space="preserve">
     <value>Ruta raíz de NFS3</value>
   </data>
+  <data name="RootToNFS4GamePath" xml:space="preserve">
+    <value>Ruta raíz de NFS4</value>
+  </data>
 </root>
