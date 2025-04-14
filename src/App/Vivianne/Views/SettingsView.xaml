@@ -280,6 +280,58 @@
                 </StackPanel>
             </ScrollViewer>
         </TabItem>
+        <TabItem Header="Carp editor">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <StackPanel>
+                    <ui:CardControl Icon="{ui:SymbolIcon Symbol=DocumentMultipleSync20}">
+                        <ui:CardControl.Header>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <ui:TextBlock
+                                    Grid.Row="0"
+                                    FontTypography="BodyStrong"
+                                    Text="Sync Carp changes" />
+                                <ui:TextBlock
+                                    TextWrapping="Wrap"
+                                    Grid.Row="1"
+                                    Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                    Text="When enabled, syncs changes made on the current Carp file for performance data to all FeData files in the VIV directory." />
+                            </Grid>
+                        </ui:CardControl.Header>
+                        <ui:ToggleSwitch IsChecked="{Binding State.Carp_SyncChanges}"/>
+                    </ui:CardControl>
+                </StackPanel>
+            </ScrollViewer>
+        </TabItem>
+        <TabItem Header="FeData editor">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <StackPanel>
+                    <ui:CardControl Icon="{ui:SymbolIcon Symbol=DocumentMultipleSync20}">
+                        <ui:CardControl.Header>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <ui:TextBlock
+                                    Grid.Row="0"
+                                    FontTypography="BodyStrong"
+                                    Text="Sync FeData changes" />
+                                <ui:TextBlock
+                                    TextWrapping="Wrap"
+                                    Grid.Row="1"
+                                    Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                    Text="When enabled, syncs changes made on the current FeData file to the other FeData files in the VIV directory as well as Carp." />
+                            </Grid>
+                        </ui:CardControl.Header>
+                        <ui:ToggleSwitch IsChecked="{Binding State.Fe_SyncChanges}"/>
+                    </ui:CardControl>
+                </StackPanel>
+            </ScrollViewer>
+        </TabItem>
         <TabItem Header="FCE editor">
             <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                 <StackPanel>
