@@ -107,9 +107,12 @@ public static class Mappings
     /// </summary>
     public static IReadOnlyDictionary<FshBlobFormat, Func<FshBlob, Color[]>> FshBlobToPalette { get; } = new Dictionary<FshBlobFormat, Func<FshBlob, Color[]>>()
     {
-        { FshBlobFormat.Palette32,      ReadPalette<Bgra32>(4) },
-        { FshBlobFormat.Palette24,      ReadPalette<Bgr24>(3) },
+        // These constructors take in RGB[A] in that order.
+        { FshBlobFormat.Palette32,      ReadPalette<Bgra32>(4, b => new(b[2], b[1], b[0], b[3])) },
+        { FshBlobFormat.Palette24,      ReadPalette<Bgr24>(3, b => new(b[2], b[1], b[0])) },
         { FshBlobFormat.Palette24Dos,   ReadPalette<Bgr24>(3) },
+
+
         { FshBlobFormat.Palette16,      ReadPalette<Bgr565>() },
         { FshBlobFormat.Palette16Nfs5,  ReadPalette<Bgra5551>() },
     };
