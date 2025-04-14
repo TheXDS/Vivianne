@@ -10,7 +10,7 @@
     xmlns:md="clr-namespace:TheXDS.Vivianne.Models.Fe.Nfs3;assembly=VivLib"
     xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings.Views"
     xmlns:stc="clr-namespace:TheXDS.Vivianne.Resources.Strings;assembly=Vivianne.Common"
-    xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
+    xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels.Fe;assembly=Vivianne.Common"
     xmlns:mdl="clr-namespace:TheXDS.Vivianne.Models.Fe;assembly=VivLib"
     xmlns:controls="clr-namespace:TheXDS.Vivianne.Controls"
     xmlns:viewmodels="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
@@ -25,11 +25,7 @@
     mc:Ignorable="d"
     d:DesignWidth="600">
     <DockPanel>
-        <controls:FileEditorCommandBar DockPanel.Dock="Top" Editor="{Binding}" ShowClose="False">
-            <!--<CheckBox Margin="10,0" Style="{StaticResource ToggleSwitch}" HorizontalAlignment="Right" IsEnabled="False">
-                <TextBlock Text="{x:Static st:FeDataEditorView.LinkEdits}" Foreground="White"/>
-            </CheckBox>-->
-        </controls:FileEditorCommandBar>
+        <controls:FileEditorCommandBar DockPanel.Dock="Top" Editor="{Binding}" ShowClose="False"/>
         <Grid Background="{ui:ThemeResource ControlSolidFillColorDefaultBrush}">
             <ScrollViewer>
                 <ScrollViewer.Resources>
@@ -137,43 +133,43 @@
                         </mcart:StretchyWrapPanel.Resources>
                         <Expander Header="{x:Static st:FeDataEditorView.General}" IsExpanded="True" VerticalAlignment="Stretch">
                             <mcart:StretchyWrapPanel StretchProportionally="False">
-                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Manufacturer}" Text="{Binding State.File.Manufacturer}"/>
-                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Model}" Text="{Binding State.File.Model}"/>
-                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Price}" Text="{Binding State.File.Price}"/>
-                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Status}" Text="{Binding State.File.Status}"/>
-                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Weight}" Text="{Binding State.File.Weight}"/>
-                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.WeightDistr}" Text="{Binding State.File.WeightDistribution}"/>
-                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Width}" Text="{Binding State.File.Width}"/>
-                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Height}" Text="{Binding State.File.Height}"/>
-                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Length}" Text="{Binding State.File.Length}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Manufacturer}" Text="{Binding State.File.Manufacturer, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Model}" Text="{Binding State.File.Model, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Price}" Text="{Binding State.File.Price, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Status}" Text="{Binding State.File.Status, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Weight}" Text="{Binding State.File.Weight, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.WeightDistr}" Text="{Binding State.File.WeightDistribution, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Width}" Text="{Binding State.File.Width, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Height}" Text="{Binding State.File.Height, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Length}" Text="{Binding State.File.Length, UpdateSourceTrigger=PropertyChanged}"/>
                             </mcart:StretchyWrapPanel>
                         </Expander>
                         <Expander Header="{x:Static st:FeDataEditorView.Performance}" IsExpanded="True" VerticalAlignment="Stretch">
                             <mcart:StretchyWrapPanel StretchProportionally="False">
-                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Engine}" Text="{Binding State.File.Engine}"/>
-                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Displacement}" Text="{Binding State.File.Displacement}"/>
-                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Power}" Text="{Binding State.File.Hp}"/>
-                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Torque}" Text="{Binding State.File.Torque}"/>
-                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.MaxRpm}" Text="{Binding State.File.MaxEngineSpeed}"/>
-                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Brakes}" Text="{Binding State.File.Brakes}"/>
-                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Tires}" Text="{Binding State.File.Tires}"/>
-                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.TopSpeed}" Text="{Binding State.File.TopSpeed}"/>
-                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Accel0To60}" Text="{Binding State.File.Accel0To60}"/>
-                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Accel0To100}" Text="{Binding State.File.Accel0To100}"/>
-                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Transmission}" Text="{Binding State.File.Transmission}"/>
-                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Gearbox}" Text="{Binding State.File.Gearbox}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Engine}" Text="{Binding State.File.Engine, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Displacement}" Text="{Binding State.File.Displacement, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Power}" Text="{Binding State.File.Hp, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Torque}" Text="{Binding State.File.Torque, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.MaxRpm}" Text="{Binding State.File.MaxEngineSpeed, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Brakes}" Text="{Binding State.File.Brakes, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Tires}" Text="{Binding State.File.Tires, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.TopSpeed}" Text="{Binding State.File.TopSpeed, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Accel0To60}" Text="{Binding State.File.Accel0To60, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Accel0To100}" Text="{Binding State.File.Accel0To100, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Transmission}" Text="{Binding State.File.Transmission, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Gearbox}" Text="{Binding State.File.Gearbox, UpdateSourceTrigger=PropertyChanged}"/>
                             </mcart:StretchyWrapPanel>
                         </Expander>
                         <Expander Header="{x:Static st:FeDataEditorView.History}" IsExpanded="True" VerticalAlignment="Stretch">
                             <mcart:StretchyWrapPanel StretchProportionally="False">
-                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.History1}" Text="{Binding State.File.History1}"/>
-                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.History2}" Text="{Binding State.File.History2}"/>
-                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.History3}" Text="{Binding State.File.History3}"/>
-                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.History4}" Text="{Binding State.File.History4}"/>
-                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.History5}" Text="{Binding State.File.History5}"/>
-                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.History6}" Text="{Binding State.File.History6}"/>
-                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.History7}" Text="{Binding State.File.History7}"/>
-                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.History8}" Text="{Binding State.File.History8}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.History1}" Text="{Binding State.File.History1, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.History2}" Text="{Binding State.File.History2, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.History3}" Text="{Binding State.File.History3, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.History4}" Text="{Binding State.File.History4, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.History5}" Text="{Binding State.File.History5, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.History6}" Text="{Binding State.File.History6, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.History7}" Text="{Binding State.File.History7, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.History8}" Text="{Binding State.File.History8, UpdateSourceTrigger=PropertyChanged}"/>
                             </mcart:StretchyWrapPanel>
                         </Expander>
                         <Expander Header="{x:Static st:FeDataEditorView.Colors}" IsExpanded="True" VerticalAlignment="Stretch">
@@ -181,16 +177,16 @@
                                 <mcart:StretchyWrapPanel.Resources>
                                     <valueconverters:DrawingColorToBrushConverter x:Key="dc2bc"/>
                                 </mcart:StretchyWrapPanel.Resources>
-                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color1}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[0], Mode=OneWay}" Text="{Binding State.File.Color1}"/>
-                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color2}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[1], Mode=OneWay}" Text="{Binding State.File.Color2}"/>
-                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color3}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[2], Mode=OneWay}" Text="{Binding State.File.Color3}"/>
-                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color4}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[3], Mode=OneWay}" Text="{Binding State.File.Color4}"/>
-                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color5}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[4], Mode=OneWay}" Text="{Binding State.File.Color5}"/>
-                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color6}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[5], Mode=OneWay}" Text="{Binding State.File.Color6}"/>
-                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color7}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[6], Mode=OneWay}" Text="{Binding State.File.Color7}"/>
-                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color8}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[7], Mode=OneWay}" Text="{Binding State.File.Color8}"/>
-                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color9}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[8], Mode=OneWay}" Text="{Binding State.File.Color9}"/>
-                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color10}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[9], Mode=OneWay}" Text="{Binding State.File.Color10}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color1}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[0], Mode=OneWay}" Text="{Binding State.File.Color1, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color2}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[1], Mode=OneWay}" Text="{Binding State.File.Color2, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color3}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[2], Mode=OneWay}" Text="{Binding State.File.Color3, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color4}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[3], Mode=OneWay}" Text="{Binding State.File.Color4, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color5}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[4], Mode=OneWay}" Text="{Binding State.File.Color5, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color6}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[5], Mode=OneWay}" Text="{Binding State.File.Color6, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color7}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[6], Mode=OneWay}" Text="{Binding State.File.Color7, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color8}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[7], Mode=OneWay}" Text="{Binding State.File.Color8, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color9}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[8], Mode=OneWay}" Text="{Binding State.File.Color9, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:TextBox hlp:Form.Label="{x:Static st:FeDataEditorView.Color10}" hlp:Form.FceColorPreview="{Binding State.PreviewFceColorTable[9], Mode=OneWay}" Text="{Binding State.File.Color10, UpdateSourceTrigger=PropertyChanged}"/>
                             </mcart:StretchyWrapPanel>
                         </Expander>
                     </mcart:StretchyWrapPanel>
@@ -202,17 +198,17 @@
                             </DockPanel>
                         </Expander.Header>
                         <mcart:StretchyWrapPanel StretchProportionally="False" IsEnabled="{Binding IsChecked, ElementName=chkUnknown}">
-                            <ui:NumberBox hlp:Form.Label="Unk_0x0c" Value="{Binding State.File.Unk_0x0c}"/>
-                            <ui:NumberBox hlp:Form.Label="Unk_0x14" Value="{Binding State.File.Unk_0x14}"/>
-                            <ui:NumberBox hlp:Form.Label="Unk_0x16" Value="{Binding State.File.Unk_0x16}"/>
-                            <ui:NumberBox hlp:Form.Label="Unk_0x1a" Value="{Binding State.File.Unk_0x1a}"/>
-                            <ui:NumberBox hlp:Form.Label="Unk_0x1c" Value="{Binding State.File.Unk_0x1c}"/>
-                            <ui:NumberBox hlp:Form.Label="Unk_0x1e" Value="{Binding State.File.Unk_0x1e}"/>
-                            <ui:NumberBox hlp:Form.Label="Unk_0x20" Value="{Binding State.File.Unk_0x20}"/>
-                            <ui:NumberBox hlp:Form.Label="Unk_0x22" Value="{Binding State.File.Unk_0x22}"/>
-                            <ui:NumberBox hlp:Form.Label="Unk_0x24" Value="{Binding State.File.Unk_0x24}"/>
-                            <ui:NumberBox hlp:Form.Label="Unk_0x26" Value="{Binding State.File.Unk_0x26}"/>
-                            <ui:NumberBox hlp:Form.Label="Unk_0x2c" Value="{Binding State.File.Unk_0x2c}"/>
+                            <ui:NumberBox hlp:Form.Label="Unk_0x0c" Value="{Binding State.File.Unk_0x0c, UpdateSourceTrigger=PropertyChanged}"/>
+                            <ui:NumberBox hlp:Form.Label="Unk_0x14" Value="{Binding State.File.Unk_0x14, UpdateSourceTrigger=PropertyChanged}"/>
+                            <ui:NumberBox hlp:Form.Label="Unk_0x16" Value="{Binding State.File.Unk_0x16, UpdateSourceTrigger=PropertyChanged}"/>
+                            <ui:NumberBox hlp:Form.Label="Unk_0x1a" Value="{Binding State.File.Unk_0x1a, UpdateSourceTrigger=PropertyChanged}"/>
+                            <ui:NumberBox hlp:Form.Label="Unk_0x1c" Value="{Binding State.File.Unk_0x1c, UpdateSourceTrigger=PropertyChanged}"/>
+                            <ui:NumberBox hlp:Form.Label="Unk_0x1e" Value="{Binding State.File.Unk_0x1e, UpdateSourceTrigger=PropertyChanged}"/>
+                            <ui:NumberBox hlp:Form.Label="Unk_0x20" Value="{Binding State.File.Unk_0x20, UpdateSourceTrigger=PropertyChanged}"/>
+                            <ui:NumberBox hlp:Form.Label="Unk_0x22" Value="{Binding State.File.Unk_0x22, UpdateSourceTrigger=PropertyChanged}"/>
+                            <ui:NumberBox hlp:Form.Label="Unk_0x24" Value="{Binding State.File.Unk_0x24, UpdateSourceTrigger=PropertyChanged}"/>
+                            <ui:NumberBox hlp:Form.Label="Unk_0x26" Value="{Binding State.File.Unk_0x26, UpdateSourceTrigger=PropertyChanged}"/>
+                            <ui:NumberBox hlp:Form.Label="Unk_0x2c" Value="{Binding State.File.Unk_0x2c, UpdateSourceTrigger=PropertyChanged}"/>
                         </mcart:StretchyWrapPanel>
                     </Expander>
                 </StackPanel>

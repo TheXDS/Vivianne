@@ -16,6 +16,8 @@ namespace TheXDS.Vivianne.Tools.Fe;
 /// </summary>
 public static class FeData4SyncTool
 {
+    private static readonly string[] knownCarps = ["carp.txt", "carp1.txt", "carp2.txt", "carp3.txt", "carpsim.txt", "carpsim1.txt", "carpsim2.txt", "carpsim3.txt"];
+
     /// <summary>
     /// Syncs changes between all FeData files and Carp.
     /// </summary>
@@ -26,17 +28,17 @@ public static class FeData4SyncTool
     /// File extension of <paramref name="source"/>. Used to exclude it from
     /// sync destinations.
     /// </param>
-    /// <param name="vivDirectory">
+    /// <param name="directory">
     /// Directory of the VIV file. Changes will be synced on all supported
     /// files inside the directory.
     /// </param>
-    public static void Sync(FeData source, string sourceExt, IDictionary<string, byte[]> vivDirectory)
+    public static void Sync(FeData source, string sourceExt, IDictionary<string, byte[]> directory)
     {
         ISerializer<FeData> fs = new FeDataSerializer();
         ISerializer<CarPerf> cs = new CarpSerializer();
         foreach (var j in FeDataBase.KnownExtensions.ExceptFor(sourceExt))
         {
-            if (vivDirectory.TryGetValue($"fedata{j}", out var content))
+            if (directory.TryGetValue($"fedata{j}", out var content))
             {
                 var f = fs.Deserialize(content);
                 f.CarName = source.CarName;
@@ -51,15 +53,18 @@ public static class FeData4SyncTool
                 f.CompareUpg2 = source.CompareUpg2;
                 f.CompareUpg3 = source.CompareUpg3;
                 f.IsBonus = source.IsBonus;
-                vivDirectory[$"fedata{j}"] = fs.Serialize(f);
+                directory[$"fedata{j}"] = fs.Serialize(f);
             }
         }
-        if (vivDirectory.TryGetValue("carp.txt", out var carpContent))
+        foreach (var j in knownCarps)
         {
-            var c = cs.Deserialize(carpContent);
-            c.SerialNumber = source.SerialNumber;
-            c.CarClass = source.VehicleClass;
-            vivDirectory["carp.txt"] = cs.Serialize(c);
+            if (directory.TryGetValue(j, out var carpContent))
+            {
+                var c = cs.Deserialize(carpContent);
+                c.SerialNumber = source.SerialNumber;
+                c.CarClass = source.VehicleClass;
+                directory[j] = cs.Serialize(c);
+            }
         }
     }
 
@@ -68,15 +73,20 @@ public static class FeData4SyncTool
     /// performance information from the specified <see cref="CarPerf"/>.
     /// </summary>
     /// <param name="source">Performance data source.</param>
-    /// <param name="vivDirectory">VIV Directory to modify.</param>
-    public static void Sync(CarPerf source, IDictionary<string, byte[]> vivDirectory)
+    /// <param name="name">
+    /// File name of <paramref name="source"/>. Used to exclude it from
+    /// sync destinations.
+    /// </param>
+    /// <param name="directory">VIV Directory to modify.</param>
+    public static void Sync(CarPerf source, string? name, IDictionary<string, byte[]> directory)
     {
-        ISerializer<FeData> serializer = new FeDataSerializer();
+        ISerializer<FeData> fs = new FeDataSerializer();
+        ISerializer<CarPerf> cs = new CarpSerializer();
         foreach (var j in Mappings.FeDataToTextProvider)
         {
-            if (vivDirectory.TryGetValue($"fedata{j.Key}", out var content))
+            if (directory.TryGetValue($"fedata{j.Key}", out var content))
             {
-                var f = serializer.Deserialize(content);
+                var f = fs.Deserialize(content);
                 f.SerialNumber = source.SerialNumber;
                 f.VehicleClass = source.CarClass;
                 var perfDataSource = j.Value.Invoke(source);
@@ -89,7 +99,17 @@ public static class FeData4SyncTool
                 f.Gearbox = perfDataSource.Gearbox;
                 f.Accel0To60 = perfDataSource.Accel0To60;
                 f.Accel0To100 = perfDataSource.Accel0To100;
-                vivDirectory[$"fedata{j.Key}"] = serializer.Serialize(f);
+                directory[$"fedata{j.Key}"] = fs.Serialize(f);
+            }
+        }
+        foreach (var j in knownCarps.Except([name]))
+        {
+            if (directory.TryGetValue(j, out var carpContent))
+            {
+                var c = cs.Deserialize(carpContent);
+                c.SerialNumber = source.SerialNumber;
+                c.CarClass = source.CarClass;
+                directory[j] = cs.Serialize(c);
             }
         }
     }

@@ -1,7 +1,14 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using TheXDS.Vivianne.Info;
+using TheXDS.Vivianne.Models.Fce.Nfs4;
 using TheXDS.Vivianne.Models.Fe;
 using TheXDS.Vivianne.Models.Fe.Nfs4;
 using TheXDS.Vivianne.Properties;
+using TheXDS.Vivianne.Serializers;
+using TheXDS.Vivianne.Serializers.Fce.Nfs4;
 using TheXDS.Vivianne.Tools.Fe;
 using TheXDS.Vivianne.ViewModels.Base;
 
@@ -12,10 +19,16 @@ namespace TheXDS.Vivianne.ViewModels.Fe;
 /// </summary>
 public class FeData4EditorViewModel : FileEditorViewModelBase<FeData4EditorState, FeData>
 {
-    /// <summary>
-    /// Gets a table of the colors defined in the FCE file.
-    /// </summary>
-    public Models.Fce.Nfs4.FceColor[]? PreviewFceColorTable { get; }
+    /// <inheritdoc/>
+    protected override async Task OnCreated()
+    {
+        if (await (BackingStore?.Store.ReadAsync("car.fce") ?? Task.FromResult<byte[]?>(null)) is not byte[] fceBytes) return;
+        if (VersionIdentifier.FceVersion(fceBytes) == NfsVersion.Nfs4)
+        {
+            var fce = ((ISerializer<FceFile>)new FceSerializer()).Deserialize(fceBytes);
+            State.PreviewFceColorTable = [.. ReadColors(fce).Concat(Enumerable.Range(0, 10).Select(_ => (FceColor?)null)).Take(10)];
+        }
+    }
 
     /// <inheritdoc/>
     protected override bool BeforeSave()
@@ -25,5 +38,15 @@ public class FeData4EditorViewModel : FileEditorViewModelBase<FeData4EditorState
             FeData4SyncTool.Sync(State.File, Path.GetExtension(BackingStore!.FileName)!, BackingStore.Store.AsDictionary());
         }
         return base.BeforeSave();
+    }
+
+    private static FceColor?[] ReadColors(FceFile fce)
+    {
+        return [.. fce.PrimaryColors.Zip(fce.InteriorColors, fce.SecondaryColors).Zip(fce.DriverHairColors).Select(p => new FceColor() {
+            PrimaryColor = p.First.First,
+            InteriorColor = p.First.Second,
+            SecondaryColor = p.First.Third,
+            DriverHairColor = p.Second
+        })];
     }
 }

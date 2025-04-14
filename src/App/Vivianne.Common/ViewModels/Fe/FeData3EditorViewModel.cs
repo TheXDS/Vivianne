@@ -25,7 +25,7 @@ public class FeData3EditorViewModel : FileEditorViewModelBase<FeData3EditorState
         FceSerializer serializer = new();
         if (serializer.TryGetFce(fceBytes) is { } fce)
         {
-            State.PreviewFceColorTable = [.. ReadColorPairs(fce).Concat(Enumerable.Range(0, 10).Select(_ => (FceColor?)null)).Take(10)];
+            State.PreviewFceColorTable = [.. ReadColors(fce).Concat(Enumerable.Range(0, 10).Select(_ => (FceColor?)null)).Take(10)];
         }
     }
 
@@ -39,7 +39,7 @@ public class FeData3EditorViewModel : FileEditorViewModelBase<FeData3EditorState
         return base.BeforeSave();
     }
 
-    private static FceColor?[] ReadColorPairs(FceFile fce)
+    private static FceColor?[] ReadColors(FceFile fce)
     {
         static HsbColor WrapTable(IList<HsbColor> colors, int index) => colors[index % colors.Count];
         IEnumerable<(HsbColor, HsbColor)> colorPairs = fce.SecondaryColors.Count == 0

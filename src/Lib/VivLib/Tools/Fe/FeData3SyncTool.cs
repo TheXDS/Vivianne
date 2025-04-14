@@ -16,6 +16,8 @@ namespace TheXDS.Vivianne.Tools.Fe;
 /// </summary>
 public static class FeData3SyncTool
 {
+    private static readonly string[] knownCarps = ["carp.txt", "carpsim.txt"];
+
     /// <summary>
     /// Syncs changes between all FeData files and Carp.
     /// </summary>
@@ -66,12 +68,15 @@ public static class FeData3SyncTool
                 directory[$"fedata{j}"] = fs.Serialize(f);
             }
         }
-        if (directory.TryGetValue("carp.txt", out var carpContent))
+        foreach (var j in knownCarps)
         {
-            var c = cs.Deserialize(carpContent);
-            c.SerialNumber = source.SerialNumber;
-            c.CarClass = source.VehicleClass;
-            directory["carp.txt"] = cs.Serialize(c);
+            if (directory.TryGetValue(j, out var carpContent))
+            {
+                var c = cs.Deserialize(carpContent);
+                c.SerialNumber = source.SerialNumber;
+                c.CarClass = source.VehicleClass;
+                directory[j] = cs.Serialize(c);
+            }
         }
     }
 
@@ -80,15 +85,20 @@ public static class FeData3SyncTool
     /// performance information from the specified <see cref="CarPerf"/>.
     /// </summary>
     /// <param name="source">Performance data source.</param>
+    /// <param name="name">
+    /// File name of <paramref name="source"/>. Used to exclude it from
+    /// sync destinations.
+    /// </param>
     /// <param name="directory">VIV Directory to modify.</param>
-    public static void Sync(CarPerf source, IDictionary<string, byte[]> directory)
+    public static void Sync(CarPerf source, string? name, IDictionary<string, byte[]> directory)
     {
-        ISerializer<FeData> serializer = new FeDataSerializer();
+        ISerializer<FeData> fs = new FeDataSerializer();
+        ISerializer<CarPerf> cs = new CarpSerializer();
         foreach (var j in Mappings.FeDataToTextProvider)
         {
             if (directory.TryGetValue($"fedata{j.Key}", out var content))
             {
-                var f = serializer.Deserialize(content);
+                var f = fs.Deserialize(content);
                 f.SerialNumber = source.SerialNumber;
                 f.VehicleClass = source.CarClass;
                 var perfDataSource = j.Value.Invoke(source);
@@ -101,7 +111,17 @@ public static class FeData3SyncTool
                 f.Gearbox = perfDataSource.Gearbox;
                 f.Accel0To60 = perfDataSource.Accel0To60;
                 f.Accel0To100 = perfDataSource.Accel0To100;
-                directory[$"fedata{j.Key}"] = serializer.Serialize(f);
+                directory[$"fedata{j.Key}"] = fs.Serialize(f);
+            }
+        }
+        foreach (var j in knownCarps.Except([name]))
+        {
+            if (directory.TryGetValue(j, out var carpContent))
+            {
+                var c = cs.Deserialize(carpContent);
+                c.SerialNumber = source.SerialNumber;
+                c.CarClass = source.CarClass;
+                directory[j] = cs.Serialize(c);
             }
         }
     }

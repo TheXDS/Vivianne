@@ -53,7 +53,7 @@
                             <ui:NumberBox
                                 hlp:Form.Label="{x:Static st:FeDataEditorView.SerialNumber}"
                                 ClearButtonEnabled="False"
-                                Value="{Binding State.SerialNumber}"
+                                Value="{Binding State.SerialNumber, UpdateSourceTrigger=PropertyChanged}"
                                 Maximum="65535"/>
                             <ComboBox
                                 MinWidth="200"
@@ -63,9 +63,9 @@
                                 IsEditable="False"
                                 SelectedItem="{Binding State.CarClass}"
                                 ItemsSource="{ct:EnumValProvider EnumType={x:Type mdl:CarClass}}"/>
-                            <ui:NumberBox MinWidth="200" hlp:Form.Label="{x:Static st:CarpEditorView.MassKg}" Minimum="1" Value="{Binding State.Mass}"/>
-                            <ui:NumberBox MinWidth="200" hlp:Form.Label="{x:Static st:CarpEditorView.TopSpeedMS}" Minimum="1" Value="{Binding State.TopSpeed}"/>
-                            <ui:NumberBox MinWidth="200" hlp:Form.Label="{x:Static st:CarpEditorView.CameraArm}" Maximum="1" LargeChange="0.5" SmallChange="0.1" Value="{Binding State.CameraArm}"/>
+                            <ui:NumberBox MinWidth="200" hlp:Form.Label="{x:Static st:CarpEditorView.MassKg}" Minimum="1" Value="{Binding State.Mass, UpdateSourceTrigger=PropertyChanged}"/>
+                            <ui:NumberBox MinWidth="200" hlp:Form.Label="{x:Static st:CarpEditorView.TopSpeedMS}" Minimum="1" Value="{Binding State.TopSpeed, UpdateSourceTrigger=PropertyChanged}"/>
+                            <ui:NumberBox MinWidth="200" hlp:Form.Label="{x:Static st:CarpEditorView.CameraArm}" Maximum="1" LargeChange="0.5" SmallChange="0.1" Value="{Binding State.CameraArm, UpdateSourceTrigger=PropertyChanged}"/>
                         </mcart:StretchyWrapPanel>
                     </Expander>
                     <Expander Header="{x:Static st:CarpEditorView.Drivetrain}" IsExpanded="True">
@@ -75,7 +75,7 @@
                                     Margin="5"
                                     hlp:Form.Label="{x:Static st:CarpEditorView.MaxVelocityMS}"
                                     Minimum="0"
-                                    Value="{Binding State.MaxVelocity}"/>
+                                    Value="{Binding State.MaxVelocity, UpdateSourceTrigger=PropertyChanged}"/>
                                 <ui:NumberBox
                                     Margin="5"
                                     hlp:Form.Label="{x:Static st:CarpEditorView.FrontDriveRatio}"
@@ -84,12 +84,12 @@
                                     SmallChange="0.1"
                                     LargeChange="0.5"
                                     Icon="%"
-                                    Value="{Binding State.FrontDriveRatio}"/>
+                                    Value="{Binding State.FrontDriveRatio, UpdateSourceTrigger=PropertyChanged}"/>
                                 <ui:NumberBox                                
                                     Margin="5"
                                     hlp:Form.Label="{x:Static st:CarpEditorView.GearShiftDelay}"
                                     Minimum="0"
-                                    Value="{Binding State.GearShiftDelay}"/>
+                                    Value="{Binding State.GearShiftDelay, UpdateSourceTrigger=PropertyChanged}"/>
                             </StackPanel>
                             <ct:DraggableLineGraph MinWidth="200" OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" ItemsSource="{Binding State.ShiftBlip}" Title="{x:Static st:CarpEditorView.ShiftBlip}" />
                             <ct:DraggableLineGraph MinWidth="200" OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" ItemsSource="{Binding State.BrakeBlip}" Title="{x:Static st:CarpEditorView.BrakeBlip}" />
@@ -109,14 +109,14 @@
                                         hlp:Form.Label="{x:Static st:CarpEditorView.NumberOfGears}"
                                         Minimum="3"
                                         Maximum="8"
-                                        Value="{Binding State.NumberOfGearsManual}"/>
+                                        Value="{Binding State.NumberOfGearsManual, UpdateSourceTrigger=PropertyChanged}"/>
                                     <ui:NumberBox
                                         hlp:Form.Label="{x:Static st:CarpEditorView.FinalGearRatio}"
                                         Minimum="0.01"
                                         Maximum="999.99"
                                         SmallChange="0.01"
                                         LargeChange="0.1"
-                                        Value="{Binding State.FinalGearManual}"/>
+                                        Value="{Binding State.FinalGearManual, UpdateSourceTrigger=PropertyChanged}"/>
                                 </mcart:StretchyWrapPanel>
                                 <UniformGrid Columns="1">
                                     <ct:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="{x:Static st:CarpEditorView.VelocityToRPM}" ItemsSource="{Binding State.VelocityToRpmManual}"/>
@@ -138,14 +138,14 @@
                                         hlp:Form.Label="{x:Static st:CarpEditorView.NumberOfGears}"
                                         Minimum="3"
                                         Maximum="8"
-                                        Value="{Binding State.NumberOfGearsAuto}"/>
+                                        Value="{Binding State.NumberOfGearsAuto, UpdateSourceTrigger=PropertyChanged}"/>
                                     <ui:NumberBox
                                         hlp:Form.Label="{x:Static st:CarpEditorView.FinalGearRatio}"
                                         Minimum="0.01"
                                         Maximum="999.99"
                                         SmallChange="0.01"
                                         LargeChange="0.1"
-                                        Value="{Binding State.FinalGearAuto}"/>
+                                        Value="{Binding State.FinalGearAuto, UpdateSourceTrigger=PropertyChanged}"/>
                                 </mcart:StretchyWrapPanel>
                                 <UniformGrid Columns="1">
                                     <ct:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="{x:Static st:CarpEditorView.VelocityToRPM}" ItemsSource="{Binding State.VelocityToRpmAuto}"/>
@@ -161,12 +161,12 @@
                                 <ui:NumberBox
                                     MinWidth="200"
                                     hlp:Form.Label="{x:Static st:CarpEditorView.MinimumRPM}"
-                                    Value="{Binding State.EngineMinRpm}"
+                                    Value="{Binding State.EngineMinRpm, UpdateSourceTrigger=PropertyChanged}"
                                     Maximum="{Binding State.EngineMaxRpm, Mode=OneWay}"/>
                                 <ui:NumberBox
                                     MinWidth="200"
                                     hlp:Form.Label="{x:Static st:CarpEditorView.MaximumRPM}"
-                                    Value="{Binding State.EngineMaxRpm}"
+                                    Value="{Binding State.EngineMaxRpm, UpdateSourceTrigger=PropertyChanged}"
                                     Minimum="{Binding State.EngineMinRpm, Mode=OneWay}"/>
                             </mcart:StretchyWrapPanel>
                             <ct:DraggableLineGraph
@@ -191,37 +191,37 @@
                             </mcart:StretchyWrapPanel>
                             <mcart:StretchyWrapPanel StretchProportionally="False">
                                 <CheckBox MinWidth="200" Margin="5" IsChecked="{Binding State.Abs}" Content="{x:Static st:CarpEditorView.AntilockBrakeSystem}"/>
-                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.MaxBrakingDecel}" Value="{Binding State.MaxBrakeDecel}"/>
-                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.FrontBiasBrakeRatio}" Value="{Binding State.FrontBrakeBias}" Minimum="0" Maximum="1" SmallChange="0.05" LargeChange="0.1"/>
-                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.WheelBase}" Minimum="0.01" Value="{Binding State.WheelBase}"/>
-                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.FrontGripBias}" Value="{Binding State.FrontGripBias}" Minimum="0" Maximum="1" SmallChange="0.5" LargeChange="0.1"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.MaxBrakingDecel}" Value="{Binding State.MaxBrakeDecel, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.FrontBiasBrakeRatio}" Value="{Binding State.FrontBrakeBias, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Maximum="1" SmallChange="0.05" LargeChange="0.1"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.WheelBase}" Minimum="0.01" Value="{Binding State.WheelBase, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.FrontGripBias}" Value="{Binding State.FrontGripBias, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Maximum="1" SmallChange="0.5" LargeChange="0.1"/>
                                 <CheckBox MinWidth="200" Margin="5" IsChecked="{Binding State.PowerSteering}" Content="{x:Static st:CarpEditorView.PowerSteering}"/>
-                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.MinSteeringAccel}" Value="{Binding State.MinimumSteerAccel}"/>
-                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.TurnInRamp}" Value="{Binding State.TurnInRamp}"/>
-                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.TurnOutRamp}" Value="{Binding State.TurnOutRamp}"/>
-                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.LateralAccGripMult}" Value="{Binding State.LateralAccGripMult}"/>
-                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.AeroDownforceMult}" Value="{Binding State.AeroDownMult}"/>
-                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.GasOffFactor}" Value="{Binding State.GasOffFactor}"/>
-                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.GTransferFactor}" Value="{Binding State.GTransferFactor}"/>
-                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.TurnCircleRadius}" Value="{Binding State.TurnCircleRadius}"/>
-                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.SlideMultiplier}" Value="{Binding State.SlideMult}"/>
-                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.SpinVelocityCap}" Value="{Binding State.SpinVelocityCap}"/>
-                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.SlideVelocityCap}" Value="{Binding State.SlideVelocityCap}"/>
-                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.SlideAssistanceFactor}" Value="{Binding State.SlideAssistanceFactor}"/>
-                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.PushFactor}" Value="{Binding State.PushFactor}"/>
-                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.LowTurnFactor}" Value="{Binding State.LowTurnFactor}"/>
-                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.HighTurnFactor}" Value="{Binding State.HighTurnFactor}"/>
-                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.PitchRollFactor}" Value="{Binding State.PitchRollFactor}"/>
-                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.RoadBumpFactor}" Value="{Binding State.RoadBumpFactor}"/>
-                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.SpoilerFunctionType}" Value="{Binding State.SpoilerFunctionType}"/>
-                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.SpoilerActSpeed}" Value="{Binding State.SpoilerActivationSpeed}"/>
-                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.GradualTurnCutoff}" Value="{Binding State.GradualTurnCutoff}"/>
-                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.MediumTurnCutoff}" Value="{Binding State.MediumTurnCutoff}"/>
-                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.SharpTurnCutoff}" Value="{Binding State.SharpTurnCutoff}"/>
-                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.MedTurnSpdMod}" Value="{Binding State.MediumTurnSpdMod}"/>
-                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.SharpTurnSpdMod}" Value="{Binding State.SharpTurnSpdMod}"/>
-                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.ExtrTurnSpdMod}" Value="{Binding State.ExtremeTurnSpdMod}"/>
-                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.SubdivideLevel}" Value="{Binding State.SubdivideLevel}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.MinSteeringAccel}" Value="{Binding State.MinimumSteerAccel, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.TurnInRamp}" Value="{Binding State.TurnInRamp, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.TurnOutRamp}" Value="{Binding State.TurnOutRamp, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.LateralAccGripMult}" Value="{Binding State.LateralAccGripMult, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.AeroDownforceMult}" Value="{Binding State.AeroDownMult, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.GasOffFactor}" Value="{Binding State.GasOffFactor, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.GTransferFactor}" Value="{Binding State.GTransferFactor, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.TurnCircleRadius}" Value="{Binding State.TurnCircleRadius, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.SlideMultiplier}" Value="{Binding State.SlideMult, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.SpinVelocityCap}" Value="{Binding State.SpinVelocityCap, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.SlideVelocityCap}" Value="{Binding State.SlideVelocityCap, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.SlideAssistanceFactor}" Value="{Binding State.SlideAssistanceFactor, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.PushFactor}" Value="{Binding State.PushFactor, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.LowTurnFactor}" Value="{Binding State.LowTurnFactor, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.HighTurnFactor}" Value="{Binding State.HighTurnFactor, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.PitchRollFactor}" Value="{Binding State.PitchRollFactor, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.RoadBumpFactor}" Value="{Binding State.RoadBumpFactor, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.SpoilerFunctionType}" Value="{Binding State.SpoilerFunctionType, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.SpoilerActSpeed}" Value="{Binding State.SpoilerActivationSpeed, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.GradualTurnCutoff}" Value="{Binding State.GradualTurnCutoff, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.MediumTurnCutoff}" Value="{Binding State.MediumTurnCutoff, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.SharpTurnCutoff}" Value="{Binding State.SharpTurnCutoff, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.MedTurnSpdMod}" Value="{Binding State.MediumTurnSpdMod, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.SharpTurnSpdMod}" Value="{Binding State.SharpTurnSpdMod, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.ExtrTurnSpdMod}" Value="{Binding State.ExtremeTurnSpdMod, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.SubdivideLevel}" Value="{Binding State.SubdivideLevel, UpdateSourceTrigger=PropertyChanged}"/>
                             </mcart:StretchyWrapPanel>
                         </StackPanel>
                     </Expander>
@@ -234,9 +234,9 @@
                                 </DockPanel>
                             </Expander.Header>
                             <mcart:StretchyWrapPanel StretchProportionally="False">
-                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.TireWidth}" Value="{Binding State.TireWidthFront}"/>
-                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.TireSidewall}" Value="{Binding State.TireSidewallFront}"/>
-                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.RimSize}" Value="{Binding State.TireRimFront}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.TireWidth}" Value="{Binding State.TireWidthFront, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.TireSidewall}" Value="{Binding State.TireSidewallFront, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.RimSize}" Value="{Binding State.TireRimFront, UpdateSourceTrigger=PropertyChanged}"/>
                             </mcart:StretchyWrapPanel>
                         </Expander>
                         <Expander Grid.Column="2" IsExpanded="True">
@@ -247,9 +247,9 @@
                                 </DockPanel>
                             </Expander.Header>
                             <mcart:StretchyWrapPanel StretchProportionally="False">
-                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.TireWidth}" Value="{Binding State.TireWidthRear}"/>
-                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.TireSidewall}" Value="{Binding State.TireSidewallRear}"/>
-                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.RimSize}" Value="{Binding State.TireRimRear}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.TireWidth}" Value="{Binding State.TireWidthRear, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.TireSidewall}" Value="{Binding State.TireSidewallRear, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.RimSize}" Value="{Binding State.TireRimRear, UpdateSourceTrigger=PropertyChanged}"/>
                             </mcart:StretchyWrapPanel>
                         </Expander>
                     </mcart:StretchyWrapPanel>
@@ -274,40 +274,40 @@
                         </Expander.Header>
                         <mcart:StretchyWrapPanel IsEnabled="{Binding IsChecked, ElementName=chkMiscCarp}" StretchProportionally="False">
                             <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.TireWear}"
-                                Value="{Binding State.TireWear}"
+                                Value="{Binding State.TireWear, UpdateSourceTrigger=PropertyChanged}"
                                 Minimum="0" Maximum="1" LargeChange="0.1" SmallChange="0.01" Icon="%"/>
                             <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.BodyDamage}" 
-                                Value="{Binding State.BodyDamage}"
+                                Value="{Binding State.BodyDamage, UpdateSourceTrigger=PropertyChanged}"
                                 Minimum="0" Maximum="1" LargeChange="0.1" SmallChange="0.01" Icon="%"/>
                             <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.EngineDamage}" 
-                                Value="{Binding State.EngineDamage}"
+                                Value="{Binding State.EngineDamage, UpdateSourceTrigger=PropertyChanged}"
                                 Minimum="0" Maximum="1" LargeChange="0.1" SmallChange="0.01" Icon="%"/>
                             <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.SuspensionDamage}"
-                                Value="{Binding State.SuspensionDamage}"
+                                Value="{Binding State.SuspensionDamage, UpdateSourceTrigger=PropertyChanged}"
                                  Minimum="0" Maximum="1" LargeChange="0.1" SmallChange="0.01" Icon="%"/>
                             <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.EngineTuning}" 
-                                Value="{Binding State.EngineTuning}"
+                                Value="{Binding State.EngineTuning, UpdateSourceTrigger=PropertyChanged}"
                                 Icon="%"/>
                             <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.BrakeBalance}" 
-                                Value="{Binding State.BrakeBalance}"
+                                Value="{Binding State.BrakeBalance, UpdateSourceTrigger=PropertyChanged}"
                                 Icon="%"/>
                             <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.SteeringSpeed}" 
-                                Value="{Binding State.SteeringSpeed}"
+                                Value="{Binding State.SteeringSpeed, UpdateSourceTrigger=PropertyChanged}"
                                 Icon="%"/>
                             <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.BrakeBalance}" 
-                                Value="{Binding State.BrakeBalance}"
+                                Value="{Binding State.BrakeBalance, UpdateSourceTrigger=PropertyChanged}"
                                 Icon="%"/>
                             <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.GearRatioFactor}" 
-                                Value="{Binding State.GearRatFactor}"
+                                Value="{Binding State.GearRatFactor, UpdateSourceTrigger=PropertyChanged}"
                                 Icon="%"/>
                             <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.SuspensionStiffness}" 
-                                Value="{Binding State.SuspensionStiffness}"
+                                Value="{Binding State.SuspensionStiffness, UpdateSourceTrigger=PropertyChanged}"
                                 Icon="%"/>
                             <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.AeroFactor}" 
-                                Value="{Binding State.AeroFactor}"
+                                Value="{Binding State.AeroFactor, UpdateSourceTrigger=PropertyChanged}"
                                 Icon="%"/>
                             <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.TireFactor}" 
-                                Value="{Binding State.TireFactor}"
+                                Value="{Binding State.TireFactor, UpdateSourceTrigger=PropertyChanged}"
                                 Icon="%"/>
                         </mcart:StretchyWrapPanel>
                     </Expander>

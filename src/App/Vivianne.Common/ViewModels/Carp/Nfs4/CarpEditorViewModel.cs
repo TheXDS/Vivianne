@@ -15,7 +15,7 @@ public class CarpEditorViewModel : CarpEditorViewModel<CarpEditorState, CarPerf,
     {
         if (Settings.Current.Carp_SyncChanges)
         {
-            FeData4SyncTool.Sync(State.File, BackingStore?.Store.AsDictionary() ?? new Dictionary<string, byte[]>());
+            FeData4SyncTool.Sync(State.File, BackingStore?.FileName, BackingStore?.Store.AsDictionary() ?? new Dictionary<string, byte[]>());
         }
         return base.BeforeSave();
     }
