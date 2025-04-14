@@ -12,8 +12,8 @@ public class Fce3RenderStateBuilder : FceRenderStateBuilderBase<Fce3EditorState,
     protected override RenderColor[]? GetRenderColors(Fce3EditorState state)
     {
         return state.SelectedColor is { PrimaryColor: { } primary, SecondaryColor: { } secondary } ? [
-            new(primary, new(0.2f,0.4f)),
-            new(secondary, new(0.6f,0.8f)),
+            new(primary, new(0.1f,0.5f)),
+            new(secondary, new(0.5f,0.9f)),
         ] : (RenderColor[]?)null;
     }
 
