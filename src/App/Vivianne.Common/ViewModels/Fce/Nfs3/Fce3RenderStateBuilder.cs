@@ -1,4 +1,5 @@
-﻿using TheXDS.Vivianne.Models.Fce.Common;
+﻿using System.Linq;
+using TheXDS.Vivianne.Models.Fce.Common;
 using TheXDS.Vivianne.ViewModels.Fce.Common;
 
 namespace TheXDS.Vivianne.ViewModels.Fce.Nfs3;
@@ -20,12 +21,12 @@ public class Fce3RenderStateBuilder : FceRenderStateBuilderBase<Fce3EditorState,
     /// <inheritdoc/>
     protected override MaterialFlags InferMaterial(string dummyName)
     {
-        return dummyName[0] switch
+        return dummyName.ElementAtOrDefault(0) switch
         {
             'H' => MaterialFlags.WhiteDummy,
             'T' => MaterialFlags.RedChannel | MaterialFlags.NoShading,
-            'S' when dummyName[2] == 'R' => MaterialFlags.RedChannel | MaterialFlags.NoShading,
-            'S' when dummyName[2] == 'L' => MaterialFlags.BlueChannel | MaterialFlags.NoShading,
+            'S' when dummyName.ElementAtOrDefault(2) == 'R' => MaterialFlags.RedChannel | MaterialFlags.NoShading,
+            'S' when dummyName.ElementAtOrDefault(2) == 'L' => MaterialFlags.BlueChannel | MaterialFlags.NoShading,
             _ => MaterialFlags.GreenChannel
         };
     }

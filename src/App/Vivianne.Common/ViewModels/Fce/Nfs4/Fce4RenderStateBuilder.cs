@@ -41,7 +41,7 @@ public class Fce4RenderStateBuilder : FceRenderStateBuilderBase<Fce4EditorState,
     /// <inheritdoc/>
     protected override MaterialFlags InferMaterial(string dummyName)
     {
-        return dummyName[1] switch
+        return dummyName.ElementAtOrDefault(1) switch
         {
             'W' => MaterialFlags.WhiteDummy,
             'R' => MaterialFlags.RedChannel | MaterialFlags.NoShading,
