@@ -78,11 +78,15 @@ public partial class FceSerializer
         {
             return br.ReadBytesAt(offset + DataOffset, count);
         }
+#if DEBUG
         catch (Exception ex)
         {
             Debug.Print($"Could not read {tableName} (asked for {count} bytes at offset 0x{offset:X8}). Skipping...");
-#if DEBUG
             Debug.Print(TheXDS.MCART.Resources.Strings.Composition.ExDump(ex, MCART.Resources.Strings.ExDumpOptions.AllFormatted));
+#else
+        catch
+        {
+            Debug.Print($"Could not read {tableName} (asked for {count} bytes at offset 0x{offset:X8}). Skipping...");
 #endif
             return new byte[count];
         }
