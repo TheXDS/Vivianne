@@ -11,12 +11,12 @@ assignees: TheXDS
 [Describe what the bug is. Be concise and clear.]
 
 ### Affected areas:
-[ ] Vivianne app (crash)
-[ ] Vivianne app (invalid data parsing / presenting)
-[ ] Vivianne app (visual styles, window rendering)
-[ ] Output file corruption
-[ ] Game Crash
-[ ] Machine resource exhaustion (OS becomes non-responsive)
+- [ ] Vivianne app (crash)
+- [ ] Vivianne app (invalid data parsing / presenting)
+- [ ] Vivianne app (visual styles, window rendering)
+- [ ] Output file corruption
+- [ ] Game Crash
+- [ ] Machine resource exhaustion (OS becomes non-responsive)
 
 ### Repro steps:
 1. Go to '...'
@@ -34,7 +34,7 @@ No known workarounds at this time.
 
 ### Version information
 - OS: [e.g. Windows 10 build 19041]
-- Vivianne: [e.g. 1.0.0-beta.1]
+- Vivianne: [e.g. `>= 1.0.0-beta.1`]
 - Game version (if error occurs in game, outside of Vivianne): [e.g. NFS3, NFS4]
 
 ### Attachments
