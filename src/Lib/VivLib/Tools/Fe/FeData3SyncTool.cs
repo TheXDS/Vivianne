@@ -119,7 +119,7 @@ public static class FeData3SyncTool
                 directory[$"fedata{j.Key}"] = fs.Serialize(f);
             }
         }
-        foreach (var j in knownCarps.Except([name]))
+        foreach (string j in knownCarps.Except([name]).NotNull())
         {
             if (directory.TryGetValue(j, out var carpContent))
             {
