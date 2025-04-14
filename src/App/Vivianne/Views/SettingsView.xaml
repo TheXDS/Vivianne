@@ -54,7 +54,7 @@
                                     Text="{Binding State.Nfs4Path, Mode=OneWay}" />
                             </Grid>
                         </ui:CardControl.Header>
-                        <ui:Button Content="{x:Static st:SettingsView.Browse}" Command="{Binding BrowseNfs3PathCommand, Mode=OneWay}"/>
+                        <ui:Button Content="{x:Static st:SettingsView.Browse}" Command="{Binding BrowseNfs4PathCommand, Mode=OneWay}"/>
                     </ui:CardControl>
                     <ui:CardControl Icon="{ui:SymbolIcon Symbol=WindowConsole20}">
                         <ui:CardControl.Header>
