@@ -1,10 +1,13 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using TheXDS.Vivianne.Models.Fce.Nfs3;
 using TheXDS.Vivianne.Models.Fe;
 using TheXDS.Vivianne.Models.Fe.Nfs3;
+using TheXDS.Vivianne.Properties;
 using TheXDS.Vivianne.Serializers.Fce.Nfs3;
+using TheXDS.Vivianne.Tools.Fe;
 using TheXDS.Vivianne.ViewModels.Base;
 
 namespace TheXDS.Vivianne.ViewModels.Fe;
@@ -24,6 +27,16 @@ public class FeData3EditorViewModel : FileEditorViewModelBase<FeData3EditorState
         {
             State.PreviewFceColorTable = [.. ReadColorPairs(fce).Concat(Enumerable.Range(0, 10).Select(_ => (FceColor?)null)).Take(10)];
         }
+    }
+
+    /// <inheritdoc/>
+    protected override bool BeforeSave()
+    {
+        if (Settings.Current.Fe_SyncChanges)
+        {
+            FeData3SyncTool.Sync(State.File, Path.GetExtension(BackingStore!.FileName)!, BackingStore.Store.AsDictionary());
+        }
+        return base.BeforeSave();
     }
 
     private static FceColor?[] ReadColorPairs(FceFile fce)
