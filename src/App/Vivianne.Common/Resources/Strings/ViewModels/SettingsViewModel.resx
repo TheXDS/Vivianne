@@ -100,4 +100,7 @@
   <data name="RootNFS3GamePath" xml:space="preserve">
     <value>Root NFS3 game path</value>
   </data>
+  <data name="RootToNFS4GamePath" xml:space="preserve">
+    <value>Root to NFS4 game path</value>
+  </data>
 </root>

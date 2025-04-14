@@ -68,5 +68,14 @@ namespace TheXDS.Vivianne.Resources.Strings.ViewModels {
                 return ResourceManager.GetString("RootNFS3GamePath", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Root to NFS4 game path.
+        /// </summary>
+        internal static string RootToNFS4GamePath {
+            get {
+                return ResourceManager.GetString("RootToNFS4GamePath", resourceCulture);
+            }
+        }
     }
 }
