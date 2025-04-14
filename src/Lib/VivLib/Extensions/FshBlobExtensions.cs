@@ -94,7 +94,7 @@ public static class FshBlobExtensions
         var s = new FshBlobSerializer();
         using var ms = new MemoryStream(blob.Footer);
         var paletteBlob = s.Deserialize(ms)!;
-        return FshBlobToPalette[paletteBlob.Magic].Invoke(blob);
+        return FshBlobToPalette[paletteBlob.Magic].Invoke(paletteBlob);
     }
 
     /// <summary>
