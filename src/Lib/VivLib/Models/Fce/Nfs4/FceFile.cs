@@ -1,4 +1,5 @@
-﻿using TheXDS.Vivianne.Models.Fce.Common;
+﻿using TheXDS.Vivianne.Info;
+using TheXDS.Vivianne.Models.Fce.Common;
 
 namespace TheXDS.Vivianne.Models.Fce.Nfs4;
 
@@ -7,6 +8,11 @@ namespace TheXDS.Vivianne.Models.Fce.Nfs4;
 /// </summary>
 public class FceFile : FceFileBase<HsbColor, Fce4Part>
 {
+    /// <summary>
+    /// Gets a value that indicates the game version that this FCE4 file is for.
+    /// </summary>
+    public NfsVersion Version => VersionIdentifier.FceVersion(this);
+
     /// <summary>
     /// Gets or sets the unknown 0x0004 value.
     /// </summary>

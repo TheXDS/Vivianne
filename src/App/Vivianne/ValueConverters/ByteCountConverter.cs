@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Windows;
 using TheXDS.MCART.Helpers;
 using TheXDS.MCART.ValueConverters.Base;
 

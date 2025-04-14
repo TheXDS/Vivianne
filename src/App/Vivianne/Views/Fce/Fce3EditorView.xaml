@@ -58,6 +58,13 @@
                 <ColumnDefinition Width="200"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
+            <Image
+                Source="/Resources/Images/nfs3.ico"
+                VerticalAlignment="Bottom"
+                HorizontalAlignment="Right"
+                Stretch="None"
+                Grid.Column="1"
+                Margin="10"/>
             <Viewport3D Grid.ColumnSpan="1" Grid.Column="1" Grid.Row="1">
                 <Viewport3D.Camera>
                     <PerspectiveCamera x:Name="ptcMain" UpDirection="1,0,0" LookDirection="-30,50,50" Position="30,-50,-50"/>

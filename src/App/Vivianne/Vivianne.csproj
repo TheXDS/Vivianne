@@ -14,10 +14,16 @@
 		<None Remove="Resources\Fonts\Muli-Light.ttf" />
 		<None Remove="Resources\Fonts\NFS_by_JLTV.ttf" />
 		<None Remove="Resources\Images\vivianne.png" />
+		<None Remove="Resources\Images\nfs3.ico" />
+		<None Remove="Resources\Images\nfs4.ico" />
+		<None Remove="Resources\Images\mco.ico" />
 	</ItemGroup>
 	<ItemGroup>
 		<Resource Include="vivianne.ico" />
 		<Resource Include="Resources\Images\vivianne.png" />
+		<Resource Include="Resources\Images\nfs3.ico" />
+		<Resource Include="Resources\Images\nfs4.ico" />
+		<Resource Include="Resources\Images\mco.ico" />
 		<Resource Include="Resources\Fonts\Muli-Light.ttf" />
 		<Resource Include="Resources\Fonts\NFS_by_JLTV.ttf" />
 	</ItemGroup>
