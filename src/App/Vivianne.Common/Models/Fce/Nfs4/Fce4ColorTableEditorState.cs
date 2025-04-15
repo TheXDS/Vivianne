@@ -2,24 +2,21 @@
 using System.Reflection;
 using TheXDS.MCART.Types;
 using TheXDS.MCART.Types.Base;
-using TheXDS.Vivianne.Extensions;
 using TheXDS.Vivianne.Models.Base;
-using TheXDS.Vivianne.Models.Fce.Nfs3;
-using TheXDS.Vivianne.ViewModels.Fce;
-using TheXDS.Vivianne.ViewModels.Fce.Nfs3;
+using TheXDS.Vivianne.ViewModels.Fce.Nfs4;
 
-namespace TheXDS.Vivianne.Models;
+namespace TheXDS.Vivianne.Models.Fce.Nfs4;
 
 /// <summary>
-/// Represents the state of the <see cref="FceColorEditorViewModel"/>.
+/// Represents the state of the <see cref="Fce4ColorEditorViewModel"/>.
 /// </summary>
 /// <param name="fce">FCE whose colors will be edited.</param>
-public class Fce3ColorTableEditorState(Fce3EditorState fce) : EditorViewModelStateBase
+public class Fce4ColorTableEditorState(Fce4EditorState fce) : EditorViewModelStateBase
 {
     /// <summary>
     /// Gets a reference to the FCE file whose color table is being edited.
     /// </summary>
-    public Fce3EditorState Fce { get; } = fce;
+    public Fce4EditorState Fce { get; } = fce;
 
     /// <summary>
     /// Gets the collection of colors that are being edited on the FCE file.
@@ -29,8 +26,10 @@ public class Fce3ColorTableEditorState(Fce3EditorState fce) : EditorViewModelSta
     private static ObservableListWrap<MutableFceColorItem> CreateFromFce(FceFile fce)
     {
         var primary = fce.PrimaryColors;
-        var secondary = fce.SecondaryColors.Count > 0 ? fce.SecondaryColors.ToArray().Wrapping(16) : primary;
-        var joint = primary.Zip(secondary).Select(p => new MutableFceColorItem(MutableFceColor.From(p.First), MutableFceColor.From(p.Second))).ToList();
+        var interior = fce.InteriorColors;
+        var secondary = fce.SecondaryColors;
+        var driverHair = fce.DriverHairColors;
+        var joint = primary.Zip(interior, secondary).Zip(driverHair).Select(p => new MutableFceColorItem(MutableFceColor.From(p.First.First), MutableFceColor.From(p.First.Second), MutableFceColor.From(p.First.Third), MutableFceColor.From(p.Second))).ToList();
         var obsc = new ObservableListWrap<MutableFceColorItem>(joint);
         foreach (var item in joint)
         {
@@ -53,6 +52,8 @@ public class Fce3ColorTableEditorState(Fce3EditorState fce) : EditorViewModelSta
     {
         void OnColorChanged(object instance, PropertyInfo property, PropertyChangeNotificationType notificationType) => colorCollection.RefreshItem(color);
         color.PrimaryColor.Subscribe(OnColorChanged);
+        color.InteriorColor.Subscribe(OnColorChanged);
         color.SecondaryColor.Subscribe(OnColorChanged);
+        color.DriverHairColor.Subscribe(OnColorChanged);
     }
 }

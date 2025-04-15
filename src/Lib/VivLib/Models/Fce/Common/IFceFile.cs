@@ -2,7 +2,7 @@
 
 /// <summary>
 /// Defines a set of members to be implemented by a type that represents the
-/// contents of an FCE file.
+/// essential contents of an FCE file.
 /// </summary>
 /// <typeparam name="TPart"></typeparam>
 public interface IFceFile<TPart> where TPart : FcePart

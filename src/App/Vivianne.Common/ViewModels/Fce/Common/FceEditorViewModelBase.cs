@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
-using System.Numerics;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TheXDS.Ganymede.Helpers;
 using TheXDS.Ganymede.Resources;
 using TheXDS.MCART.Helpers;
-using TheXDS.MCART.Math;
 using TheXDS.MCART.Types;
 using TheXDS.MCART.Types.Base;
 using TheXDS.MCART.Types.Extensions;
@@ -22,6 +19,7 @@ using TheXDS.Vivianne.Models.Fce.Common;
 using TheXDS.Vivianne.Models.Fe;
 using TheXDS.Vivianne.Properties;
 using TheXDS.Vivianne.Resources;
+using TheXDS.Vivianne.Tools.Fce;
 using TheXDS.Vivianne.ViewModels.Base;
 using St = TheXDS.Vivianne.Resources.Strings.ViewModels.FceEditorView;
 
@@ -136,8 +134,8 @@ public abstract class FceEditorViewModelBase<TState, TFile, TFceColor, THsbColor
     /// <inheritdoc/>
     protected override bool BeforeSave()
     {
-        // TODO: sync up part and dummy names between state and file.
-        if (Settings.Current.Fce_CenterModel)
+        // Only center cars: Dashes should not be centered
+        if (Settings.Current.Fce_CenterModel && (BackingStore?.FileName?.StartsWith("car", StringComparison.InvariantCultureIgnoreCase) ?? false))
         {
             OnFceCenter();
         }
@@ -174,23 +172,7 @@ public abstract class FceEditorViewModelBase<TState, TFile, TFceColor, THsbColor
 
     private void OnFceCenter()
     {
-        var vertices = State.File.Parts.SelectMany(p => p.TransformedVertices).ToArray();
-        var minX = vertices.Min(p => p.X);
-        var minY = vertices.Min(p => p.Y);
-        var minZ = vertices.Min(p => p.Z);
-        var xDiff = minX + State.File.XHalfSize;
-        var yDiff = minY + State.File.YHalfSize;
-        var zDiff = minZ + State.File.ZHalfSize;
-        if (((IEnumerable<float>)[xDiff, yDiff, zDiff]).AreZero()) return;
-        foreach (var j in State.File.Parts)
-        {
-            j.Origin = new Vector3
-            {
-                X = j.Origin.X - xDiff,
-                Y = j.Origin.Y - yDiff,
-                Z = j.Origin.Z - zDiff
-            };
-        }
+        FceCenter.Center(State.File);
         State.UnsavedChanges = true;
         OnVisibleChanged();
     }

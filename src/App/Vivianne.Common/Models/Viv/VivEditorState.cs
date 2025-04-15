@@ -32,7 +32,8 @@ public class VivEditorState : FileStateBase<VivFile>
     /// </summary>
     public string FriendlyName
         => File.GetFriendlyName()
-        ?? (FileName is not null ? Path.GetFileName(Path.GetDirectoryName(FileName)) : null)
+        ?? ((FileName?.Equals("car.viv", StringComparison.InvariantCultureIgnoreCase) ?? false) ? Path.GetFileName(Path.GetDirectoryName(FileName)) : null)
+        ?? (FileName is not null ? Path.GetFileName(FileName) : null)
         ?? "New file";
 
     /// <summary>
