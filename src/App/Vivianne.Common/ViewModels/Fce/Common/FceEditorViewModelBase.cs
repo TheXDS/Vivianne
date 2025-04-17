@@ -126,7 +126,9 @@ public abstract class FceEditorViewModelBase<TState, TFile, TFceColor, THsbColor
         SwitchToLod(State.FceLodPreset);
         ObserveCollection(State.Dummies);
         ObserveCollection(State.Parts);
+        OnVisibleChanged();
         State.UnsavedChanges = false;
+        State.Subscribe(p => p.FceLodPreset, (i, p, n) => OnSwitchToLod(State.FceLodPreset));
         State.Subscribe(OnVisibleChanged);
         await base.OnCreated();
     }
@@ -155,7 +157,6 @@ public abstract class FceEditorViewModelBase<TState, TFile, TFceColor, THsbColor
         _refreshEnabled = false;
         OnSwitchToLod(preset);
         _refreshEnabled = true;
-        OnVisibleChanged();
     }
 
     private async Task<bool> OnElementRename<T>(object? parameter) where T : Models.Base.INameable

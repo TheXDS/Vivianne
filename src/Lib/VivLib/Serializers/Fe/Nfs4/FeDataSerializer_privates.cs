@@ -12,8 +12,9 @@ public partial class FeDataSerializer
         PoliceFlag = (PursuitFlag)(fedataHeader.PoliceFlag_IsBonus & Nfs4PursuitFlag_Mask),
         VehicleClass = fedataHeader.CarClass,
         IsBonus = (fedataHeader.PoliceFlag_IsBonus & IsBonus_Mask) != 0,
-        Upgradable = (fedataHeader.Upgradable_RoofFlags & Upgradable_Mask) == 0,
-        Roof = (RoofFlag)(fedataHeader.Upgradable_RoofFlags & Roof_Mask),
+        Upgradable = (fedataHeader.Upgradable_RoofFlags_IsDlc & Upgradable_Mask) == 0,
+        IsDlc = (fedataHeader.Upgradable_RoofFlags_IsDlc & IsDlc_Mask) != 0,
+        Roof = (RoofFlag)(fedataHeader.Upgradable_RoofFlags_IsDlc & Roof_Mask),
         StringEntries = fedataHeader.StringEntries,
         DefaultCompare = new CompareTable()
         {
@@ -50,7 +51,8 @@ public partial class FeDataSerializer
             Braking = fedataHeader.Braking.Upgrade3,
             Overall = fedataHeader.Overall.Upgrade3,
             Price = fedataHeader.Upgrade3Price,
-        }
+        },
+        EngineLocation = fedataHeader.EngineLocation,
     };
 
     private static FeDataHeader CreateHeader(FeData feData) => FeDataHeader.Empty with
@@ -59,9 +61,9 @@ public partial class FeDataSerializer
         SerialNumber = feData.SerialNumber,
         PoliceFlag_IsBonus = (byte)(((byte)feData.PoliceFlag) | (byte)(feData.IsBonus ? 0x1 : 0x0)),
         CarClass = feData.VehicleClass,
-        Upgradable_RoofFlags = (byte)((feData.Upgradable ? Upgradable_Mask : 0x0) | (byte)(feData.Roof)),
+        Upgradable_RoofFlags_IsDlc = (byte)((feData.Upgradable ? 0x0 : Upgradable_Mask) | (byte)(feData.Roof) | (feData.IsDlc ? IsDlc_Mask : 0x0)),
         StringEntries = feData.StringEntries,
-        CompareCount = 4,
+        CompareCount = 0x0a,
         Acceleration = new CompareTableItem()
         {
             DefaultValue = feData.DefaultCompare.Acceleration,
@@ -101,5 +103,6 @@ public partial class FeDataSerializer
         Upgrade1Price = feData.CompareUpg1.Price,
         Upgrade2Price = feData.CompareUpg2.Price,
         Upgrade3Price = feData.CompareUpg3.Price,
+        EngineLocation = feData.EngineLocation,
     };
 }

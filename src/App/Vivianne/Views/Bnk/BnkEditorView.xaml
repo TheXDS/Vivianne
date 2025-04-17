@@ -15,8 +15,6 @@
     xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings.ViewModels;assembly=Vivianne.Common"
     d:DataContext="{d:DesignInstance Type=vm:BnkEditorViewModel}"
     mc:Ignorable="d"
-    hlp:Form.ImportantMessage="Feature is currently broken"
-    hlp:Form.BetaMessage="This app will likely corrupt BNK files. Do not use."
     d:DesignWidth="700">
     <UserControl.Resources>
         <vc:BnkVisualizerConverter x:Key="bnkvis"/>
@@ -99,7 +97,7 @@
                 <ui:Button Margin="5" Icon="{ui:SymbolIcon Symbol=Stop24}" Command="{Binding StopPlaybackCommand, Mode=OneWay}"/>
             </StackPanel>
         </Grid>
-        <Grid Grid.ColumnSpan="2" Grid.Row="2" Background="#202530">
+        <Grid Grid.ColumnSpan="2" Grid.Row="2" Background="#202530" hlp:Form.BetaMessage="This app will likely corrupt BNK files. Please keep backups.">
             <Viewbox>
                 <TextBlock 
                     Opacity="0.25"

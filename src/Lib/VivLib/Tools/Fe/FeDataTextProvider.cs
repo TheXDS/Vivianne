@@ -60,7 +60,7 @@ public abstract class FeDataTextProvider(ICarPerf source, CultureInfo? culture =
         get
         {
             var (torque, rpm) = Analysis.MaxTorque;
-            return $"{torque.ToString("0", Culture)} lb-ft @ {rpm.ToString(Culture)} RPM";
+            return $"{torque.ToString("0", Culture)} Nm @ {rpm.ToString(Culture)} RPM";
         }
     }
 

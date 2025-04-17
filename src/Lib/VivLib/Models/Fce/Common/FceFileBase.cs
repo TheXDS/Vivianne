@@ -1,4 +1,6 @@
-﻿namespace TheXDS.Vivianne.Models.Fce.Common;
+﻿using TheXDS.Vivianne.Info;
+
+namespace TheXDS.Vivianne.Models.Fce.Common;
 
 /// <summary>
 /// Base class for all FCE files independently of the game version.
@@ -9,54 +11,41 @@
 /// <typeparam name="TPart">Type definition for the FCE parts contained in the FCE file.</typeparam>
 public abstract class FceFileBase<TColor, TPart> : IFceFile<TPart> where TColor : IHsbColor where TPart : FcePart
 {
-    /// <summary>
-    /// Gets or sets the current magic header of the FCE file.
-    /// </summary>
+    /// <inheritdoc/>
+    public NfsVersion Version => VersionIdentifier.FceVersion(Magic);
+
+    /// <inheritdoc/>
     public int Magic { get; set; }
-    
-    /// <summary>
-    /// Gets or sets a value that indicates the number of arts contained in the
-    /// FCE file.
-    /// </summary>
-    /// <remarks>
-    /// For NFS3/4, this value should remain at <c>1</c>, unless the model
-    /// supports non-zero texture pages (like, Cop models, certain special
-    /// objects, etc.).
-    /// </remarks>
+
+    /// <inheritdoc/>
     public int Arts { get; set; }
 
-    /// <summary>
-    /// Gets or sets a value that, when multiplied by <c>2.0</c>, indicates the
-    /// size of the model in the X axis. 
-    /// </summary>
+    /// <inheritdoc/>
     public float XHalfSize { get; set; }
 
-    /// <summary>
-    /// Gets or sets a value that, when multiplied by <c>2.0</c>, indicates the
-    /// size of the model in the Y axis. 
-    /// </summary>
+    /// <inheritdoc/>
     public float YHalfSize { get; set; }
 
-    /// <summary>
-    /// Gets or sets a value that, when multiplied by <c>2.0</c>, indicates the
-    /// size of the model in the Z axis. 
-    /// </summary>
+    /// <inheritdoc/>
     public float ZHalfSize { get; set; }
 
-    /// <summary>
-    /// Gets or sets the contents of the first reserved data table.
-    /// </summary>
+    /// <inheritdoc/>
     public byte[] RsvdTable1 { get; set; } = [];
 
-    /// <summary>
-    /// Gets or sets the contents of the second reserved data table.
-    /// </summary>
+    /// <inheritdoc/>
     public byte[] RsvdTable2 { get; set; } = [];
 
-    /// <summary>
-    /// Gets or sets the contents of the third reserved data table.
-    /// </summary>
+    /// <inheritdoc/>
     public byte[] RsvdTable3 { get; set; } = [];
+
+    /// <inheritdoc/>
+    public IList<TPart> Parts { get; set; } = [];
+
+    /// <inheritdoc/>
+    public IList<FceDummy> Dummies { get; set; } = [];
+
+    /// <inheritdoc/>
+    public abstract IEnumerable<IHsbColor[]> Colors { get; }
 
     /// <summary>
     /// Gets a table containing all the defined primary colors for the FCE.
@@ -84,25 +73,6 @@ public abstract class FceFileBase<TColor, TPart> : IFceFile<TPart> where TColor 
     /// table for all color combinations. 
     /// </remarks>
     public IList<TColor> SecondaryColors { get; set; } = [];
-
-    /// <summary>
-    /// Gets a table containing all defined Parts in the FCE.
-    /// </summary>
-    /// <remarks>
-    /// This table should never exceed <c>64</c>
-    /// <typeparamref name="TPart"/> elements.
-    /// elements.
-    /// </remarks>
-    public IList<TPart> Parts { get; set; } = [];
-
-    /// <summary>
-    /// Gets a table containing all the Dummies.
-    /// </summary>
-    /// <remarks>
-    /// This table should never exceed <c>16</c> <see cref="FceAsciiBlob"/>
-    /// elements.
-    /// </remarks>
-    public IList<FceDummy> Dummies { get; set; } = [];
 
     /// <summary>
     /// Gets a part with the specified name.

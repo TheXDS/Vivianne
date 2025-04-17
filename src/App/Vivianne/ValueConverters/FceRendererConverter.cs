@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
@@ -12,8 +11,6 @@ using TheXDS.MCART.Helpers;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.MCART.ValueConverters.Base;
 using TheXDS.Vivianne.Models.Fce.Common;
-using TheXDS.Vivianne.Models.Fce.Nfs3;
-using TheXDS.Vivianne.Models.Fce.Nfs4;
 using TheXDS.Vivianne.Models.Tga;
 using TheXDS.Vivianne.ViewModels.Fce.Common;
 

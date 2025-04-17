@@ -513,7 +513,7 @@ public interface ICarPerf : ISerialNumberModel
     double TopSpeed { get; set; }
 
     /// <summary>
-    /// Gets a collection of values plotting the engine's torque curve.
+    /// Gets a collection of values plotting the engine's torque curve, in Newton*Meters.
     /// </summary>
     IList<double> TorqueCurve { get; }
 

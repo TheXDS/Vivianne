@@ -425,7 +425,7 @@ namespace TheXDS.Vivianne.Resources.Strings.Views {
         /// </summary>
         public static string IsDlcCar {
             get {
-                return ResourceManager.GetString("IsDlcCar", resourceCulture);
+                return ResourceManager.GetString("IsDlc", resourceCulture);
             }
         }
         

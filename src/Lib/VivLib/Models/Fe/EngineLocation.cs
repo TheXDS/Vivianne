@@ -3,7 +3,7 @@
 /// <summary>
 /// Enumerates the possible engine locations in a vehicle.
 /// </summary>
-public enum EngineLocation : ushort
+public enum EngineLocation : byte
 {
     /// <summary>
     /// The engine is located at the front.

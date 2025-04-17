@@ -45,6 +45,17 @@ public class FeData : FeDataBase, IFeData
     public RoofFlag Roof { get; set; }
 
     /// <summary>
+    /// Gets or sets a value that indicates the location of the engine in this
+    /// car.
+    /// </summary>
+    public EngineLocation EngineLocation { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value that indicates if the var is part of a DLC.
+    /// </summary>
+    public bool IsDlc { get; set; }
+
+    /// <summary>
     /// Gets or sets the default compare table for this vehicle.
     /// </summary>
     public CompareTable DefaultCompare { get; set; }

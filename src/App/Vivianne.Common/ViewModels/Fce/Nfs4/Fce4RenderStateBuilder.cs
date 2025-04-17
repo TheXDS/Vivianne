@@ -22,8 +22,8 @@ public class Fce4RenderStateBuilder : FceRenderStateBuilderBase<Fce4EditorState,
             DriverHairColor: { } driverHair,
         } ? (RenderColor[])[
             new(driverHair, new(0.1f,0.3f)),
-            new(secondary, new(0.5f,0.7f)),
-            new(interior, new(0.3f,0.5f)),
+            new(secondary, new(0.3f,0.5f)),
+            new(interior, new(0.5f,0.7f)),
             new(primary, new(0.7f,0.9f)),
         ] : null;
     }
@@ -32,7 +32,7 @@ public class Fce4RenderStateBuilder : FceRenderStateBuilderBase<Fce4EditorState,
     protected override bool? FlipUvY() => false;
 
     /// <inheritdoc/>
-    protected override bool? FlipUvX(Fce4EditorState state) => (VersionIdentifier.FceVersion(state.File) == NfsVersion.Mco) ? false : null;
+    protected override bool? FlipUvX(Fce4EditorState state) => (VersionIdentifier.FceVersion(state.File.Magic) == NfsVersion.Mco) ? false : null;
 
     /// <inheritdoc/>
     protected override SceneObject? ToSceneObject(Fce4EditorState state, FcePartListItem<Fce4Part> part) => part.IsVisible ? new()

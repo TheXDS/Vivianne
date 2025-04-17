@@ -10,6 +10,7 @@ using System.Globalization;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Models.Carp;
+using TheXDS.Vivianne.Models.Fe;
 using TheXDS.Vivianne.Models.Fsh;
 using TheXDS.Vivianne.Tools;
 using TheXDS.Vivianne.Tools.Fe;
@@ -420,49 +421,29 @@ public static class Mappings
             _ => new EngUnitTextProvider(c)
         };
     }
- 
-    //private static void ReadColorPalette(FshBlob blob, byte[] data)
-    //{
-    //    blob.LocalPalette = LoadPalette(data);
-    //}
 
-    //private static void ReadGaugeData(FshBlob blob, byte[] data)
-    //{
-    //    using var ms = new MemoryStream(data);
-    //    using var br = new BinaryReader(ms);
-    //    blob.GaugeData = br.ReadStruct<GaugeData>();
-    //}
-
-    //private static byte[] WriteColorPalette(FshBlob blob)
-    //{
-    //    if (blob.LocalPalette is null)
-    //    {
-    //        throw new InvalidOperationException("The specified FSH does not contain a palette.");
-    //    }
-    //    using var ms = new MemoryStream();
-    //    using var bw = new BinaryWriter(ms);
-    //    foreach (var j in blob.LocalPalette)
-    //    {
-    //        Rgba32 c = j.ToPixel<Rgba32>();
-    //        bw.Write([c.B, c.G, c.R, c.A]);
-    //    }
-    //    var b = new FshBlob()
-    //    {
-    //        Magic = FshBlobFormat.Palette32,
-    //        Width = 256,
-    //        Height = 1,
-    //        PixelData = ms.ToArray()
-    //    };
-    //    using var ms2 = new MemoryStream();
-    //    new FshBlobSerializer().SerializeTo(b, ms2);
-    //    return ms2.ToArray();
-    //}
-
-    //private static byte[] WriteGaugeData(FshBlob blob)
-    //{
-    //    using var ms = new MemoryStream();
-    //    using var br = new BinaryWriter(ms);
-    //    br.WriteStruct(blob.GaugeData ?? default);
-    //    return ms.ToArray();
-    //}
+    /// <summary>
+    /// Gets a <see cref="FeDataTextProvider"/> based on the specified FeData
+    /// language.
+    /// </summary>
+    /// <param name="c">Carp data to extract performance data from.</param>
+    /// <param name="lang">FeDEata language to use</param>
+    /// <returns>
+    /// A <see cref="FeDataTextProvider"/> that gets the localized performance
+    /// metrics from the specified <see cref="ICarPerf"/>.
+    /// </returns>
+    public static FeDataTextProvider GetTextProviderFromFeDataLanguage(ICarPerf c, FeDataLang lang)
+    {
+        return lang switch
+        {
+            FeDataLang.Bri => new BriUnitTextProvider(c),
+            FeDataLang.Eng => new EngUnitTextProvider(c),
+            FeDataLang.Fre => new FreUnitTextProvider(c),
+            FeDataLang.Ger => new GerUnitTextProvider(c),
+            FeDataLang.Ita => new ItaUnitTextProvider(c),
+            FeDataLang.Spa => new SpaUnitTextProvider(c),
+            FeDataLang.Swe => new SweUnitTextProvider(c),
+            _ => GetTextProviderFromCulture(c)
+        };
+    }
 }

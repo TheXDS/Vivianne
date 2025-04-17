@@ -7,7 +7,8 @@
     xmlns:gn="http://schemas.thexds.local/ganymede"
     xmlns:mcart="http://schemas.thexds.local/mcart"
     xmlns:ct="clr-namespace:TheXDS.Vivianne.Controls"
-    xmlns:md="clr-namespace:TheXDS.Vivianne.Models.Fe.Nfs4;assembly=VivLib"
+    xmlns:md4="clr-namespace:TheXDS.Vivianne.Models.Fe.Nfs4;assembly=VivLib"
+    xmlns:md="clr-namespace:TheXDS.Vivianne.Models.Fe;assembly=VivLib"
     xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings.Views"
     xmlns:stc="clr-namespace:TheXDS.Vivianne.Resources.Strings;assembly=Vivianne.Common"
     xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels.Fe;assembly=Vivianne.Common"
@@ -25,11 +26,7 @@
     mc:Ignorable="d"
     d:DesignWidth="600">
     <DockPanel>
-        <controls:FileEditorCommandBar DockPanel.Dock="Top" Editor="{Binding}" ShowClose="False">
-            <!--<CheckBox Margin="10,0" Style="{StaticResource ToggleSwitch}" HorizontalAlignment="Right" IsEnabled="False">
-                <TextBlock Text="{x:Static st:FeDataEditorView.LinkEdits}" Foreground="White"/>
-            </CheckBox>-->
-        </controls:FileEditorCommandBar>
+        <controls:FileEditorCommandBar DockPanel.Dock="Top" Editor="{Binding}" ShowClose="False"/>
         <Grid Background="{ui:ThemeResource ControlSolidFillColorDefaultBrush}">
             <ScrollViewer>
                 <ScrollViewer.Resources>
@@ -78,7 +75,7 @@
                                     Margin="5"
                                     IsEditable="False"
                                     SelectedItem="{Binding State.File.VehicleClass, UpdateSourceTrigger=PropertyChanged}"
-                                    ItemsSource="{ct:EnumValProvider EnumType={x:Type md:CarClass}}"/>
+                                    ItemsSource="{ct:EnumValProvider EnumType={x:Type md4:CarClass}}"/>
                                 <ComboBox
                                     hlp:Form.Label="{x:Static st:FeDataEditorView.IsPolice}"
                                     Margin="5"
@@ -86,12 +83,15 @@
                                     SelectedValuePath="Value"
                                     DisplayMemberPath="Name"
                                     SelectedValue="{Binding State.File.PoliceFlag, UpdateSourceTrigger=PropertyChanged}"
-                                    ItemsSource="{ct:NamedEnumValProvider EnumType={x:Type md:PursuitFlag}}"/>
+                                    ItemsSource="{ct:NamedEnumValProvider EnumType={x:Type md4:PursuitFlag}}"/>
                                 <CheckBox Margin="5" IsChecked="{Binding State.File.IsBonus}">
                                     <TextBlock Text="{x:Static st:FeDataEditorView.IsBonus}"/>
                                 </CheckBox>
                                 <CheckBox Margin="5" IsChecked="{Binding State.File.Upgradable}">
                                     <TextBlock Text="Upgradable"/>
+                                </CheckBox>
+                                <CheckBox Margin="5" IsChecked="{Binding State.File.IsDlc, UpdateSourceTrigger=PropertyChanged}">
+                                    <TextBlock Text="Is DLC"/>
                                 </CheckBox>
                                 <ComboBox
                                     hlp:Form.Label="Roof type"
@@ -100,7 +100,15 @@
                                     SelectedValuePath="Value"
                                     DisplayMemberPath="Name"
                                     SelectedValue="{Binding State.File.Roof, UpdateSourceTrigger=PropertyChanged}"
-                                    ItemsSource="{ct:NamedEnumValProvider EnumType={x:Type md:RoofFlag}}"/>
+                                    ItemsSource="{ct:NamedEnumValProvider EnumType={x:Type md4:RoofFlag}}"/>
+                                <ComboBox
+                                    hlp:Form.Label="Engine location"
+                                    Margin="5"
+                                    IsEditable="False"
+                                    SelectedValuePath="Value"
+                                    DisplayMemberPath="Name"
+                                    SelectedValue="{Binding State.File.EngineLocation, UpdateSourceTrigger=PropertyChanged}"
+                                    ItemsSource="{ct:NamedEnumValProvider EnumType={x:Type md:EngineLocation}}"/>
                             </mcart:StretchyWrapPanel>
                         </StackPanel>
                     </Expander>

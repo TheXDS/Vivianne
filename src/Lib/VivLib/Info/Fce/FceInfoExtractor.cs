@@ -1,5 +1,6 @@
 ﻿using TheXDS.Vivianne.Models.Fce.Nfs3;
 using TheXDS.Vivianne.Extensions;
+using TheXDS.Vivianne.Models.Fce.Common;
 
 namespace TheXDS.Vivianne.Info.Fce;
 
@@ -14,23 +15,23 @@ namespace TheXDS.Vivianne.Info.Fce;
 /// <param name="showRsvdContents">
 /// Indicates if the contents of the reserved tables shoudl be read and dumped.
 /// </param>
-public class Fce3InfoExtractor(bool humanSize, bool showRsvdContents) : IEntityInfoExtractor<FceFile>
+public class FceInfoExtractor<T>(bool humanSize, bool showRsvdContents) : IEntityInfoExtractor<IFceFile<T>>
+    where T : FcePart
 {
     /// <inheritdoc/>
-    public string[] GetInfo(FceFile entity)
+    public string[] GetInfo(IFceFile<T> entity)
     {
         return [.. (string[])[
             string.Format("File signature: 0x{0:x8}", entity.Magic),
+            string.Format("File format: {0}", VersionIdentifier.FceVersion(entity.Magic)),
             string.Format("Number of arts: {0}", entity.Arts),
             string.Format("Bounding box size: X={0}, Y={1}, Z={2}", entity.XHalfSize * 2, entity.YHalfSize * 2, entity.ZHalfSize * 2),
             DumpTable(entity.RsvdTable1, "Reserved table 1"),
             DumpTable(entity.RsvdTable2, "Reserved table 2"),
             DumpTable(entity.RsvdTable3, "Reserved table 3"),
-            string.Format("Primary colors: {0}", entity.PrimaryColors.Count),
-            string.Format("Secondary colors: {0}", entity.SecondaryColors.Count),
+            string.Format("Declared colors: {0}", entity.Colors.Count()),
             string.Format("Parts: {0}", entity.Parts.Count),
             string.Format("Dummies: {0}", entity.Dummies.Count),
-            DumpTable(entity.Unk_0x1e04, "Unk table at 0x1e04"),
             ]];
     }
 

@@ -91,7 +91,7 @@
                                     <CheckBox Margin="5" IsChecked="{Binding State.File.AvailableToAi, UpdateSourceTrigger=PropertyChanged}">
                                         <TextBlock Text="{x:Static st:FeDataEditorView.IsAvailableToAI}"/>
                                     </CheckBox>
-                                    <CheckBox Margin="5" IsChecked="{Binding State.File.IsDlcCar, UpdateSourceTrigger=PropertyChanged}">
+                                    <CheckBox Margin="5" IsChecked="{Binding State.File.IsDlc, UpdateSourceTrigger=PropertyChanged}">
                                         <TextBlock Text="{x:Static st:FeDataEditorView.IsDlcCar}"/>
                                     </CheckBox>
                                 </mcart:StretchyWrapPanel>

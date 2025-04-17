@@ -6,6 +6,7 @@ using System.Windows.Input;
 using TheXDS.Ganymede.Helpers;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models.Carp.Base;
+using TheXDS.Vivianne.Properties;
 using TheXDS.Vivianne.Resources;
 using TheXDS.Vivianne.ViewModels.Base;
 using St = TheXDS.Vivianne.Resources.Strings.ViewModels.CarpEditorViewModel;
@@ -194,7 +195,7 @@ public class CarpEditorViewModel<TState, TFile, TCarClass> : FileEditorViewModel
 
     private Task OnPerformanceMetrics()
     {
-        var a = Mappings.GetTextProviderFromCulture(State);
+        var a = Mappings.GetTextProviderFromFeDataLanguage(State, Settings.Current.PreferredFeDataLang);
         return DialogService!.Message(St.PerformanceMetrics, string.Format(St.PerformanceMetricsDetails,
             a.Weight,
             a.TopSpeed,

@@ -6,13 +6,8 @@ namespace TheXDS.Vivianne.Models.Fce.Nfs4;
 /// <summary>
 /// Represents an FCE car model.
 /// </summary>
-public class FceFile : FceFileBase<HsbColor, Fce4Part>
+public class FceFile : FceFileBase<HsbColor, Fce4Part>, IFceFile<FcePart>
 {
-    /// <summary>
-    /// Gets a value that indicates the game version that this FCE4 file is for.
-    /// </summary>
-    public NfsVersion Version => VersionIdentifier.FceVersion(this);
-
     /// <summary>
     /// Gets or sets the unknown 0x0004 value.
     /// </summary>
@@ -74,4 +69,18 @@ public class FceFile : FceFileBase<HsbColor, Fce4Part>
     /// unknown.
     /// </summary>
     public byte[] Unk_0x1e28 { get; set; } = [];
+
+    /// <inheritdoc/>
+    public override IEnumerable<IHsbColor[]> Colors
+    {
+        get
+        {
+            foreach (var ((primary, interior, secondary), driverHair) in PrimaryColors.Zip(InteriorColors, SecondaryColors).Zip(DriverHairColors))
+            {
+                yield return [primary, interior, secondary, driverHair];
+            }
+        }
+    }
+
+    IList<FcePart> IFceFile<FcePart>.Parts => [..Parts.Cast<FcePart>()];
 }

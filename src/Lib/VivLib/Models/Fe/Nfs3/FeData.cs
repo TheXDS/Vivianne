@@ -84,7 +84,7 @@ public class FeData : FeDataBase, IFeData
     /// <summary>
     /// Gets or sets a value that indicates if the car is part of a DLC (downloadable content) package.
     /// </summary>
-    public ushort IsDlcCar { get; set; }
+    public ushort IsDlc { get; set; }
 
     /// <summary>
     /// Gets or sets a value that indicates if this vehicle is available to AI drivers.

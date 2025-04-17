@@ -7,6 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:local="clr-namespace:TheXDS.Vivianne.Views"
     xmlns:mdlviv="clr-namespace:TheXDS.Vivianne.Models.Viv;assembly=VivLib"
+    xmlns:mdlfe="clr-namespace:TheXDS.Vivianne.Models.Fe;assembly=VivLib"
     xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings.Views"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:viewmodels="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
@@ -131,12 +132,38 @@
                             </Grid>
                         </ui:CardControl.Header>
                         <ui:NumberBox
-                                Width="150"
-                                Grid.Row="1"
-                                Minimum="0"
-                                Maximum="100"
-                                Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                                Value="{Binding State.RecentFilesCount}"/>
+                            Width="150"
+                            Grid.Row="1"
+                            Minimum="0"
+                            Maximum="100"
+                            Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                            Value="{Binding State.RecentFilesCount}"/>
+                    </ui:CardControl>
+                    <ui:CardControl Icon="{ui:SymbolIcon Symbol=ArrowSort24}">
+                        <ui:CardControl.Header>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <ui:TextBlock
+                                    Grid.Row="0"
+                                    FontTypography="BodyStrong"
+                                    Text="Preferred FeData language" />
+                                <ui:TextBlock
+                                    TextWrapping="Wrap"
+                                    Grid.Row="1"
+                                    Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                    Text="Specifies the preferred FeData language to use when showing FeData information, such as Car colors or performance metrics." />
+                            </Grid>
+                        </ui:CardControl.Header>
+                        <ComboBox
+                            SelectedValue="{Binding State.PreferredFeDataLang}"
+                            ItemsSource="{ct:NamedEnumValProvider EnumType={x:Type mdlfe:FeDataLang}}"
+                            Width="250"
+                            IsEditable="False"
+                            SelectedValuePath="Value"
+                            DisplayMemberPath="Name"/>
                     </ui:CardControl>
                 </StackPanel>
             </ScrollViewer>
@@ -189,7 +216,6 @@
                             IsEditable="False"
                             SelectedValuePath="Value"
                             DisplayMemberPath="Name"/>
-
                     </ui:CardControl>
                 </StackPanel>
             </ScrollViewer>

@@ -1,4 +1,6 @@
-﻿namespace TheXDS.Vivianne.Models.Fce.Common;
+﻿using TheXDS.Vivianne.Info;
+
+namespace TheXDS.Vivianne.Models.Fce.Common;
 
 /// <summary>
 /// Defines a set of members to be implemented by a type that represents the
@@ -7,6 +9,11 @@
 /// <typeparam name="TPart"></typeparam>
 public interface IFceFile<TPart> where TPart : FcePart
 {
+    /// <summary>
+    /// Gets a value that indicates the game version that this FCE4 file is for.
+    /// </summary>
+    NfsVersion Version { get; }
+
     /// <summary>
     /// Gets the current magic header of the FCE file.
     /// </summary>
@@ -59,4 +66,24 @@ public interface IFceFile<TPart> where TPart : FcePart
     /// elements.
     /// </remarks>
     IList<FceDummy> Dummies { get; }
+
+    /// <summary>
+    /// Gets the entire color table for the FCE file.
+    /// </summary>
+    IEnumerable<IHsbColor[]> Colors { get; }
+
+    /// <summary>
+    /// Gets or sets the contents of the first reserved data table.
+    /// </summary>
+    byte[] RsvdTable1 { get; set; }
+
+    /// <summary>
+    /// Gets or sets the contents of the second reserved data table.
+    /// </summary>
+    byte[] RsvdTable2 { get; set; }
+
+    /// <summary>
+    /// Gets or sets the contents of the third reserved data table.
+    /// </summary>
+    byte[] RsvdTable3 { get; set; }
 }

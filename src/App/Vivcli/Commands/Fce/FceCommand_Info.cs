@@ -1,7 +1,7 @@
 ﻿using System.CommandLine;
 using TheXDS.Vivianne.Info.Fce;
-using Nfs3File = TheXDS.Vivianne.Models.Fce.Nfs3.FceFile;
-using Nfs3Srlz = TheXDS.Vivianne.Serializers.Fce.Nfs3.FceSerializer;
+using TheXDS.Vivianne.Models.Fce.Common;
+using TheXDS.Vivianne.Serializers.Fce.Common;
 using St = TheXDS.Vivianne.Resources.Strings.FshCommand;
 
 namespace TheXDS.Vivianne.Commands.Fce;
@@ -21,9 +21,9 @@ public partial class FceCommand
 
     private static Task InfoCommand(FileInfo fceFile, bool humanOpt, bool dump)
     {
-        return ReadOnlyFileTransaction<Nfs3File, Nfs3Srlz>(fceFile, fce =>
+        return ReadOnlyFileTransaction<IFceFile<FcePart>, FceCommonSerializer>(fceFile, fce =>
         {
-            foreach (var j in new Fce3InfoExtractor(humanOpt, dump).GetInfo(fce))
+            foreach (var j in new FceInfoExtractor<FcePart>(humanOpt, dump).GetInfo(fce))
             {
                 Console.WriteLine(j);
             }

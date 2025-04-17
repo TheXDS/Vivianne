@@ -48,6 +48,8 @@ public static class FeData4SyncTool
                 f.VehicleClass = source.VehicleClass;
                 f.Upgradable = source.Upgradable;
                 f.Roof = source.Roof;
+                f.EngineLocation = source.EngineLocation;
+                f.IsDlc = source.IsDlc;
                 f.DefaultCompare = source.DefaultCompare;
                 f.CompareUpg1 = source.CompareUpg1;
                 f.CompareUpg2 = source.CompareUpg2;

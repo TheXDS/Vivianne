@@ -6,6 +6,7 @@ using TheXDS.Ganymede.Configuration;
 using TheXDS.Vivianne.Models;
 using TheXDS.MCART.Resources.Strings;
 using TheXDS.Vivianne.Models.Viv;
+using TheXDS.Vivianne.Models.Fe;
 
 namespace TheXDS.Vivianne.Properties;
 
@@ -119,6 +120,12 @@ public class Settings
     /// If enabled, generates backups whenever a file is saved.
     /// </summary>
     public bool AutoBackup { get; set; }
+
+    /// <summary>
+    /// Gets or or sets a value that indicates the preferred FeData language to
+    /// use for extraction and presentation of data throughout Vivianne.
+    /// </summary>
+    public FeDataLang PreferredFeDataLang { get; set; }
 
     /// <summary>
     /// If enabled, runs a serial number check before saving a VIV file if any

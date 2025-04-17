@@ -10,7 +10,7 @@ namespace TheXDS.Vivianne.Serializers.Fce.Nfs4;
 /// <summary>
 /// Implements a serializer that can read and write FCE4 files.
 /// </summary>
-public partial class FceSerializer : ISerializer<FceFile>
+public partial class FceSerializer : ISerializer<FceFile>, IOutSerializer<IFceFile<FcePart>>
 {
     /// <inheritdoc />
     public FceFile Deserialize(Stream stream)
@@ -60,17 +60,29 @@ public partial class FceSerializer : ISerializer<FceFile>
         using BinaryWriter pool = new(poolStream);
         FceFileHeader header = CreateHeader(fce);
         List<int> vertexOffsets = [];
+
+
+
+
         foreach (var j in fce.Parts.Select(p => p.Vertices))
         {
             vertexOffsets.Add((int)poolStream.Position / Marshal.SizeOf<Vector3>());
             pool.MarshalWriteStructArray(j);
         }
         header.PartVertexOffset = vertexOffsets.ArrayOfSize(64);
+
+
         header.NormalsTblOffset = header.UndamagedNormalsTblOffset = (int)poolStream.Position;
         foreach (var j in fce.Parts.Select(p => p.Normals))
         {
             pool.MarshalWriteStructArray(j);
         }
+
+
+
+
+
+
         header.TriangleTblOffset = (int)poolStream.Position;
         List<int> triangleOffsets = [0];
         foreach (var j in fce.Parts.Select(p => p.Triangles))
@@ -105,5 +117,10 @@ public partial class FceSerializer : ISerializer<FceFile>
         using BinaryWriter fileWriter = new(stream);
         fileWriter.MarshalWriteStruct(header);
         fileWriter.Write(poolStream.ToArray());
+    }
+
+    IFceFile<FcePart> IOutSerializer<IFceFile<FcePart>>.Deserialize(Stream stream)
+    {
+        return Deserialize(stream);
     }
 }

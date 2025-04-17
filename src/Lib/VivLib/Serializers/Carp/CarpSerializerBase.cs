@@ -392,6 +392,7 @@ public class CarpSerializerBase<TCarClass, TFile> : ISerializer<TFile> where TCa
         AI ACC7 acceleration table section(74)
         {string.Join(",", entity.AiCurve7)}
         {GetExtraProps(entity)}
+
         """));
     }
 

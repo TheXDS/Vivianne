@@ -100,7 +100,7 @@ public abstract class FileCommandBase(
     /// <see langword="async"/> operation.
     /// </returns>
     protected static Task ReadOnlyFileTransaction<TFile, TSerializer>(FileInfo file, Action<TFile> action)
-        where TSerializer : ISerializer<TFile>, new()
+        where TSerializer : IOutSerializer<TFile>, new()
 {
         return ReadOnlyFileTransaction<TFile, TSerializer>(file, f => Task.Run(() => action.Invoke(f)));
     }
@@ -117,15 +117,15 @@ public abstract class FileCommandBase(
     /// <see langword="async"/> operation.
     /// </returns>
     protected static async Task ReadOnlyFileTransaction<TFile, TSerializer>(FileInfo file, Func<TFile, Task> action)
-        where TSerializer : ISerializer<TFile>, new()
+        where TSerializer : IOutSerializer<TFile>, new()
     {
-        ISerializer<TFile> serializer = new TSerializer();
+        IOutSerializer<TFile> serializer = new TSerializer();
         TFile value;
         try
         {
             using (var fs = file.OpenRead())
             {
-                value = await serializer.DeserializeAsync(fs);
+                value = serializer.Deserialize(fs);
             }
             await action.Invoke(value);
         }

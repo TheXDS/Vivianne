@@ -1,4 +1,5 @@
 ﻿using TheXDS.Vivianne.Models.Base;
+using TheXDS.Vivianne.Models.Fe;
 using TheXDS.Vivianne.Models.Viv;
 using TheXDS.Vivianne.Properties;
 
@@ -27,6 +28,7 @@ public class SettingsState : EditorViewModelStateBase
     private string? _nfs4LaunchArgs;
     private bool _carp_SyncChanges;
     private bool _fe_SyncChanges;
+    private FeDataLang _preferredFeDataLang;
 
     /// <summary>
     /// Gets or sets the path to the NFS4 main directory.
@@ -63,6 +65,16 @@ public class SettingsState : EditorViewModelStateBase
     {
         get => _autoBackup;
         set => Change(ref _autoBackup, value);
+    }
+
+    /// <summary>
+    /// Gets or or sets a value that indicates the preferred FeData language to
+    /// use for extraction and presentation of data throughout Vivianne.
+    /// </summary>
+    public FeDataLang PreferredFeDataLang
+    { 
+        get => _preferredFeDataLang;
+        set => Change(ref _preferredFeDataLang, value);
     }
 
     /// <summary>
@@ -213,6 +225,7 @@ public class SettingsState : EditorViewModelStateBase
             Nfs4Path = settings.Nfs4Path,
             Nfs4LaunchArgs = settings.Nfs4LaunchArgs,
             AutoBackup = settings.AutoBackup,
+            PreferredFeDataLang = settings.PreferredFeDataLang,
             RecentFilesCount = settings.RecentFilesCount,
             Bnk_InfoOpenByDefault = settings.Bnk_InfoOpenByDefault,
             Bnk_DefaultNormalization = settings.Bnk_DefaultNormalization,
@@ -243,6 +256,7 @@ public class SettingsState : EditorViewModelStateBase
             Nfs4Path = settings.Nfs4Path,
             Nfs4LaunchArgs = settings.Nfs4LaunchArgs,
             AutoBackup = settings.AutoBackup,
+            PreferredFeDataLang = settings.PreferredFeDataLang,
             RecentFilesCount = settings.RecentFilesCount,
             Bnk_InfoOpenByDefault = settings.Bnk_InfoOpenByDefault,
             Bnk_DefaultNormalization = settings.Bnk_DefaultNormalization,

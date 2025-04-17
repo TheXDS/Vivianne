@@ -213,7 +213,7 @@
                                 <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.HighTurnFactor}" Value="{Binding State.HighTurnFactor, UpdateSourceTrigger=PropertyChanged}"/>
                                 <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.PitchRollFactor}" Value="{Binding State.PitchRollFactor, UpdateSourceTrigger=PropertyChanged}"/>
                                 <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.RoadBumpFactor}" Value="{Binding State.RoadBumpFactor, UpdateSourceTrigger=PropertyChanged}"/>
-                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.SpoilerFunctionType}" Value="{Binding State.SpoilerFunctionType, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.SpoilerFunctionType}" Value="{Binding State.SpoilerFunctionType, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Maximum="1" MaxDecimalPlaces="0"/>
                                 <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.SpoilerActSpeed}" Value="{Binding State.SpoilerActivationSpeed, UpdateSourceTrigger=PropertyChanged}"/>
                                 <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.GradualTurnCutoff}" Value="{Binding State.GradualTurnCutoff, UpdateSourceTrigger=PropertyChanged}"/>
                                 <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.MediumTurnCutoff}" Value="{Binding State.MediumTurnCutoff, UpdateSourceTrigger=PropertyChanged}"/>
@@ -222,7 +222,7 @@
                                 <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.SharpTurnSpdMod}" Value="{Binding State.SharpTurnSpdMod, UpdateSourceTrigger=PropertyChanged}"/>
                                 <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.ExtrTurnSpdMod}" Value="{Binding State.ExtremeTurnSpdMod, UpdateSourceTrigger=PropertyChanged}"/>
                                 <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.SubdivideLevel}" Value="{Binding State.SubdivideLevel, UpdateSourceTrigger=PropertyChanged}"/>
-                                <ui:NumberBox hlp:Form.Label="Understeer gradient" Value="{Binding State.UndersteerGradient, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="Understeer gradient" Value="{Binding State.UndersteerGradient, UpdateSourceTrigger=PropertyChanged}" Minimum="0.8" Maximum="1.1" LargeChange="0.1" SmallChange="0.01"/>
                             </mcart:StretchyWrapPanel>
                         </StackPanel>
                     </Expander>

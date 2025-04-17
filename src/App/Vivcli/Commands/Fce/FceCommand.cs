@@ -12,4 +12,5 @@ public partial class FceCommand() : FileCommandBase(
     "Path to the FCE file",
     [
         BuildInfoCommand,
+        BuildLsCommand,
     ]){ }

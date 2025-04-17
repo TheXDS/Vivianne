@@ -3,7 +3,4 @@
 	<PropertyGroup Condition="'$(MSBuildProjectExtension)'=='.csproj'">
 		<ExtraDefineConstants>EnableFullFshFormat;EnableFceWriteSupport</ExtraDefineConstants>
 	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-		<DebugType>none</DebugType>
-	</PropertyGroup>
 </Project>

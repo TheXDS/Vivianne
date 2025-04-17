@@ -49,7 +49,7 @@ public static class FeData3SyncTool
                 f.IsPolice = source.IsPolice;
                 f.IsBonus = source.IsBonus;
                 f.AvailableToAi = source.AvailableToAi;
-                f.IsDlcCar = source.IsDlcCar;
+                f.IsDlc = source.IsDlc;
                 f.CarAccel = source.CarAccel;
                 f.CarTopSpeed = source.CarTopSpeed;
                 f.CarHandling = source.CarHandling;

@@ -36,7 +36,7 @@ internal static class VivTemplates
             VehicleClass = Models.Fe.Nfs3.CarClass.A,
             Seat = Models.Fe.DriverSeatPosition.Left,
             IsPolice = false,
-            IsDlcCar = 1,
+            IsDlc = 1,
             AvailableToAi = true,
             CarAccel = 10,
             CarTopSpeed = 10,
@@ -57,6 +57,7 @@ internal static class VivTemplates
             VehicleClass = Models.Fe.Nfs4.CarClass.AAA,
             Upgradable = true,
             Roof = Models.Fe.Nfs4.RoofFlag.SolidRoof,
+            IsDlc = false,
             DefaultCompare = new()
             {
                 Acceleration = 10,
@@ -93,6 +94,7 @@ internal static class VivTemplates
                 Overall = 16,
                 Price = 30000
             },
+            EngineLocation = Models.Fe.EngineLocation.Front,
             CarId = "XXXX",
             SerialNumber = (ushort)new Random().Next(ushort.MaxValue),
             IsBonus = false,

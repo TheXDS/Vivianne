@@ -6,7 +6,7 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="SixLabors.ImageSharp" Version="3.1.7" />
-		<PackageReference Include="TheXDS.MCART" Version="0.18.0-alpha.10" />
+		<PackageReference Include="TheXDS.MCART" Version="0.18.0-alpha.11" />
 	</ItemGroup>
 	<ItemGroup>
 		<EmbeddedResource Update="Resources\Strings\Common.resx">

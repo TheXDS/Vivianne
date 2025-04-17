@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+using TheXDS.Vivianne.Models.Fe;
 using TheXDS.Vivianne.Models.Fe.Nfs4;
 
 namespace TheXDS.Vivianne.Serializers.Fe.Nfs4;
@@ -9,6 +10,7 @@ public partial class FeDataSerializer
     private const byte IsBonus_Mask = 0x01;
     private const byte Upgradable_Mask = 0x40;
     private const byte Roof_Mask = 0x03;
+    private const byte IsDlc_Mask = 0x04;
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     private struct CompareTableItem
@@ -31,7 +33,8 @@ public partial class FeDataSerializer
             Padding_0x320 = new byte[0x5a],
             Unk_0x386 = 0xb5,
             Unk_0x387 = 0x01,
-            Unk_0x3ae = new byte[0x10]
+            Unk_0x3ae = new byte[0x10],
+            CompareCount = 0x0a
         };
 
         public byte Magic; // = 0x04
@@ -45,7 +48,7 @@ public partial class FeDataSerializer
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 0x5a)]
         public byte[] Padding_0x320;
         public byte PoliceFlag_IsBonus;
-        public byte Upgradable_RoofFlags;
+        public byte Upgradable_RoofFlags_IsDlc;
         public byte Unk_0x37c;
         public byte Unk_0x37d;
         public byte Unk_0x37e;
@@ -69,8 +72,10 @@ public partial class FeDataSerializer
         public int Upgrade1Price;
         public int Upgrade2Price;
         public int Upgrade3Price;
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 0x10)]
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 0x0d)]
         public byte[] Unk_0x3ae;
+        public EngineLocation EngineLocation;
+        public ushort Unk_0x3bc;
         public ushort StringEntries;
     }
 }

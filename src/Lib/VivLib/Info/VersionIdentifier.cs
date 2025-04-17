@@ -27,23 +27,37 @@ public static class VersionIdentifier
     /// <returns>
     /// A value that indicates the game for which this file is intended.
     /// </returns>
-    public static NfsVersion FceVersion(byte[] file)
-    {
-        if (knownFce4Headers.Any(file[0..4].SequenceEqual)) return NfsVersion.Nfs4;
-        return knownFce4MHeaders.Any(file[0..4].SequenceEqual) ? NfsVersion.Mco : NfsVersion.Nfs3;
-    }
+    public static NfsVersion FceVersion(byte[] file) => FceVersion(BitConverter.ToInt32(file.AsSpan()[0..4]));
+
 
     /// <summary>
     /// Infers the game file version for the specified FCE contents.
     /// </summary>
-    /// <param name="file">FCE4 File to check.</param>
+    /// <param name="stream">Stream to the file contents to check.</param>
     /// <returns>
     /// A value that indicates the game for which this file is intended.
     /// </returns>
-    public static NfsVersion FceVersion(FceFile file)
+    public static NfsVersion FceVersion(Stream stream)
     {
-        if (knownFce4Headers.Any(p => file.Magic == BitConverter.ToInt32(p))) return NfsVersion.Nfs4;
-        return knownFce4MHeaders.Any(p => file.Magic == BitConverter.ToInt32(p)) ? NfsVersion.Mco : NfsVersion.Nfs3;
+        if (!stream.CanSeek) return NfsVersion.Unknown;
+        var data = new byte[4];
+        stream.ReadExactly(data);
+        stream.Seek(0, SeekOrigin.Begin);
+        return FceVersion(data);
+    }
+
+
+    /// <summary>
+    /// Infers the game file version for the specified FCE contents.
+    /// </summary>
+    /// <param name="magic">File magic signature to check.</param>
+    /// <returns>
+    /// A value that indicates the game for which this file is intended.
+    /// </returns>
+    public static NfsVersion FceVersion(int magic)
+    {
+        if (knownFce4Headers.Any(p => magic == BitConverter.ToInt32(p))) return NfsVersion.Nfs4;
+        return knownFce4MHeaders.Any(p => magic == BitConverter.ToInt32(p)) ? NfsVersion.Mco : NfsVersion.Nfs3;
     }
 
     /// <summary>
