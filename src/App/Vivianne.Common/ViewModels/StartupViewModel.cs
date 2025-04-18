@@ -139,28 +139,43 @@ public class StartupViewModel : ViewModel
 
     private async Task OnLaunchNfsProcess(string? processPath, string exeName, string? args, string processName)
     {
+        var errTemplate = CommonDialogTemplates.Error with { Title = $"Could not launch {processName}" };
         try
         {
             if (processPath is not null)
             {
-                await (WaitForNfsProcess(Process.Start(Path.Combine(processPath, exeName), args ?? string.Empty)));
+                var procStartInfo = new ProcessStartInfo
+                {
+                    FileName = Path.Combine(processPath, exeName),
+                    Arguments = args ?? string.Empty,
+                    UseShellExecute = true,
+                    WorkingDirectory = processPath,
+                };
+                var proc = Process.Start(procStartInfo);
+                if (proc is null)
+                {
+                    await (DialogService?.Show(errTemplate with { Text = "Could not start process" }) ?? Task.CompletedTask);
+                    return;
+                }
+                await (WaitForNfsProcess(proc));
             }
             else if (DialogService is { } dlgSvc)
             {
-                await (await dlgSvc.Show(CommonDialogTemplates.Error with
-                {
-                    Title = $"Could not launch {processName}",
-                    Text = St.YouHavenTConfiguredTheGamePath
-                }, [(St.LaunchSettings, OnSettings), (Stc.Ok,() => Task.CompletedTask)])).Invoke();
+                await (await dlgSvc.Show(errTemplate with { Text = St.YouHavenTConfiguredTheGamePath },
+                [
+                    (St.LaunchSettings, OnSettings),
+                    (Stc.Ok, () => Task.CompletedTask)
+                ])).Invoke();
             }
         }
         catch (Exception ex)
         {
-            await (DialogService?.Error($"Could not launch {processName}", ex.Message) ?? Task.CompletedTask);
+            await (DialogService?.Show(errTemplate with { Text = ex.Message }) ?? Task.CompletedTask);
         }
     }
     private async Task WaitForNfsProcess(Process proc)
     {
+
         NfsProcess = proc;
         IsNfsRunning = true;
         await proc.WaitForExitAsync();
