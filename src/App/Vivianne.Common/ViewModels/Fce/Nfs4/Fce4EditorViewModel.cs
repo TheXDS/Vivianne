@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using TheXDS.Ganymede.Helpers;
 using TheXDS.Vivianne.Models.Fce;
-using TheXDS.Vivianne.Models.Fce.Common;
 using TheXDS.Vivianne.Models.Fce.Nfs4;
 using TheXDS.Vivianne.ViewModels.Fce.Common;
 
@@ -62,6 +61,7 @@ public class Fce4EditorViewModel : FceEditorViewModelBase<
             j.IsVisible = mapping.Contains(j.Part.Name);
         }
     }
+
     private async Task OnColorEditor()
     {
         var state = new Fce4ColorTableEditorState(State);

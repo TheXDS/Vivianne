@@ -27,7 +27,7 @@ public class StartupViewModel : ViewModel
 {
     private static readonly IEnumerable<Func<StartupViewModel, Task?>> _InitActions = [
         TryOpenFileFromCmdArgs,
-        vm => (SearchForNfs3Process() is { } proc) ? vm.WaitForNfs3Process(proc) : null,
+        vm => (SearchForNfsProcess() is { } proc) ? vm.WaitForNfsProcess(proc) : null,
     ];
 
     private static Task? TryOpenFileFromCmdArgs(StartupViewModel vm)
@@ -51,6 +51,11 @@ public class StartupViewModel : ViewModel
     public ICommand LaunchNfs3Command { get; }
 
     /// <summary>
+    /// Gets a reference to the command used to launch NFS3.
+    /// </summary>
+    public ICommand LaunchNfs4Command { get; }
+
+    /// <summary>
     /// Gets a reference to the command used to forcefully end the game
     /// process if it can't be exited normally.
     /// </summary>
@@ -64,7 +69,7 @@ public class StartupViewModel : ViewModel
     /// <summary>
     /// Gets a value that indicates if NFS3 is running.
     /// </summary>
-    public bool IsNfs3Running
+    public bool IsNfsRunning
     {
         get => _isNfs3Running;
         private set => Change(ref _isNfs3Running, value);
@@ -73,7 +78,7 @@ public class StartupViewModel : ViewModel
     /// <summary>
     /// Gets a reference to the NFS3 process when it's running.
     /// </summary>
-    public Process? Nfs3Process { get; private set; }
+    public Process? NfsProcess { get; private set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="StartupViewModel"/> class.
@@ -90,6 +95,7 @@ public class StartupViewModel : ViewModel
         var cb = CommandBuilder.For(this);
         SettingsCommand = cb.BuildSimple(OnSettings);
         LaunchNfs3Command = cb.BuildSimple(OnLaunchNfs3);
+        LaunchNfs4Command = cb.BuildSimple(OnLaunchNfs4);
         TerminateProcessCommand = cb.BuildSimple(proc => (proc as Process)?.Kill());
     }
 
@@ -97,7 +103,7 @@ public class StartupViewModel : ViewModel
     protected override void OnInitialize(IPropertyBroadcastSetup broadcastSetup)
     {
         base.OnInitialize(broadcastSetup);
-        broadcastSetup.RegisterPropertyChangeBroadcast(() => IsNfs3Running, () => Nfs3Process);
+        broadcastSetup.RegisterPropertyChangeBroadcast(() => IsNfsRunning, () => NfsProcess);
     }
 
     /// <inheritdoc/>
@@ -122,41 +128,49 @@ public class StartupViewModel : ViewModel
         return DialogService!.Show<SettingsViewModel>(new Ganymede.Models.DialogTemplate() { Title = St.Settings });
     }
 
-    private async Task OnLaunchNfs3()
+    private Task OnLaunchNfs3()
+    {
+        return OnLaunchNfsProcess(Settings.Current.Nfs3Path, "nfs3.exe", Settings.Current.Nfs3LaunchArgs, "Need For Speed 3");
+    }
+    private Task OnLaunchNfs4()
+    {
+        return OnLaunchNfsProcess(Settings.Current.Nfs4Path, "nfs4.exe", Settings.Current.Nfs4LaunchArgs, "Need For Speed 4");
+    }
+
+    private async Task OnLaunchNfsProcess(string? processPath, string exeName, string? args, string processName)
     {
         try
         {
-            if (Settings.Current.Nfs3Path is not null)
+            if (processPath is not null)
             {
-                await (WaitForNfs3Process(Process.Start(Path.Combine(Settings.Current.Nfs3Path, "nfs3.exe"), Settings.Current.Nfs3LaunchArgs ?? string.Empty)));
+                await (WaitForNfsProcess(Process.Start(Path.Combine(processPath, exeName), args ?? string.Empty)));
             }
-            else
+            else if (DialogService is { } dlgSvc)
             {
-                await (DialogService?.SelectAction(CommonDialogTemplates.Error with
+                await (await dlgSvc.Show(CommonDialogTemplates.Error with
                 {
-                    Title = St.CouldNotLaunchNFS3,
+                    Title = $"Could not launch {processName}",
                     Text = St.YouHavenTConfiguredTheGamePath
-                }, [new(OnSettings, St.LaunchSettings), new(() => Task.CompletedTask, Stc.Ok)]) ?? Task.CompletedTask);
+                }, [(St.LaunchSettings, OnSettings), (Stc.Ok,() => Task.CompletedTask)])).Invoke();
             }
         }
         catch (Exception ex)
         {
-            await (DialogService?.Error(St.CouldNotLaunchNFS3, ex.Message) ?? Task.CompletedTask);
+            await (DialogService?.Error($"Could not launch {processName}", ex.Message) ?? Task.CompletedTask);
         }
     }
-
-    private async Task WaitForNfs3Process(Process proc)
+    private async Task WaitForNfsProcess(Process proc)
     {
-        Nfs3Process = proc;
-        IsNfs3Running = true;
+        NfsProcess = proc;
+        IsNfsRunning = true;
         await proc.WaitForExitAsync();
-        Nfs3Process.Dispose();
-        Nfs3Process = null;
-        IsNfs3Running = false;
+        NfsProcess.Dispose();
+        NfsProcess = null;
+        IsNfsRunning = false;
     }
 
-    private static Process? SearchForNfs3Process()
+    private static Process? SearchForNfsProcess()
     {
-        return Process.GetProcessesByName("nfs3").FirstOrDefault();
+        return Process.GetProcessesByName("nfs3").Concat(Process.GetProcessesByName("nfs4")).FirstOrDefault();
     }
 }
