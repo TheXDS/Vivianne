@@ -92,7 +92,7 @@
                                         <TextBlock Text="{x:Static st:FeDataEditorView.IsAvailableToAI}"/>
                                     </CheckBox>
                                     <CheckBox Margin="5" IsChecked="{Binding State.File.IsDlc, UpdateSourceTrigger=PropertyChanged}">
-                                        <TextBlock Text="{x:Static st:FeDataEditorView.IsDlcCar}"/>
+                                        <TextBlock Text="Is DLC"/>
                                     </CheckBox>
                                 </mcart:StretchyWrapPanel>
                             </StackPanel>
@@ -198,17 +198,63 @@
                             </DockPanel>
                         </Expander.Header>
                         <mcart:StretchyWrapPanel StretchProportionally="False" IsEnabled="{Binding IsChecked, ElementName=chkUnknown}">
-                            <ui:NumberBox hlp:Form.Label="Unk_0x0c" Value="{Binding State.File.Unk_0x0c, UpdateSourceTrigger=PropertyChanged}"/>
-                            <ui:NumberBox hlp:Form.Label="Unk_0x14" Value="{Binding State.File.Unk_0x14, UpdateSourceTrigger=PropertyChanged}"/>
-                            <ui:NumberBox hlp:Form.Label="Unk_0x16" Value="{Binding State.File.Unk_0x16, UpdateSourceTrigger=PropertyChanged}"/>
-                            <ui:NumberBox hlp:Form.Label="Unk_0x1a" Value="{Binding State.File.Unk_0x1a, UpdateSourceTrigger=PropertyChanged}"/>
-                            <ui:NumberBox hlp:Form.Label="Unk_0x1c" Value="{Binding State.File.Unk_0x1c, UpdateSourceTrigger=PropertyChanged}"/>
-                            <ui:NumberBox hlp:Form.Label="Unk_0x1e" Value="{Binding State.File.Unk_0x1e, UpdateSourceTrigger=PropertyChanged}"/>
-                            <ui:NumberBox hlp:Form.Label="Unk_0x20" Value="{Binding State.File.Unk_0x20, UpdateSourceTrigger=PropertyChanged}"/>
-                            <ui:NumberBox hlp:Form.Label="Unk_0x22" Value="{Binding State.File.Unk_0x22, UpdateSourceTrigger=PropertyChanged}"/>
-                            <ui:NumberBox hlp:Form.Label="Unk_0x24" Value="{Binding State.File.Unk_0x24, UpdateSourceTrigger=PropertyChanged}"/>
-                            <ui:NumberBox hlp:Form.Label="Unk_0x26" Value="{Binding State.File.Unk_0x26, UpdateSourceTrigger=PropertyChanged}"/>
-                            <ui:NumberBox hlp:Form.Label="Unk_0x2c" Value="{Binding State.File.Unk_0x2c, UpdateSourceTrigger=PropertyChanged}"/>
+                            <mcart:StretchyWrapPanel.Resources>
+                                <ct:HexUInt16NumberFormatter x:Key="hex16num"/>
+                                <ct:HexByteNumberFormatter x:Key="hex8num"/>
+                                <Style TargetType="ui:NumberBox" BasedOn="{StaticResource {x:Type ui:NumberBox}}">
+                                    <Setter Property="HorizontalContentAlignment" Value="Right"/>
+                                    <Setter Property="MinWidth" Value="150"/>
+                                    <Setter Property="Minimum" Value="0"/>
+                                    <Setter Property="Maximum" Value="65535"/>
+                                    <Setter Property="MaxDecimalPlaces" Value="0"/>
+                                    <Setter Property="ClearButtonEnabled" Value="False"/>
+                                </Style>
+                            </mcart:StretchyWrapPanel.Resources>
+                            <ui:NumberBox
+                                hlp:Form.Label="Unk_0x0c"
+                                Value="{Binding State.File.Unk_0x0c, UpdateSourceTrigger=PropertyChanged}"
+                                NumberFormatter="{StaticResource hex16num}"/>
+                            <ui:NumberBox
+                                hlp:Form.Label="Unk_0x14"
+                                Value="{Binding State.File.Unk_0x14, UpdateSourceTrigger=PropertyChanged}"
+                                NumberFormatter="{StaticResource hex16num}"/>
+                            <ui:NumberBox
+                                hlp:Form.Label="Unk_0x16"
+                                Value="{Binding State.File.Unk_0x16, UpdateSourceTrigger=PropertyChanged}"
+                                NumberFormatter="{StaticResource hex16num}"/>
+                            <ui:NumberBox
+                                hlp:Form.Label="Unk_0x1a"
+                                Value="{Binding State.File.Unk_0x1a, UpdateSourceTrigger=PropertyChanged}"
+                                NumberFormatter="{StaticResource hex16num}"/>
+                            <ui:NumberBox
+                                hlp:Form.Label="Unk_0x1c"
+                                Value="{Binding State.File.Unk_0x1c, UpdateSourceTrigger=PropertyChanged}"
+                                NumberFormatter="{StaticResource hex16num}"/>
+                            <ui:NumberBox
+                                hlp:Form.Label="Unk_0x1e"
+                                Value="{Binding State.File.Unk_0x1e, UpdateSourceTrigger=PropertyChanged}"
+                                NumberFormatter="{StaticResource hex16num}"/>
+                            <ui:NumberBox
+                                hlp:Form.Label="Unk_0x20"
+                                Value="{Binding State.File.Unk_0x20, UpdateSourceTrigger=PropertyChanged}"
+                                NumberFormatter="{StaticResource hex16num}"/>
+                            <ui:NumberBox
+                                hlp:Form.Label="Unk_0x22"
+                                Value="{Binding State.File.Unk_0x22, UpdateSourceTrigger=PropertyChanged}"
+                                NumberFormatter="{StaticResource hex16num}"/>
+                            <ui:NumberBox
+                                hlp:Form.Label="Unk_0x24"
+                                Value="{Binding State.File.Unk_0x24, UpdateSourceTrigger=PropertyChanged}"
+                                NumberFormatter="{StaticResource hex16num}"/>
+                            <ui:NumberBox
+                                hlp:Form.Label="Unk_0x26"
+                                Value="{Binding State.File.Unk_0x26, UpdateSourceTrigger=PropertyChanged}"
+                                NumberFormatter="{StaticResource hex16num}"/>
+                            <ui:NumberBox
+                                hlp:Form.Label="Unk_0x2c"
+                                Value="{Binding State.File.Unk_0x2c, UpdateSourceTrigger=PropertyChanged}"
+                                Maximum="255"
+                                NumberFormatter="{StaticResource hex8num}"/>
                         </mcart:StretchyWrapPanel>
                     </Expander>
                 </StackPanel>

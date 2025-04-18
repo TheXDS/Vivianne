@@ -5,14 +5,14 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:vc="clr-namespace:TheXDS.Vivianne.ValueConverters"
-    xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
     xmlns:mcart="http://schemas.thexds.local/mcart"
     xmlns:gn="http://schemas.thexds.local/ganymede"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings.Views"
     xmlns:hlp="clr-namespace:TheXDS.Vivianne.Helpers"
+    xmlns:fsh="clr-namespace:TheXDS.Vivianne.ViewModels.Fsh;assembly=Vivianne.Common"
     Background="{ui:ThemeResource ControlSolidFillColorDefaultBrush}"
-    d:DataContext="{d:DesignInstance Type=vm:DashEditorViewModel}"
+    d:DataContext="{d:DesignInstance Type=fsh:DashEditorViewModel}"
     mc:Ignorable="d">
     <UserControl.Resources>
         <mcart:NotNullToBooleanConverter x:Key="nn2bc"/>

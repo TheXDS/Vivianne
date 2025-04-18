@@ -23,7 +23,12 @@
                 <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
             <Border Background="{ui:ThemeResource SystemFillColorCautionBackgroundBrush}">
-                <ui:FontIcon VerticalAlignment="Top" Margin="0,0,0,10" Glyph="⚠️" Foreground="{ui:ThemeResource SystemFillColorCautionBrush}" FontSize="48"/>
+                <ui:FontIcon 
+                    VerticalAlignment="Top"
+                    Margin="0,0,0,10"
+                    Glyph="⚠️"
+                    Foreground="{ui:ThemeResource SystemFillColorCautionBrush}"
+                    FontSize="48"/>
             </Border>
             <TextBlock
                 TextWrapping="Wrap"

@@ -10,7 +10,7 @@
     xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings.Views.Specialized"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:vc="clr-namespace:TheXDS.Vivianne.ValueConverters"
-    xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
+    xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels.Fsh;assembly=Vivianne.Common"
     mc:Ignorable="d" 
     d:DataContext="{d:DesignInstance Type=vm:FshBlobCoordsEditorViewModel}">
     <UniformGrid Columns="2" Margin="5">

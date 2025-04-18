@@ -7,8 +7,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:models="clr-namespace:TheXDS.Vivianne.Models;assembly=Vivianne.Common"
     xmlns:controls="clr-namespace:TheXDS.Vivianne.Controls"
-    xmlns:viewmodels="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
-    d:DataContext="{d:DesignInstance viewmodels:CurveEditorDialogViewModel}"
+    xmlns:carp="clr-namespace:TheXDS.Vivianne.ViewModels.Carp;assembly=Vivianne.Common"
+    d:DataContext="{d:DesignInstance carp:CurveEditorDialogViewModel}"
     mc:Ignorable="d">
     <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
         <DockPanel>

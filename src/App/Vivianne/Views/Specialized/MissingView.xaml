@@ -56,7 +56,8 @@
                         <Ellipse Fill="{ui:ThemeResource TextFillColorPrimaryBrush}" Width="4" Height="4"/>
                     </BulletDecorator.Bullet>
                     <TextBlock Margin="5,0,0,0" TextWrapping="Wrap">You tried to navigate to the incorrect ViewModel.</TextBlock>
-                </BulletDecorator> 
+                </BulletDecorator><LineBreak/>
+                If you are an end user, then this is a bug. Please report it to the developers of this application.<LineBreak/>
             </TextBlock>
         </Grid>
     </Border>
