@@ -139,7 +139,7 @@
                             Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
                             Value="{Binding State.RecentFilesCount}"/>
                     </ui:CardControl>
-                    <ui:CardControl Icon="{ui:SymbolIcon Symbol=ArrowSort24}">
+                    <ui:CardControl Icon="{ui:SymbolIcon Symbol=Globe24}">
                         <ui:CardControl.Header>
                             <Grid>
                                 <Grid.RowDefinitions>
