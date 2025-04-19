@@ -33,6 +33,11 @@ public class FeData4EditorViewModel : FileEditorViewModelBase<FeData4EditorState
     /// <inheritdoc/>
     protected override bool BeforeSave()
     {
+        State.File.DefaultCompare = State.DefaultCompare.ToCompare();
+        State.File.CompareUpg1 = State.CompareUpg1.ToCompare();
+        State.File.CompareUpg2 = State.CompareUpg2.ToCompare();
+        State.File.CompareUpg3 = State.CompareUpg3.ToCompare();
+
         if (Settings.Current.Fe_SyncChanges)
         {
             FeData4SyncTool.Sync(State.File, Path.GetExtension(BackingStore!.FileName)!, BackingStore.Store.AsDictionary());
