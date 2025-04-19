@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using System.Runtime.InteropServices;
+using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models.Fce.Common;
 using TheXDS.Vivianne.Models.Fce.Nfs4;
 using Fce3 = TheXDS.Vivianne.Models.Fce.Nfs3.FceFile;
@@ -14,6 +15,22 @@ namespace TheXDS.Vivianne.Tools.Fce;
 /// </summary>
 public static class FceConverter
 {
+    private static readonly string[] Nfs3toNfs4PartNames = [
+        ":HB",
+        ":HLFW",
+        ":HRFW",
+        ":HLRW",
+        ":HRRW",
+        ":MB",
+        ":MRFW", // Yes, this is supposed to be backwards ¯\_(ツ)_/¯
+        ":MLFW", // <---+
+        ":MLRW",
+        ":MRRW",
+        ":LB",
+        ":TB",
+        ":OL"
+    ];
+
     /// <summary>
     /// Converts a <see cref="Fce4"/> object to <see cref="Fce3"/>.
     /// </summary>
@@ -33,7 +50,7 @@ public static class FceConverter
             Dummies = fce.Dummies,
             PrimaryColors = [.. fce.PrimaryColors.Select(ToNfs3Color)],
             SecondaryColors = [.. fce.SecondaryColors.Select(ToNfs3Color)],
-            Parts = [.. fce.Parts.Cast<FcePart>()],
+            Parts = [.. fce.Parts.OrderBy(PartIndex).Cast<FcePart>()],
             RsvdTable1 = new byte[vertsCount * 32],
             RsvdTable2 = new byte[vertsCount * Marshal.SizeOf<Vector3>()],
             RsvdTable3 = new byte[vertsCount * Marshal.SizeOf<Vector3>()],
@@ -66,7 +83,7 @@ public static class FceConverter
         var vertsCount = fce.Parts.Sum(p => p.Vertices.Length);
         return new()
         {
-            Magic = BitConverter.ToInt32([0x00, 0x10, 0x10, 0x14]),
+            Magic = BitConverter.ToInt32([0x14, 0x10, 0x10, 0x00]),
             Arts = fce.Arts,
             Dummies = fce.Dummies,
             PrimaryColors = [.. fce.PrimaryColors.Select(ToNfs4Color)],
@@ -91,11 +108,11 @@ public static class FceConverter
         };
     }
 
-    private static Fce4Part ToFce4Part(FcePart part)
+    private static Fce4Part ToFce4Part(FcePart part, int index)
     {
         return new Fce4Part()
         {
-            Name = part.Name,
+            Name = Nfs3toNfs4PartNames[index],
             Origin = part.Origin,
             Normals = part.Normals,
             DamagedNormals = part.Normals,
@@ -103,6 +120,12 @@ public static class FceConverter
             DamagedVertices = part.Vertices,
             Triangles = part.Triangles,
         };
+    }
+
+    private static int PartIndex(Fce4Part part)
+    {
+        var index = Nfs3toNfs4PartNames.FindIndexOf(part.Name);
+        return index >= 0 ? index : Nfs3toNfs4PartNames.Length;
     }
 
     private static H3 ToNfs3Color(H4 color)

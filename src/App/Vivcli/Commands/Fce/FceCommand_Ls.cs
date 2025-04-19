@@ -1,30 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.CommandLine;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.CommandLine;
 using TheXDS.Vivianne.Models.Fce.Common;
-using TheXDS.Vivianne.Models.Fce.Nfs3;
-using TheXDS.Vivianne.Models.Fsh;
 using TheXDS.Vivianne.Serializers.Fce.Common;
-using TheXDS.Vivianne.Serializers.Fsh;
+using St = TheXDS.Vivianne.Resources.Strings.FceCommand;
 
 namespace TheXDS.Vivianne.Commands.Fce;
 
 public partial class FceCommand
 {
-    private enum FceObjectType
-    {
-        All,
-        Parts,
-        Dummies,
-    }
-
     private static Command BuildLsCommand(Argument<FileInfo> fileArg)
     {
-        var cmd = new Command("ls", "Enumerates the objects that exist inside the FCE file.");
-        var typeOption = new Option<FceObjectType>(["--type", "-t"], () => FceObjectType.All, "Specifies the kind of object to be listed.");
+        var cmd = new Command("ls", St.Ls_help);
+        var typeOption = new Option<FceObjectType>(["--type", "-t"], () => FceObjectType.Any, St.TypeOption_Help);
 
         cmd.AddOption(typeOption);
         cmd.SetHandler(LsCommand, fileArg, typeOption);
@@ -35,10 +21,11 @@ public partial class FceCommand
     {
         return ReadOnlyFileTransaction<IFceFile<FcePart>, FceCommonSerializer>(fshFile, fsh =>
         {
-            if (typeOpt == FceObjectType.All || typeOpt == FceObjectType.Parts) {
+            if (typeOpt.HasFlag(FceObjectType.Part))
+            {
                 foreach (var j in fsh.Parts) Console.WriteLine(j.Name);
             }
-            if (typeOpt == FceObjectType.All || typeOpt == FceObjectType.Dummies)
+            if (typeOpt .HasFlag(FceObjectType.Dummy))
             {
                 foreach (var j in fsh.Dummies) Console.WriteLine(j.Name);
             }

@@ -66,7 +66,7 @@
                 <TabItem  Header="{x:Static st:StartupView.FSHQFSEditor}">
                     <ct:FileEditorLauncherView Launcher="{Binding Launchers[1], Mode=OneWay}"/>
                 </TabItem>
-                <TabItem  Header="FCE3 Editor">
+                <TabItem  Header="FCE Editor">
                     <ct:FileEditorLauncherView Launcher="{Binding Launchers[2], Mode=OneWay}"/>
                 </TabItem>
                 <TabItem Header="{x:Static st:StartupView.ExtraTools}">

@@ -18,6 +18,11 @@
 		  <AutoGen>True</AutoGen>
 		  <DependentUpon>BnkCommand.resx</DependentUpon>
 		</Compile>
+		<Compile Update="Resources\Strings\FceCommand.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>FceCommand.resx</DependentUpon>
+		</Compile>
 		<Compile Update="Resources\Strings\VivCli.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
@@ -39,6 +44,10 @@
 		<EmbeddedResource Update="Resources\Strings\BnkCommand.resx">
 		  <Generator>ResXFileCodeGenerator</Generator>
 		  <LastGenOutput>BnkCommand.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Strings\FceCommand.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>FceCommand.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Strings\VivCli.resx">
 			<Generator>ResXFileCodeGenerator</Generator>
