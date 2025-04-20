@@ -297,4 +297,28 @@
   <data name="Width" xml:space="preserve">
     <value>Width</value>
   </data>
+  <data name="DynamicStability" xml:space="preserve">
+    <value>Dynamic stability</value>
+  </data>
+  <data name="Upgradable" xml:space="preserve">
+    <value>Upgradable</value>
+  </data>
+  <data name="RoofType" xml:space="preserve">
+    <value>Roof type</value>
+  </data>
+  <data name="EngineLocation" xml:space="preserve">
+    <value>Engine location</value>
+  </data>
+  <data name="CompareUpgrade1" xml:space="preserve">
+    <value>Compare (upgrade 1)</value>
+  </data>
+  <data name="CompareUpgrade2" xml:space="preserve">
+    <value>Compare (upgrade 2)</value>
+  </data>
+  <data name="CompareUpgrade3" xml:space="preserve">
+    <value>Compare (upgrade 3)</value>
+  </data>
+  <data name="IsDLC" xml:space="preserve">
+    <value>Is DLC</value>
+  </data>
 </root>

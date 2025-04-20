@@ -259,6 +259,33 @@ namespace TheXDS.Vivianne.Resources.Strings.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compare (upgrade 1).
+        /// </summary>
+        public static string CompareUpgrade1 {
+            get {
+                return ResourceManager.GetString("CompareUpgrade1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compare (upgrade 2).
+        /// </summary>
+        public static string CompareUpgrade2 {
+            get {
+                return ResourceManager.GetString("CompareUpgrade2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compare (upgrade 3).
+        /// </summary>
+        public static string CompareUpgrade3 {
+            get {
+                return ResourceManager.GetString("CompareUpgrade3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Displacement.
         /// </summary>
         public static string Displacement {
@@ -277,11 +304,29 @@ namespace TheXDS.Vivianne.Resources.Strings.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dynamic stability.
+        /// </summary>
+        public static string DynamicStability {
+            get {
+                return ResourceManager.GetString("DynamicStability", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Engine.
         /// </summary>
         public static string Engine {
             get {
                 return ResourceManager.GetString("Engine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Engine location.
+        /// </summary>
+        public static string EngineLocation {
+            get {
+                return ResourceManager.GetString("EngineLocation", resourceCulture);
             }
         }
         
@@ -421,11 +466,20 @@ namespace TheXDS.Vivianne.Resources.Strings.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Is DLC.
+        /// </summary>
+        public static string IsDLC {
+            get {
+                return ResourceManager.GetString("IsDLC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Is a DLC car.
         /// </summary>
         public static string IsDlcCar {
             get {
-                return ResourceManager.GetString("IsDlc", resourceCulture);
+                return ResourceManager.GetString("IsDlcCar", resourceCulture);
             }
         }
         
@@ -448,7 +502,7 @@ namespace TheXDS.Vivianne.Resources.Strings.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SyncFeData3 edits on other FeData files / Carp.
+        ///   Looks up a localized string similar to Sync edits on other FeData files / Carp.
         /// </summary>
         public static string LinkEdits {
             get {
@@ -520,6 +574,15 @@ namespace TheXDS.Vivianne.Resources.Strings.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Roof type.
+        /// </summary>
+        public static string RoofType {
+            get {
+                return ResourceManager.GetString("RoofType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Serial number.
         /// </summary>
         public static string SerialNumber {
@@ -570,6 +633,15 @@ namespace TheXDS.Vivianne.Resources.Strings.Views {
         public static string Transmission {
             get {
                 return ResourceManager.GetString("Transmission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upgradable.
+        /// </summary>
+        public static string Upgradable {
+            get {
+                return ResourceManager.GetString("Upgradable", resourceCulture);
             }
         }
         
