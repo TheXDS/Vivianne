@@ -2,8 +2,8 @@
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing.Processors.Quantization;
 using TheXDS.MCART.Types.Extensions;
+using TheXDS.Vivianne.Codecs;
 using TheXDS.Vivianne.Models.Fsh;
-using TheXDS.Vivianne.Resources;
 using TheXDS.Vivianne.Serializers.Fsh;
 using static TheXDS.Vivianne.Resources.Mappings;
 
@@ -27,9 +27,10 @@ public static class FshBlobExtensions
     /// </returns>
     public static Image? ToImage(this FshBlob blob, Color[]? palette = null)
     {
-        if (FshBlobPixelReader.TryGetValue(blob.Magic, out var callback))
+        var codec = CompressedToRaw.TryGetValue(blob.Magic, out var compressedMagic) ? compressedMagic : new CodecInfo<NullCodec>(blob.Magic);
+        if (FshBlobPixelReader.TryGetValue(codec.OutputFormat, out var callback))
         {
-            return callback.Invoke(blob.PixelData, blob.Width, blob.Height);
+            return callback.Invoke(codec.GetCodec().Decode(blob.PixelData, blob.Width, blob.Height), blob.Width, blob.Height);
         }
         if (blob.Magic != FshBlobFormat.Indexed8) return null;
         palette ??= ReadLocalPalette(blob) ?? CreatePalette();
@@ -57,7 +58,7 @@ public static class FshBlobExtensions
             var quantizer = quantizerFactory.CreatePixelSpecificQuantizer<Rgba32>(Configuration.Default);
 
             quantizer.BuildPalette(new ExtensivePixelSamplingStrategy(), (Image<Rgba32>)image);
-            palette = [.. quantizer.Palette.ToArray().Select(p => new Color(p))];
+            palette ??= [.. quantizer.Palette.ToArray().Select(p => new Color(p))];
 
             using var q = quantizer.QuantizeFrame((ImageFrame<Rgba32>)image.Frames[0], new Rectangle(0, 0, image.Width, image.Height));
             var p = new List<byte>();
@@ -184,9 +185,46 @@ public static class FshBlobExtensions
     private record class FooterIdentifierElement(FshBlobFooterType Value, Func<byte[], bool> Predicate);
 
     private static IEnumerable<FooterIdentifierElement> FshBlobFooterIdentifier { get; } = [
+        // The following footer types generally occupy the whole footer.
         new(FshBlobFooterType.None,            b => b is null || b.Length == 0),
         new(FshBlobFooterType.CarDashboard,    b => b.Length == 104),
-        new(FshBlobFooterType.ColorPalette,    b => b.Length == 1040 && b[0..8].SequenceEqual(paletteHeader)),
         new(FshBlobFooterType.Padding,         b => b.All(p => p == 0)),
+
+        // These footer types allow for more than one attachment to exist.
+        new(FshBlobFooterType.MetalBin,        b => b.Length >= 0x50 && b[0..4].SequenceEqual(new byte[] { 0x69, 0x50, 0x00, 0x00 })),
+        new(FshBlobFooterType.ColorPalette,    b => b.Length >= 1040 && b[0..8].SequenceEqual(paletteHeader)),
+        new(FshBlobFooterType.BlobName,        b => b.Length >= 0x10 && b[0..4].SequenceEqual(new byte[] { 0x70, 0x00, 0x00, 0x00 })),
     ];
+
+    private static IReadOnlyDictionary<FshBlobFooterType, int> FooterLengths = new Dictionary<FshBlobFooterType, int> {
+        { FshBlobFooterType.MetalBin, 0x50 },
+        { FshBlobFooterType.ColorPalette, 1040 },
+        { FshBlobFooterType.BlobName, 0x10 }
+    }.AsReadOnly();
+
+    private static IEnumerable<(FshBlobFooterType, byte[])> EnumerateAttachments(this FshBlob blob)
+    {
+        int offset = 0;
+        foreach (var j in FooterLengths)
+        {
+            var x = FshBlobFooterIdentifier.FirstOrDefault(p => p.Value == j.Key);
+            var block = blob.Footer[offset..];
+            if (x is not null && x.Predicate(block))
+            {
+                yield return (j.Key, block.Take(j.Value).ToArray());
+                offset += j.Value;
+            }
+        }
+    }
+
+    public static IEnumerable<(FshBlobFooterType, byte[])> GetAttachments(this FshBlob blob)
+    {
+        var footerType = blob.FooterType();
+        return footerType switch
+        {
+            FshBlobFooterType.None => [],
+            FshBlobFooterType.Padding or FshBlobFooterType.CarDashboard => [(footerType, blob.Footer)],
+            _ => EnumerateAttachments(blob)
+        };
+    }
 }

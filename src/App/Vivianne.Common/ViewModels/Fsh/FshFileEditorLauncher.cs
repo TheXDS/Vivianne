@@ -6,12 +6,12 @@ using TheXDS.Ganymede.Services;
 using TheXDS.Ganymede.Types;
 using TheXDS.Ganymede.Types.Extensions;
 using TheXDS.MCART.Component;
+using TheXDS.Vivianne.Codecs;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Models.Fsh;
 using TheXDS.Vivianne.Properties;
 using TheXDS.Vivianne.Resources;
 using TheXDS.Vivianne.Serializers.Fsh;
-using TheXDS.Vivianne.Tools.Fsh;
 using TheXDS.Vivianne.ViewModels.Base;
 using St = TheXDS.Vivianne.Resources.Strings.Tools.FshCompressTool;
 using St2 = TheXDS.Vivianne.Resources.Strings.Tools.QfsDecompressTool;
@@ -35,7 +35,7 @@ public class FshFileEditorLauncher(Func<IDialogService> dialogSvc)
         {
             p.Report(St2.ProcessMsg);
             var qfs = await File.ReadAllBytesAsync(fin.Result);
-            var fsh = await Task.Run(() => QfsCodec.Decompress(qfs));
+            var fsh = await Task.Run(() => LzCodec.Decompress(qfs));
             await File.WriteAllBytesAsync(fout.Result, fsh);
         });
     }
@@ -51,7 +51,7 @@ public class FshFileEditorLauncher(Func<IDialogService> dialogSvc)
         {
             p.Report(St.ProcessMsg);
             var fsh = await File.ReadAllBytesAsync(fin.Result);
-            var qfs = await Task.Run(() => QfsCodec.Compress(fsh));
+            var qfs = await Task.Run(() => LzCodec.Compress(fsh));
             await File.WriteAllBytesAsync(fout.Result, qfs);
         });
     }

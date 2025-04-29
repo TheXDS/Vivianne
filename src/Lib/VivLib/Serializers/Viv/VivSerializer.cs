@@ -32,7 +32,7 @@ public class VivSerializer : ISerializer<VivFile>
         var vivLength = reader.ReadInt32().FlipEndianness();
         if (stream.CanSeek && stream.Length != vivLength)
         {
-            throw new InvalidDataException(St.VivFileLengthMismatch);
+            //throw new InvalidDataException(St.VivFileLengthMismatch);
         }
         var entries = reader.ReadInt32().FlipEndianness();
         var blobPool = reader.ReadInt32().FlipEndianness();

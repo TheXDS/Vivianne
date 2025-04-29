@@ -3,13 +3,13 @@ using SixLabors.ImageSharp.PixelFormats;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TheXDS.Vivianne.Codecs;
 using TheXDS.Vivianne.Extensions;
 using TheXDS.Vivianne.Models.Fsh;
 using TheXDS.Vivianne.Models.Fsh.Nfs3;
 using TheXDS.Vivianne.Serializers;
 using TheXDS.Vivianne.Serializers.Fsh;
 using TheXDS.Vivianne.Serializers.Fsh.Blobs;
-using TheXDS.Vivianne.Tools.Fsh;
 
 namespace TheXDS.Vivianne.Data;
 
@@ -116,7 +116,7 @@ internal static class VivTemplates
         var fsh = new FshFile();
         fsh.Entries.Add("0000", cabinBlob);
         fsh.Entries.Add("0001", steerBlob);
-        return QfsCodec.Compress(((ISerializer<FshFile>)new FshSerializer()).Serialize(fsh));
+        return LzCodec.Compress(((ISerializer<FshFile>)new FshSerializer()).Serialize(fsh));
     }
 
     private static byte[] EmptyCarp3()

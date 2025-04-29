@@ -1,7 +1,8 @@
 ﻿using System.Diagnostics;
+using System.Runtime.InteropServices;
 using TheXDS.MCART.Types.Extensions;
+using TheXDS.Vivianne.Codecs;
 using TheXDS.Vivianne.Models.Fsh;
-using TheXDS.Vivianne.Tools.Fsh;
 using static System.Text.Encoding;
 using St = TheXDS.Vivianne.Resources.Strings.Serializers.FshSerializer;
 
@@ -13,25 +14,36 @@ namespace TheXDS.Vivianne.Serializers.Fsh;
 /// </summary>
 public class FshSerializer : ISerializer<FshFile>
 {
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    private struct FshHeader
+    {
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+        public byte[] Header;
+        public int Length;
+        public int Entries;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+        public byte[] DirectoryId;
+    }
+
+    private struct FshDirEntry
+    {
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+        public byte[] Name;
+        public int Offset;
+
+        public readonly (string Name, int Offset) Deconstruct()
+        {
+            return (Latin1.GetString(Name), Offset);
+        }
+    }
+
     private static readonly byte[] Header = "SHPI"u8.ToArray();
-    private static readonly byte[][] DirIds =
-    [
-        "GIMX"u8.ToArray(),
-        #if EnableFullFshFormat
-        "G354"u8.ToArray(),
-        "G264"u8.ToArray(),
-        "G266"u8.ToArray(),
-        "G290"u8.ToArray(),
-        "G315"u8.ToArray(),
-        "G344"u8.ToArray(),
-        #endif
-    ];
 
     private FshFile DeserializeQfs(Stream stream)
     {
         using var ms = new MemoryStream();
         stream.CopyTo(ms);
-        var x = ((ISerializer<FshFile>)this).Deserialize(QfsCodec.Decompress(ms.ToArray()));
+        var x = ((ISerializer<FshFile>)this).Deserialize(LzCodec.Decompress(ms.ToArray()));
         x.IsCompressed = true;
         return x;
     }
@@ -39,45 +51,34 @@ public class FshSerializer : ISerializer<FshFile>
     /// <inheritdoc/>
     public FshFile Deserialize(Stream stream)
     {
-        if (QfsCodec.IsCompressed(stream)) return DeserializeQfs(stream);
-
+        if (LzCodec.IsCompressed(stream)) return DeserializeQfs(stream);
         using var reader = new BinaryReader(stream);
-        VerifyValidFsh(reader);
-        var entries = reader.ReadInt32();
-        var dirId = reader.ReadBytes(4);
-        if (!DirIds.Any(dirId.SequenceEqual))
-        {
-            throw new InvalidDataException(St.InvalidDirectoryID);
-        }
-        Dictionary<string, int> fileOffsets = [];
-        while (entries-- > 0)
-        {
-            var name = Latin1.GetString(reader.ReadBytes(4));
-            var offset = reader.ReadInt32();
 
-            if (!fileOffsets.TryAdd(name, offset))
-            {
-                Debug.Print(string.Format(St.DuplicatedFshEntityEntry, name, offset));
-            }
+        var header = reader.MarshalReadStruct<FshHeader>();
+        var entries = reader.MarshalReadArray<FshDirEntry>(header.Entries).OrderBy(p => p.Offset).ToArray();
+        var fsh = new FshFile() { DirectoryId = Latin1.GetString(header.DirectoryId) };
+        var firstOffset = entries.Select(p => p.Offset).FirstOrDefault();
+        if (stream.CanSeek && stream.Position < firstOffset)
+        {
+            fsh.ExtraData = reader.ReadBytes((int)(firstOffset - stream.Position));
         }
-
-        var fsh = new FshFile() { DirectoryId = Latin1.GetString(dirId) };
         var fshBlobSerializer = new FshBlobSerializer();
-        foreach (var j in fileOffsets)
+        foreach ((string name, int offset) in entries.Select(p => p.Deconstruct()))
         {
-            reader.BaseStream.Seek(j.Value, SeekOrigin.Begin);
-            var endOffset = fileOffsets.Values.Cast<int?>().Order().FirstOrDefault(p => p > j.Value) ?? (int)reader.BaseStream.Length;
-            using var ms = new MemoryStream(reader.ReadBytes(endOffset - j.Value));
+            reader.BaseStream.Seek(offset, SeekOrigin.Begin);
+            var endOffset = entries.Select(p => p.Offset).FirstOrDefault(p => p > offset, (int)reader.BaseStream.Length);
+            using var ms = new MemoryStream(reader.ReadBytes(endOffset - offset));
             if (fshBlobSerializer.Deserialize(ms) is { } blob)
             {
-                fsh.Entries.Add(j.Key, blob);
+                if (!fsh.Entries.TryAdd(name, blob))
+                {
+                    Debug.Print(string.Format(St.DuplicatedFshEntityEntry, name, offset));
+                }
             }
-#if DEBUG
             else
             {
-                Debug.Print(string.Format(St.CouldNotReadX, j.Key));
+                Debug.Print(string.Format(St.CouldNotReadX, name));
             }
-#endif
         }
         return fsh;
     }
@@ -91,7 +92,7 @@ public class FshSerializer : ISerializer<FshFile>
             entity.IsCompressed = false;
             SerializeTo(entity, ms);
             entity.IsCompressed = true;
-            stream.WriteBytes(QfsCodec.Compress(ms.ToArray()));
+            stream.WriteBytes(LzCodec.Compress(ms.ToArray()));
             return;
         }
         using BinaryWriter writer = new(stream);
@@ -107,23 +108,11 @@ public class FshSerializer : ISerializer<FshFile>
             // 16 = blob header (16 bytes)
             o += 16 + j.Value.PixelData.Length + j.Value.Footer.Length;
         }
+        writer.Write(entity.ExtraData);
         ISerializer<FshBlob?> fshBlobSerializer = new FshBlobSerializer();
         foreach (var j in entity.Entries.Values)
         {
             writer.Write(fshBlobSerializer.Serialize(j));
-        }
-    }
-
-    private static void VerifyValidFsh(BinaryReader reader)
-    {
-        if (!reader.ReadBytes(4).SequenceEqual(Header))
-        {
-            throw new InvalidDataException(St.InvalidHeader);
-        }
-        var fshLength = reader.ReadInt32();
-        if (reader.BaseStream.CanSeek && reader.BaseStream.Length != fshLength)
-        {
-            throw new InvalidDataException(St.FshFileLengthMismatch);
         }
     }
 
@@ -132,7 +121,7 @@ public class FshSerializer : ISerializer<FshFile>
         var sum = 16; // FSH header size
         foreach (var j in directory)
         {
-            // 24 = GIMX header (16 bytes) + entry name (4 bytes) + data offset (4 bytes)
+            // 24 = Blob header (16 bytes) + entry name (4 bytes) + data offset (4 bytes)
             sum += 24 + j.Value.PixelData.Length + j.Value.Footer.Length;
         }
         return sum;

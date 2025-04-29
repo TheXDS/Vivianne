@@ -30,6 +30,16 @@ public enum FshBlobFooterType
     Padding,
 
     /// <summary>
+    /// Indicates that the footer contains a "Metal Bin" attachment.
+    /// </summary>
+    MetalBin,
+
+    /// <summary>
+    /// Indicates that the footer contains a 16-byte blob name attachment.
+    /// </summary>
+    BlobName,
+
+    /// <summary>
     /// Indicates that the footer contains data that cannot be identified.
     /// </summary>
     Unknown,

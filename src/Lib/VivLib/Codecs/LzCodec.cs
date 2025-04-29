@@ -32,10 +32,11 @@ jloup@gzip.org          madler@alumni.caltech.edu
 
 using St = TheXDS.Vivianne.Resources.Strings.QfsCodec;
 
-namespace TheXDS.Vivianne.Tools.Fsh;
+namespace TheXDS.Vivianne.Codecs;
+
 
 /// <summary>
-/// Implements a codec that can read and write QFS files.
+/// Implements a codec that can read and write data using LZ compression.
 /// </summary>
 /// <remarks>
 /// Portions of this file have been adapted from zlib 1.2.3 <br/>
@@ -53,9 +54,9 @@ namespace TheXDS.Vivianne.Tools.Fsh;
 /// <item>César Morgan (xds_xps_ivx@hotmail.com)</item>
 /// </list>
 /// </remarks>
-public static class QfsCodec
+public static class LzCodec
 {
-    private const ushort QFS_Signature = 0xFB10;
+    private const ushort LZ_Signature = 0xFB10;
     private static readonly IEnumerable<KeyValuePair<int?, BlockDecompression>> BlockDecompressors = [
         new(0x80, ReadSmallBlock),
         new(0x40, ReadMediumBlock),
@@ -78,7 +79,7 @@ public static class QfsCodec
     /// </returns>
     public static bool IsCompressed(byte[] entryData)
     {
-        return entryData.Length >= 2 && BitConverter.ToUInt16(entryData, 0) == QFS_Signature;
+        return entryData.Length >= 2 && BitConverter.ToUInt16(entryData, 0) == LZ_Signature;
     }
 
     /// <summary>
@@ -106,7 +107,7 @@ public static class QfsCodec
     /// <example>
     /// <c>
     /// // Decompress data (This file will normally be compressed, should ideally check before decompressing)
-    /// byte[] decompressedData = QfsCodec.Decompress(data);
+    /// byte[] decompressedData = LzCodec.Decompress(data);
     /// </c>
     /// </example>
     public static byte[] Decompress(byte[] sourceBytes)

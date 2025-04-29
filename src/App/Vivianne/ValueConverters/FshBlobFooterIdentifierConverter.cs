@@ -18,8 +18,13 @@ public class FshBlobFooterIdentifierConverter : IOneWayValueConverter<FshBlob?, 
     public string Convert(FshBlob? value, object? parameter, CultureInfo? culture)
     {
         if (value is null) return string.Empty;
-        return Mappings.FshBlobFooterToLabel.TryGetValue(value.FooterType(), out var label)
+
+        var attachments = FshBlobExtensions.GetAttachments(value).ToArray();
+        return attachments.Length != 0 ? $"{(attachments.Length > 1 ? "\n· " : null)}{string.Join("\n· ", attachments.Select(p =>
+        {
+            return Mappings.FshBlobFooterToLabel.TryGetValue(p.Item1, out var label)
             ? label
-            : string.Format(St.Unknown, ((long)(value?.Footer?.Length ?? 0)).ByteUnits());
+            : string.Format(St.Unknown, ((long)p.Item2.Length).ByteUnits());
+        }))}" : "None";
     }
 }

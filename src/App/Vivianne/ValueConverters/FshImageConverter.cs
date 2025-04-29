@@ -29,12 +29,13 @@ public class FshImageConverter : IMultiValueConverter
 
         return image switch
         {
-            Image<Abgr32> i => GetImage(i, FshBlobFormat.Argb32, alpha),
-            Image<Bgra32> i => GetImage(i, FshBlobFormat.Argb32, alpha),
-            Image<Rgba32> i => GetImage(i, FshBlobFormat.Argb32, alpha),
-            Image<Bgr24> i => ConvertImageToBitmapSource(FshBlobFormat.Rgb24, i),
-            Image<Rgb24> i => ConvertImageToBitmapSource(FshBlobFormat.Rgb24, i),
-            Image<Bgr565> i => ConvertImageToBitmapSource(FshBlobFormat.Rgb565, i),
+            Image<Abgr32>   i => GetImage(i, FshBlobFormat.Argb32, alpha),
+            Image<Bgra32>   i => GetImage(i, FshBlobFormat.Argb32, alpha),
+            Image<Rgba32>   i => GetImage(i, FshBlobFormat.Argb32, alpha),
+            Image<Bgr24>    i => ConvertImageToBitmapSource(FshBlobFormat.Rgb24, i),
+            Image<Rgb24>    i => ConvertImageToBitmapSource(FshBlobFormat.Rgb24, i),
+            Image<Bgr565>   i => ConvertImageToBitmapSource(FshBlobFormat.Rgb565, i),
+            Image<Bgra4444> i => ConvertImageToBitmapSource(FshBlobFormat.Argb4444, i),
             _ => null
         };
     }

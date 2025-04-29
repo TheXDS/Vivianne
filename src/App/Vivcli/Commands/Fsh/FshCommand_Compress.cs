@@ -1,8 +1,8 @@
 using System.CommandLine;
+using TheXDS.Vivianne.Codecs;
 using TheXDS.Vivianne.Models.Fsh;
 using TheXDS.Vivianne.Serializers;
 using TheXDS.Vivianne.Serializers.Fsh;
-using TheXDS.Vivianne.Tools.Fsh;
 using St = TheXDS.Vivianne.Resources.Strings.FshCommand;
 
 namespace TheXDS.Vivianne.Commands.Fsh;
@@ -31,6 +31,6 @@ public partial class FshCommand
             return;
         }
         using var outputStream = outOpt?.OpenWrite() ?? Console.OpenStandardOutput();
-        await outputStream.WriteAsync(QfsCodec.Compress(rawContents));
+        await outputStream.WriteAsync(LzCodec.Compress(rawContents));
     }
 }

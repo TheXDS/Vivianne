@@ -1,9 +1,9 @@
 using System.CommandLine;
+using TheXDS.Vivianne.Codecs;
 using TheXDS.Vivianne.Extensions;
 using TheXDS.Vivianne.Models.Fsh;
 using TheXDS.Vivianne.Serializers;
 using TheXDS.Vivianne.Serializers.Fsh;
-using TheXDS.Vivianne.Tools.Fsh;
 using St = TheXDS.Vivianne.Resources.Strings.FshCommand;
 
 namespace TheXDS.Vivianne.Commands.Fsh;
@@ -28,7 +28,7 @@ public partial class FshCommand
             Console.WriteLine(string.Format(St.Info_Info3, fshFile.Length.GetSize(humanOpt)));
             if (fsh.IsCompressed)
             {
-                var uncompressedDataLength = QfsCodec.Decompress(await File.ReadAllBytesAsync(fshFile.FullName)).Length;
+                var uncompressedDataLength = LzCodec.Decompress(await File.ReadAllBytesAsync(fshFile.FullName)).Length;
                 Console.WriteLine(St.Info_Info4);
                 Console.WriteLine(string.Format(St.Info_Info5, uncompressedDataLength.GetSize(humanOpt)));
                 Console.WriteLine(string.Format(St.Info_Info6, (double)uncompressedDataLength / fshFile.Length));

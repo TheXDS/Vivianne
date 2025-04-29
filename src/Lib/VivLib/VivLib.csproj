@@ -5,7 +5,8 @@
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="SixLabors.ImageSharp" Version="3.1.7" />
+		<PackageReference Include="BCnEncoder.Net.ImageSharp" Version="1.1.2" />
+		<PackageReference Include="SixLabors.ImageSharp" Version="3.1.8" />
 		<PackageReference Include="TheXDS.MCART" Version="0.18.0-alpha.12" />
 	</ItemGroup>
 	<ItemGroup>
@@ -74,5 +75,8 @@
 			<AutoGen>True</AutoGen>
 			<DependentUpon>FceCleanupTool.resx</DependentUpon>
 		</Compile>
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Tools\Fsh\" />
 	</ItemGroup>
 </Project>

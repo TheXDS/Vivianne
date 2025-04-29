@@ -8,15 +8,16 @@ using SixLabors.ImageSharp.Formats.Tga;
 using SixLabors.ImageSharp.PixelFormats;
 using System.Globalization;
 using TheXDS.MCART.Types.Extensions;
+using TheXDS.Vivianne.Codecs;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Models.Carp;
 using TheXDS.Vivianne.Models.Fe;
 using TheXDS.Vivianne.Models.Fsh;
-using TheXDS.Vivianne.Tools;
 using TheXDS.Vivianne.Tools.Fe;
 using St = TheXDS.Vivianne.Resources.Strings.Mappings;
 
 namespace TheXDS.Vivianne.Resources;
+
 
 /// <summary>
 /// Contains a set of resources to map FSH blob pixel formats and FSH footer
@@ -34,6 +35,7 @@ public static class Mappings
         { FshBlobFormat.Palette32,      St.FshBlobToLabel_Palette32 },
         { FshBlobFormat.Indexed8,       St.FshBlobToLabel_Indexed8 },
         { FshBlobFormat.Rgb565,         St.FshBlobToLabel_Rgb565 },
+        { FshBlobFormat.LzRgb565,       "LZ compressed RGB565" },
         { FshBlobFormat.Argb32,         St.FshBlobToLabel_Argb32 },
         { FshBlobFormat.Argb1555,       St.FshBlobToLabel_Argb1555 },
         { FshBlobFormat.Palette24Dos,   St.FshBlobToLabel_Palette24Dos },
@@ -41,8 +43,40 @@ public static class Mappings
         { FshBlobFormat.Palette16Nfs5,  St.FshBlobToLabel_Palette16Nfs5 },
         { FshBlobFormat.Palette16,      St.FshBlobToLabel_Palette16 },
         { FshBlobFormat.Rgb24,          St.FshBlobToLabel_Rgb24 },
+        { FshBlobFormat.Argb4444,       "16-bit 4:4:4:4 color (RGBA4444)" },
+        { FshBlobFormat.LzArgb32,       "LZ compressed ARGB32" },
+        { FshBlobFormat.LzArgb1555,     "LZ compressed ARGB1555" },
         { FshBlobFormat.Dxt3,           St.FshBlobToLabel_Dxt3 },
-        { FshBlobFormat.Dxt4,           St.FshBlobToLabel_Dxt4 },
+        { FshBlobFormat.Dxt1,           "DXT1 compressed texture" },
+    }.AsReadOnly();
+
+    /// <summary>
+    /// Enumerates the known directory IDs for a FSH file.
+    /// </summary>
+    public static readonly string[] FshDirectoryIds =
+    [
+        "GIMX",
+        "G240",
+        "G264",
+        "G266",
+        "G290",
+        "G315",
+        "G344",
+        "G354",
+    ];
+
+    /// <summary>
+    /// Maps compressed <see cref="FshBlobFormat"/> format types to their
+    /// non-compressed versions.
+    /// </summary>
+    public static IReadOnlyDictionary<FshBlobFormat, ICodecInfo<IImageCodec>> CompressedToRaw { get; } = new Dictionary<FshBlobFormat, ICodecInfo<IImageCodec>>()
+    {
+        { FshBlobFormat.LzArgb32,       new CodecInfo<LzImageCodec>(FshBlobFormat.Argb32) },
+        { FshBlobFormat.LzArgb1555,     new CodecInfo<LzImageCodec>(FshBlobFormat.Argb1555) },
+        { FshBlobFormat.LzRgb565,       new CodecInfo<LzImageCodec>(FshBlobFormat.Rgb565) },
+        { (FshBlobFormat)0xed,          new CodecInfo<LzImageCodec>(FshBlobFormat.Indexed8) },
+        { FshBlobFormat.Dxt1,           new CodecInfo<Dxt1ImageCodec>(FshBlobFormat.Argb32) },
+        { FshBlobFormat.Dxt3,           new CodecInfo<Dxt3ImageCodec>(FshBlobFormat.Argb32) },
     }.AsReadOnly();
 
     /// <summary>
@@ -55,8 +89,8 @@ public static class Mappings
     /// </returns>
     public static string GetFshBlobLabel(FshBlobFormat format)
     {
-        return FshBlobToLabel.TryGetValue(format, out var label) 
-            ? label 
+        return FshBlobToLabel.TryGetValue(format, out var label)
+            ? label
             : string.Format(Strings.Common.UnknownAsHex, format);
     }
 
@@ -88,18 +122,36 @@ public static class Mappings
         { FshBlobFooterType.CarDashboard,   St.FshBlobFooterToLabel_CarDashboard },
         { FshBlobFooterType.ColorPalette,   St.FshBlobFooterToLabel_ColorPalette },
         { FshBlobFooterType.Padding,        St.FshBlobFooterToLabel_Padding},
+        { FshBlobFooterType.MetalBin,       "Metal bin attachment" },
+        { FshBlobFooterType.BlobName,       "Blob name" },
     }.AsReadOnly();
+
+
+
+    /// <summary>
+    /// Defines the delegate used to load pixel data from a byte array to
+    /// create a new <see cref="Image"/> instance.
+    /// </summary>
+    /// <param name="data">Pixel data to be parsed.</param>
+    /// <param name="width">Width of the resulting image.</param>
+    /// <param name="height">Height of the resulting image.</param>
+    /// <returns>
+    /// A new <see cref="Image"/> whose pixel data has been loaded from the
+    /// specified byte array.
+    /// </returns>
+    public delegate Image PixelLoadCallback(ReadOnlySpan<byte> data, int width, int height);
 
     /// <summary>
     /// Maps a <see cref="FshBlobFormat"/> value to a corresponding delegate
     /// that creates a new <see cref="Image"/>.
     /// </summary>
-    public static IReadOnlyDictionary<FshBlobFormat, Func<byte[], int, int, Image>> FshBlobPixelReader { get; } = new Dictionary<FshBlobFormat, Func<byte[], int, int, Image>>()
+    public static IReadOnlyDictionary<FshBlobFormat, PixelLoadCallback> FshBlobPixelReader { get; } = new Dictionary<FshBlobFormat, PixelLoadCallback>()
     {
-        { FshBlobFormat.Rgb565,     (b, w, h) => Image.LoadPixelData<Bgr565>(b, w, h) },
-        { FshBlobFormat.Argb32,     (b, w, h) => Image.LoadPixelData<Bgra32>(b, w, h) },
-        { FshBlobFormat.Argb1555,   (b, w, h) => Image.LoadPixelData<Bgra5551>(b, w, h) },
-        { FshBlobFormat.Rgb24,      (b, w, h) => Image.LoadPixelData<Bgr24>(b, w, h) },
+        { FshBlobFormat.Rgb565,     Image.LoadPixelData<Bgr565> },
+        { FshBlobFormat.Argb32,     Image.LoadPixelData<Bgra32> },
+        { FshBlobFormat.Argb1555,   Image.LoadPixelData<Bgra5551> },
+        { FshBlobFormat.Rgb24,      Image.LoadPixelData<Bgr24> },
+        { FshBlobFormat.Argb4444,   Image.LoadPixelData<Bgra4444> },
     }.AsReadOnly();
 
     /// <summary>
@@ -108,12 +160,10 @@ public static class Mappings
     /// </summary>
     public static IReadOnlyDictionary<FshBlobFormat, Func<FshBlob, Color[]>> FshBlobToPalette { get; } = new Dictionary<FshBlobFormat, Func<FshBlob, Color[]>>()
     {
-        // These constructors take in RGB[A] in that order.
+        // These 2 constructors take in RGB[A] in that order.
         { FshBlobFormat.Palette32,      ReadPalette<Bgra32>(4, b => new(b[2], b[1], b[0], b[3])) },
         { FshBlobFormat.Palette24,      ReadPalette<Bgr24>(3, b => new(b[2], b[1], b[0])) },
         { FshBlobFormat.Palette24Dos,   ReadPalette<Bgr24>(3) },
-
-
         { FshBlobFormat.Palette16,      ReadPalette<Bgr565>() },
         { FshBlobFormat.Palette16Nfs5,  ReadPalette<Bgra5551>() },
     };
@@ -161,6 +211,7 @@ public static class Mappings
         { FshBlobFormat.Palette16,     2 },
         { FshBlobFormat.Rgb24,         3 },
         { FshBlobFormat.Argb1555,      2 },
+        { FshBlobFormat.Argb4444,      4 },
     }.AsReadOnly();
 
     /// <summary>
@@ -175,37 +226,19 @@ public static class Mappings
     public static IReadOnlyDictionary<FshBlobFormat, Func<object, byte[]>> FshBlobToPixelWriter { get; } = new Dictionary<FshBlobFormat, Func<object, byte[]>>()
     {
         { FshBlobFormat.Argb32,         Convert32bitColor },
+        { FshBlobFormat.LzArgb32,       Convert32bitColor },
         { FshBlobFormat.Rgb24,          Convert24bitColor },
-        { FshBlobFormat.Rgb565,         c => { var x = (Bgr565)c; return BitConverter.GetBytes(x.PackedValue); }},
-        { FshBlobFormat.Argb1555,       c => { var x = (Bgra5551)c; return BitConverter.GetBytes(x.PackedValue); }},
+        { FshBlobFormat.Rgb565,         Convert16BitColor },
+        { FshBlobFormat.LzRgb565,       Convert16BitColor },
+        { FshBlobFormat.Argb1555,       Convert16BitColor },
+        { FshBlobFormat.LzArgb1555,     Convert16BitColor },
         { FshBlobFormat.Palette32,      Convert32bitColor },
         { FshBlobFormat.Palette24Dos,   Convert24bitColor },
         { FshBlobFormat.Palette24,      Convert24bitColor },
-        { FshBlobFormat.Palette16Nfs5,  c => { var x = (Bgr565)c; return BitConverter.GetBytes(x.PackedValue); }},
-        { FshBlobFormat.Palette16,      c => { var x = (Bgr565)c; return BitConverter.GetBytes(x.PackedValue); }},
+        { FshBlobFormat.Palette16Nfs5,  Convert16BitColor },
+        { FshBlobFormat.Palette16,      Convert16BitColor },
+        { FshBlobFormat.Argb4444,       Convert16BitColor },
     }.AsReadOnly();
-
-    private static byte[] Convert32bitColor(object c)
-    {
-        return c switch
-        {
-            Abgr32 x => [x.A, x.B, x.G, x.R],
-            Argb32 x => [x.A, x.R, x.G, x.B],
-            Bgra32 x => [x.B, x.G, x.R, x.A],
-            Rgba32 x => [x.R, x.G, x.B, x.A],
-            _ => throw new NotImplementedException(),
-        };
-    }
-
-    private static byte[] Convert24bitColor(object c)
-    {
-        return c switch
-        {
-            Bgr24 x => [x.B, x.G, x.R],
-            Rgb24 x => [x.R, x.G, x.B],
-            _ => throw new NotImplementedException(),
-        };
-    }
 
     /// <summary>
     /// Gets the bytes representing a single pixel on the specified coords on
@@ -221,10 +254,11 @@ public static class Mappings
     {
         return image switch
         {
-            Image<Rgba32> img when img[x, y] is { } p => [p.R, p.G, p.B, p.A],
-            Image<Rgb24> img when img[x, y] is { } p => [p.R, p.G, p.B],
-            Image<Bgr565> img when img[x, y] is { } p => BitConverter.GetBytes(p.PackedValue),
-            Image<Bgra5551> img when img[x, y] is { } p => BitConverter.GetBytes(p.PackedValue),
+            Image<Rgba32> img when img[x, y] is { R: { } r, G: { } g, B: { } b, A: { } a } => [r, g, b, a],
+            Image<Rgb24> img when img[x, y] is { R: { } r, G: { } g, B: { } b } => [r, g, b],
+            Image<Bgr565> img when img[x, y] is { } p => Convert16BitColor(p),
+            Image<Bgra5551> img when img[x, y] is { } p => Convert16BitColor(p),
+            Image<Bgra4444> img when img[x, y] is { } p => Convert16BitColor(p),
             _ => throw new NotImplementedException()
         };
     }
@@ -248,6 +282,7 @@ public static class Mappings
             Image<Rgb24> => FshBlobFormat.Rgb24,
             Image<Bgr565> => FshBlobFormat.Rgb565,
             Image<Bgra5551> => FshBlobFormat.Argb1555,
+            Image<Bgra4444> => FshBlobFormat.Argb4444,
             _ => throw new NotImplementedException()
         };
     }
@@ -298,7 +333,7 @@ public static class Mappings
     /// </returns>
     public static Func<FshBlob, Color[]> ReadPalette<T>(int size) where T : unmanaged, IPixel<T>
     {
-        return ReadPalette(size, p => (T)Activator.CreateInstance(typeof(T), p.Cast<object>().ToArray())!);
+        return ReadPalette(size, p => (T)Activator.CreateInstance(typeof(T), [.. p.Cast<object>()])!);
     }
 
     /// <summary>
@@ -445,5 +480,34 @@ public static class Mappings
             FeDataLang.Swe => new SweUnitTextProvider(c),
             _ => GetTextProviderFromCulture(c)
         };
+    }
+
+    private static byte[] Convert32bitColor(object c)
+    {
+        return c switch
+        {
+            Abgr32 x => [x.A, x.B, x.G, x.R],
+            Argb32 x => [x.A, x.R, x.G, x.B],
+            Bgra32 x => [x.B, x.G, x.R, x.A],
+            Rgba32 x => [x.R, x.G, x.B, x.A],
+            _ => throw new NotImplementedException(),
+        };
+    }
+
+    private static byte[] Convert24bitColor(object c)
+    {
+        return c switch
+        {
+            Bgr24 x => [x.B, x.G, x.R],
+            Rgb24 x => [x.R, x.G, x.B],
+            _ => throw new NotImplementedException(),
+        };
+    }
+
+    private static byte[] Convert16BitColor(object color) => Convert16BitColor((IPackedVector<ushort>)color);
+
+    private static byte[] Convert16BitColor(IPackedVector<ushort> color)
+    {
+        return BitConverter.GetBytes(color.PackedValue);
     }
 }
