@@ -315,7 +315,7 @@ public static class Mappings
         {
             for (int x = 0; x < blob.Width; x++)
             {
-                img[x, y] = colorCast(palette[blob.PixelData[(y * blob.Width) + x]]);
+                img[x, y] = colorCast(palette.ElementAtOrDefault(blob.PixelData.ElementAtOrDefault((y * blob.Width) + x)));
             }
         }
         return img;

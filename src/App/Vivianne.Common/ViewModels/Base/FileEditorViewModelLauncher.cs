@@ -174,12 +174,20 @@ public abstract class FileEditorViewModelLauncher<TState, TFile, TSerializer, TE
     private async Task<string?> TryGetFile(RecentFileInfo file, ICollection<RecentFileInfo> recentFiles)
     {
         recentFiles.Remove(file);
-        if (!File.Exists(file.FilePath))
+        IsBusy = true;
+        try
         {
-            await (DialogService?.Error(St.FileNotFound, St.FileNotFound2) ?? Task.CompletedTask);
-            return null;
+            if (! await Task.Run(() => File.Exists(file.FilePath)))
+            {
+                await (DialogService?.Error(St.FileNotFound, St.FileNotFound2) ?? Task.CompletedTask);
+                return null;
+            }
+            return file.FilePath;
         }
-        return file.FilePath;
+        finally
+        { 
+            IsBusy = false;
+        }
     }
 
     private async Task<string?> TryOpenFile(IEnumerable<FileFilterItem> filters)

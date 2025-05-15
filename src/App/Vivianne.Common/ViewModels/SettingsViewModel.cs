@@ -10,6 +10,7 @@ using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Properties;
 using TheXDS.Vivianne.ViewModels.Base;
+using St = TheXDS.Vivianne.Resources.Strings.ViewModels.SettingsViewModel;
 
 namespace TheXDS.Vivianne.ViewModels;
 
@@ -56,24 +57,51 @@ public class SettingsViewModel : EditorViewModelBase<SettingsState>
 
     private async Task OnBrowseNfs3Path()
     {
-        var result = await DialogService!.GetFileOpenPath(
-            CommonDialogTemplates.DirectorySelect with { Title = TheXDS.Vivianne.Resources.Strings.ViewModels.SettingsViewModel.RootNFS3GamePath },
-            [new FileFilterItem("nfs3.exe", "nfs3.exe")],
-            Path.Combine(State.Nfs3Path ?? Environment.CurrentDirectory, "nfs3.exe"));
-        if (result.Success)
+        try
         {
-            State.Nfs3Path = Path.GetDirectoryName(result.Result);
+            IsBusy = true;
+            var result = await DialogService!.GetFileOpenPath(
+                CommonDialogTemplates.DirectorySelect with { Title = St.RootNFS3GamePath },
+                [new FileFilterItem("nfs3.exe", "nfs3.exe")],
+                Path.Combine(State.Nfs3Path ?? Environment.CurrentDirectory, "nfs3.exe"));
+            if (result.Success)
+            {
+                State.Nfs3Path = Path.GetDirectoryName(result.Result);
+            }
+        }
+        catch
+        {
+            State.Nfs3Path = null;
+            await OnBrowseNfs3Path();
+        }
+        finally
+        {
+            IsBusy = false;
         }
     }
+
     private async Task OnBrowseNfs4Path()
     {
-        var result = await DialogService!.GetFileOpenPath(
-            CommonDialogTemplates.DirectorySelect with { Title = TheXDS.Vivianne.Resources.Strings.ViewModels.SettingsViewModel.RootToNFS4GamePath },
+        try
+        {
+            IsBusy = true;
+            var result = await DialogService!.GetFileOpenPath(
+            CommonDialogTemplates.DirectorySelect with { Title = St.RootToNFS4GamePath },
             [new FileFilterItem("nfs4.exe / nfshs.exe", ["nfs4.exe", "nfshs.exe"])],
             Path.Combine(State.Nfs4Path ?? Environment.CurrentDirectory, "nfs4.exe"));
-        if (result.Success)
+            if (result.Success)
+            {
+                State.Nfs4Path = Path.GetDirectoryName(result.Result);
+            }
+        }
+        catch
         {
-            State.Nfs4Path = Path.GetDirectoryName(result.Result);
+            State.Nfs4Path = null;
+            await OnBrowseNfs3Path();
+        }
+        finally
+        {
+            IsBusy = false;
         }
     }
 

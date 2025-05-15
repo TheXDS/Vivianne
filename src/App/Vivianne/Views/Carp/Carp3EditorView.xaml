@@ -40,7 +40,6 @@
         <ct:FileEditorCommandBar Editor="{Binding}" DockPanel.Dock="Top" ShowClose="False">
             <ScrollViewer HorizontalScrollBarVisibility="Auto">                
                 <StackPanel Orientation="Horizontal">
-                    <!--<Button Margin="5" Content="{x:Static st:CarpEditorView.RealisticCarpWizard}"/>-->
                     <Button Margin="5" Command="{Binding PerformanceMetricsCommand}" Content="{x:Static st:CarpEditorView.PerformanceMetrics}"/>
                 </StackPanel>
             </ScrollViewer>
@@ -53,6 +52,7 @@
                             <ui:NumberBox
                                 hlp:Form.Label="{x:Static st:FeDataEditorView.SerialNumber}"
                                 ClearButtonEnabled="False"
+                                MaxDecimalPlaces="0"
                                 Value="{Binding State.SerialNumber, UpdateSourceTrigger=PropertyChanged}"
                                 Maximum="65535"/>
                             <ComboBox
