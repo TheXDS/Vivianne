@@ -94,7 +94,7 @@ public class FceFileEditorLauncher : ViewModel, IFileEditorViewModelLauncher
         where TFile : IFceFile<TPart>, new()
         where TSerializer : ISerializer<TFile>, new()
         where TState : NotifyPropertyChanged, IFileState<TFile>, new()
-        where TEditor : FileEditorViewModelBase<TState, TFile>, new()
+        where TEditor : StatefulFileEditorViewModelBase<TState, TFile>, new()
     {
         var file = await new TSerializer().DeserializeAsync(fileContents);
         var recentFile = CreateRecentFileInfo(filePath);

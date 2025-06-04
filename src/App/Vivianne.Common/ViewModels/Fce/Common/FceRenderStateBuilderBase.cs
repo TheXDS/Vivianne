@@ -94,12 +94,14 @@ public abstract class FceRenderStateBuilderBase<TState, TPart>
     protected static SceneObject CreateShadow(Vector3 modelHalfSize)
     {
         var verts = CreateCube(-modelHalfSize, Vector3.Zero);
-        var tris = GetCubeTriangles(MaterialFlags.NoShading)[6..8];
         return new()
         {
             Normals = verts,
-            Triangles = tris,
-            Vertices = verts,
+            Triangles = [
+                new() { I1 = 0, I2 = 2, I3 = 3, Flags = (int)MaterialFlags.NoShading },
+                new() { I1 = 0, I2 = 3, I3 = 1, Flags = (int)MaterialFlags.NoShading },
+            ],
+            Vertices = [ verts[0], verts[1], verts[4], verts[5] ],
         };
     }
 

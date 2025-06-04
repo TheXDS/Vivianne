@@ -64,22 +64,32 @@
                 <ColumnDefinition Width="200"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Image
-                Source="/Resources/Images/nfs4.ico"
+            <Expander
+                Width="200"
+                ExpandDirection="Left"
+                Header="Scene information"
                 VerticalAlignment="Bottom"
                 HorizontalAlignment="Right"
-                Stretch="None"
-                Grid.Column="1"
-                Margin="10"
-                Visibility="{Binding State.File.Version, Mode=OneWay, ConverterParameter={x:Static nfo:NfsVersion.Nfs4}, Converter={StaticResource val2Vc}}"/>
-            <Image
-                Source="/Resources/Images/mco.ico"
-                VerticalAlignment="Bottom"
-                HorizontalAlignment="Right"
-                Stretch="None"
-                Grid.Column="1"
-                Margin="10"
-                Visibility="{Binding State.File.Version, Mode=OneWay, ConverterParameter={x:Static nfo:NfsVersion.Mco}, Converter={StaticResource val2Vc}}"/>
+                Grid.Column="1">
+                <DockPanel>
+                    <Image
+                        Source="/Resources/Images/mco.ico"
+                        Stretch="None"
+                        Grid.Column="1"
+                        Margin="0,0,10,0"
+                        Visibility="{Binding State.File.Version, Mode=OneWay, ConverterParameter={x:Static nfo:NfsVersion.Mco}, Converter={StaticResource val2Vc}}"/>
+                    <Image
+                        Source="/Resources/Images/nfs4.ico"
+                        Stretch="None"
+                        Grid.Column="1"
+                        Margin="0,0,10,0"
+                        Visibility="{Binding State.File.Version, Mode=OneWay, ConverterParameter={x:Static nfo:NfsVersion.Nfs4}, Converter={StaticResource val2Vc}}"/>
+                    <TextBlock Width="150" TextWrapping="Wrap">
+                        Triangles: <Run Text="{Binding State.RenderTree.TriangleCount, Mode=OneWay}"/><LineBreak/>
+                        Vertices: <Run Text="{Binding State.RenderTree.VertexCount, Mode=OneWay}"/>
+                    </TextBlock>
+                </DockPanel>
+            </Expander>
             <Viewport3D Grid.ColumnSpan="1" Grid.Column="1" Grid.Row="1">
                 <Viewport3D.Camera>
                     <PerspectiveCamera x:Name="ptcMain" UpDirection="1,0,0" LookDirection="-30,50,50" Position="30,-50,-50"/>

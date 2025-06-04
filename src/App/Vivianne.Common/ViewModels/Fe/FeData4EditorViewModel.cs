@@ -17,7 +17,7 @@ namespace TheXDS.Vivianne.ViewModels.Fe;
 /// <summary>
 /// Implements a ViewModel that allows the user to edit FeData files for NFS4.
 /// </summary>
-public class FeData4EditorViewModel : FileEditorViewModelBase<FeData4EditorState, FeData>
+public class FeData4EditorViewModel : StatefulFileEditorViewModelBase<FeData4EditorState, FeData>
 {
     /// <inheritdoc/>
     protected override async Task OnCreated()

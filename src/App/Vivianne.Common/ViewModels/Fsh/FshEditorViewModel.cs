@@ -11,7 +11,6 @@ using TheXDS.Ganymede.Resources;
 using TheXDS.Ganymede.Types.Extensions;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Extensions;
-using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Models.Fsh;
 using TheXDS.Vivianne.Resources;
 using TheXDS.Vivianne.ViewModels.Base;
@@ -25,7 +24,7 @@ namespace TheXDS.Vivianne.ViewModels.Fsh;
 /// <remarks>
 /// QFS files can be decompressed and shown as FSH files with this ViewModel.
 /// </remarks>
-public class FshEditorViewModel : FileEditorViewModelBase<FshEditorState, FshFile>
+public class FshEditorViewModel : StatefulFileEditorViewModelBase<FshEditorState, FshFile>
 {
     private BackgroundType _Background;
     private FshBlob? _CurrentImage;
@@ -339,7 +338,7 @@ public class FshEditorViewModel : FileEditorViewModelBase<FshEditorState, FshFil
             {
                 Title = St.FshPixelFormat,
                 Text = St.FshPixelFormatPrompt
-            }, Mappings.FshBlobToLabel.Values.ToArray()))
+            }, [.. Mappings.FshBlobToLabel.Values]))
         ];
         return await DialogService!.AskSequentially(inputs) is { } data && (int)data[2] != -1 ? ((string)data[0], (string)data[1], (int)data[2]) : null;
     }

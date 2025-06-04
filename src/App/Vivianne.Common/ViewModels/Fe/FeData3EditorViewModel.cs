@@ -16,7 +16,7 @@ namespace TheXDS.Vivianne.ViewModels.Fe;
 /// Implements a ViewModel that allows the user to see and edit FeData car
 /// information files for Need For Speed 3.
 /// </summary>
-public class FeData3EditorViewModel : FileEditorViewModelBase<FeData3EditorState, FeData>
+public class FeData3EditorViewModel : StatefulFileEditorViewModelBase<FeData3EditorState, FeData>
 {
     /// <inheritdoc/>
     protected override async Task OnCreated()

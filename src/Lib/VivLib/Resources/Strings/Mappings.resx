@@ -165,4 +165,34 @@
   <data name="FshBlobFooterToLabel_Padding" xml:space="preserve">
     <value>Padding zeros</value>
   </data>
+  <data name="FasBlobToLabel_LzRgb565" xml:space="preserve">
+    <value>LZ compressed RGB565</value>
+  </data>
+  <data name="FshBlobToLabel_Argb4444" xml:space="preserve">
+    <value>16-bit 4:4:4:4 color (RGBA4444)</value>
+  </data>
+  <data name="FshBlobToLabel_LzArgb32" xml:space="preserve">
+    <value>LZ compressed ARGB32</value>
+  </data>
+  <data name="FshBlobToLabel_LzArgb1555" xml:space="preserve">
+    <value>LZ compressed ARGB1555</value>
+  </data>
+  <data name="FshBlobToLabel_Dxt1" xml:space="preserve">
+    <value>DXT1 compressed texture</value>
+  </data>
+  <data name="FshBlobFooterToLabel_MetalBin" xml:space="preserve">
+    <value>Metal bin attachment</value>
+  </data>
+  <data name="FshBlobFooterToLabel_BlobName" xml:space="preserve">
+    <value>Blob name</value>
+  </data>
+  <data name="FceMagicToString_Fce4" xml:space="preserve">
+    <value>Need For Speed 4 FCE</value>
+  </data>
+  <data name="FceMagicToString_Fce4M" xml:space="preserve">
+    <value>Motor City Online FCE</value>
+  </data>
+  <data name="FceMagicToString_Unknown" xml:space="preserve">
+    <value>unknown</value>
+  </data>
 </root>

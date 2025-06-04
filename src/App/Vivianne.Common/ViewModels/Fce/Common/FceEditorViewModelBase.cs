@@ -47,7 +47,7 @@ namespace TheXDS.Vivianne.ViewModels.Fce.Common;
 /// Type of render state builder to use when rendering the FCE model.
 /// </typeparam>
 public abstract class FceEditorViewModelBase<TState, TFile, TFceColor, THsbColor, TFcePart, TRender>
-    : FileEditorViewModelBase<TState, TFile>
+    : StatefulFileEditorViewModelBase<TState, TFile>
     where TState : FceEditorStateBase<TFile, TFceColor,THsbColor, TFcePart>, IFceEditorState<TFcePart>, new()
     where TFile : FceFileBase<THsbColor, TFcePart>, new()
     where TFceColor : IFceColor<THsbColor>

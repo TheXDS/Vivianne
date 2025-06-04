@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:ct="clr-namespace:TheXDS.Vivianne.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
     xmlns:properties="clr-namespace:TheXDS.Vivianne.Resources.Strings.Views"
@@ -18,27 +19,34 @@
         <vc:BackgroundToBrushConverter x:Key="bg2b"/>
     </UserControl.Resources>
     <DockPanel>
-        <StackPanel
+        <ct:FileEditorCommandBar Margin="0,0,10,0"
             DockPanel.Dock="Top"
-            Margin="0,0,10,10"
-            Orientation="Horizontal"
-            HorizontalAlignment="Right">
-            <TextBlock VerticalAlignment="Center" Margin="10,0"><Run Text="{x:Static properties:FshEditorView.Zoom}"/> <Run Text="{Binding ZoomLevel, Mode=OneWay}"/></TextBlock>
-            <Slider x:Name="sldZoom" Minimum="1.0" Maximum="10.0" Value="{Binding ZoomLevel}" Margin="5" Width="100" SmallChange="0.5" LargeChange="1" TickFrequency="0.125" IsSnapToTickEnabled="True"/>
-            <CheckBox Style="{StaticResource ToggleSwitch}" Padding="10,0" IsChecked="{Binding Alpha}">
-                <TextBlock Margin="10,0" Text="{x:Static properties:FshEditorView.Alpha}" Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"/>
-            </CheckBox>
-            <TextBlock VerticalAlignment="Center" Margin="10,0" Text="{x:Static properties:FshEditorView.Background}"/>
-            <ComboBox
-                IsEnabled="{Binding Alpha, Mode=OneWay}"
-                Width="180"
-                IsEditable="False"
-                SelectedItem="{Binding Background, FallbackValue={x:Static vm:BackgroundType.Checkerboard}}"
-                ItemsSource="{controls:EnumValProvider EnumType={x:Type vm:BackgroundType}}"/>
-        </StackPanel>
+            VerticalContentAlignment="Center"
+            ShowClose="False"
+            Editor="{Binding}">
+            <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
+                <StackPanel
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right">
+                    <TextBlock VerticalAlignment="Center" Margin="10,0"><Run Text="{x:Static properties:FshEditorView.Zoom}"/> <Run Text="{Binding ZoomLevel, Mode=OneWay}"/></TextBlock>
+                    <Slider x:Name="sldZoom" Minimum="1.0" Maximum="10.0" Value="{Binding ZoomLevel}" Margin="5" Width="100" SmallChange="0.5" LargeChange="1" TickFrequency="0.125" IsSnapToTickEnabled="True"/>
+                    <CheckBox Style="{StaticResource ToggleSwitch}" Padding="10,0" IsChecked="{Binding Alpha}">
+                        <TextBlock Margin="10,0" Text="{x:Static properties:FshEditorView.Alpha}" Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"/>
+                    </CheckBox>
+                    <TextBlock VerticalAlignment="Center" Margin="10,0" Text="{x:Static properties:FshEditorView.Background}"/>
+                    <ComboBox
+                        IsEnabled="{Binding Alpha, Mode=OneWay}"
+                        Width="180"
+                        IsEditable="False"
+                        SelectedItem="{Binding Background, FallbackValue={x:Static vm:BackgroundType.Checkerboard}}"
+                        ItemsSource="{controls:EnumValProvider EnumType={x:Type vm:BackgroundType}}"/>
+                </StackPanel>
+            </ScrollViewer>
+        </ct:FileEditorCommandBar>
         <Grid Background="{ui:ThemeResource ControlSolidFillColorDefaultBrush}">
             <ScrollViewer
                 x:Name="scvContent"
+                Grid.Column="1"
                 VerticalScrollBarVisibility="Auto"
                 HorizontalScrollBarVisibility="Auto">
                 <Border
@@ -49,7 +57,7 @@
                     <Image Stretch="None">
                         <Image.Source>
                             <MultiBinding Converter="{StaticResource r2img}">
-                                <Binding Path="RawFile" Mode="OneWay"/>
+                                <Binding Path="State.Data" Mode="OneWay"/>
                                 <Binding Path="Alpha" Mode="OneWay"/>
                             </MultiBinding>
                         </Image.Source>
@@ -59,6 +67,27 @@
                     </Image>
                 </Border>
             </ScrollViewer>
+            <StackPanel Margin="10" HorizontalAlignment="Left">
+                <Expander
+                    Background="{StaticResource DarkBackground}"
+                    Width="180"
+                    ExpandDirection="Right"
+                    IsExpanded="False"
+                    Header="Edit">
+                    <StackPanel Margin="-11"  Background="{StaticResource DarkBackground}">
+                        <Button
+                            HorizontalAlignment="Stretch"
+                            Margin="5"
+                            Command="{Binding ReplaceTextureCommand, Mode=OneWay}"
+                            Content="Replace texture"/>
+                        <Button
+                            HorizontalAlignment="Stretch"
+                            Margin="5"
+                            Command="{Binding ExportTextureCommand, Mode=OneWay}"
+                            Content="Export texture"/>
+                    </StackPanel>
+                </Expander>
+            </StackPanel>
         </Grid>
     </DockPanel>
 </UserControl>

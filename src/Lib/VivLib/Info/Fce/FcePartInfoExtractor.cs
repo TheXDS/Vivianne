@@ -5,7 +5,7 @@ namespace TheXDS.Vivianne.Info.Fce;
 /// <summary>
 /// Implements an information extractor for <see cref="FcePart"/> entities.
 /// </summary>
-public class Fce3PartInfoExtractor : IEntityInfoExtractor<FcePart>
+public class FcePartInfoExtractor : IEntityInfoExtractor<FcePart>
 {
     /// <inheritdoc/>
     public string[] GetInfo(FcePart entity)

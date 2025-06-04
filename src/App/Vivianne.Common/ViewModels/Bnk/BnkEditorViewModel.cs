@@ -27,7 +27,7 @@ namespace TheXDS.Vivianne.ViewModels.Bnk;
 /// <summary>
 /// ViewModel for the BNK file editor.
 /// </summary>
-public class BnkEditorViewModel : FileEditorViewModelBase<BnkEditorState, BnkFile>, IViewModel
+public class BnkEditorViewModel : StatefulFileEditorViewModelBase<BnkEditorState, BnkFile>, IViewModel
 {
     private readonly SoundPlayer _snd = new();
     private bool _isPlaying;

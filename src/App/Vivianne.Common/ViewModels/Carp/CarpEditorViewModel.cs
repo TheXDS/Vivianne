@@ -16,7 +16,7 @@ namespace TheXDS.Vivianne.ViewModels.Carp;
 /// <summary>
 /// Implements a ViewModel that alows the user to edit Carp data.
 /// </summary>
-public class CarpEditorViewModel<TState, TFile, TCarClass> : FileEditorViewModelBase<TState, TFile>
+public class CarpEditorViewModel<TState, TFile, TCarClass> : StatefulFileEditorViewModelBase<TState, TFile>
     where TState : CarpEditorState<TFile, TCarClass>, new()
     where TCarClass : unmanaged, Enum
     where TFile : CarPerf<TCarClass>, new()

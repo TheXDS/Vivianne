@@ -17,8 +17,8 @@ namespace TheXDS.Vivianne.ViewModels.Base;
 /// <typeparam name="TFile">
 /// Type of file for which this ViewModel is an editor for.
 /// </typeparam>
-public abstract class FileEditorViewModelBase<TState, TFile> : ViewModel, IViewModel, IFileEditorViewModel<TState, TFile>
-    where TFile : notnull, new()
+public abstract class StatefulFileEditorViewModelBase<TState, TFile> : ViewModel, IViewModel, IFileEditorViewModel<TState, TFile>
+    where TFile : notnull
     where TState : NotifyPropertyChanged, IFileState<TFile>, new()
 {
     private TState state = default!;
@@ -63,10 +63,10 @@ public abstract class FileEditorViewModelBase<TState, TFile> : ViewModel, IViewM
     public IBackingStore<TFile>? BackingStore { get; init; }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="FileEditorViewModelBase{TState, TFile}"/>
+    /// Initializes a new instance of the <see cref="StatefulFileEditorViewModelBase{TState, TFile}"/>
     /// class.
     /// </summary>
-    protected FileEditorViewModelBase()
+    protected StatefulFileEditorViewModelBase()
     {
         var cb = CommandBuilder.For(this);
         DiscardAndCloseCommand = cb.BuildSimple(OnClose);

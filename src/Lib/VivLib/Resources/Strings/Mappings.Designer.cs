@@ -61,6 +61,51 @@ namespace TheXDS.Vivianne.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to LZ compressed RGB565.
+        /// </summary>
+        public static string FasBlobToLabel_LzRgb565 {
+            get {
+                return ResourceManager.GetString("FasBlobToLabel_LzRgb565", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Need For Speed 4 FCE.
+        /// </summary>
+        public static string FceMagicToString_Fce4 {
+            get {
+                return ResourceManager.GetString("FceMagicToString_Fce4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Motor City Online FCE.
+        /// </summary>
+        public static string FceMagicToString_Fce4M {
+            get {
+                return ResourceManager.GetString("FceMagicToString_Fce4M", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to unknown.
+        /// </summary>
+        public static string FceMagicToString_Unknown {
+            get {
+                return ResourceManager.GetString("FceMagicToString_Unknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Blob name.
+        /// </summary>
+        public static string FshBlobFooterToLabel_BlobName {
+            get {
+                return ResourceManager.GetString("FshBlobFooterToLabel_BlobName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Car dashboard data.
         /// </summary>
         public static string FshBlobFooterToLabel_CarDashboard {
@@ -75,6 +120,15 @@ namespace TheXDS.Vivianne.Resources.Strings {
         public static string FshBlobFooterToLabel_ColorPalette {
             get {
                 return ResourceManager.GetString("FshBlobFooterToLabel_ColorPalette", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Metal bin attachment.
+        /// </summary>
+        public static string FshBlobFooterToLabel_MetalBin {
+            get {
+                return ResourceManager.GetString("FshBlobFooterToLabel_MetalBin", resourceCulture);
             }
         }
         
@@ -115,6 +169,24 @@ namespace TheXDS.Vivianne.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 16-bit 4:4:4:4 color (RGBA4444).
+        /// </summary>
+        public static string FshBlobToLabel_Argb4444 {
+            get {
+                return ResourceManager.GetString("FshBlobToLabel_Argb4444", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DXT1 compressed texture.
+        /// </summary>
+        public static string FshBlobToLabel_Dxt1 {
+            get {
+                return ResourceManager.GetString("FshBlobToLabel_Dxt1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to DXT3 compressed texture.
         /// </summary>
         public static string FshBlobToLabel_Dxt3 {
@@ -138,6 +210,24 @@ namespace TheXDS.Vivianne.Resources.Strings {
         public static string FshBlobToLabel_Indexed8 {
             get {
                 return ResourceManager.GetString("FshBlobToLabel_Indexed8", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LZ compressed ARGB1555.
+        /// </summary>
+        public static string FshBlobToLabel_LzArgb1555 {
+            get {
+                return ResourceManager.GetString("FshBlobToLabel_LzArgb1555", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LZ compressed ARGB32.
+        /// </summary>
+        public static string FshBlobToLabel_LzArgb32 {
+            get {
+                return ResourceManager.GetString("FshBlobToLabel_LzArgb32", resourceCulture);
             }
         }
         

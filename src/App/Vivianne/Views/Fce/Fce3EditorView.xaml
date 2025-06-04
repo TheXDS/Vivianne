@@ -58,20 +58,32 @@
                 <ColumnDefinition Width="200"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Image
-                Source="/Resources/Images/nfs3.ico"
-                VerticalAlignment="Bottom"
-                HorizontalAlignment="Right"
-                Stretch="None"
-                Grid.Column="1"
-                Margin="10"/>
-            <Viewport3D Grid.ColumnSpan="1" Grid.Column="1" Grid.Row="1">
+            <Viewport3D Grid.ColumnSpan="1" Grid.Column="1">
                 <Viewport3D.Camera>
                     <PerspectiveCamera x:Name="ptcMain" UpDirection="1,0,0" LookDirection="-30,50,50" Position="30,-50,-50"/>
                 </Viewport3D.Camera>
                 <ModelVisual3D Content="{Binding State.RenderTree, Mode=OneWay, Converter={StaticResource fcevm2mesh}}"/>
             </Viewport3D>
-            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <Expander
+                Width="200"
+                ExpandDirection="Left"
+                Header="Scene information"
+                VerticalAlignment="Bottom"
+                HorizontalAlignment="Right"
+                Grid.Column="1">
+                <DockPanel>
+                    <Image
+                        Source="/Resources/Images/nfs3.ico"
+                        Stretch="None"
+                        Grid.Column="1"
+                        Margin="0,0,10,0"/>
+                    <TextBlock Width="150" TextWrapping="Wrap">
+                        Triangles: <Run Text="{Binding State.RenderTree.TriangleCount, Mode=OneWay}"/><LineBreak/>
+                        Vertices: <Run Text="{Binding State.RenderTree.VertexCount, Mode=OneWay}"/>
+                    </TextBlock>
+                </DockPanel>
+            </Expander>
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <StackPanel>
                     <Expander Margin="10" IsExpanded="True" Header="View options">
                         <StackPanel>

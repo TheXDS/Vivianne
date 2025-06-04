@@ -1,6 +1,4 @@
-﻿using TheXDS.Vivianne.Models.Fce.Nfs4;
-
-namespace TheXDS.Vivianne.Info;
+﻿namespace TheXDS.Vivianne.Info;
 
 /// <summary>
 /// Contains functions that help identify the game version for which a file is
@@ -29,7 +27,6 @@ public static class VersionIdentifier
     /// </returns>
     public static NfsVersion FceVersion(byte[] file) => FceVersion(BitConverter.ToInt32(file.AsSpan()[0..4]));
 
-
     /// <summary>
     /// Infers the game file version for the specified FCE contents.
     /// </summary>
@@ -45,7 +42,6 @@ public static class VersionIdentifier
         stream.Seek(0, SeekOrigin.Begin);
         return FceVersion(data);
     }
-
 
     /// <summary>
     /// Infers the game file version for the specified FCE contents.

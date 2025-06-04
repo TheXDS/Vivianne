@@ -18,7 +18,7 @@ namespace TheXDS.Vivianne.Component;
 /// entities.
 /// </param>
 public class BackingStore<TFile, TSerializer>(IBackingStore backingStore) : IBackingStore<TFile>
-    where TFile : notnull, new()
+    where TFile : notnull
     where TSerializer : notnull, ISerializer<TFile>, new()
 {
     private static readonly TSerializer Serializer = new();

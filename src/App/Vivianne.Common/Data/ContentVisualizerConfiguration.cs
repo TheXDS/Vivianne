@@ -5,6 +5,7 @@ using TheXDS.Ganymede.Resources;
 using TheXDS.Ganymede.Types.Base;
 using TheXDS.Vivianne.Component;
 using TheXDS.Vivianne.Info;
+using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Models.Bnk;
 using TheXDS.Vivianne.Models.Fe;
 using TheXDS.Vivianne.Models.Fsh;
@@ -68,7 +69,7 @@ internal static class ContentVisualizerConfiguration
         yield return new(".bnk", CreateBnkEditorViewModel);
     }
 
-    public static IViewModel? CreateExternalEditorViewModel(byte[] data, VivEditorViewModel vm, string name)
+    public static ExternalFileViewModel CreateExternalEditorViewModel(byte[] data, VivEditorViewModel vm, string name)
     {
         return new ExternalFileViewModel(data, new VivBackingStore(vm), name);
     }
@@ -78,7 +79,7 @@ internal static class ContentVisualizerConfiguration
         return VersionIdentifier.FeDataVersion(data) switch
         {
             NfsVersion.Nfs3 => CreateEditorViewModel<FeData3EditorViewModel, FeData3EditorState, Models.Fe.Nfs3.FeData, Serializers.Fe.Nfs3.FeDataSerializer>(data, vm, name),
-            NfsVersion.Nfs4 =>CreateEditorViewModel<FeData4EditorViewModel, FeData4EditorState, Models.Fe.Nfs4.FeData, Serializers.Fe.Nfs4.FeDataSerializer>(data, vm, name),
+            NfsVersion.Nfs4 => CreateEditorViewModel<FeData4EditorViewModel, FeData4EditorState, Models.Fe.Nfs4.FeData, Serializers.Fe.Nfs4.FeDataSerializer>(data, vm, name),
             _ => null
         };
     }
@@ -93,9 +94,9 @@ internal static class ContentVisualizerConfiguration
         };
     }
 
-    private static TexturePreviewViewModel CreateTexturePreviewViewModel(byte[] data, VivEditorViewModel vm, string name)
+    private static TexturePreviewViewModel? CreateTexturePreviewViewModel(byte[] data, VivEditorViewModel vm, string name)
     {
-        return new(data) { Title = name };
+        return CreateEditorViewModel<TexturePreviewViewModel, RawFileEditorState, RawFile, RawFileSerializer>(data, vm, name);
     }
 
     private static IViewModel? CreateFceEditorViewModel(byte[] data, VivEditorViewModel vm, string name)
@@ -119,7 +120,7 @@ internal static class ContentVisualizerConfiguration
     }
 
     private static TViewModel? CreateEditorViewModel<TViewModel, TState, TFile, TSerializer>(byte[] data, VivEditorViewModel vm, string name)
-        where TFile : notnull, new()
+        where TFile : notnull
         where TViewModel : notnull, IFileEditorViewModel<TState, TFile>, new()
         where TState : notnull, IFileState<TFile>, new()
         where TSerializer : notnull, ISerializer<TFile>, new()

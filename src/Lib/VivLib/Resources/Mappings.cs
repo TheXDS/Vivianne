@@ -35,7 +35,7 @@ public static class Mappings
         { FshBlobFormat.Palette32,      St.FshBlobToLabel_Palette32 },
         { FshBlobFormat.Indexed8,       St.FshBlobToLabel_Indexed8 },
         { FshBlobFormat.Rgb565,         St.FshBlobToLabel_Rgb565 },
-        { FshBlobFormat.LzRgb565,       "LZ compressed RGB565" },
+        { FshBlobFormat.LzRgb565,       St.FasBlobToLabel_LzRgb565 },
         { FshBlobFormat.Argb32,         St.FshBlobToLabel_Argb32 },
         { FshBlobFormat.Argb1555,       St.FshBlobToLabel_Argb1555 },
         { FshBlobFormat.Palette24Dos,   St.FshBlobToLabel_Palette24Dos },
@@ -43,11 +43,11 @@ public static class Mappings
         { FshBlobFormat.Palette16Nfs5,  St.FshBlobToLabel_Palette16Nfs5 },
         { FshBlobFormat.Palette16,      St.FshBlobToLabel_Palette16 },
         { FshBlobFormat.Rgb24,          St.FshBlobToLabel_Rgb24 },
-        { FshBlobFormat.Argb4444,       "16-bit 4:4:4:4 color (RGBA4444)" },
-        { FshBlobFormat.LzArgb32,       "LZ compressed ARGB32" },
-        { FshBlobFormat.LzArgb1555,     "LZ compressed ARGB1555" },
+        { FshBlobFormat.Argb4444,       St.FshBlobToLabel_Argb4444 },
+        { FshBlobFormat.LzArgb32,       St.FshBlobToLabel_LzArgb32 },
+        { FshBlobFormat.LzArgb1555,     St.FshBlobToLabel_LzArgb1555 },
         { FshBlobFormat.Dxt3,           St.FshBlobToLabel_Dxt3 },
-        { FshBlobFormat.Dxt1,           "DXT1 compressed texture" },
+        { FshBlobFormat.Dxt1,           St.FshBlobToLabel_Dxt1 },
     }.AsReadOnly();
 
     /// <summary>
@@ -106,9 +106,9 @@ public static class Mappings
     {
         return file.Magic switch
         {
-            0x00101014 => "Need For Speed 4 FCE",
-            0x00101015 => "Motor City Online FCE",
-            _ => "unknown"
+            0x00101014 => St.FceMagicToString_Fce4,
+            0x00101015 => St.FceMagicToString_Fce4M,
+            _ => St.FceMagicToString_Unknown
         };
     }
 
@@ -122,8 +122,8 @@ public static class Mappings
         { FshBlobFooterType.CarDashboard,   St.FshBlobFooterToLabel_CarDashboard },
         { FshBlobFooterType.ColorPalette,   St.FshBlobFooterToLabel_ColorPalette },
         { FshBlobFooterType.Padding,        St.FshBlobFooterToLabel_Padding},
-        { FshBlobFooterType.MetalBin,       "Metal bin attachment" },
-        { FshBlobFooterType.BlobName,       "Blob name" },
+        { FshBlobFooterType.MetalBin,       St.FshBlobFooterToLabel_MetalBin },
+        { FshBlobFooterType.BlobName,       St.FshBlobFooterToLabel_BlobName },
     }.AsReadOnly();
 
 

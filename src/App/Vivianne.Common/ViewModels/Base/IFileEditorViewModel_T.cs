@@ -11,11 +11,9 @@ namespace TheXDS.Vivianne.ViewModels.Base;
 /// <typeparam name="TFile">
 /// Type of file for which the ViewModel is an editor.
 /// </typeparam>
-public interface IFileEditorViewModel<TState, TFile> : IFileEditorViewModel, IStatefulViewModel<TState> where TState : IFileState<TFile> where TFile : notnull
-{
-    /// <summary>
-    /// Gets or initializes a reference to the backing store used to read and
-    /// write files.
-    /// </summary>
-    IBackingStore<TFile>? BackingStore { get; init; }
-}
+public interface IFileEditorViewModel<TState, TFile> : 
+    IFileEditorViewModel,
+    IBackingStoreViewModel<TFile>,
+    IStatefulViewModel<TState>
+    where TState : IFileState<TFile>
+    where TFile : notnull;
