@@ -6,8 +6,8 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="BCnEncoder.Net.ImageSharp" Version="1.1.2" />
-		<PackageReference Include="SixLabors.ImageSharp" Version="3.1.8" />
-		<PackageReference Include="TheXDS.MCART" Version="0.18.0-alpha.12" />
+		<PackageReference Include="SixLabors.ImageSharp" Version="3.1.9" />
+		<PackageReference Include="TheXDS.MCART" Version="0.18.0" />
 	</ItemGroup>
 	<ItemGroup>
 		<EmbeddedResource Update="Resources\Strings\Common.resx">
@@ -77,6 +77,7 @@
 		</Compile>
 	</ItemGroup>
 	<ItemGroup>
+	  <Folder Include="Models\Mus\" />
 	  <Folder Include="Tools\Fsh\" />
 	</ItemGroup>
 </Project>

@@ -12,7 +12,7 @@ namespace TheXDS.Vivianne.Serializers.Fe;
 /// Base class for FeData serializers.
 /// </summary>
 /// <typeparam name="T">Type of FeData to write.</typeparam>
-public class FeDataSerializerBase<T> where T: IFeData
+public class FeDataSerializerBase<T> where T : IFeData
 {
     /// <summary>
     /// Reads all of the string table entries into the specified data object.

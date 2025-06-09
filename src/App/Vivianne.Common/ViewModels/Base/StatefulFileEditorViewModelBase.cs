@@ -76,15 +76,38 @@ public abstract class StatefulFileEditorViewModelBase<TState, TFile> : ViewModel
     }
 
     /// <summary>
+    /// Allows for a ViewModel to explicitly implement the
+    /// <see cref="IViewModel.OnNavigateBack(CancelFlag)"/> method and still be
+    /// able to invoke the implementation in this base class.
+    /// </summary>
+    /// <param name="cancel">
+    /// Flag used to request cancellation of the navigation action.
+    /// </param>
+    /// <returns>
+    /// A task that can be used to await the async operation.
+    /// </returns>
+    protected async Task InvokeNavigateBack(CancelFlag cancel)
+    {
+        if (State.UnsavedChanges)
+        {
+            switch (await DialogService!.AskYnc(St.Unsaved, string.Format(St.SaveConfirm, Title)))
+            {
+                case true: SaveCommand.Execute(State); break;
+                case null: cancel.Cancel(); break;
+            }
+        }
+    }
+
+    /// <summary>
     /// Saves the file from the ViewModel state into the current backing store.
     /// </summary>
     /// <returns>
     /// A <see cref="Task"/> that can be used to await the async operation.
     /// </returns>
-    protected virtual Task OnSave()
+    protected virtual Task<bool> OnSave()
     {
-        if (!BeforeSave()) return Task.CompletedTask;
-        return BackingStore?.WriteAsync(State.File) ?? Task.CompletedTask;
+        if (!BeforeSave()) return Task.FromResult(false);
+        return BackingStore?.WriteAsync(State.File) ?? Task.FromResult(false);
     }
 
     /// <summary>
@@ -94,10 +117,10 @@ public abstract class StatefulFileEditorViewModelBase<TState, TFile> : ViewModel
     /// <returns>
     /// A <see cref="Task"/> that can be used to await the async operation.
     /// </returns>
-    protected virtual Task OnSaveAs()
+    protected virtual Task<bool> OnSaveAs()
     {
-        if (!BeforeSave()) return Task.CompletedTask;
-        return BackingStore?.WriteNewAsync(State.File) ?? Task.CompletedTask;
+        if (!BeforeSave()) return Task.FromResult(false);
+        return BackingStore?.WriteNewAsync(State.File) ?? Task.FromResult(false);
     }
 
     /// <summary>
@@ -109,7 +132,7 @@ public abstract class StatefulFileEditorViewModelBase<TState, TFile> : ViewModel
     /// </returns>
     protected virtual async Task OnSaveAndClose()
     {
-        if (BeforeSave() && await (BackingStore?.WriteAsync(State.File) ?? Task.FromResult(false)))
+        if (await OnSave())
         {
             await OnClose();
         }
@@ -129,15 +152,5 @@ public abstract class StatefulFileEditorViewModelBase<TState, TFile> : ViewModel
         return NavigationService?.NavigateBack() ?? Task.CompletedTask;
     }
 
-    async Task IViewModel.OnNavigateBack(CancelFlag navigation)
-    {
-        if (State.UnsavedChanges)
-        {
-            switch (await DialogService!.AskYnc(St.Unsaved, string.Format(St.SaveConfirm, Title)))
-            {
-                case true: SaveCommand.Execute(State); break;
-                case null: navigation.Cancel(); break;
-            }
-        }
-    }
+    Task IViewModel.OnNavigateBack(CancelFlag navigation) => InvokeNavigateBack(navigation);
 }

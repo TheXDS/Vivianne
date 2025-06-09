@@ -1,4 +1,4 @@
-﻿using TheXDS.Vivianne.Models.Viv;
+﻿using System;
 
 namespace TheXDS.Vivianne.Component;
 
@@ -9,6 +9,23 @@ public static class PlatformServices
 {
     static IKeyboardProxy? _keyboardProxy;
     static IStaticFceRender? _staticFceRender;
+
+    /// <summary>
+    /// Gets a value that indicates the current state of keyboard modifier keys.
+    /// </summary>
+    public static ModifierKey ModifierKey
+    {
+        get
+        {
+            ModifierKey result = ModifierKey.None;
+
+            result |= IsShiftKeyDown ? ModifierKey.Shift : ModifierKey.None;
+            result |= IsAltKeyDown ? ModifierKey.Alt : ModifierKey.None;
+            result |= IsCtrlKeyDown ? ModifierKey.Ctrl : ModifierKey.None;
+
+            return result;
+        }
+    }
 
     /// <summary>
     /// Gets a value that indicates if the <c>Shift</c> key is being held down.

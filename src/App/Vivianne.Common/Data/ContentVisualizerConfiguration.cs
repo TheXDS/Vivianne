@@ -56,13 +56,13 @@ internal static class ContentVisualizerConfiguration
         yield return new(".fsh", CreateFshEditorViewModel);
         yield return new(".qfs", CreateFshEditorViewModel);
 
-        yield return new("fedata.bri", CreateFeDataEditorViewModel);
-        yield return new("fedata.eng", CreateFeDataEditorViewModel);
-        yield return new("fedata.fre", CreateFeDataEditorViewModel);
-        yield return new("fedata.ger", CreateFeDataEditorViewModel);
-        yield return new("fedata.ita", CreateFeDataEditorViewModel);
-        yield return new("fedata.spa", CreateFeDataEditorViewModel);
-        yield return new("fedata.swe", CreateFeDataEditorViewModel);
+        yield return new(".bri", CreateFeDataEditorViewModel);
+        yield return new(".eng", CreateFeDataEditorViewModel);
+        yield return new(".fre", CreateFeDataEditorViewModel);
+        yield return new(".ger", CreateFeDataEditorViewModel);
+        yield return new(".ita", CreateFeDataEditorViewModel);
+        yield return new(".spa", CreateFeDataEditorViewModel);
+        yield return new(".swe", CreateFeDataEditorViewModel);
 
         yield return new(".txt", CreateCarpEditorViewModel);
         yield return new(".fce", CreateFceEditorViewModel);

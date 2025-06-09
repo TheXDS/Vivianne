@@ -1,8 +1,20 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
 using TheXDS.Ganymede.Models;
+using TheXDS.Ganymede.Resources;
+using TheXDS.Vivianne.Data;
 using St = TheXDS.Vivianne.Resources.Strings.FileFilters;
 
 namespace TheXDS.Vivianne.Resources;
+
+public static class Dialogs
+{
+    public static DialogTemplate OpenAs { get; } = CommonDialogTemplates.FileOpen with
+    {
+        Title = "Open as",
+        Text = "Select how you want Vivianne to open this file as",
+    };
+}
 
 /// <summary>
 /// Contains a set of common values and constants to be used by Vivianne.

@@ -11,7 +11,6 @@ using TheXDS.Ganymede.Resources;
 using TheXDS.Ganymede.Types.Base;
 using TheXDS.Ganymede.Types.Extensions;
 using TheXDS.MCART.Component;
-using TheXDS.MCART.Helpers;
 using TheXDS.MCART.Types.Base;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models.Bnk;
@@ -20,8 +19,9 @@ using TheXDS.Vivianne.Resources;
 using TheXDS.Vivianne.Tools.Bnk;
 using TheXDS.Vivianne.ViewModels.Base;
 using St = TheXDS.Vivianne.Resources.Strings.ViewModels.BnkEditorViewModel;
-using Sts = TheXDS.Vivianne.Resources.Strings.ViewModels.StartupViewModel;
 using Stc = TheXDS.Vivianne.Resources.Strings.Common;
+using Sts = TheXDS.Vivianne.Resources.Strings.ViewModels.StartupViewModel;
+
 namespace TheXDS.Vivianne.ViewModels.Bnk;
 
 /// <summary>
@@ -343,6 +343,6 @@ public class BnkEditorViewModel : StatefulFileEditorViewModelBase<BnkEditorState
     Task IViewModel.OnNavigateAway(CancelFlag navigation)
     {
         OnStopPlayback();
-        return Task.CompletedTask;
+        return InvokeNavigateBack(navigation);
     }
 }

@@ -2,22 +2,21 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TheXDS.Ganymede.Helpers;
 using TheXDS.Ganymede.Models;
 using TheXDS.Ganymede.Resources;
+using TheXDS.Ganymede.Services;
 using TheXDS.Ganymede.Types.Base;
 using TheXDS.Ganymede.Types.Extensions;
 using TheXDS.Ganymede.ViewModels;
 using TheXDS.MCART.Helpers;
-using TheXDS.MCART.Types.Base;
+using TheXDS.MCART.Types;
 using TheXDS.Vivianne.Component;
 using TheXDS.Vivianne.Data;
-using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Models.Viv;
-using TheXDS.Vivianne.Properties;
+using TheXDS.Vivianne.Resources;
 using TheXDS.Vivianne.ViewModels.Base;
 using St = TheXDS.Vivianne.Resources.Strings.ViewModels.VivEditorViewModel;
 
@@ -26,45 +25,11 @@ namespace TheXDS.Vivianne.ViewModels.Viv;
 /// <summary>
 /// ViewModel that serves as the main view for interacting with a VIV file.
 /// </summary>
-public class VivEditorViewModel : HostViewModelBase, IFileEditorViewModel<VivEditorState, VivFile>
+public class VivEditorViewModel : StatefulFileEditorViewModelBase<VivEditorState, VivFile>
 {
     private static readonly Dictionary<string, ContentVisualizerViewModelFactory> ContentVisualizers = new(ContentVisualizerConfiguration.Get());
     private static readonly Dictionary<string, (string, Func<byte[]>)[]> Templates = new(VivTemplates.Get());
-    private VivEditorState state = null!;
-
-    /// <inheritdoc/>
-    public VivEditorState State
-    {
-        get => state;
-        set
-        {
-            var oldState = state;
-            if (Change(ref state, value))
-            {
-                oldState?.Unsubscribe(() => oldState.UnsavedChanges);
-                value?.Subscribe(() => value.UnsavedChanges, OnUnsavedChanges);
-            }
-        }
-    }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="VivEditorViewModel"/> class.
-    /// </summary>
-    public VivEditorViewModel()
-    {
-        var cb = CommandBuilder.For(this);
-        OpenFileCommand = cb.BuildSimple(OnOpenFile);
-        ImportFileCommand = cb.BuildSimple(OnImportFile);
-        ReplaceFileCommand = cb.BuildSimple(OnReplaceFile);
-        ExportFileCommand = cb.BuildSimple(OnExportFile);
-        RemoveFileCommand = cb.BuildSimple(OnRemoveFile);
-        RenameFileCommand = cb.BuildSimple(OnRenameFile);
-        NewFromTemplateCommand = cb.BuildSimple(OnNewFromTemplate);
-        DiscardAndCloseCommand = cb.BuildSimple(OnClose);
-        SaveCommand = cb.BuildSimple(OnSave);
-        SaveAsCommand = cb.BuildSimple(OnSaveAs);
-        SaveAndCloseCommand = cb.BuildObserving(OnSaveAndClose).ListensToCanExecute(p => p.UnsavedChanges).Build();
-    }
+    private readonly HostViewModel _childNavViewModel;
 
     /// <summary>
     /// Gets a reference to the command used to visualize the selected file
@@ -108,27 +73,45 @@ public class VivEditorViewModel : HostViewModelBase, IFileEditorViewModel<VivEdi
     /// </summary>
     public ICommand RenameFileCommand { get; }
 
-    /// <inheritdoc/>
-    public ICommand SaveCommand { get; }
+    /// <summary>
+    /// Gets a reference to the child navigation service used to navigate to
+    /// different file editors/visualizers.
+    /// </summary>
+    public INavigationService ChildNavService => _childNavViewModel.NavigationService;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="VivEditorViewModel"/> class.
+    /// </summary>
+    public VivEditorViewModel()
+    {
+        var cb = CommandBuilder.For(this);
+        OpenFileCommand = cb.BuildSimple(OnOpenFile);
+        ImportFileCommand = cb.BuildSimple(OnImportFile);
+        ReplaceFileCommand = cb.BuildSimple(OnReplaceFile);
+        ExportFileCommand = cb.BuildSimple(OnExportFile);
+        RemoveFileCommand = cb.BuildSimple(OnRemoveFile);
+        RenameFileCommand = cb.BuildSimple(OnRenameFile);
+        NewFromTemplateCommand = cb.BuildSimple(OnNewFromTemplate);
+        _childNavViewModel = new(this);
+    }
 
     /// <inheritdoc/>
-    public ICommand SaveAsCommand { get; }
-
-    /// <inheritdoc/>
-    public ICommand SaveAndCloseCommand { get; }
-
-    /// <inheritdoc/>
-    public ICommand DiscardAndCloseCommand { get; }
-
-    /// <inheritdoc/>
-    public bool UnsavedChanges => State?.UnsavedChanges ?? false;
-
-    /// <inheritdoc/>
-    public IBackingStore<VivFile>? BackingStore { get; init; }
+    protected override Task OnCreated()
+    {
+        State.FileName = BackingStore?.FileName;
+        ChildNavService.HomePage = new VivInfoViewModel()
+        {
+            State = State,
+            FileName = State.FileName,
+            DialogService = DialogService
+        };
+        ChildNavService.Reset();
+        return base.OnCreated();
+    }
 
     private async Task OnOpenFile(object? parameter)
     {
-        if (ChildNavService?.CurrentViewModel is IViewModel currVm)
+        if (ChildNavService.CurrentViewModel is IViewModel currVm)
         {
             CancelFlag f = new();
             await currVm.OnNavigateAway(f);
@@ -136,50 +119,19 @@ public class VivEditorViewModel : HostViewModelBase, IFileEditorViewModel<VivEdi
         }
         if (parameter is KeyValuePair<string, byte[]> { Key: { } file, Value: { } rawData })
         {
-            IViewModel? vm = null;
-            if (PlatformServices.IsAltKeyDown)
-            {
-                vm = ContentVisualizerConfiguration.CreateExternalEditorViewModel(rawData, this, file);
-            }
-            else
-            {
-                foreach (var j in ContentVisualizers.Where(p => file.EndsWith(p.Key, StringComparison.InvariantCultureIgnoreCase)))
-                {
-                    if (j.Value is { } factory && factory.Invoke(rawData, this, file) is { } visualizer)
-                    {
-                        vm = visualizer;
-                        break;
-                    }
-                }
-            }
-            vm ??= new FileErrorViewModel();
-            vm.Title = file;
-            await ChildNavService!.NavigateAndReset(vm);
+            await ChildNavService.NavigateAndReset(await GetViewModel(rawData, file));
         }
         else
         {
-            await ChildNavService!.NavigateAndReset<VivInfoViewModel, VivEditorState>(State);
+            await ChildNavService.NavigateAndReset<VivInfoViewModel, VivEditorState>(State);
         }
     }
 
     private async Task OnImportFile()
     {
-        var r = await DialogService!.GetFilesOpenPath(CommonDialogTemplates.FileOpen with { Title = St.ImportFile }, Resources.FileFilters.AnyVivContentFilter);
-        if (r.Success)
+        if (await DialogService!.GetFilesOpenPath(CommonDialogTemplates.FileOpen with { Title = St.ImportFile }, Resources.FileFilters.AnyVivContentFilter) is { Success: true, Result: { } result })
         {
-            await DialogService.RunOperation(async (cancel, progress) =>
-            {
-                foreach ((var index, var j) in r.Result.WithIndex())
-                {
-                    if (cancel.IsCancellationRequested) return;
-                    var keyName = Path.GetFileName(j).ToLower();
-                    if (!State.Directory.ContainsKey(keyName) || await DialogService.AskYn(St.ReplaceFile, string.Format(St.TheFileXAlreadyExist, keyName)))
-                    {
-                        progress.Report(new ProgressReport(index * 100.0 / r.Result.Length, $"Importing {j}..."));
-                        State.Directory[keyName] = await File.ReadAllBytesAsync(j, cancel);
-                    }
-                }
-            });
+            await ImportFiles(result);
         }
     }
 
@@ -221,7 +173,7 @@ public class VivEditorViewModel : HostViewModelBase, IFileEditorViewModel<VivEdi
             if (await DialogService!.AskYn(string.Format(St.RemoveX, file), string.Format(St.AreYouSureYouWantToRemoveX, file)))
             {
                 State.Directory.Remove(file);
-                ChildNavService?.Reset();
+                await ChildNavService.Reset();
             }
         }
     }
@@ -258,45 +210,45 @@ public class VivEditorViewModel : HostViewModelBase, IFileEditorViewModel<VivEdi
         }
     }
 
-    private async Task OnSave()
+    private IViewModel? FindContentVisualizer(string fileName, byte[] rawData)
     {
-        if (await BackingStore!.WriteAsync(State.File))
+        foreach (var j in ContentVisualizers.Where(p => fileName.EndsWith(p.Key, StringComparison.InvariantCultureIgnoreCase)))
         {
-            Title = State.FriendlyName;
-            await Settings.Current.AddRecentVivFile(new RecentFileInfo() { FilePath = BackingStore.FileName, FriendlyName = State.FriendlyName });
+            if (j.Value is { } factory && factory.Invoke(rawData, this, fileName) is { } visualizer)
+            {
+                return visualizer;
+            }
         }
+        return null;
     }
 
-    private Task OnSaveAs()
+    private async Task<IViewModel> GetViewModel(byte[] rawData, string file)
     {
-        return BackingStore?.WriteNewAsync(State.File) ?? Task.CompletedTask;
+        IViewModel vm = PlatformServices.ModifierKey switch
+        { 
+            ModifierKey.Alt => ContentVisualizerConfiguration.CreateExternalEditorViewModel(rawData, this, file),
+            ModifierKey.Ctrl => (await DialogService!.SelectOption(
+                Dialogs.OpenAs,
+                ContentVisualizers.Select(p => new NamedObject<ContentVisualizerViewModelFactory>(p.Value, p.Key)).ToArray())) is { Success:true, Result: { } factory }
+                ? factory.Invoke(rawData, this, file)
+                : null,
+            _ => FindContentVisualizer(file, rawData)
+        } ?? new FileErrorViewModel();
+        vm.Title = file;
+        return vm;
     }
 
-    private async Task OnSaveAndClose()
+    private Task<bool> ImportFiles(IEnumerable<string> files) => DialogService!.RunOperation(async (cancel, progress) =>
     {
-        await OnSave();
-        await OnClose();
-    }
-
-    private Task OnClose()
-    {
-        return NavigationService?.NavigateBack() ?? Task.CompletedTask;
-    }
-
-    private void OnUnsavedChanges(object instance, PropertyInfo property, PropertyChangeNotificationType notificationType)
-    {
-        Notify(nameof(UnsavedChanges));
-    }
-
-    /// <inheritdoc/>
-    protected override Task OnCreated()
-    {
-        State.FileName = BackingStore?.FileName;
-        if (ChildNavService is not null)
+        foreach ((var index, var j) in files.WithIndex())
         {
-            ChildNavService.HomePage = new VivInfoViewModel() { State = State, FileName = State.FileName, DialogService = DialogService };
-            ChildNavService.Reset();
+            if (cancel.IsCancellationRequested) return;
+            var keyName = Path.GetFileName(j).ToLower();
+            if (!State.Directory.ContainsKey(keyName) || await DialogService.AskYn(St.ReplaceFile, string.Format(St.TheFileXAlreadyExist, keyName)))
+            {
+                progress.Report(new ProgressReport(index * 100.0 / files.Count(), $"Importing {j}..."));
+                State.Directory[keyName] = await File.ReadAllBytesAsync(j, cancel);
+            }
         }
-        return base.OnCreated();
-    }
+    });
 }

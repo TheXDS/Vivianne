@@ -60,9 +60,8 @@ public class CarpAnalysis
     private static (double torque, int rpm)[] TorqueWithRpmCurve(ICarPerf carp)
     {
         var rpmStep = (carp.EngineMaxRpm / carp.TorqueCurve.Count).Clamp(256, carp.EngineMaxRpm);
-        return carp.TorqueCurve
+        return [.. carp.TorqueCurve
             .Zip(Enumerable.Range(0, carp.TorqueCurve.Count).Select(p => p * rpmStep + carp.EngineMinRpm))
-            .Where(p => p.Second <= carp.EngineMaxRpm)
-            .ToArray();
+            .Where(p => p.Second <= carp.EngineMaxRpm)];
     }
 }
