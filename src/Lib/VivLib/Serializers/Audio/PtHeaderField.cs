@@ -1,4 +1,4 @@
-﻿namespace TheXDS.Vivianne.Serializers.Bnk;
+﻿namespace TheXDS.Vivianne.Serializers.Audio;
 
 internal enum PtHeaderField : byte
 {

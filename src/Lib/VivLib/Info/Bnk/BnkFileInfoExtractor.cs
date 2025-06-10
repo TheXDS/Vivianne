@@ -1,6 +1,6 @@
 ﻿using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Extensions;
-using TheXDS.Vivianne.Models.Bnk;
+using TheXDS.Vivianne.Models.Audio.Bnk;
 
 namespace TheXDS.Vivianne.Info.Bnk;
 

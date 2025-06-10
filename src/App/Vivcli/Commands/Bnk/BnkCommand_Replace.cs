@@ -1,8 +1,8 @@
 using System.CommandLine;
 using TheXDS.Vivianne.Info.Bnk;
-using TheXDS.Vivianne.Models.Bnk;
-using TheXDS.Vivianne.Serializers.Bnk;
-using TheXDS.Vivianne.Tools.Bnk;
+using TheXDS.Vivianne.Models.Audio.Bnk;
+using TheXDS.Vivianne.Serializers.Audio.Bnk;
+using TheXDS.Vivianne.Tools.Audio;
 using St = TheXDS.Vivianne.Resources.Strings.FshCommand;
 
 namespace TheXDS.Vivianne.Commands.Bnk;
@@ -24,7 +24,7 @@ public partial class BnkCommand
     {
         return FileTransaction<BnkFile, BnkSerializer>(bnkFile, async bnk =>
         {
-            bnk.Streams[blobArg] = BnkRender.FromWav(await File.ReadAllBytesAsync(inFile.FullName));;
+            bnk.Streams[blobArg] = AudioRender.BnkFromWav(await File.ReadAllBytesAsync(inFile.FullName));;
         });
     }
 }

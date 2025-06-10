@@ -1,7 +1,7 @@
 using System.CommandLine;
 using TheXDS.Vivianne.Info.Bnk;
-using TheXDS.Vivianne.Models.Bnk;
-using TheXDS.Vivianne.Serializers.Bnk;
+using TheXDS.Vivianne.Models.Audio.Bnk;
+using TheXDS.Vivianne.Serializers.Audio.Bnk;
 using St = TheXDS.Vivianne.Resources.Strings.FshCommand;
 
 namespace TheXDS.Vivianne.Commands.Bnk;

@@ -1,6 +1,6 @@
-﻿using TheXDS.Vivianne.Models.Bnk;
+﻿using TheXDS.Vivianne.Models.Audio.Base;
 
-namespace TheXDS.Vivianne.Serializers.Bnk;
+namespace TheXDS.Vivianne.Serializers.Audio;
 
 internal class PtHeader
 {

@@ -2,6 +2,7 @@
 using System.Linq;
 using TheXDS.MCART.Types;
 using TheXDS.MCART.Types.Extensions;
+using TheXDS.Vivianne.Models.Audio.Bnk;
 using TheXDS.Vivianne.Models.Base;
 using TheXDS.Vivianne.ViewModels.Bnk;
 

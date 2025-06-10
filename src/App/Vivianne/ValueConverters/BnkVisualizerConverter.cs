@@ -4,7 +4,7 @@ using System.Windows.Media;
 using TheXDS.MCART.Helpers;
 using TheXDS.MCART.ValueConverters.Base;
 using TheXDS.Vivianne.Misc;
-using TheXDS.Vivianne.Models.Bnk;
+using TheXDS.Vivianne.Models.Audio.Bnk;
 
 namespace TheXDS.Vivianne.ValueConverters;
 

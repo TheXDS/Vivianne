@@ -13,10 +13,12 @@ using TheXDS.Ganymede.Types.Extensions;
 using TheXDS.MCART.Component;
 using TheXDS.MCART.Types.Base;
 using TheXDS.MCART.Types.Extensions;
+using TheXDS.Vivianne.Models.Audio.Bnk;
 using TheXDS.Vivianne.Models.Bnk;
 using TheXDS.Vivianne.Properties;
 using TheXDS.Vivianne.Resources;
-using TheXDS.Vivianne.Tools.Bnk;
+using TheXDS.Vivianne.Tools.Audio;
+using TheXDS.Vivianne.Tools.Audio.Bnk;
 using TheXDS.Vivianne.ViewModels.Base;
 using St = TheXDS.Vivianne.Resources.Strings.ViewModels.BnkEditorViewModel;
 using Stc = TheXDS.Vivianne.Resources.Strings.Common;
@@ -156,7 +158,7 @@ public class BnkEditorViewModel : StatefulFileEditorViewModelBase<BnkEditorState
     private void OnPlaySample()
     {
         if (State.SelectedStream is not { } sample) return;
-        SetSound(BnkRender.RenderBnk(sample));
+        SetSound(AudioRender.RenderBnk(sample));
         _snd.Play();
     }
 
@@ -169,7 +171,7 @@ public class BnkEditorViewModel : StatefulFileEditorViewModelBase<BnkEditorState
             await DialogService!.Message(St.BNKStream, St.NoLoop);
             return;
         }
-        SetSound(BnkRender.RenderBnkLoop(sample));
+        SetSound(AudioRender.RenderBnkLoop(sample));
         _isPlaying = true;
         _snd.PlayLooping();
     }
@@ -187,7 +189,7 @@ public class BnkEditorViewModel : StatefulFileEditorViewModelBase<BnkEditorState
             if (State.SelectedStream is null) return;
             if (await DialogService!.GetFileOpenPath(FileFilters.AudioFileFilter) is { Success: true, Result: string path })
             {
-                var stream = BnkRender.FromWav(await File.ReadAllBytesAsync(path));
+                var stream = AudioRender.BnkFromWav(await File.ReadAllBytesAsync(path));
                 State.SelectedStream.Channels = stream.Channels;
                 State.SelectedStream.Compression = stream.Compression;
                 State.SelectedStream.SampleRate = stream.SampleRate;
@@ -221,7 +223,7 @@ public class BnkEditorViewModel : StatefulFileEditorViewModelBase<BnkEditorState
         }
         if (await DialogService!.GetFileOpenPath(FileFilters.AudioFileFilter) is { Success: true, Result: string path })
         {
-            State.SelectedStream.AltStream = BnkRender.FromWav(await File.ReadAllBytesAsync(path));
+            State.SelectedStream.AltStream = AudioRender.BnkFromWav(await File.ReadAllBytesAsync(path));
             State.Refresh();
         }
     }
@@ -231,7 +233,7 @@ public class BnkEditorViewModel : StatefulFileEditorViewModelBase<BnkEditorState
         if (State.SelectedStream is not { } sample) return;
         if (await DialogService!.GetFileSavePath(FileFilters.AudioFileFilter) is { Success: true, Result: string path })
         {
-            await File.WriteAllBytesAsync(path, BnkRender.RenderBnk(sample));
+            await File.WriteAllBytesAsync(path, AudioRender.RenderBnk(sample));
         }
     }
 
@@ -240,7 +242,7 @@ public class BnkEditorViewModel : StatefulFileEditorViewModelBase<BnkEditorState
         if (State.SelectedStream is not { } sample) return;
         if (await DialogService!.GetFileSavePath(FileFilters.AudioFileFilter) is { Success: true, Result: string path })
         {
-            await File.WriteAllBytesAsync(path, BnkRender.RenderBnkLoop(sample));
+            await File.WriteAllBytesAsync(path, AudioRender.RenderBnkLoop(sample));
         }
     }
 

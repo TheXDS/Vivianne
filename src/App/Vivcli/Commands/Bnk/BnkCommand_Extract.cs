@@ -1,7 +1,7 @@
 ﻿using System.CommandLine;
-using TheXDS.Vivianne.Models.Bnk;
-using TheXDS.Vivianne.Serializers.Bnk;
-using TheXDS.Vivianne.Tools.Bnk;
+using TheXDS.Vivianne.Models.Audio.Bnk;
+using TheXDS.Vivianne.Serializers.Audio.Bnk;
+using TheXDS.Vivianne.Tools.Audio;
 
 namespace TheXDS.Vivianne.Commands.Bnk;
 
@@ -23,7 +23,7 @@ public partial class BnkCommand
         return ReadOnlyFileTransaction<BnkFile, BnkSerializer>(bnkFile, async bnk => {
             if (bnk.Streams[blobArg] is not { } bnkStream) return;
             using var output = outFile.OpenWrite();
-            await output.WriteAsync(BnkRender.RenderBnk(bnkStream));
+            await output.WriteAsync(AudioRender.RenderBnk(bnkStream));
             await output.FlushAsync();
         });
     }

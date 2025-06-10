@@ -77,7 +77,6 @@
 		</Compile>
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="Models\Mus\" />
 	  <Folder Include="Tools\Fsh\" />
 	</ItemGroup>
 </Project>

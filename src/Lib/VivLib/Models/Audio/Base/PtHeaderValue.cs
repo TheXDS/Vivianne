@@ -1,7 +1,7 @@
-﻿namespace TheXDS.Vivianne.Models.Bnk;
+﻿namespace TheXDS.Vivianne.Models.Audio.Base;
 
 /// <summary>
-/// Represents a PT header value found on BNK files.
+/// Represents a PT header value found on audio files.
 /// </summary>
 /// <param name="Length">
 /// Length of the value in bytes. Valid ranges are 1-4.

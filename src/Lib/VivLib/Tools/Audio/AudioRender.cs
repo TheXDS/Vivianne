@@ -1,15 +1,16 @@
 ﻿using System.Runtime.InteropServices;
 using System.Text;
 using TheXDS.MCART.Types.Extensions;
-using TheXDS.Vivianne.Models.Bnk;
+using TheXDS.Vivianne.Models.Audio.Base;
+using TheXDS.Vivianne.Models.Audio.Bnk;
 
-namespace TheXDS.Vivianne.Tools.Bnk;
+namespace TheXDS.Vivianne.Tools.Audio;
 
 /// <summary>
 /// Includes helper functions to perform Rendering operations on BNK audio
 /// streams, such as conversion to WAV files, etc.
 /// </summary>
-public static class BnkRender
+public static class AudioRender
 {
     [StructLayout(LayoutKind.Sequential, Pack = 2)]
     private struct WavFmtHeader
@@ -76,7 +77,7 @@ public static class BnkRender
     /// A new <see cref="BnkStream"/> that has the same audio contents as the
     /// input .WAV file.
     /// </returns>
-    public static BnkStream FromWav(byte[] data)
+    public static BnkStream BnkFromWav(byte[] data)
     {
         using var ms = new MemoryStream(data);
         using var br = new BinaryReader(ms);
@@ -100,7 +101,7 @@ public static class BnkRender
         };
     }
 
-    private static byte[] RenderData(BnkStream blob, byte[] data)
+    public static byte[] RenderData(AudioStreamBase blob, byte[] data)
     {
         int fileSize = 36 + data.Length;
         var wavStream = new MemoryStream();
