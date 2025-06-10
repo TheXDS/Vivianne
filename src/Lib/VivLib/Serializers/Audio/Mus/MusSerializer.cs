@@ -6,24 +6,28 @@ using TheXDS.Vivianne.Models.Audio.Mus;
 
 namespace TheXDS.Vivianne.Serializers.Audio.Mus;
 
+/// <summary>
+/// Implements a serializer for MUS files.
+/// </summary>
 public class MusSerializer : ISerializer<MusFile>
 {
+    /// <inheritdoc/>
     public MusFile Deserialize(Stream stream)
     {
         using BinaryReader br = new(stream);
         var mus = new MusFile();
         do
         {
-            mus.AsfElement.Add(ReadAsfFile(br));
+            mus.AsfSubStreams.Add((int)stream.Position, ReadAsfFile(br));
         } while(stream.Position < stream.Length);
         return mus;
     }
 
+    /// <inheritdoc/>
     public void SerializeTo(MusFile entity, Stream stream)
     {
         throw new NotImplementedException();
     }
-
 
     private static AsfFile ReadAsfFile(BinaryReader br)
     {
@@ -75,5 +79,18 @@ public class MusSerializer : ISerializer<MusFile>
             throw new InvalidDataException();
         }
         d.PtHeader = PtHeaderSerializerHelper.ReadPtHeader(br);
+    }
+}
+
+public class MapSerializer : ISerializer<MapFile>
+{
+    public MapFile Deserialize(Stream stream)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void SerializeTo(MapFile entity, Stream stream)
+    {
+        throw new NotImplementedException();
     }
 }

@@ -1,16 +1,18 @@
-﻿using TheXDS.Vivianne.Models.Audio.Base;
+﻿namespace TheXDS.Vivianne.Models.Audio.Mus;
 
-namespace TheXDS.Vivianne.Models.Audio.Mus;
-
+/// <summary>
+/// Represents a MUS file, which is a collection of ASF audio streams,
+/// generally used for interactive music.
+/// </summary>
 public class MusFile
 {
-    public IList<AsfFile> AsfElement { get; } = [];
+    /// <summary>
+    /// Gets the collection of ASF audio streams contained in this MUS file.
+    /// </summary>
+    public IDictionary<int, AsfFile> AsfSubStreams { get; } = new Dictionary<int, AsfFile>();
 }
 
-public class AsfFile : AudioStreamBase
+public class MapFile
 {
-    /// <summary>
-    /// Gets the collection of audio blocks contained in this ASF file.
-    /// </summary>
-    public IList<byte[]> AudioBlocks { get; } = [];
+    public List<int> LinearPlaybackOffsets { get; } = [];
 }

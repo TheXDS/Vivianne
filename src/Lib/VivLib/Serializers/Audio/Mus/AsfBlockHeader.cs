@@ -43,7 +43,37 @@ public struct SplitChunkHeader
     public int RightChannelOffset;
 }
 
+[StructLayout(LayoutKind.Sequential, Pack = 1)]
+public struct MapFileHeader
+{
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+    public byte[] Magic;
+    public byte Unknown1;
+    public byte FirstSection;
+    public byte NumberOfSections;
+    public byte RecordSize;
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
+    public byte[] Unknown2;
+    public byte NumRecords;
+}
 
+public struct MapFileSection
+{
+    public byte Index;
+    public byte NumRecords;
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+    public byte[] Id;
+    public ushort Size;
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
+    public MapSectionRecord[] Records;
+}
+
+public struct MapSectionRecord
+{
+    public byte Unk_0x0;
+    public byte Magic;
+    public byte NextSection;
+}
 
 
 
@@ -81,7 +111,7 @@ internal class AsfData
 
     public int BlockCount { get; set; }
 
-    public PtHeader PtHeader { get; set; }
+    public PtHeader PtHeader { get; set; } = null!;
 
     public List<byte[]> AudioBlocks { get; } = [];
 

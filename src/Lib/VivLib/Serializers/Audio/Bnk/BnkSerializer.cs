@@ -4,7 +4,6 @@ using TheXDS.MCART.Helpers;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models.Audio.Base;
 using TheXDS.Vivianne.Models.Audio.Bnk;
-using TheXDS.Vivianne.Serializers.Audio.Mus;
 
 namespace TheXDS.Vivianne.Serializers.Audio.Bnk;
 

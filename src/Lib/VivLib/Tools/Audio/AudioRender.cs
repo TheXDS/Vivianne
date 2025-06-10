@@ -101,6 +101,17 @@ public static class AudioRender
         };
     }
 
+    /// <summary>
+    /// Renders an audio stream into a .WAV file.
+    /// </summary>
+    /// <param name="blob">
+    /// Blob which contains the audio properties, such as bitrate and number of
+    /// channels.
+    /// </param>
+    /// <param name="data">
+    /// Raw PCM data to store in the resulting .WAV file.
+    /// </param>
+    /// <returns></returns>
     public static byte[] RenderData(AudioStreamBase blob, byte[] data)
     {
         int fileSize = 36 + data.Length;

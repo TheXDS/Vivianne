@@ -2,7 +2,7 @@
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models.Audio.Base;
 
-namespace TheXDS.Vivianne.Serializers.Audio.Mus;
+namespace TheXDS.Vivianne.Serializers.Audio;
 
 internal static class PtHeaderSerializerHelper
 {
