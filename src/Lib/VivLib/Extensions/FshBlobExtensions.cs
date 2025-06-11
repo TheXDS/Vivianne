@@ -110,6 +110,20 @@ public static class FshBlobExtensions
     /// </param>
     public static void WriteLocalPalette(this FshBlob blob, IEnumerable<Color> colors)
     {
+        blob.Footer = ToRawFooter(colors);
+    }
+
+    /// <summary>
+    /// Creates and serializes a color palette as a footer for a FSH blob.
+    /// </summary>
+    /// <param name="colors">
+    /// Collection of colors that conform the color palette.
+    /// </param>
+    /// <returns>
+    /// A byte array of the serialized color palette for the FSH blob.
+    /// </returns>
+    public static byte[] ToRawFooter(this IEnumerable<Color> colors)
+    {
         using var ms = new MemoryStream();
         using var bw = new BinaryWriter(ms);
         var colorTable = colors.ToArray();
@@ -127,7 +141,7 @@ public static class FshBlobExtensions
         };
         using var ms2 = new MemoryStream();
         new FshBlobSerializer().SerializeTo(b, ms2);
-        blob.Footer = ms2.ToArray();
+        return ms2.ToArray();
     }
 
     /// <summary>
@@ -158,7 +172,7 @@ public static class FshBlobExtensions
         return ms.ToArray();
     }
 
-    private static Color[] CreatePalette()
+    internal static Color[] CreatePalette()
     {
         static IEnumerable<Color> GetColors()
         {

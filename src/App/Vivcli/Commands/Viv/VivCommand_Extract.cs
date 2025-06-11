@@ -31,8 +31,7 @@ public partial class VivCommand
             foreach (var j in viv.Keys.Where(p => Regex.IsMatch(p, regex)))
             {
                 using var fs = File.OpenWrite(Path.Combine(outDir.FullName, j));
-                using var bw = new BinaryWriter(fs);
-                bw.Write(viv[j]);
+                fs.Write(viv[j]);
             }
         });
     }

@@ -70,13 +70,18 @@ public abstract class FileCommandBase(
         where TSerializer : ISerializer<TFile>, new()
     {
         ISerializer<TFile> serializer = new TSerializer();
-        TFile value;
+        TFile value = default!;
         try
         {
-            using (var inFs = file.OpenRead())
-            {
-                value = await serializer.DeserializeAsync(inFs);
-            }
+            using var fs = file.OpenRead();
+            value = serializer.Deserialize(fs);
+        }
+        catch
+        {
+            Fail("The file you specified was either corrupt or invalid.");
+        }
+        try
+        {
             await action.Invoke(value);
             using var outFs = file.OpenWrite();
             outFs.Destroy();
@@ -101,7 +106,7 @@ public abstract class FileCommandBase(
     /// </returns>
     protected static Task ReadOnlyFileTransaction<TFile, TSerializer>(FileInfo file, Action<TFile> action)
         where TSerializer : IOutSerializer<TFile>, new()
-{
+    {
         return ReadOnlyFileTransaction<TFile, TSerializer>(file, f => Task.Run(() => action.Invoke(f)));
     }
 
@@ -120,13 +125,18 @@ public abstract class FileCommandBase(
         where TSerializer : IOutSerializer<TFile>, new()
     {
         IOutSerializer<TFile> serializer = new TSerializer();
-        TFile value;
+        TFile value = default!;
         try
         {
-            using (var fs = file.OpenRead())
-            {
-                value = serializer.Deserialize(fs);
-            }
+            using var fs = file.OpenRead();
+            value = serializer.Deserialize(fs);
+        }
+        catch
+        {
+            Fail("The file you specified was either corrupt or invalid.");
+        }
+        try
+        {
             await action.Invoke(value);
         }
         catch (Exception ex)

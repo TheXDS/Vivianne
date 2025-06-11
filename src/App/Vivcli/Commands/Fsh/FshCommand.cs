@@ -15,6 +15,7 @@ public partial class FshCommand() : FileCommandBase(
         BuildBlobInfoCommand,
         BuildCompressCommand,
         BuildDecompressCommand,
+        BuildFooterCommand,
         BuildExtractCommand,
         BuildInfoCommand,
         BuildLsCommand,

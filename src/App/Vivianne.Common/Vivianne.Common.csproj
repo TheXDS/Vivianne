@@ -139,4 +139,7 @@
 			<LastGenOutput>VivInfoViewModel.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="ViewModels\Asf\" />
+	</ItemGroup>
 </Project>

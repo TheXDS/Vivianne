@@ -1,5 +1,4 @@
-﻿using System.Reflection.Metadata;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Codecs;
 using TheXDS.Vivianne.Models.Fsh;

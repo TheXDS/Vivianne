@@ -10,11 +10,15 @@ using System.Globalization;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Codecs.Audio;
 using TheXDS.Vivianne.Codecs.Textures;
+using TheXDS.Vivianne.Extensions;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Models.Audio.Base;
 using TheXDS.Vivianne.Models.Carp;
 using TheXDS.Vivianne.Models.Fe;
 using TheXDS.Vivianne.Models.Fsh;
+using TheXDS.Vivianne.Models.Fsh.Nfs3;
+using TheXDS.Vivianne.Serializers;
+using TheXDS.Vivianne.Serializers.Fsh.Blobs;
 using TheXDS.Vivianne.Tools.Fe;
 using St = TheXDS.Vivianne.Resources.Strings.Mappings;
 
@@ -144,12 +148,23 @@ public static class Mappings
         { FshBlobFooterType.None,           St.FshBlobFooterToLabel_None },
         { FshBlobFooterType.CarDashboard,   St.FshBlobFooterToLabel_CarDashboard },
         { FshBlobFooterType.ColorPalette,   St.FshBlobFooterToLabel_ColorPalette },
-        { FshBlobFooterType.Padding,        St.FshBlobFooterToLabel_Padding},
+        { FshBlobFooterType.Padding,        St.FshBlobFooterToLabel_Padding },
         { FshBlobFooterType.MetalBin,       St.FshBlobFooterToLabel_MetalBin },
         { FshBlobFooterType.BlobName,       St.FshBlobFooterToLabel_BlobName },
     }.AsReadOnly();
 
-
+    /// <summary>
+    /// Gets a read-only dictionary that maps <see cref="FshBlobFooterType"/> values to functions that generate
+    /// corresponding footer data as byte arrays.
+    /// </summary>
+    public static IReadOnlyDictionary<FshBlobFooterType, Func<byte[]>> FshFooterBuilder { get; } = new Dictionary<FshBlobFooterType, Func<byte[]>>()
+    {
+        { FshBlobFooterType.CarDashboard,   () => ((ISerializer<GaugeData>)new GaugeDataSerializer()).Serialize(new()) },
+        { FshBlobFooterType.ColorPalette,   () => [..FshBlobExtensions.CreatePalette().ToRawFooter()] },
+        { FshBlobFooterType.Padding,        () => [..Enumerable.Repeat(default(byte), 16)] },
+        { FshBlobFooterType.MetalBin,       () => [0x69, 0x50, 0x00, 0x00, ..Enumerable.Repeat(default(byte), 0x4C)] },
+        { FshBlobFooterType.BlobName,       () => [0x70, 0x00, 0x00, 0x00, ..Enumerable.Repeat(default(byte), 0x0C)] },
+    }.AsReadOnly();
 
     /// <summary>
     /// Defines the delegate used to load pixel data from a byte array to
