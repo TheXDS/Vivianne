@@ -302,3 +302,4 @@ __pycache__/
 
 # Docs generated with DocFX
 docs/_site/
+/src/App/Vivcli/Properties/launchSettings.json
