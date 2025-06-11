@@ -5,6 +5,7 @@
 [![Publish Vivianne](https://github.com/TheXDS/Vivianne/actions/workflows/publish.yml/badge.svg)](https://github.com/TheXDS/Vivianne/actions/workflows/publish.yml)
 [![Issues](https://img.shields.io/github/issues/TheXDS/Vivianne)](https://github.com/TheXDS/Vivianne/issues)
 [![MIT](https://img.shields.io/github/license/TheXDS/Vivianne)](https://mit-license.org/)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/TheXDS/Vivianne)
 
 [![FCE Preview](https://github.com/TheXDS/Vivianne/blob/master/docs/Screenshots/FcePreview.png?raw=true)](https://github.com/TheXDS/Vivianne/blob/master/docs/Screenshots/FcePreview.png)
 
