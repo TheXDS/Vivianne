@@ -1,11 +1,22 @@
 ﻿using System.Runtime.InteropServices;
 using TheXDS.MCART.Math;
+using TheXDS.MCART.Types.Extensions;
+using TheXDS.Vivianne.Serializers.Audio;
 using TheXDS.Vivianne.Serializers.Audio.Mus;
 
-namespace TheXDS.Vivianne.Helpers;
+namespace TheXDS.Vivianne.Codecs.Audio;
 
-public static class EA_ADPCM_Codec
+/// <summary>
+/// Implements an audio codec that can read and decode EA ADPCM audio data.
+/// </summary>
+public class EaAdpcmCodec : IAudioCodec
 {
+    /// <summary>
+    /// Creates a new instance of the <see cref="EaAdpcmCodec"/> class.
+    /// </summary>
+    /// <returns></returns>
+    public static EaAdpcmCodec Create() => new();
+
     private static readonly long[] EATable =
     [
         0x00000000,
@@ -32,12 +43,12 @@ public static class EA_ADPCM_Codec
 
     private static int HINIBBLE(byte byteValue)
     {
-        return (int)(byteValue >> 4);
+        return byteValue >> 4;
     }
 
     private static int LONIBBLE(byte byteValue)
     {
-        return (int)(byteValue & 0x0F);
+        return byteValue & 0x0F;
     }
 
     private static short Clip16BitSample(long sample)
@@ -45,7 +56,15 @@ public static class EA_ADPCM_Codec
         return (short)sample.Clamp(short.MinValue, short.MaxValue);
     }
 
-    public static ReadOnlySpan<byte> DecompressAdpcm(byte[] inputBuffer, EaAdpcmStereoChunkHeader chunkHeader, int dwSubOutSize = 0x1c)
+    private static byte[] DecompressStereo(byte[] blockData)
+    {
+        using var br = new BinaryReader(new MemoryStream(blockData));
+        var header = br.MarshalReadStruct<EaAdpcmStereoChunkHeader>();
+        var compressedData = br.ReadBytes((int)(blockData.Length - br.BaseStream.Position));
+        return DecompressAdpcm(compressedData, header).ToArray();
+    }
+
+    private static ReadOnlySpan<byte> DecompressAdpcm(byte[] inputBuffer, EaAdpcmStereoChunkHeader chunkHeader, int dwSubOutSize = 0x1c)
     {
         List<short> outputList = [];
         int i = 0; // Index into InputBuffer
@@ -54,7 +73,7 @@ public static class EA_ADPCM_Codec
         int lPrevSampleRight = chunkHeader.RightChannel.PreviousSample;
         int lCurSampleRight = chunkHeader.RightChannel.CurrentSample;
 
-        for (int bCount = 0; bCount < (chunkHeader.OutSize / dwSubOutSize); bCount++)
+        for (int bCount = 0; bCount < chunkHeader.OutSize / dwSubOutSize; bCount++)
         {
             // Read predictor coefficients for left and right channels
             if (i >= inputBuffer.Length) break;
@@ -76,12 +95,12 @@ public static class EA_ADPCM_Codec
                 int right = LONIBBLE(bInput);
 
                 // Apply shift
-                left = (left << 0x1C) >> dleft;
-                right = (right << 0x1C) >> dright;
+                left = left << 0x1C >> dleft;
+                right = right << 0x1C >> dright;
 
                 // Calculate new samples with predictor coefficients
-                long leftSample = (left + lCurSampleLeft * c1left + lPrevSampleLeft * c2left + 0x80L) >> 8;
-                long rightSample = (right + lCurSampleRight * c1right + lPrevSampleRight * c2right + 0x80L) >> 8;
+                long leftSample = left + lCurSampleLeft * c1left + lPrevSampleLeft * c2left + 0x80L >> 8;
+                long rightSample = right + lCurSampleRight * c1right + lPrevSampleRight * c2right + 0x80L >> 8;
 
                 leftSample = Clip16BitSample(leftSample);
                 rightSample = Clip16BitSample(rightSample);
@@ -100,7 +119,7 @@ public static class EA_ADPCM_Codec
         }
 
         // Process any remaining samples if dwOutSize is not a multiple of dwSubOutSize
-        if ((chunkHeader.OutSize % dwSubOutSize) != 0 && i < inputBuffer.Length)
+        if (chunkHeader.OutSize % dwSubOutSize != 0 && i < inputBuffer.Length)
         {
             int remainingSamples = chunkHeader.OutSize % dwSubOutSize;
             byte bInput = inputBuffer[i++];
@@ -120,12 +139,12 @@ public static class EA_ADPCM_Codec
                 int right = LONIBBLE(bInput);
 
                 // Apply shift
-                left = (left << 0x1C) >> dleft;
-                right = (right << 0x1C) >> dright;
+                left = left << 0x1C >> dleft;
+                right = right << 0x1C >> dright;
 
                 // Calculate new samples with predictor coefficients
-                long leftSample = (left + lCurSampleLeft * c1left + lPrevSampleLeft * c2left + 0x80L) >> 8;
-                long rightSample = (right + lCurSampleRight * c1right + lPrevSampleRight * c2right + 0x80L) >> 8;
+                long leftSample = left + lCurSampleLeft * c1left + lPrevSampleLeft * c2left + 0x80L >> 8;
+                long rightSample = right + lCurSampleRight * c1right + lPrevSampleRight * c2right + 0x80L >> 8;
 
                 leftSample = Clip16BitSample(leftSample);
                 rightSample = Clip16BitSample(rightSample);
@@ -144,4 +163,11 @@ public static class EA_ADPCM_Codec
         }
         return MemoryMarshal.AsBytes(new ReadOnlySpan<short>([.. outputList]));
     }
+
+    /// <inheritdoc/>
+    public byte[] Decode(byte[] sourceBytes, PtHeader header) => header[PtAudioHeaderField.Channels].Value switch
+    {
+        2 => DecompressStereo(sourceBytes),
+        _ => throw new NotSupportedException($"Unsupported channel count: {header[PtAudioHeaderField.Channels]}"),
+    };
 }

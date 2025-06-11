@@ -1,4 +1,4 @@
-﻿namespace TheXDS.Vivianne.Codecs;
+﻿namespace TheXDS.Vivianne.Codecs.Textures;
 
 /// <summary>
 /// Defines a set of members to be implemented by a type that encodes and
@@ -32,5 +32,5 @@ public interface IImageCodec
     /// <returns>
     /// A byte array containing the compressed image data.
     /// </returns>
-    byte[] Encode(byte[] sourceBytes, int width, int height);
+    byte[] Encode(byte[] sourceBytes, int width, int height) => throw new NotImplementedException("This codec does not support encoding.");
 }

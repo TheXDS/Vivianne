@@ -1,4 +1,4 @@
-﻿namespace TheXDS.Vivianne.Codecs;
+﻿namespace TheXDS.Vivianne.Codecs.Textures;
 
 /// <summary>
 /// Implements a codec for images that use LZ compression on raw pixel data.

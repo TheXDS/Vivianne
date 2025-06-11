@@ -101,7 +101,7 @@ internal class AsfData
             Channels = (byte)PtHeader.AudioValues[PtAudioHeaderField.Channels].Value,
             SampleRate = (ushort)PtHeader.AudioValues[PtAudioHeaderField.SampleRate].Value,
             BytesPerSample = (byte)PtHeader.AudioValues[PtAudioHeaderField.BytesPerSample].Value,
-            Compression = PtHeader.AudioValues[PtAudioHeaderField.Compression].Value != 0,
+            Compression = (CompressionMethod)PtHeader.AudioValues[PtAudioHeaderField.Compression].Value,
             Properties = new Dictionary<byte, PtHeaderValue>(),
         };
         file.AudioBlocks.AddRange(AudioBlocks);

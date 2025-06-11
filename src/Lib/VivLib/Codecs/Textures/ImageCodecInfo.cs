@@ -1,6 +1,9 @@
-﻿using TheXDS.Vivianne.Models.Fsh;
+﻿using TheXDS.Vivianne.Codecs.Audio;
+using TheXDS.Vivianne.Models.Audio.Base;
+using TheXDS.Vivianne.Models.Fsh;
+using TheXDS.Vivianne.Serializers.Audio;
 
-namespace TheXDS.Vivianne.Codecs;
+namespace TheXDS.Vivianne.Codecs.Textures;
 
 /// <summary>
 /// Represents a codec information object that provides information about a
@@ -14,7 +17,7 @@ namespace TheXDS.Vivianne.Codecs;
 /// Codec output format. This value must be a value that represents the raw,
 /// uncompressed pixel format.
 /// </param>
-public class CodecInfo<TCodec>(FshBlobFormat outputFormat) : ICodecInfo<IImageCodec> where TCodec : IImageCodec, new()
+public class ImageCodecInfo<TCodec>(FshBlobFormat outputFormat) : IImageCodecInfo<IImageCodec> where TCodec : IImageCodec, new()
 {
     /// <inheritdoc/>
     public FshBlobFormat OutputFormat { get; } = outputFormat;

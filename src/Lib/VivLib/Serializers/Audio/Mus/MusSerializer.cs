@@ -1,8 +1,9 @@
 ﻿using System.Runtime.InteropServices;
 using System.Text;
 using TheXDS.MCART.Types.Extensions;
-using TheXDS.Vivianne.Helpers;
+using TheXDS.Vivianne.Models.Audio.Base;
 using TheXDS.Vivianne.Models.Audio.Mus;
+using TheXDS.Vivianne.Resources;
 
 namespace TheXDS.Vivianne.Serializers.Audio.Mus;
 
@@ -49,21 +50,11 @@ public class MusSerializer : ISerializer<MusFile>
 
     private static void ReadAudioBlock(AsfData d, byte[] blockData)
     {
-        var data = d.PtHeader[PtAudioHeaderField.Compression].Value switch
-        {
-            //0x00 => blockData,
-            0x07 when d.PtHeader[PtAudioHeaderField.Channels].Value == 2 => ReadStereoEaAdpcm(blockData),
-            _ => throw new NotImplementedException($"Unknown audio codec: {d.PtHeader[PtAudioHeaderField.Compression]}")
-        };
-        d.AudioBlocks.Add(data);
-    }
+        var data = Mappings.AudioCodecSelector.TryGetValue((CompressionMethod)d.PtHeader[PtAudioHeaderField.Compression].Value, out var codec)
+            ? codec.Invoke().Decode(blockData, d.PtHeader)
+            : throw new InvalidOperationException($"Unsupported audio codec: {d.PtHeader[PtAudioHeaderField.Compression].Value:X2}");
 
-    private static byte[] ReadStereoEaAdpcm(byte[] blockData)
-    {
-        using var br = new BinaryReader(new MemoryStream(blockData));
-        var header = br.MarshalReadStruct<EaAdpcmStereoChunkHeader>();
-        var compressedData = br.ReadBytes((int)(blockData.Length - br.BaseStream.Position));
-        return EA_ADPCM_Codec.DecompressAdpcm(compressedData, header).ToArray();
+        d.AudioBlocks.Add(data);
     }
 
     private static void ReadCount(AsfData d, byte[] blockData)
@@ -79,18 +70,5 @@ public class MusSerializer : ISerializer<MusFile>
             throw new InvalidDataException();
         }
         d.PtHeader = PtHeaderSerializerHelper.ReadPtHeader(br);
-    }
-}
-
-public class MapSerializer : ISerializer<MapFile>
-{
-    public MapFile Deserialize(Stream stream)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void SerializeTo(MapFile entity, Stream stream)
-    {
-        throw new NotImplementedException();
     }
 }

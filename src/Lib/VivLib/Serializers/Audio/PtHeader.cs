@@ -2,7 +2,7 @@
 
 namespace TheXDS.Vivianne.Serializers.Audio;
 
-internal class PtHeader
+public class PtHeader
 {
     public static readonly PtHeader Default = new();
 

@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace TheXDS.Vivianne.Models.Audio.Base;
 
-namespace TheXDS.Vivianne.Models.Audio.Base;
-
+/// <summary>
+/// Represents a base class for audio streams, which contain the common
+/// properties that all audio streams share.
+/// </summary>
 public abstract class AudioStreamBase
 {
     /// <summary>
@@ -17,7 +15,7 @@ public abstract class AudioStreamBase
     /// <summary>
     /// Gets or sets a value that indicates whether the audio stream is compressed.
     /// </summary>
-    public bool Compression { get; set; }
+    public CompressionMethod Compression { get; set; }
 
     /// <summary>
     /// Gets or sets the sample rate of this BNK blob.

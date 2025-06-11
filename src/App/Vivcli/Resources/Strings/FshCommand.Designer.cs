@@ -350,7 +350,7 @@ namespace TheXDS.Vivianne.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Compression ratio: {0:f2}:1.
+        ///   Looks up a localized string similar to CompressionMethod ratio: {0:f2}:1.
         /// </summary>
         internal static string Info_Info6 {
             get {

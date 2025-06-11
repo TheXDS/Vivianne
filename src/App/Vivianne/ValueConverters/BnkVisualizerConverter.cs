@@ -22,12 +22,6 @@ public class BnkVisualizerConverter : IOneWayValueConverter<BnkStream?, ImageSou
     {
         if (value is null) return null;
         double[] normalizedSamples = ParseAudioStream(value.SampleData, value.BytesPerSample * 8);
-#if !EnableBnkCompression
-        if (value.Compression)
-        {
-            return null;
-        }
-#endif
         using Bitmap bitmap = new(width, height);
         using (Graphics graphics = Graphics.FromImage(bitmap))
         {

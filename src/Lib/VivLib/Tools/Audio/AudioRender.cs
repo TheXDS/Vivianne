@@ -92,7 +92,7 @@ public static class AudioRender
         {
             Properties = new Dictionary<byte, PtHeaderValue>(),
             BytesPerSample = (byte)(fmt.BitsPerSample / 8),
-            Compression = false,
+            Compression = CompressionMethod.None,
             Channels = (byte)fmt.Channels,
             LoopStart = 0,
             LoopEnd = dataLength / (fmt.BitsPerSample / 8),

@@ -1,6 +1,7 @@
 ﻿using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Extensions;
 using TheXDS.Vivianne.Models.Audio.Mus;
+using TheXDS.Vivianne.Resources;
 using St = TheXDS.Vivianne.Resources.Strings.Info.Bnk.BnkStreamInfoExtractor;
 
 namespace TheXDS.Vivianne.Info.Bnk;
@@ -28,7 +29,7 @@ public class AsfFileInfoExtractor(bool humanSize) : IEntityInfoExtractor<AsfFile
             string.Format(St.BnkNfo_Duration, TimeSpan.FromSeconds((double)totalSamples / (value.SampleRate * value.BytesPerSample))),
             string.Format(St.BnkNfo_Samples, (double)totalSamples / value.BytesPerSample),
             string.Format(St.BnkNfo_Channels, value.Channels),
-            string.Format(St.BnkNfo_Format, value.BytesPerSample * 8, value.Compression ? "EAADPCM" : "PCM"),
+            string.Format(St.BnkNfo_Format, value.BytesPerSample * 8, Mappings.AudioCodecDescriptions.GetValueOrDefault(value.Compression, "Unknown")),
             string.Format(St.BnkNfo_SampleRate, value.SampleRate),
             string.Format(St.BnkNfo_Size, totalSamples.GetSize(humanSize)),
         }.NotNull()];

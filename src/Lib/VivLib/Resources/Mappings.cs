@@ -8,8 +8,10 @@ using SixLabors.ImageSharp.Formats.Tga;
 using SixLabors.ImageSharp.PixelFormats;
 using System.Globalization;
 using TheXDS.MCART.Types.Extensions;
-using TheXDS.Vivianne.Codecs;
+using TheXDS.Vivianne.Codecs.Audio;
+using TheXDS.Vivianne.Codecs.Textures;
 using TheXDS.Vivianne.Models;
+using TheXDS.Vivianne.Models.Audio.Base;
 using TheXDS.Vivianne.Models.Carp;
 using TheXDS.Vivianne.Models.Fe;
 using TheXDS.Vivianne.Models.Fsh;
@@ -17,7 +19,6 @@ using TheXDS.Vivianne.Tools.Fe;
 using St = TheXDS.Vivianne.Resources.Strings.Mappings;
 
 namespace TheXDS.Vivianne.Resources;
-
 
 /// <summary>
 /// Contains a set of resources to map FSH blob pixel formats and FSH footer
@@ -51,6 +52,28 @@ public static class Mappings
     }.AsReadOnly();
 
     /// <summary>
+    /// Maps a <see cref="CompressionMethod"/> value to a function that creates
+    /// a new <see cref="IAudioCodec"/> instance for the specified compression
+    /// method.
+    /// </summary>
+    public static IReadOnlyDictionary<CompressionMethod, Func<IAudioCodec>> AudioCodecSelector { get; } = new Dictionary<CompressionMethod, Func<IAudioCodec>>
+    {
+        { CompressionMethod.None,       NullAudioCodec.Create },
+        { CompressionMethod.EA_ADPCM,   EaAdpcmCodec.Create },
+    }.AsReadOnly();
+
+    /// <summary>
+    /// Maps a <see cref="CompressionMethod"/> value to a string that
+    /// describes the audio codec used for the specified compression
+    /// method.
+    /// </summary>
+    public static IReadOnlyDictionary<CompressionMethod, string> AudioCodecDescriptions { get; } = new Dictionary<CompressionMethod, string>
+    {
+        { CompressionMethod.None,       "PCM" },
+        { CompressionMethod.EA_ADPCM,   "EA ADPCM" },
+    }.AsReadOnly();
+
+    /// <summary>
     /// Enumerates the known directory IDs for a FSH file.
     /// </summary>
     public static readonly string[] FshDirectoryIds =
@@ -69,14 +92,14 @@ public static class Mappings
     /// Maps compressed <see cref="FshBlobFormat"/> format types to their
     /// non-compressed versions.
     /// </summary>
-    public static IReadOnlyDictionary<FshBlobFormat, ICodecInfo<IImageCodec>> CompressedToRaw { get; } = new Dictionary<FshBlobFormat, ICodecInfo<IImageCodec>>()
+    public static IReadOnlyDictionary<FshBlobFormat, IImageCodecInfo<IImageCodec>> CompressedToRaw { get; } = new Dictionary<FshBlobFormat, IImageCodecInfo<IImageCodec>>()
     {
-        { FshBlobFormat.LzArgb32,       new CodecInfo<LzImageCodec>(FshBlobFormat.Argb32) },
-        { FshBlobFormat.LzArgb1555,     new CodecInfo<LzImageCodec>(FshBlobFormat.Argb1555) },
-        { FshBlobFormat.LzRgb565,       new CodecInfo<LzImageCodec>(FshBlobFormat.Rgb565) },
-        { (FshBlobFormat)0xed,          new CodecInfo<LzImageCodec>(FshBlobFormat.Indexed8) },
-        { FshBlobFormat.Dxt1,           new CodecInfo<Dxt1ImageCodec>(FshBlobFormat.Argb32) },
-        { FshBlobFormat.Dxt3,           new CodecInfo<Dxt3ImageCodec>(FshBlobFormat.Argb32) },
+        { FshBlobFormat.LzArgb32,       new ImageCodecInfo<LzImageCodec>(FshBlobFormat.Argb32) },
+        { FshBlobFormat.LzArgb1555,     new ImageCodecInfo<LzImageCodec>(FshBlobFormat.Argb1555) },
+        { FshBlobFormat.LzRgb565,       new ImageCodecInfo<LzImageCodec>(FshBlobFormat.Rgb565) },
+        { (FshBlobFormat)0xed,          new ImageCodecInfo<LzImageCodec>(FshBlobFormat.Indexed8) },
+        { FshBlobFormat.Dxt1,           new ImageCodecInfo<Dxt1ImageCodec>(FshBlobFormat.Argb32) },
+        { FshBlobFormat.Dxt3,           new ImageCodecInfo<Dxt3ImageCodec>(FshBlobFormat.Argb32) },
     }.AsReadOnly();
 
     /// <summary>
@@ -95,7 +118,7 @@ public static class Mappings
     }
 
     /// <summary>
-    /// Maps the FCE file header magic number to a string that describes the
+    /// Maps the FCE file h magic number to a string that describes the
     /// internal file format used from within the available variants of FCE4.
     /// </summary>
     /// <param name="file">File to infer the format description for.</param>

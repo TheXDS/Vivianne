@@ -2,7 +2,7 @@
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing.Processors.Quantization;
 using TheXDS.MCART.Types.Extensions;
-using TheXDS.Vivianne.Codecs;
+using TheXDS.Vivianne.Codecs.Textures;
 using TheXDS.Vivianne.Models.Fsh;
 using TheXDS.Vivianne.Serializers.Fsh;
 using static TheXDS.Vivianne.Resources.Mappings;
@@ -27,7 +27,7 @@ public static class FshBlobExtensions
     /// </returns>
     public static Image? ToImage(this FshBlob blob, Color[]? palette = null)
     {
-        var codec = CompressedToRaw.TryGetValue(blob.Magic, out var compressedMagic) ? compressedMagic : new CodecInfo<NullCodec>(blob.Magic);
+        var codec = CompressedToRaw.TryGetValue(blob.Magic, out var compressedMagic) ? compressedMagic : new ImageCodecInfo<NullImageCodec>(blob.Magic);
         if (FshBlobPixelReader.TryGetValue(codec.OutputFormat, out var callback))
         {
             return callback.Invoke(codec.GetCodec().Decode(blob.PixelData, blob.Width, blob.Height), blob.Width, blob.Height);

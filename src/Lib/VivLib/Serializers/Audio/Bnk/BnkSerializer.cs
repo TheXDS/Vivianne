@@ -1,9 +1,9 @@
-﻿using System.Diagnostics;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using TheXDS.MCART.Helpers;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models.Audio.Base;
 using TheXDS.Vivianne.Models.Audio.Bnk;
+using TheXDS.Vivianne.Resources;
 
 namespace TheXDS.Vivianne.Serializers.Audio.Bnk;
 
@@ -126,20 +126,15 @@ public class BnkSerializer : ISerializer<BnkFile>
 
     private static BnkStream ToBnkStream(PtHeader header, BinaryReader br, string id, bool isAltStream, int[] sampleOffsets)
     {
-        var sampleData = br.ReadBytesAt(header[PtAudioHeaderField.DataOffset], GetByteCount(br, header));
-        if (header[PtAudioHeaderField.Compression].Value != 0)
-        {
-#if EnableBnkCompression
-            sampleData = EaAdpcmCodec.Decompress(sampleData, header[PtAudioHeaderField.NumSamples]);
-#else
-            Debug.Print("No support has been implemented for compressed streams yet.");
-#endif
-        }
+        var sampleData = Mappings.AudioCodecSelector.TryGetValue((CompressionMethod)header[PtAudioHeaderField.Compression].Value, out var codec)
+            ? codec.Invoke().Decode(br.ReadBytesAt(header[PtAudioHeaderField.DataOffset], GetByteCount(br, header)), header)
+            : throw new InvalidOperationException($"Unsupported audio codec: {header[PtAudioHeaderField.Compression].Value:X2}");
+
         return new BnkStream
         {
             Id = id,
             Channels = (byte)header[PtAudioHeaderField.Channels],
-            Compression = header[PtAudioHeaderField.Compression].Value != 0,
+            Compression = (CompressionMethod)header[PtAudioHeaderField.Compression].Value,
             SampleRate = (ushort)header[PtAudioHeaderField.SampleRate],
             LoopStart = header[PtAudioHeaderField.LoopOffset],
             LoopEnd = header[PtAudioHeaderField.LoopEnd],
@@ -233,7 +228,7 @@ public class BnkSerializer : ISerializer<BnkFile>
         var header = new PtHeader();
         header.Values.AddRange(blob.Properties.Select(p => new KeyValuePair<PtHeaderField, PtHeaderValue>((PtHeaderField)p.Key, p.Value)));
         header[PtAudioHeaderField.Channels] = blob.Channels;
-        header[PtAudioHeaderField.Compression] = blob.Compression;
+        header[PtAudioHeaderField.Compression] = (byte)blob.Compression;
         header[PtAudioHeaderField.SampleRate] = blob.SampleRate;
         header[PtAudioHeaderField.NumSamples] = blob.SampleData.Length / blob.BytesPerSample;
         header[PtAudioHeaderField.LoopOffset] = blob.LoopStart;

@@ -1,6 +1,13 @@
 ﻿namespace TheXDS.Vivianne.Serializers.Audio;
 
-internal enum PtHeaderField : byte
+/// <summary>
+/// Enumerates the possible header blocks that can be found in a PT header.
+/// </summary>
+/// <remarks>
+/// Custom values are permitted, and its values will be available to be read
+/// and written.
+/// </remarks>
+public enum PtHeaderField : byte
 {
     /// <summary>
     /// Indicates that the following data is an audio stream header.

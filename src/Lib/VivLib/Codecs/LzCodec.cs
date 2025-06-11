@@ -36,7 +36,8 @@ namespace TheXDS.Vivianne.Codecs;
 
 
 /// <summary>
-/// Implements a codec that can read and write data using LZ compression.
+/// Implements a generic codec that can read and write data using LZ
+/// compression.
 /// </summary>
 /// <remarks>
 /// Portions of this file have been adapted from zlib 1.2.3 <br/>
@@ -74,8 +75,8 @@ public static class LzCodec
     /// </summary>
     /// <param name="entryData">Contents to be verified.</param>
     /// <returns>
-    /// <see langword="true"/> if the raw byte array appears to contain a
-    /// compressed FSH file (QFS); <see langword="false"/> otherwise.
+    /// <see langword="true"/> if the raw byte array appears to contain
+    /// compressed data; <see langword="false"/> otherwise.
     /// </returns>
     public static bool IsCompressed(byte[] entryData)
     {
@@ -87,8 +88,8 @@ public static class LzCodec
     /// </summary>
     /// <param name="stream">Stream with the contents to be verified.</param>
     /// <returns>
-    /// <see langword="true"/> if the stream appears to contain a
-    /// compressed FSH file (QFS); <see langword="false"/> otherwise.
+    /// <see langword="true"/> if the stream appears to contain
+    /// compressed data; <see langword="false"/> otherwise.
     /// </returns>
     public static bool IsCompressed(Stream stream)
     {
@@ -100,7 +101,7 @@ public static class LzCodec
     }
 
     /// <summary>
-    /// Decompress data compressed with QFS/RefPack compression.
+    /// Decompress data compressed with RefPack compression.
     /// </summary>
     /// <param name="sourceBytes">Compressed data array</param>
     /// <returns>Decompressed data array</returns>
@@ -130,7 +131,7 @@ public static class LzCodec
     }
 
     /// <summary>
-    /// Compress data with QFS/RefPack compression.
+    /// Compress data with RefPack compression.
     /// </summary>
     /// <param name="dData">Data to compress</param>
     /// <returns>Compressed data array</returns>
@@ -358,9 +359,9 @@ public static class LzCodec
     private static void SlowMemCopy(byte[] dst, int dstptr, byte[] src, int srcptr, int nbytes)
     {
         /* NOTE:
-         * DO NOT change this into a system call, the nature of QFS means that
-         * it MUST work byte for byte (internal overlaps possible) and in any
-         * case this is fast.
+         * DO NOT change this into a system call, the nature of this kind of
+         * compression means that it MUST work byte for byte (internal overlaps
+         * are possible) and in any case this is fast.
          */
         while (nbytes > 0)
         {
