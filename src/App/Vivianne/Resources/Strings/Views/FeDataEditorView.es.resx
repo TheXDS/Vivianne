@@ -297,4 +297,28 @@
   <data name="LinkEditsNote" xml:space="preserve">
     <value>Actualmente, únicamente se soportan campos de información sin localización (propiedades básicas, comparación y valores desconocidos).</value>
   </data>
+  <data name="DynamicStability" xml:space="preserve">
+    <value>Estabilidad dinámica</value>
+  </data>
+  <data name="Upgradable" xml:space="preserve">
+    <value>Mejorable</value>
+  </data>
+  <data name="RoofType" xml:space="preserve">
+    <value>Tipo de techo</value>
+  </data>
+  <data name="EngineLocation" xml:space="preserve">
+    <value>Ubicación de motor</value>
+  </data>
+  <data name="CompareUpgrade1" xml:space="preserve">
+    <value>Mejora 1</value>
+  </data>
+  <data name="CompareUpgrade2" xml:space="preserve">
+    <value>Mejora 2</value>
+  </data>
+  <data name="CompareUpgrade3" xml:space="preserve">
+    <value>Mejora 3</value>
+  </data>
+  <data name="IsDLC" xml:space="preserve">
+    <value>Es un DLC</value>
+  </data>
 </root>

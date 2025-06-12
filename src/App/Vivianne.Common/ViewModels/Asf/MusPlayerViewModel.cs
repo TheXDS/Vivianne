@@ -1,5 +1,5 @@
-﻿using System.IO;
-using System.Media;
+﻿using NAudio.Wave;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TheXDS.Ganymede.Models;
@@ -18,8 +18,8 @@ namespace TheXDS.Vivianne.ViewModels.Asf;
 /// </summary>
 public class MusPlayerViewModel : ViewModel, IViewModel
 {
-    private readonly SoundPlayer _snd = new();
-    private bool _isPlaying;
+    private WaveOutEvent? outputDevice;
+    private WaveFileReader? audioFile;
     private MapFile? linearMap;
 
     /// <summary>
@@ -52,7 +52,7 @@ public class MusPlayerViewModel : ViewModel, IViewModel
         get => linearMap;
         set
         {
-            if (Change(ref linearMap, value) && _isPlaying)
+            if (Change(ref linearMap, value))
             {
                 OnStopPlayback();
             }
@@ -71,14 +71,18 @@ public class MusPlayerViewModel : ViewModel, IViewModel
 
     private void OnPlaySample()
     {
-        SetSound(GetAudioStream());
-        _snd.Play();
+        var rawWav = new MemoryStream(GetAudioStream());
+        outputDevice = new WaveOutEvent();
+        audioFile = new WaveFileReader(rawWav) ;
+        outputDevice.Init(audioFile);
+        outputDevice.Play();
     }
 
     private void OnStopPlayback()
     {
-        _isPlaying = false;
-        _snd.Stop();
+        outputDevice?.Stop();
+        audioFile?.Dispose();
+        outputDevice?.Dispose();
     }
 
     private async Task OnExportAudio()
@@ -93,14 +97,6 @@ public class MusPlayerViewModel : ViewModel, IViewModel
     {
         (var audioProps, var rawStream) = AudioRender.JoinAllStreams(Mus);
         return AudioRender.RenderData(audioProps, rawStream);
-    }
-
-    private void SetSound(byte[] data)
-    {
-        _isPlaying = false;
-        _snd.Stop();
-        _snd.Stream?.Dispose();
-        _snd.Stream = new MemoryStream(data);
     }
 
     Task IViewModel.OnNavigateAway(CancelFlag navigation)

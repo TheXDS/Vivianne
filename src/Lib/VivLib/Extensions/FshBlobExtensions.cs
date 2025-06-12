@@ -231,6 +231,11 @@ public static class FshBlobExtensions
         }
     }
 
+    /// <summary>
+    /// Enumerates all attachments that may exist on the footer of the <see cref="FshBlob"/>.
+    /// </summary>
+    /// <param name="blob"></param>
+    /// <returns></returns>
     public static IEnumerable<(FshBlobFooterType, byte[])> GetAttachments(this FshBlob blob)
     {
         var footerType = blob.FooterType();

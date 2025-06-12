@@ -3,9 +3,9 @@
 namespace TheXDS.Vivianne.Serializers.Audio.Mus;
 
 [StructLayout(LayoutKind.Sequential, Pack = 4)]
-internal struct AsfBlockHeader
+internal struct SplitChunkHeader
 {
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-    public byte[] Magic;
-    public int BlockSize;
+    public int OutSize;
+    public int LeftChannelOffset;
+    public int RightChannelOffset;
 }
