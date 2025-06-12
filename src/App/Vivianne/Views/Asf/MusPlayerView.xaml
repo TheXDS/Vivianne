@@ -1,0 +1,19 @@
+﻿<UserControl
+    x:Class="TheXDS.Vivianne.Views.Asf.MusPlayerView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:local="clr-namespace:TheXDS.Vivianne.Views.Asf"
+    xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels.Bnk;assembly=Vivianne.Common"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:hlp="clr-namespace:TheXDS.Vivianne.Helpers"
+    xmlns:asf="clr-namespace:TheXDS.Vivianne.ViewModels.Asf;assembly=Vivianne.Common"
+    d:DataContext="{d:DesignInstance Type=asf:MusPlayerViewModel}"
+    hlp:Form.BetaMessage="This feature is in early stages of development."
+    mc:Ignorable="d">
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
+        <ui:Button Margin="5" Icon="{ui:SymbolIcon Symbol=Play24}" Command="{Binding PlaySampleCommand, Mode=OneWay}"/>
+        <ui:Button Margin="5" Icon="{ui:SymbolIcon Symbol=Stop24}" Command="{Binding StopPlaybackCommand, Mode=OneWay}"/>
+    </StackPanel>
+</UserControl>

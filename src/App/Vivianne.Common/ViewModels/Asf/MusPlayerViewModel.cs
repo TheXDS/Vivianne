@@ -1,27 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Media;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TheXDS.Ganymede.Models;
-using TheXDS.Ganymede.Services;
-using TheXDS.Ganymede.Types;
 using TheXDS.Ganymede.Types.Base;
 using TheXDS.Ganymede.Types.Extensions;
 using TheXDS.MCART.Component;
-using TheXDS.MCART.Exceptions;
-using TheXDS.MCART.Types.Extensions;
-using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Models.Audio.Mus;
-using TheXDS.Vivianne.Properties;
 using TheXDS.Vivianne.Resources;
-using TheXDS.Vivianne.Serializers;
-using TheXDS.Vivianne.Serializers.Audio.Mus;
 using TheXDS.Vivianne.Tools.Audio;
-using TheXDS.Vivianne.ViewModels.Base;
 
 namespace TheXDS.Vivianne.ViewModels.Asf;
 
@@ -120,114 +107,5 @@ public class MusPlayerViewModel : ViewModel, IViewModel
     {
         OnStopPlayback();
         return Task.CompletedTask;
-    }
-}
-
-public class MusPlayerViewModelLauncher : ViewModel, IFileEditorViewModelLauncher
-{
-    private static readonly ISerializer<MusFile> Serializer = new MusSerializer();
-
-    private readonly IEnumerable<FileFilterItem> _openFilter;
-
-    /// <inheritdoc/>
-    public RecentFileInfo[] RecentFiles { get; set; }
-
-    /// <inheritdoc/>
-    public ICommand NewFileCommand { get; }
-
-    /// <inheritdoc/>
-    public ICommand OpenFileCommand { get; }
-
-    /// <inheritdoc/>
-    public bool CanCreateNew => false;
-
-    /// <inheritdoc/>
-    public string PageName => "ASF/MUS";
-
-    /// <inheritdoc/>
-    public IEnumerable<ButtonInteraction> AdditionalInteractions => throw new System.NotImplementedException();
-
-    public MusPlayerViewModelLauncher()
-    {
-        RecentFiles = Settings.Current.RecentAsfFiles;
-        NewFileCommand = new SimpleCommand(() => throw new TamperException(), false);
-        OpenFileCommand = new SimpleCommand(p => DialogService?.RunOperation(q => OnOpen(p)) ?? Task.CompletedTask);
-    }
-
-    /// <inheritdoc/>
-    public bool CanOpen(string fileExtension)
-    {
-        return ((string[])["asf", "mus"]).Contains(fileExtension.ToLowerInvariant());
-    }
-
-    /// <inheritdoc/>
-    public async Task OnOpen(object parameter)
-    {
-        if (await GetFilePath(parameter, [], _openFilter) is not string filePath) return;
-        var file = await Serializer.DeserializeAsync(File.OpenRead(filePath));
-        var recentFile = CreateRecentFileInfo(filePath, file);
-        RecentFiles = Settings.Current.RecentFilesCount > 0 ? [recentFile, .. (RecentFiles?.Where(p => p.FilePath != filePath) ?? []).Take(Settings.Current.RecentFilesCount - 1)] : [];
-        Notify(nameof(RecentFiles));
-        await Settings.Save();
-        var vm = new MusPlayerViewModel()
-        {
-            Title = recentFile.FriendlyName,
-            Mus = file,
-        };
-        await NavigationService!.Navigate(vm);
-    }
-
-    /// <summary>
-    /// When overriden in a derived class, allows for custom
-    /// <see cref="RecentFileInfo"/> generation.
-    /// </summary>
-    /// <param name="path">Path from where the file is being opened.</param>
-    /// <param name="file">Parsed file contents.</param>
-    /// <returns>
-    /// A new <see cref="RecentFileInfo"/> that can be later used to open the
-    /// same file quickly.
-    /// </returns>
-    protected virtual RecentFileInfo CreateRecentFileInfo(string path, MusFile file)
-    {
-        return new()
-        {
-            FilePath = path,
-            FriendlyName = Path.GetFileName(path),
-        };
-    }
-
-    private Task<string?> GetFilePath(object? parameter, ICollection<RecentFileInfo> recentFiles, IEnumerable<FileFilterItem> filters)
-    {
-        return parameter switch
-        {
-            RecentFileInfo file => TryGetFile(file, recentFiles),
-            string file => Task.FromResult((string?)file),
-            _ => TryOpenFile(filters)
-        };
-    }
-    
-    private async Task<string?> TryGetFile(RecentFileInfo file, ICollection<RecentFileInfo> recentFiles)
-    {
-        recentFiles.Remove(file);
-        IsBusy = true;
-        try
-        {
-            if (!await Task.Run(() => File.Exists(file.FilePath)))
-            {
-                await (DialogService?.Error("St.FileNotFound", "St.FileNotFound2") ?? Task.CompletedTask);
-                return null;
-            }
-            return file.FilePath;
-        }
-        finally
-        {
-            IsBusy = false;
-        }
-    }
-
-    private async Task<string?> TryOpenFile(IEnumerable<FileFilterItem> filters)
-    {
-        var f = await DialogService!.GetFileOpenPath(filters);
-        return f.Result;
     }
 }

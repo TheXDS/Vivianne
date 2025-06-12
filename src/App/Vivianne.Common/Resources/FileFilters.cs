@@ -1,20 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
 using TheXDS.Ganymede.Models;
-using TheXDS.Ganymede.Resources;
-using TheXDS.Vivianne.Data;
 using St = TheXDS.Vivianne.Resources.Strings.FileFilters;
 
 namespace TheXDS.Vivianne.Resources;
-
-public static class Dialogs
-{
-    public static DialogTemplate OpenAs { get; } = CommonDialogTemplates.FileOpen with
-    {
-        Title = "Open as",
-        Text = "Select how you want Vivianne to open this file as",
-    };
-}
 
 /// <summary>
 /// Contains a set of common values and constants to be used by Vivianne.
@@ -50,6 +38,21 @@ public static class FileFilters
     /// saving BNK files.
     /// </summary>
     public static IEnumerable<FileFilterItem> BnkFileFilter { get; } = [new FileFilterItem(St.BNKAudioFile, "*.bnk"), FileFilterItem.AllFiles];
+
+    /// <summary>
+    /// Gets a set of file filters to be used on file dialogs for opening
+    /// either ASF or MUS files.
+    /// </summary>
+    public static IEnumerable<FileFilterItem> AsfMusOpenFilter { get; } = [new FileFilterItem("ASF/MUS file", ["*.mus", "*.asf"]), FileFilterItem.AllFiles];
+
+    /// <summary>
+    /// Gets a set of file filters to be used on file dialogs for saving either
+    /// ASF or MUS files.
+    /// </summary>
+    public static IEnumerable<FileFilterItem> AsfMusSaveFilter { get; } = [
+        new FileFilterItem("ASF file", ["*.asf"]),
+        new FileFilterItem("MUS file", ["*.mus"]),
+        FileFilterItem.AllFiles];
 
     /// <summary>
     /// Gets a set of file filters to be used on file dialogs for opening and

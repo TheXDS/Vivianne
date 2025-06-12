@@ -6,7 +6,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:ct="clr-namespace:TheXDS.Vivianne.Controls"
     xmlns:hlp="clr-namespace:TheXDS.Vivianne.Helpers"
-    xmlns:mdl="clr-namespace:TheXDS.Vivianne.Models.Bnk;assembly=VivLib"
     xmlns:sys="clr-namespace:System;assembly=netstandard"
     xmlns:vc="clr-namespace:TheXDS.Vivianne.ValueConverters"
     xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels.Bnk;assembly=Vivianne.Common"
@@ -132,40 +131,43 @@
                     </Style>
                 </mcart:StretchyWrapPanel.Resources>
                 <ui:Button
-                Icon="{ui:SymbolIcon Symbol=Open24}"
-                Command="{Binding ImportWavCommand, Mode=OneWay}"
-                Content="{x:Static st:BnkEditorViewModel.Import}"/>
+                    Icon="{ui:SymbolIcon Symbol=Open24}"
+                    Command="{Binding ImportWavCommand, Mode=OneWay}"
+                    Content="{x:Static st:BnkEditorViewModel.Import}"/>
                 <ui:Button
-                Icon="{ui:SymbolIcon Symbol=Open24}"
-                Command="{Binding ImportAsAltStreamCommand, Mode=OneWay}"
-                Content="Import Alt stream"/>
+                    Icon="{ui:SymbolIcon Symbol=Open24}"
+                    Command="{Binding ImportAsAltStreamCommand, Mode=OneWay}"
+                    Content="Import Alt stream"/>
                 <ui:Button
-                Icon="{ui:SymbolIcon Symbol=Broom24}"
-                IsEnabled="{Binding State.SelectedStream.AltStream, Converter={StaticResource nn2bc}}"
-                Command="{Binding RemoveAltStreamCommand, Mode=OneWay}"
-                Content="Remove Alt stream"/>
+                    Icon="{ui:SymbolIcon Symbol=Broom24}"
+                    IsEnabled="{Binding State.SelectedStream.AltStream, Converter={StaticResource nn2bc}}"
+                    Command="{Binding RemoveAltStreamCommand, Mode=OneWay}"
+                    Content="Remove Alt stream"/>
                 <ui:Button
-                Icon="{ui:SymbolIcon Symbol=Speaker024}"
-                IsEnabled="{Binding State.SelectedStream, Converter={StaticResource nn2bc}}"
-                Command="{Binding AddAudioPaddingCommand, Mode=OneWay}"
-                Content="Add audio padding"/>
+                    Icon="{ui:SymbolIcon Symbol=Speaker024}"
+                    IsEnabled="{Binding State.SelectedStream, Converter={StaticResource nn2bc}}"
+                    Command="{Binding AddAudioPaddingCommand, Mode=OneWay}"
+                    Content="Add audio padding"/>
                 <ui:Button
-                Icon="{ui:SymbolIcon Symbol=Board24}"
-                IsEnabled="{Binding State.SelectedStream, Converter={StaticResource nn2bc}}"
-                Command="{Binding InjectPaddingCommand, Mode=OneWay}"
-                Content="Inject padding bytes"/>
+                    Icon="{ui:SymbolIcon Symbol=Board24}"
+                    IsEnabled="{Binding State.SelectedStream, Converter={StaticResource nn2bc}}"
+                    Command="{Binding InjectPaddingCommand, Mode=OneWay}"
+                    Content="Inject padding bytes"/>
                 <ui:Button
-                Icon="{ui:SymbolIcon Symbol=Speaker224}"
-                Command="{Binding NormalizeVolumeCommand, Mode=OneWay}"
-                Content="Normalize"/>
+                    Icon="{ui:SymbolIcon Symbol=Speaker224}"
+                    IsEnabled="{Binding State.SelectedStream, Converter={StaticResource nn2bc}}"
+                    Command="{Binding NormalizeVolumeCommand, Mode=OneWay}"
+                    Content="Normalize"/>
                 <ui:Button
-                Icon="{ui:SymbolIcon Symbol=Save24}"
-                Command="{Binding ExportSampleCommand, Mode=OneWay}"
-                Content="{x:Static st:BnkEditorViewModel.Export}"/>
+                    Icon="{ui:SymbolIcon Symbol=Save24}"
+                    IsEnabled="{Binding State.SelectedStream, Converter={StaticResource nn2bc}}"
+                    Command="{Binding ExportSampleCommand, Mode=OneWay}"
+                    Content="{x:Static st:BnkEditorViewModel.Export}"/>
                 <ui:Button
-                Icon="{ui:SymbolIcon Symbol=Save24}"
-                Command="{Binding ExportLoopCommand, Mode=OneWay}"
-                Content="{x:Static st:BnkEditorViewModel.ExportLoop}"/>
+                    Icon="{ui:SymbolIcon Symbol=Save24}"
+                    IsEnabled="{Binding State.SelectedStream, Converter={StaticResource nn2bc}}"
+                    Command="{Binding ExportLoopCommand, Mode=OneWay}"
+                    Content="{x:Static st:BnkEditorViewModel.ExportLoop}"/>
             </mcart:StretchyWrapPanel>
         </Border>
     </Grid>

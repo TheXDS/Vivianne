@@ -1,19 +1,19 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using TheXDS.Ganymede.Resources;
 using TheXDS.Ganymede.Types.Base;
 using TheXDS.Vivianne.Component;
 using TheXDS.Vivianne.Info;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Models.Audio.Bnk;
+using TheXDS.Vivianne.Models.Audio.Mus;
 using TheXDS.Vivianne.Models.Bnk;
 using TheXDS.Vivianne.Models.Fe;
 using TheXDS.Vivianne.Models.Fsh;
 using TheXDS.Vivianne.Serializers;
 using TheXDS.Vivianne.Serializers.Audio.Bnk;
+using TheXDS.Vivianne.Serializers.Audio.Mus;
 using TheXDS.Vivianne.Serializers.Fsh;
 using TheXDS.Vivianne.ViewModels;
+using TheXDS.Vivianne.ViewModels.Asf;
 using TheXDS.Vivianne.ViewModels.Base;
 using TheXDS.Vivianne.ViewModels.Bnk;
 using TheXDS.Vivianne.ViewModels.Fce.Nfs3;
@@ -68,6 +68,9 @@ internal static class ContentVisualizerConfiguration
         yield return new(".txt", CreateCarpEditorViewModel);
         yield return new(".fce", CreateFceEditorViewModel);
         yield return new(".bnk", CreateBnkEditorViewModel);
+
+        yield return new(".asf", CreateMusPlayerViewModel);
+        yield return new(".mus", CreateMusPlayerViewModel);
     }
 
     public static ExternalFileViewModel CreateExternalEditorViewModel(byte[] data, VivEditorViewModel vm, string name)
@@ -118,6 +121,14 @@ internal static class ContentVisualizerConfiguration
     private static BnkEditorViewModel? CreateBnkEditorViewModel(byte[] data, VivEditorViewModel vm, string name)
     {
         return CreateEditorViewModel<BnkEditorViewModel, BnkEditorState, BnkFile, BnkSerializer>(data, vm, name);
+    }
+    private static MusPlayerViewModel? CreateMusPlayerViewModel(byte[] data, VivEditorViewModel vm, string fileName)
+    {
+        return new MusPlayerViewModel()
+        {
+            Title = fileName,
+            Mus = ((IOutSerializer<MusFile>)new MusSerializer()).Deserialize(data),
+        };
     }
 
     private static TViewModel? CreateEditorViewModel<TViewModel, TState, TFile, TSerializer>(byte[] data, VivEditorViewModel vm, string name)

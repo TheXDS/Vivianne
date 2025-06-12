@@ -16,11 +16,16 @@ using St = TheXDS.Vivianne.Resources.Strings.Common;
 
 namespace TheXDS.Vivianne.ViewModels.Base;
 
+/// <summary>
+/// Base class for ViewModels that can launch file viewers for a specific file type.
+/// </summary>
+/// <typeparam name="TFile">Type of file to be visualized in the generated ViewModel.</typeparam>
+/// <typeparam name="TSerializer">Type of serializer that can be used to read file data.</typeparam>
+/// <typeparam name="TViewModel">Type of ViewModel to launch upon invocation.</typeparam>
 public abstract class FileViewModelLauncherBase<TFile, TSerializer, TViewModel> : ViewModel, IFileViewerViewModelLauncher
     where TFile : notnull, new()
     where TSerializer : IOutSerializer<TFile>, new()
-    where TViewModel : IFileEditorViewModel, new()
-
+    where TViewModel : IViewModel
 {
     /// <summary>
     /// Gets a reference to the serializer used to serialize and deserialize files of type <typeparamref name="TFile"/>.
@@ -41,6 +46,11 @@ public abstract class FileViewModelLauncherBase<TFile, TSerializer, TViewModel> 
     /// <inheritdoc/>
     public virtual IEnumerable<ButtonInteraction> AdditionalInteractions { get { yield break; } }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="FileViewModelLauncherBase{TFile, TSerializer, TViewModel}"/> class.
+    /// </summary>
+    /// <param name="pageName">Display name for the page.</param>
+    /// <param name="openFilter">File filter to use when opening files.</param>
     protected FileViewModelLauncherBase(string pageName, IEnumerable<FileFilterItem> openFilter)
     {
         _openFilter = openFilter;
@@ -64,10 +74,26 @@ public abstract class FileViewModelLauncherBase<TFile, TSerializer, TViewModel> 
         RecentFiles = Settings.Current.RecentFilesCount > 0 ? [recentFile, .. (RecentFiles?.Where(p => p.FilePath != filePath) ?? []).Take(Settings.Current.RecentFilesCount - 1)] : [];
         Notify(nameof(RecentFiles));
         await Settings.Save();
-        await NavigationService!.Navigate(CreateViewModel(recentFile.FriendlyName));
+        await NavigationService!.Navigate(CreateViewModel(recentFile.FriendlyName, file, filePath));
     }
 
-    protected abstract TViewModel CreateViewModel(string? friendlyName);
+    /// <summary>
+    /// Creates a ViewModel for the specified file.
+    /// </summary>
+    /// <param name="friendlyName">
+    /// Friendly name to use as a title for the ViewModel to be created.
+    /// </param>
+    /// <param name="file">
+    /// Reference to the file to be displayed on the ViewModel.
+    /// </param>
+    /// <param name="filePath">
+    /// Reference to the full FilePath to the file to be displayed on the
+    /// ViewModel.
+    /// </param>
+    /// <returns>
+    /// A new ViewModel that can be used to display the specified file.
+    /// </returns>
+    protected abstract TViewModel CreateViewModel(string? friendlyName, TFile file, string filePath);
 
     /// <summary>
     /// When overriden in a derived class, allows for custom

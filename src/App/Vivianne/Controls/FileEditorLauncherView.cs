@@ -22,16 +22,16 @@ public class FileEditorLauncherView : Control
     static FileEditorLauncherView()
     {
         SetControlStyle<FileEditorLauncherView>(DefaultStyleKeyProperty);
-        LauncherProperty = NewDp<IFileEditorViewModelLauncher, FileEditorLauncherView>(nameof(Launcher));
+        LauncherProperty = NewDp<IFileViewerViewModelLauncher, FileEditorLauncherView>(nameof(Launcher));
     }
 
     /// <summary>
     /// Gets or sets a reference to the Launcher ViewModel to bind this control
     /// to.
     /// </summary>
-    public IFileEditorViewModelLauncher Launcher
+    public IFileViewerViewModelLauncher Launcher
     {
-        get => (IFileEditorViewModelLauncher)GetValue(LauncherProperty);
+        get => (IFileViewerViewModelLauncher)GetValue(LauncherProperty);
         set => SetValue(LauncherProperty, value);
     }
 }

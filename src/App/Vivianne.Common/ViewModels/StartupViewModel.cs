@@ -11,6 +11,7 @@ using TheXDS.Ganymede.Types.Base;
 using TheXDS.Ganymede.Types.Extensions;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Properties;
+using TheXDS.Vivianne.ViewModels.Asf;
 using TheXDS.Vivianne.ViewModels.Base;
 using TheXDS.Vivianne.ViewModels.Fce;
 using TheXDS.Vivianne.ViewModels.Fsh;
@@ -89,6 +90,7 @@ public class StartupViewModel : ViewModel
             new VivFileEditorLauncher(() => DialogService!),
             new FshFileEditorLauncher(() => DialogService!),
             new FceFileEditorLauncher(() => DialogService!),
+            new MusPlayerViewModelLauncher(),
             new ExtraToolsViewModelLauncher()
         ];
         Title = St.StartupPage;
