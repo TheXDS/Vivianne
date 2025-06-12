@@ -14,9 +14,19 @@ public partial class FshCommand
         var cmd = new Command("footer", "Manages the footer data for a single blob in a FSH/QFS file.");
         var blobArg = new Argument<string>(St.BlobInfo_Arg1, "Name of the blob to manage.");
         cmd.AddArgument(blobArg);
+        cmd.AddCommand(BuildFooterInfoCommand(fileArg, blobArg));
         cmd.AddCommand(BuildFooterPrintCommand(fileArg, blobArg));
         cmd.AddCommand(BuildFooterNewCommand(fileArg, blobArg));
         cmd.AddCommand(BuildFooterRmCommand(fileArg, blobArg));
+        return cmd;
+    }
+
+    private static Command BuildFooterInfoCommand(Argument<FileInfo> fileArg, Argument<string> blobArg)
+    {
+        var cmd = new Command("info", "Shows information about the footer data for a single blob in a FSH/QFS file.");
+        cmd.AddAlias("show");
+        cmd.AddAlias("details");
+        cmd.SetHandler(FooterInfoCommand, fileArg, blobArg);
         return cmd;
     }
 
@@ -50,13 +60,18 @@ public partial class FshCommand
         return cmd;
     }
 
-    private static void FooterNewCommand(FileInfo file, string blob, FshBlobFooterType footerType) => FshBlobOp(blob, file, (f, b) =>
+    private static Task FooterInfoCommand(FileInfo file, string blob)
+    {
+        return ReadOnlyFshBlobOp(file, blob, (fsh, blob) => Console.WriteLine(GetFshBlobFooterLabel(blob, true)));
+    }
+
+    private static void FooterNewCommand(FileInfo file, string blob, FshBlobFooterType footerType) => FshBlobOp(file, blob, (f, b) =>
     {
         if (!Mappings.FshFooterBuilder.TryGetValue(footerType, out var footerFactory)) Fail("Unknown footer type");
-        b.Footer = [.. b.Footer, ..footerFactory.Invoke()];
+        b.Footer = [.. b.Footer, .. footerFactory.Invoke()];
     });
 
-    private static Task FooterRemoveCommand(FileInfo file, string blob) => FshBlobOp(blob, file, (_, b) => b.Footer = []);
+    private static Task FooterRemoveCommand(FileInfo file, string blob) => FshBlobOp(file, blob, (_, b) => b.Footer = []);
 
     private static Task FooterPrintCommand(FileInfo file, string blob, FileInfo? outputFile) => ReadOnlyFileTransaction<FshFile, FshSerializer>(file, fsh =>
     {
@@ -78,13 +93,13 @@ public partial class FshCommand
         return FshBlobOp(blob, file, ReadOnlyFileTransaction<FshFile, FshSerializer>, op);
     }
 
-    private static Task FshBlobOp(string blob, FileInfo file, Action<FshFile, FshBlob> op) => FshBlobOp(blob, file, FileTransaction<FshFile, FshSerializer>, (f, b) =>
+    private static Task FshBlobOp(FileInfo file, string blob, Action<FshFile, FshBlob> op) => FshBlobOp(blob, file, FileTransaction<FshFile, FshSerializer>, (f, b) =>
     { 
         op.Invoke(f, b);
         return Task.CompletedTask;
     });
 
-    private static Task ReadOnlyFshBlobOp(string blob, FileInfo file, Action<FshFile, FshBlob> op) => FshBlobOp(blob, file, ReadOnlyFileTransaction<FshFile, FshSerializer>, (f, b) =>
+    private static Task ReadOnlyFshBlobOp(FileInfo file, string blob, Action<FshFile, FshBlob> op) => FshBlobOp(blob, file, ReadOnlyFileTransaction<FshFile, FshSerializer>, (f, b) =>
     {
         op.Invoke(f, b);
         return Task.CompletedTask;
