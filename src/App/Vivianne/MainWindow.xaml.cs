@@ -1,4 +1,6 @@
-﻿namespace Vivianne;
+﻿using System.Windows.Media;
+
+namespace Vivianne;
 
 /// <summary>
 /// Interaction logic for MainWindow.xaml

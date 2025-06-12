@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Media;
 using System.Reflection;
@@ -200,7 +201,7 @@ public class BnkEditorViewModel : StatefulFileEditorViewModelBase<BnkEditorState
             }
         }
 #if DEBUG
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             await DialogService!.Error(ex);
 #else

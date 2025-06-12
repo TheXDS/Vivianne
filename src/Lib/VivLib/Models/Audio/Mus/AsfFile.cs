@@ -3,7 +3,7 @@
 namespace TheXDS.Vivianne.Models.Audio.Mus;
 
 /// <summary>
-/// Represents an ASF audio stream, which is a single audio stream.
+/// Represents an ASF audio file, which is a single audio stream generally used for music.
 /// </summary>
 public class AsfFile : AudioStreamBase
 {

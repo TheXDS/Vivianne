@@ -8,9 +8,17 @@ using TheXDS.Vivianne.Resources;
 namespace TheXDS.Vivianne.Serializers.Audio.Mus;
 
 /// <summary>
-/// Implements a serializer for MUS files.
+/// Implements a serializer for MUS/ASF files.
 /// </summary>
-public class MusSerializer : ISerializer<MusFile>
+/// <remarks>
+/// Technically, a MUS file with a single ASF sub-stream is essentially an ASF
+/// file. Therefore, this serializer can be used to read an ASF file and return
+/// it as a <see cref="MusFile"/> instance. However, a MUS file with multiple
+/// sub-streams is not a valid .ASF file, and therefore this serializer can
+/// only implement deserialization of <see cref="AsfFile"/> instances, even if
+/// the formats are otherwise equivalent.
+/// </remarks>
+public class MusSerializer : ISerializer<MusFile>, IOutSerializer<AsfFile>
 {
     /// <inheritdoc/>
     public MusFile Deserialize(Stream stream)
@@ -70,5 +78,11 @@ public class MusSerializer : ISerializer<MusFile>
             throw new InvalidDataException();
         }
         d.PtHeader = PtHeaderSerializerHelper.ReadPtHeader(br);
+    }
+
+    AsfFile IOutSerializer<AsfFile>.Deserialize(Stream stream)
+    {
+        using BinaryReader br = new(stream);
+        return ReadAsfFile(br);
     }
 }

@@ -3,6 +3,7 @@ using System.Text;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models.Audio.Base;
 using TheXDS.Vivianne.Models.Audio.Bnk;
+using TheXDS.Vivianne.Models.Audio.Mus;
 
 namespace TheXDS.Vivianne.Tools.Audio;
 
@@ -136,5 +137,25 @@ public static class AudioRender
         bw.Write(data.Length);
         bw.Write(data);
         return wavStream.ToArray();
+    }
+
+    /// <summary>
+    /// Combines all stream sub-streams in a <see cref="MusFile"/> into a
+    /// single stream of audio samples.
+    /// </summary>
+    /// <param name="mus">Mus file to join.</param>
+    /// <returns>
+    /// A byte array that contains the joint audio samples from all ASF
+    /// sub-streams in the MUS file.
+    /// </returns>
+    public static (AudioStreamBase, byte[]) JoinAllStreams(MusFile mus)
+    {
+        var rawSteram = new List<byte>();
+        AsfFile commonHeader = mus.AsfSubStreams.Values.First();
+        foreach (var k in mus.AsfSubStreams.Values)
+        {
+            rawSteram.AddRange([.. k.AudioBlocks.SelectMany(p => p)]);
+        }
+        return (commonHeader, [.. rawSteram]);
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
 using TheXDS.Ganymede.Models;
 using TheXDS.Ganymede.Resources;
+using TheXDS.Vivianne.Data;
 using St = TheXDS.Vivianne.Resources.Strings.FileFilters;
 
 namespace TheXDS.Vivianne.Resources;

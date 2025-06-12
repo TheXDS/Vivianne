@@ -1,5 +1,6 @@
 ﻿using System.Windows.Input;
 using TheXDS.Ganymede.Types.Base;
+using TheXDS.Vivianne.Component;
 
 namespace TheXDS.Vivianne.ViewModels.Base;
 

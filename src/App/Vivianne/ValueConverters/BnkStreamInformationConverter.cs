@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using TheXDS.MCART.Helpers;
 using TheXDS.MCART.ValueConverters.Base;
 using TheXDS.Vivianne.Info.Bnk;
 using TheXDS.Vivianne.Models.Audio.Bnk;

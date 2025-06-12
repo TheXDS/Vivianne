@@ -1,4 +1,6 @@
-﻿namespace TheXDS.Vivianne.Models.Carp;
+﻿using System.Collections.ObjectModel;
+
+namespace TheXDS.Vivianne.Models.Carp;
 
 /// <summary>
 /// Describes Car performance data.

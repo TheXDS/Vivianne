@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using TheXDS.Vivianne.Models;
+using Wpf.Ui.Controls;
 using static TheXDS.MCART.Helpers.DependencyObjectHelpers;
 
 namespace TheXDS.Vivianne.Controls;

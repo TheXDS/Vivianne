@@ -1,5 +1,6 @@
 ﻿using System.CommandLine;
 using TheXDS.MCART.Helpers;
+using TheXDS.Vivianne.Models.Audio.Base;
 using TheXDS.Vivianne.Models.Audio.Mus;
 using TheXDS.Vivianne.Serializers.Audio.Mus;
 using TheXDS.Vivianne.Tools.Audio;

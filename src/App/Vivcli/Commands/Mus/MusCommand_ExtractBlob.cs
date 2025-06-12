@@ -29,7 +29,7 @@ public partial class MusCommand
         {
             (AudioStreamBase audioHeader, byte[] rawStream) = blobArg is not null
                 ? InferBlob(blobArg, mus)
-                : JoinAllStreams(mus);
+                : AudioRender.JoinAllStreams(mus);
             using var output = outFile.OpenWrite();
             await output.WriteAsync(AudioRender.RenderData(audioHeader, rawStream));
             await output.FlushAsync();
@@ -59,16 +59,5 @@ public partial class MusCommand
             throw new ArgumentOutOfRangeException(nameof(offset), "No such ASF blob exists inside the MUS file.");
         }
         return (blob, [.. blob.AudioBlocks.SelectMany(p => p)]);
-    }
-
-    private static (AudioStreamBase, byte[]) JoinAllStreams(MusFile mus)
-    {
-        var rawSteram = new List<byte>();
-        AsfFile commonHeader = mus.AsfSubStreams.Values.First();
-        foreach (var k in mus.AsfSubStreams.Values)
-        {
-            rawSteram.AddRange([.. k.AudioBlocks.SelectMany(p => p)]);
-        }
-        return (commonHeader, [.. rawSteram]);
     }
 }

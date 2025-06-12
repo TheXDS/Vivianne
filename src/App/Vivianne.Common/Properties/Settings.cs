@@ -72,6 +72,7 @@ public class Settings
         RecentVivFiles = [];
         RecentFshFiles = [];
         RecentFceFiles = [];
+        RecentAsfFiles = [];
         RecentFilesCount = 10;
         Viv_FileSorting = SortType.FileKind;
         Fce_ShadowByDefault = true;
@@ -88,11 +89,15 @@ public class Settings
     /// </summary>
     public RecentFileInfo[] RecentFshFiles { get; set; }
 
-
     /// <summary>
-    /// Gets or sets the list of recent FCE3 files.
+    /// Gets or sets the list of recent FCE files.
     /// </summary>
     public RecentFileInfo[] RecentFceFiles { get; set; }
+
+    /// <summary>
+    /// Gets or sets the list of recent ASF/MUS files.
+    /// </summary>
+    public RecentFileInfo[] RecentAsfFiles { get; set; }
 
     /// <summary>
     /// Gets or sets the path to the NFS3 main directory.
