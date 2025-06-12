@@ -1,10 +1,7 @@
-﻿using System.Collections.ObjectModel;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Windows;
-using System.Windows.Data;
 using System.Windows.Media;
 using TheXDS.MCART.ValueConverters.Base;
-using TheXDS.Vivianne.Tools;
 using TheXDS.Vivianne.ViewModels;
 
 namespace TheXDS.Vivianne.ValueConverters;

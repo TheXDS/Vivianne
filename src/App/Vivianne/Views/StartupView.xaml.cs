@@ -1,8 +1,6 @@
 ﻿using System.Windows.Controls;
 
 #if !DEBUG
-using System.IO;
-using TheXDS.Vivianne.ViewModels;
 #endif
 
 namespace TheXDS.Vivianne.Views;

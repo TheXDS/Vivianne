@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TheXDS.Vivianne.Component;
+﻿namespace TheXDS.Vivianne.Component;
 
 /// <summary>
 /// Static class that provides keyboard data in a platform agnostic way.

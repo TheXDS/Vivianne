@@ -1,5 +1,4 @@
 ﻿using TheXDS.MCART.Types.Extensions;
-using TheXDS.Vivianne.Models.Fe;
 using TheXDS.Vivianne.Models.Fe.Nfs3;
 
 namespace TheXDS.Vivianne.Serializers.Fe.Nfs3;

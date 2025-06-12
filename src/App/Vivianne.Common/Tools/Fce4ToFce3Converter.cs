@@ -1,10 +1,8 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using TheXDS.Ganymede.Services;
 using TheXDS.Ganymede.Types.Extensions;
-using TheXDS.Vivianne.Models.Fce.Common;
 using TheXDS.Vivianne.Resources;
 using TheXDS.Vivianne.Serializers;
 using TheXDS.Vivianne.Tools.Fce;

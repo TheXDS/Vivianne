@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using TheXDS.MCART.Types.Extensions;
+﻿using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models.Audio.Base;
 
 namespace TheXDS.Vivianne.Serializers.Audio;
@@ -20,8 +19,8 @@ internal static class PtHeaderSerializerHelper
                     goto case PtHeaderField.EndOfHeader;
                 case PtHeaderField.Unk_0xfc:
 #if DEBUG
-                    Debug.Assert(false, "The 0xFC PT header command is not yet implemented. Please verify that we're not overriding data. If you continue, the program will signal the end of the PT header and ignore whatever data follows after 0xFC.");
-                    if (Debugger.IsAttached || Debugger.Launch()) Debugger.Break();
+                    System.Diagnostics.Debug.Assert(false, "The 0xFC PT header command is not yet implemented. Please verify that we're not overriding data. If you continue, the program will signal the end of the PT header and ignore whatever data follows after 0xFC.");
+                    if (System.Diagnostics.Debugger.IsAttached || System.Diagnostics.Debugger.Launch()) System.Diagnostics.Debugger.Break();
                     goto case PtHeaderField.EndOfHeader;
 #endif
                 case PtHeaderField.EndOfHeader: goto EndParsing;

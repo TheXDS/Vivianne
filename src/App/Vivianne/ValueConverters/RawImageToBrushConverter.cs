@@ -1,7 +1,6 @@
 ﻿using System.Globalization;
 using System.Windows.Media;
 using TheXDS.MCART.ValueConverters.Base;
-using TheXDS.Vivianne.ViewModels;
 using TheXDS.Vivianne.ViewModels.Fce.Common;
 
 namespace TheXDS.Vivianne.ValueConverters;

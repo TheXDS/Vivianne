@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Numerics;
 using System.Runtime.InteropServices;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Extensions;

@@ -11,7 +11,6 @@ using TheXDS.Ganymede.Types.Base;
 using TheXDS.Ganymede.Types.Extensions;
 using TheXDS.MCART.Component;
 using TheXDS.Vivianne.Component;
-using TheXDS.Vivianne.Helpers;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Properties;
 using TheXDS.Vivianne.Serializers;

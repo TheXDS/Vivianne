@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Numerics;
+﻿using System.Numerics;
 using TheXDS.Vivianne.Models.Fce.Common;
 
 namespace TheXDS.Vivianne.ViewModels.Fce.Common;

@@ -22,6 +22,7 @@ public partial class MusCommand
         cmd.SetHandler(ExtractBlobCommand, fileArg, blobArg, outFile);
         return cmd;
     }
+
     private static Task ExtractBlobCommand(FileInfo musFile, string? blobArg, FileInfo outFile)
     {
         return ReadOnlyFileTransaction<MusFile, MusSerializer>(musFile, async mus =>

@@ -1,9 +1,6 @@
 ﻿#pragma warning disable CS1591
 
-using TheXDS.MCART.Types.Extensions;
-using TheXDS.Vivianne.Models.Carp.Base;
 using TheXDS.Vivianne.Models.Fsh;
-using TheXDS.Vivianne.Serializers.Carp;
 using TheXDS.Vivianne.Serializers.Fsh;
 
 namespace TheXDS.Vivianne.Serializers;

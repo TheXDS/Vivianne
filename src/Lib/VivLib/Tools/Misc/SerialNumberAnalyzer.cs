@@ -1,5 +1,4 @@
-﻿using TheXDS.MCART.Math;
-using TheXDS.Vivianne.Info;
+﻿using TheXDS.Vivianne.Info;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Models.Carp;
 using TheXDS.Vivianne.Models.Fe;
