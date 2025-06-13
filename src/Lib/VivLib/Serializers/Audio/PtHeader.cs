@@ -38,8 +38,11 @@ public class PtHeader
     /// <summary>
     /// Gets or sets a generic metadata value on this PT header.
     /// </summary>
-    /// <param name="field"></param>
-    /// <returns></returns>
+    /// <param name="field">Field to get or set.</param>
+    /// <returns>
+    /// A <see cref="PtHeaderValue"/> structure that contains information on
+    /// the requested value.
+    /// </returns>
     public PtHeaderValue this[PtHeaderField field]
     {
         get => Values[field];
@@ -50,8 +53,11 @@ public class PtHeader
     /// Gets or sets an audio-specific property on the audio sub-header on this
     /// PT header.
     /// </summary>
-    /// <param name="field"></param>
-    /// <returns></returns>
+    /// <param name="field">Field to get or set.</param>
+    /// <returns>
+    /// A <see cref="PtHeaderValue"/> structure that contains information on
+    /// the requested value.
+    /// </returns>
     public PtHeaderValue this[PtAudioHeaderField field]
     {
         get => AudioValues[field];
