@@ -128,6 +128,8 @@ internal static class ContentVisualizerConfiguration
         {
             Title = fileName,
             Mus = ((IOutSerializer<MusFile>)new MusSerializer()).Deserialize(data),
+            FileName = fileName,
+            BackingStore = new VivBackingStore(vm)
         };
     }
 

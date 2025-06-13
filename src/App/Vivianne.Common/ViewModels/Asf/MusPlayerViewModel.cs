@@ -1,4 +1,5 @@
 ﻿using NAudio.Wave;
+using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -6,8 +7,11 @@ using TheXDS.Ganymede.Models;
 using TheXDS.Ganymede.Types.Base;
 using TheXDS.Ganymede.Types.Extensions;
 using TheXDS.MCART.Component;
+using TheXDS.Vivianne.Component;
 using TheXDS.Vivianne.Models.Audio.Mus;
 using TheXDS.Vivianne.Resources;
+using TheXDS.Vivianne.Serializers;
+using TheXDS.Vivianne.Serializers.Audio.Mus;
 using TheXDS.Vivianne.Tools.Audio;
 
 namespace TheXDS.Vivianne.ViewModels.Asf;
@@ -45,6 +49,17 @@ public class MusPlayerViewModel : ViewModel, IViewModel
     public required MusFile Mus { get; init; }
 
     /// <summary>
+    /// Gets the file name of the MUS file being played.
+    /// </summary>
+    public required string FileName { get; init; }
+
+    /// <summary>
+    /// Gets a reference to the backing store to use when reading files related
+    /// to the MUS file being played.
+    /// </summary>
+    public required IBackingStore BackingStore { get; init; }
+
+    /// <summary>
     /// Represents a file that contains a linear playback map for the MUS file.
     /// </summary>
     public MapFile? LinearMap
@@ -69,6 +84,22 @@ public class MusPlayerViewModel : ViewModel, IViewModel
         ExportAudioCommand = new SimpleCommand(OnExportAudio);
     }
 
+    /// <inheritdoc/>
+    protected override async Task OnCreated()
+    {
+        if (await BackingStore.ReadAsync($"{Path.GetFileNameWithoutExtension(FileName)}.lin") is byte[] rawLin)
+        {
+            try
+            {
+                LinearMap = await ((ISerializer<MapFile>)new MapSerializer()).DeserializeAsync(rawLin);
+            }
+            catch
+            {
+                Debug.Print("Error loading linear map file for the current MUS file. Ignoring...");
+            }
+        }
+    }
+
     private void OnPlaySample()
     {
         var rawWav = new MemoryStream(GetAudioStream());
@@ -89,6 +120,7 @@ public class MusPlayerViewModel : ViewModel, IViewModel
     {
         if (await DialogService!.GetFileSavePath(FileFilters.AudioFileFilter) is { Success: true, Result: string path })
         {
+            
             await File.WriteAllBytesAsync(path, GetAudioStream());
         }
     }

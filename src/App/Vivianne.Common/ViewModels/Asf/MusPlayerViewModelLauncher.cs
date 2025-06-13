@@ -1,4 +1,6 @@
-﻿using TheXDS.Vivianne.Models;
+﻿using System.IO;
+using TheXDS.Vivianne.Component;
+using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Models.Audio.Mus;
 using TheXDS.Vivianne.Properties;
 using TheXDS.Vivianne.Resources;
@@ -20,12 +22,14 @@ public class MusPlayerViewModelLauncher() : FileViewModelLauncherBase<MusFile, M
     }
 
     /// <inheritdoc/>
-    protected override MusPlayerViewModel CreateViewModel(string? friendlyName, MusFile file, string _)
+    protected override MusPlayerViewModel CreateViewModel(string? friendlyName, MusFile file, string filePath)
     {
         return new MusPlayerViewModel()
         {
             Title = friendlyName,
             Mus = file,
+            FileName = Path.GetFileName(filePath),
+            BackingStore = new FileSystemBackingStore(DialogService!, [], filePath)
         };
     }
 }
