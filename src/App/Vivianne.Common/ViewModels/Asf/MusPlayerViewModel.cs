@@ -1,6 +1,10 @@
 ﻿using NAudio.Wave;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TheXDS.Ganymede.Models;
@@ -25,6 +29,7 @@ public class MusPlayerViewModel : ViewModel, IViewModel
     private WaveOutEvent? outputDevice;
     private WaveFileReader? audioFile;
     private MapFile? linearMap;
+    private Timer? playbackTimer;
 
     /// <summary>
     /// Gets a reference to the command used to start playing an audio stream.
@@ -42,6 +47,13 @@ public class MusPlayerViewModel : ViewModel, IViewModel
     /// audio stream to a .WAV file.
     /// </summary>
     public ICommand ExportAudioCommand { get; }
+
+    /// <summary>
+    /// Calculates the total duration of all audio streams in the MUS file.
+    /// </summary>
+    public TimeSpan Duration => GetSubStreams().Select(p => p.CalculatedDuration).Aggregate(TimeSpan.Zero, (accumulator, timeSpan) => accumulator + timeSpan);
+
+    public TimeSpan CurrentPosition => audioFile?.CurrentTime ?? TimeSpan.Zero;
 
     /// <summary>
     /// Gets a reference to the MUS file being played by this view model.
@@ -102,18 +114,38 @@ public class MusPlayerViewModel : ViewModel, IViewModel
 
     private void OnPlaySample()
     {
+        if (outputDevice is { PlaybackState: PlaybackState.Playing }) return;
         var rawWav = new MemoryStream(GetAudioStream());
         outputDevice = new WaveOutEvent();
-        audioFile = new WaveFileReader(rawWav) ;
+        audioFile = new WaveFileReader(rawWav);
+        outputDevice.PlaybackStopped += OnPlaybackEndReached;
         outputDevice.Init(audioFile);
         outputDevice.Play();
+        playbackTimer = new Timer(OnUpdatePlaybackPosition, null, 0, 1000);
+    }
+
+    private void OnPlaybackEndReached(object? _, StoppedEventArgs __) => OnStopPlayback();
+
+    private void OnUpdatePlaybackPosition(object? state)
+    {
+        Notify(nameof(CurrentPosition));
     }
 
     private void OnStopPlayback()
     {
-        outputDevice?.Stop();
+        if (outputDevice is not null)
+        {
+            outputDevice.Stop();
+            outputDevice.PlaybackStopped -= OnPlaybackEndReached;
+        }
+        playbackTimer?.Dispose();
         audioFile?.Dispose();
         outputDevice?.Dispose();
+        playbackTimer = null;
+        audioFile = null;
+        outputDevice = null;
+        GC.Collect();
+        Notify(nameof(CurrentPosition));
     }
 
     private async Task OnExportAudio()
@@ -127,11 +159,27 @@ public class MusPlayerViewModel : ViewModel, IViewModel
 
     private byte[] GetAudioStream()
     {
-        (var audioProps, var rawStream) = AudioRender.JoinAllStreams(Mus);
-        return AudioRender.RenderData(audioProps, rawStream);
+        var jointStreams = AudioRender.JoinStreams(GetSubStreams());
+        return AudioRender.RenderData(jointStreams, [.. jointStreams.AudioBlocks.SelectMany(p => p)]);
+    }
+
+    private IEnumerable<AsfFile> GetSubStreams()
+    {
+        if (LinearMap is not null)
+        {
+            throw new NotImplementedException("Linear playback is not yet implemented for MUS files.");
+            //return Mus.AsfSubStreams.Values.Where(p => LinearMap.LinearPlaybackOffsets.Contains(p.StreamOffset));
+        }
+        return Mus.AsfSubStreams.Values;
     }
 
     Task IViewModel.OnNavigateAway(CancelFlag navigation)
+    {
+        OnStopPlayback();
+        return Task.CompletedTask;
+    }
+
+    Task IViewModel.OnNavigateBack(CancelFlag navigation)
     {
         OnStopPlayback();
         return Task.CompletedTask;

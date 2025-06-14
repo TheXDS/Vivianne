@@ -12,10 +12,8 @@ namespace TheXDS.Vivianne.Models.Audio.Bnk
         /// </summary>
         public string Id { get; set; } = string.Empty;
 
-        /// <summary>
-        /// Calculates the total number of samples in the stream.
-        /// </summary>
-        public int TotalSamples => SampleData.Length / BytesPerSample;
+        /// <inheritdoc/>
+        public override int TotalSamples => SampleData.Length / BytesPerSample;
 
         /// <summary>
         /// Gets or sets a value that lets the app and serializer know if this

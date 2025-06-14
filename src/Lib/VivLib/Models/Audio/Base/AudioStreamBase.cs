@@ -33,4 +33,14 @@ public abstract class AudioStreamBase
     /// header for this stream.
     /// </summary>
     public required IDictionary<byte, PtHeaderValue> Properties { get; init; }
+
+    /// <summary>
+    /// Gets the estimated duration of the audio stream, based on the number of samples, sample rate, and number of channels.
+    /// </summary>
+    public TimeSpan CalculatedDuration => TimeSpan.FromSeconds(TotalSamples / Channels / SampleRate);
+
+    /// <summary>
+    /// Gets the total number of samples in the audio stream.
+    /// </summary>
+    public abstract int TotalSamples { get; }
 }

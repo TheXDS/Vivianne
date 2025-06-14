@@ -9,11 +9,35 @@
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:hlp="clr-namespace:TheXDS.Vivianne.Helpers"
     xmlns:asf="clr-namespace:TheXDS.Vivianne.ViewModels.Asf;assembly=Vivianne.Common"
+    xmlns:vc="clr-namespace:TheXDS.Vivianne.ValueConverters"
     d:DataContext="{d:DesignInstance Type=asf:MusPlayerViewModel}"
     hlp:Form.BetaMessage="This feature is in early stages of development."
-    mc:Ignorable="d">
-    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
-        <ui:Button Margin="5" Icon="{ui:SymbolIcon Symbol=Play24}" Command="{Binding PlaySampleCommand, Mode=OneWay}"/>
-        <ui:Button Margin="5" Icon="{ui:SymbolIcon Symbol=Stop24}" Command="{Binding StopPlaybackCommand, Mode=OneWay}"/>
-    </StackPanel>
+    mc:Ignorable="d"
+    d:DesignWidth="500">
+    <UserControl.Resources>
+        <vc:MusStreamInformationConverter x:Key="mus2nfo"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <DockPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <ui:Button Margin="5" Icon="{ui:SymbolIcon Symbol=Play24}" Command="{Binding PlaySampleCommand, Mode=OneWay}"/>
+            <ui:Button Margin="5" Icon="{ui:SymbolIcon Symbol=Stop24}" Command="{Binding StopPlaybackCommand, Mode=OneWay}"/>
+            <ui:Button Margin="5" Icon="{ui:SymbolIcon Symbol=Save24}" Command="{Binding ExportAudioCommand, Mode=OneWay}" DockPanel.Dock="Right"/>
+            <TextBlock VerticalAlignment="Center" Margin="10,0">
+                <Run Text="{Binding CurrentPosition, Mode=OneWay, StringFormat='mm\\:ss'}"/> - <Run Text="{Binding Duration, Mode=OneWay, StringFormat='mm\\:ss'}"/>
+            </TextBlock>
+        </DockPanel>
+        <TextBlock 
+            Grid.Column="1"
+            Text="{Binding Mus, Mode=OneWay, Converter={StaticResource mus2nfo}}"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
+            TextWrapping="Wrap"
+            Padding="10"
+            Margin="10"
+            Background="#40000000"/>
+    </Grid>
 </UserControl>

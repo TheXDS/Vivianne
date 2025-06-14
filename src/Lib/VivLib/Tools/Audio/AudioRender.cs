@@ -9,7 +9,7 @@ namespace TheXDS.Vivianne.Tools.Audio;
 
 /// <summary>
 /// Includes helper functions to perform Rendering operations on BNK audio
-/// streams, such as conversion to WAV files, etc.
+/// inputStreams, such as conversion to WAV files, etc.
 /// </summary>
 public static class AudioRender
 {
@@ -140,13 +140,13 @@ public static class AudioRender
     }
 
     /// <summary>
-    /// Combines all stream sub-streams in a <see cref="MusFile"/> into a
+    /// Combines all stream sub-inputStreams in a <see cref="MusFile"/> into a
     /// single stream of audio samples.
     /// </summary>
     /// <param name="mus">Mus file to join.</param>
     /// <returns>
     /// A byte array that contains the joint audio samples from all ASF
-    /// sub-streams in the MUS file.
+    /// sub-inputStreams in the MUS file.
     /// </returns>
     public static (AudioStreamBase, byte[]) JoinAllStreams(MusFile mus)
     {
@@ -157,5 +157,43 @@ public static class AudioRender
             rawSteram.AddRange([.. k.AudioBlocks.SelectMany(p => p)]);
         }
         return (commonHeader, [.. rawSteram]);
+    }
+
+    /// <summary>
+    /// Combines the audio inputStreams from multiple ASF files into a single stream.
+    /// </summary>
+    /// <remarks>This method assumes that all input inputStreams are compatible and can be joined seamlessly. It
+    /// is the caller's responsibility to ensure that the inputStreams are in a compatible format.</remarks>
+    /// <param name="inputStreams">A collection of <see cref="AsfFile"/> objects representing the input audio inputStreams to be joined. The collection
+    /// must contain at least one stream.</param>
+    /// <returns>
+    /// An <see cref="AsfFile"/> object that contains the combined audio inputStreams from all provided inputStreams.
+    /// </returns>
+    public static AsfFile JoinStreams(IEnumerable<AsfFile> inputStreams)
+    {
+        var streams = inputStreams.ToList();
+        var result = new AsfFile()
+        { 
+            Properties = new Dictionary<byte, PtHeaderValue>(),
+            BytesPerSample = Quorum(streams.Select(p => p.BytesPerSample), streams.Count),
+            Compression = Quorum(streams.Select(p => p.Compression), streams.Count),
+            Channels = Quorum(streams.Select(p => p.Channels), streams.Count),
+            SampleRate = Quorum(streams.Select(p => p.SampleRate), streams.Count)
+        };
+        foreach (var k in streams)
+        {
+            result.AudioBlocks.Add([.. k.AudioBlocks.SelectMany(p => p)]);
+        }
+        return result;
+    }
+
+    private static T Quorum<T>(IEnumerable<T> values, int quorumCount) where T : notnull
+    {
+        var x = values.GroupBy(p => p).OrderByDescending(p => p.Count()).FirstOrDefault();
+        if (x is null || x.Count() < quorumCount)
+        {
+            throw new InvalidOperationException("No quorum found for the provided values.");
+        }
+        return x.First();
     }
 }

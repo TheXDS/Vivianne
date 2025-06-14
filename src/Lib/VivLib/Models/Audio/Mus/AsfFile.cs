@@ -11,4 +11,7 @@ public class AsfFile : AudioStreamBase
     /// Gets the collection of audio blocks contained in this ASF file.
     /// </summary>
     public IList<byte[]> AudioBlocks { get; } = [];
+
+    /// <inheritdoc/>
+    public override int TotalSamples => AudioBlocks.Sum(p => p.Length) / BytesPerSample;
 }
