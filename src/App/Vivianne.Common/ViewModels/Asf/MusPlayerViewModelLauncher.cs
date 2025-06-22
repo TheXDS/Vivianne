@@ -1,4 +1,6 @@
 ﻿using System.IO;
+using System.Windows.Input;
+using TheXDS.Ganymede.Helpers;
 using TheXDS.Vivianne.Component;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Models.Audio.Mus;
@@ -20,6 +22,10 @@ public class MusPlayerViewModelLauncher() : FileViewModelLauncherBase<MusFile, M
         get => Settings.Current.RecentAsfFiles;
         set => Settings.Current.RecentAsfFiles = value;
     }
+
+    public ICommand NewFileCommand { get; } = CommandBuilder.For<MusPlayerViewModelLauncher>(null!).BuildInvalid();
+
+    public bool CanCreateNew => false;
 
     /// <inheritdoc/>
     protected override MusPlayerViewModel CreateViewModel(string? friendlyName, MusFile file, string filePath)

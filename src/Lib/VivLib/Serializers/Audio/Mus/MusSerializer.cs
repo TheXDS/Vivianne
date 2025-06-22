@@ -50,8 +50,10 @@ public class MusSerializer : ISerializer<MusFile>, IOutSerializer<AsfFile>
                 case "SCHl": ReadPtHeader(data, blockData); break;
                 case "SCCl": ReadCount(data, blockData); break;
                 case "SCDl": ReadAudioBlock(data, blockData); break;
+                case "SCLl": data.LoopOffset = BitConverter.ToInt32(blockData); break;
                 case "SCEl": return data.ToFile();
-                default: throw new NotImplementedException($"Unknown ASF block type: {Encoding.Latin1.GetString(blockHeader.Magic)}");
+                default: System.Diagnostics.Debug.Print($"Unknown ASF block type: {Encoding.Latin1.GetString(blockHeader.Magic)}. Length: {blockData.Length} bytes"); break;
+                //default: throw new NotImplementedException($"Unknown ASF block type: {Encoding.Latin1.GetString(blockHeader.Magic)}");
             }
         } 
     }

@@ -53,6 +53,9 @@ public class MusPlayerViewModel : ViewModel, IViewModel
     /// </summary>
     public TimeSpan Duration => GetSubStreams().Select(p => p.CalculatedDuration).Aggregate(TimeSpan.Zero, (accumulator, timeSpan) => accumulator + timeSpan);
 
+    /// <summary>
+    /// Gets the current playback position of the audio stream.
+    /// </summary>
     public TimeSpan CurrentPosition => audioFile?.CurrentTime ?? TimeSpan.Zero;
 
     /// <summary>

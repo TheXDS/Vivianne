@@ -178,11 +178,19 @@ public static class AudioRender
             BytesPerSample = Quorum(streams.Select(p => p.BytesPerSample), streams.Count),
             Compression = Quorum(streams.Select(p => p.Compression), streams.Count),
             Channels = Quorum(streams.Select(p => p.Channels), streams.Count),
-            SampleRate = Quorum(streams.Select(p => p.SampleRate), streams.Count)
+            SampleRate = Quorum(streams.Select(p => p.SampleRate), streams.Count),
+            LoopStart = Quorum(streams.Select(p => p.LoopStart), streams.Count),
+            LoopEnd = Quorum(streams.Select(p => p.LoopEnd), streams.Count),
+
         };
         foreach (var k in streams)
         {
             result.AudioBlocks.Add([.. k.AudioBlocks.SelectMany(p => p)]);
+            result.LoopOffset ??= k.LoopOffset;
+            foreach (var prop in k.Properties)
+            {
+                result.Properties.TryAdd(prop.Key, prop.Value);
+            }
         }
         return result;
     }

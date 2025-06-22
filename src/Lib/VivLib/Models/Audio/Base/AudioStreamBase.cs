@@ -43,4 +43,14 @@ public abstract class AudioStreamBase
     /// Gets the total number of samples in the audio stream.
     /// </summary>
     public abstract int TotalSamples { get; }
+
+    /// <summary>
+    /// Gets or sets the offset where looping audio data begins.
+    /// </summary>
+    public int LoopStart { get; set; }
+
+    /// <summary>
+    /// Gets or sets the length of the looping audio data.
+    /// </summary>
+    public int LoopEnd { get; set; }
 }

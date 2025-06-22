@@ -23,12 +23,14 @@ internal class AsfData
             SampleRate = (ushort)PtHeader.AudioValues[PtAudioHeaderField.SampleRate].Value,
             BytesPerSample = (byte)PtHeader.AudioValues[PtAudioHeaderField.BytesPerSample].Value,
             Compression = (CompressionMethod)PtHeader.AudioValues[PtAudioHeaderField.Compression].Value,
-            Properties = new Dictionary<byte, PtHeaderValue>(),
+            LoopStart = PtHeader.AudioValues.GetValueOrDefault(PtAudioHeaderField.LoopOffset, default).Value,
+            LoopEnd = PtHeader.AudioValues.GetValueOrDefault(PtAudioHeaderField.LoopEnd, default).Value,
+            Properties = new Dictionary<byte, PtHeaderValue>(ToProps(PtHeader.Values)),
+            LoopOffset = LoopOffset,
         };
         file.AudioBlocks.AddRange(AudioBlocks);
         return file;
     }
-
 
     public int BlockCount { get; set; }
 
@@ -36,4 +38,10 @@ internal class AsfData
 
     public List<byte[]> AudioBlocks { get; } = [];
 
+    public int? LoopOffset { get; set; } = null;
+
+    private static IEnumerable<KeyValuePair<byte, PtHeaderValue>> ToProps<T>(IEnumerable<KeyValuePair<T, PtHeaderValue>> props) where T : Enum
+    {
+        return props.Select(p => new KeyValuePair<byte, PtHeaderValue>((byte)(p.Key.ToUnderlyingType()), p.Value));
+    }
 }

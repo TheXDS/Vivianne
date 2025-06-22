@@ -22,16 +22,6 @@ namespace TheXDS.Vivianne.Models.Audio.Bnk
         public bool IsAltStream { get; set; }
 
         /// <summary>
-        /// Gets or sets the offset where looping audio data begins.
-        /// </summary>
-        public int LoopStart { get; set; }
-
-        /// <summary>
-        /// Gets or sets the length of the looping audio data.
-        /// </summary>
-        public int LoopEnd { get; set; }
-
-        /// <summary>
         /// Gets or sets the RAW audio data on this BNK blob.
         /// </summary>
         public byte[] SampleData { get; set; } = [];
