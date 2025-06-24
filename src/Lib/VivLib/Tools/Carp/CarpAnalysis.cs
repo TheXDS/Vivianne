@@ -52,14 +52,15 @@ public class CarpAnalysis
     {
         var shiftDelay = withShiftDelay ? carp.GearShiftDelay * carp.VelocityToRpmManual.Count(p => carp.EngineMaxRpm / p > targetMphSpeed * 0.44704) : 0.0;
         var torque = withShiftDelay ? carp.TorqueCurve.Median() : carp.TorqueCurve.Max();
+        const double FtLbToNewton = 4.448222;
         const double rollingResistance = 0.02;
-        var a = torque / carp.Mass - rollingResistance;
+        var a = torque * FtLbToNewton / carp.Mass - rollingResistance;
         return Math.Sqrt(2 * 0.3048 * targetMphSpeed / a) + shiftDelay / 1000.0;
     }
 
     private static (double torque, int rpm)[] TorqueWithRpmCurve(ICarPerf carp)
     {
-        var rpmStep = (carp.EngineMaxRpm / carp.TorqueCurve.Count).Clamp(256, carp.EngineMaxRpm);
+        var rpmStep = (carp.EngineMaxRpm / carp.TorqueCurve.Count).Clamp(1, carp.EngineMaxRpm);
         return [.. carp.TorqueCurve
             .Zip(Enumerable.Range(0, carp.TorqueCurve.Count).Select(p => p * rpmStep + carp.EngineMinRpm))
             .Where(p => p.Second <= carp.EngineMaxRpm)];
