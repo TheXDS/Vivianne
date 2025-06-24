@@ -21,7 +21,7 @@ public class FreUnitTextProvider(ICarPerf carp) : FeDataTextProvider(carp, Cultu
         get
         {
             var (hp, rpm) = Analysis.MaxPower;
-            return $"{hp.ToString("0", Culture)} à {rpm.ToString(Culture)}";
+            return $"{(hp * 0.9862).ToString("0", Culture)} à {rpm.ToString(Culture)}";
         }
     }
 
@@ -31,7 +31,7 @@ public class FreUnitTextProvider(ICarPerf carp) : FeDataTextProvider(carp, Cultu
         get
         {
             var (torque, rpm) = Analysis.MaxTorque;
-            return $"{torque.ToString("0", Culture)} à {rpm.ToString(Culture)}";
+            return $"{(torque * 0.9862).ToString("0", Culture)} à {rpm.ToString(Culture)}";
         }
     }
 

@@ -28,7 +28,7 @@ public class ItaUnitTextProvider(ICarPerf carp) : FeDataTextProvider(carp, Cultu
         get
         {
             var (torque, rpm) = Analysis.MaxTorque;
-            return $"{torque.ToString("0", Culture)}/{rpm.ToString(Culture)}";
+            return $"{(torque * 1.3558179483).ToString("0", Culture)}/{rpm.ToString(Culture)}";
         }
     }
 

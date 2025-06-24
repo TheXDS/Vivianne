@@ -24,14 +24,4 @@ public class EngUnitTextProvider(ICarPerf carp) : FeDataTextProvider(carp, Cultu
             return $"{(hp * 0.9862).ToString("0", Culture)} bhp @ {rpm.ToString(Culture)} RPM";
         }
     }
-
-    /// <inheritdoc/>
-    public override string Torque
-    {
-        get
-        {
-            var (torque, rpm) = Analysis.MaxTorque;
-            return $"{(torque * 0.7375621493).ToString("0", Culture)} lb-ft @ {rpm.ToString(Culture)} RPM";
-        }
-    }
 }

@@ -28,7 +28,7 @@ public class GerUnitTextProvider(ICarPerf carp) : FeDataTextProvider(carp, Cultu
         get
         {
             var (torque, rpm) = Analysis.MaxTorque;
-            return $"{torque.ToString("0", Culture)} Nm bei {rpm.ToString(Culture)} U/min";
+            return $"{(torque * 1.3558179483).ToString("0", Culture)} Nm bei {rpm.ToString(Culture)} U/min";
         }
     }
 
