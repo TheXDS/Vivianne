@@ -39,7 +39,7 @@ public class StartupViewModel : ViewModel
     }
 
     private readonly IEnumerable<IViewModelLauncher> _Launchers;
-    private bool _isNfs3Running;
+    private bool _isNfsRunning;
 
     /// <summary>
     /// Gets a reference to the command used to open the settings page.
@@ -52,7 +52,7 @@ public class StartupViewModel : ViewModel
     public ICommand LaunchNfs3Command { get; }
 
     /// <summary>
-    /// Gets a reference to the command used to launch NFS3.
+    /// Gets a reference to the command used to launch NFS4.
     /// </summary>
     public ICommand LaunchNfs4Command { get; }
 
@@ -68,16 +68,16 @@ public class StartupViewModel : ViewModel
     public IEnumerable<IViewModelLauncher> Launchers => _Launchers;
 
     /// <summary>
-    /// Gets a value that indicates if NFS3 is running.
+    /// Gets a value that indicates if Need For Speed is running.
     /// </summary>
     public bool IsNfsRunning
     {
-        get => _isNfs3Running;
-        private set => Change(ref _isNfs3Running, value);
+        get => _isNfsRunning;
+        private set => Change(ref _isNfsRunning, value);
     }
 
     /// <summary>
-    /// Gets a reference to the NFS3 process when it's running.
+    /// Gets a reference to the Need For Speed process when it's running.
     /// </summary>
     public Process? NfsProcess { get; private set; }
 
@@ -134,6 +134,7 @@ public class StartupViewModel : ViewModel
     {
         return OnLaunchNfsProcess(Settings.Current.Nfs3Path, "nfs3.exe", Settings.Current.Nfs3LaunchArgs, "Need For Speed 3");
     }
+
     private Task OnLaunchNfs4()
     {
         return OnLaunchNfsProcess(Settings.Current.Nfs4Path, "nfs4.exe", Settings.Current.Nfs4LaunchArgs, "Need For Speed 4");
@@ -175,9 +176,9 @@ public class StartupViewModel : ViewModel
             await (DialogService?.Show(errTemplate with { Text = ex.Message }) ?? Task.CompletedTask);
         }
     }
+
     private async Task WaitForNfsProcess(Process proc)
     {
-
         NfsProcess = proc;
         IsNfsRunning = true;
         await proc.WaitForExitAsync();
