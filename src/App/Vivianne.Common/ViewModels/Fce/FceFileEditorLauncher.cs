@@ -59,6 +59,9 @@ public class FceFileEditorLauncher : ViewModel, IFileEditorViewModelLauncher
     /// <inheritdoc/>
     public ICommand OpenFileCommand { get; }
 
+    /// <inheritdoc/>
+    public bool IsActive { get; set; }
+
     /// <summary>
     /// Initializes a new instance of the
     /// <see cref="FceFileEditorLauncher"/>

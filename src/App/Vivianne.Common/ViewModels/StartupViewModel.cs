@@ -87,7 +87,7 @@ public class StartupViewModel : ViewModel
     public StartupViewModel()
     {
         _Launchers = [
-            new VivFileEditorLauncher(() => DialogService!),
+            new VivFileEditorLauncher(() => DialogService!) { IsActive = true },
             new FshFileEditorLauncher(() => DialogService!),
             new FceFileEditorLauncher(() => DialogService!),
             new MusPlayerViewModelLauncher(),

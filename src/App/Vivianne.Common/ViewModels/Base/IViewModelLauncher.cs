@@ -20,4 +20,9 @@ public interface IViewModelLauncher : IViewModel
     /// the editor's launcher page.
     /// </summary>
     IEnumerable<ButtonInteraction> AdditionalInteractions { get; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether this ViewModel is active in the startup page.
+    /// </summary>
+    bool IsActive { get; set; }
 }

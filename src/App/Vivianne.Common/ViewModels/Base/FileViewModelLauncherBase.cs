@@ -38,6 +38,9 @@ public abstract class FileViewModelLauncherBase<TFile, TSerializer, TViewModel> 
     public abstract RecentFileInfo[] RecentFiles { get; set; }
 
     /// <inheritdoc/>
+    public bool IsActive { get; set; }
+
+    /// <inheritdoc/>
     public ICommand OpenFileCommand { get; }
 
     /// <inheritdoc/>

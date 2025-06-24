@@ -23,6 +23,9 @@ public class ExtraToolsViewModelLauncher : ViewModel, IViewModelLauncher
     /// view.
     /// </summary>
     public IEnumerable<ButtonInteraction> AdditionalInteractions { get; }
+    
+    /// <inheritdoc/>
+    public bool IsActive { get; set; }
 
     /// <summary>
     /// Initializes a new instance of the
