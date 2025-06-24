@@ -50,7 +50,7 @@ public abstract class AudioStreamBase
     public int LoopStart { get; set; }
 
     /// <summary>
-    /// Gets or sets the length of the looping audio data.
+    /// Gets or sets the offset where looping audio data ends.
     /// </summary>
     public int LoopEnd { get; set; }
 }

@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using SixLabors.ImageSharp.Processing.Processors.Filters;
+using System.Runtime.InteropServices;
 using System.Text;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models.Audio.Base;
@@ -28,7 +29,8 @@ public class MusSerializer : ISerializer<MusFile>, IOutSerializer<AsfFile>
         do
         {
             mus.AsfSubStreams.Add((int)stream.Position, ReadAsfFile(br));
-        } while(stream.Position < stream.Length);
+            // There must be at least enough data for an AsfBlockHeader.
+        } while ((stream.Position + Marshal.SizeOf<AsfBlockHeader>()) <= stream.Length);
         return mus;
     }
 
@@ -41,21 +43,30 @@ public class MusSerializer : ISerializer<MusFile>, IOutSerializer<AsfFile>
     private static AsfFile ReadAsfFile(BinaryReader br)
     {
         AsfData data = new();
-        while (true)
+        try
         {
-            var blockHeader = br.MarshalReadStruct<AsfBlockHeader>();
-            var blockData = br.ReadBytes(blockHeader.BlockSize - Marshal.SizeOf<AsfBlockHeader>());
-            switch (Encoding.Latin1.GetString(blockHeader.Magic))
+            while (true)
             {
-                case "SCHl": ReadPtHeader(data, blockData); break;
-                case "SCCl": ReadCount(data, blockData); break;
-                case "SCDl": ReadAudioBlock(data, blockData); break;
-                case "SCLl": data.LoopOffset = BitConverter.ToInt32(blockData); break;
-                case "SCEl": return data.ToFile();
-                default: System.Diagnostics.Debug.Print($"Unknown ASF block type: {Encoding.Latin1.GetString(blockHeader.Magic)}. Length: {blockData.Length} bytes"); break;
-                //default: throw new NotImplementedException($"Unknown ASF block type: {Encoding.Latin1.GetString(blockHeader.Magic)}");
+                var blockHeader = br.MarshalReadStruct<AsfBlockHeader>();
+                var blockData = br.ReadBytes(blockHeader.BlockSize - Marshal.SizeOf<AsfBlockHeader>());
+                switch (Encoding.Latin1.GetString(blockHeader.Magic))
+                {
+                    case "SCHl": ReadPtHeader(data, blockData); break;
+                    case "SCCl": ReadCount(data, blockData); break;
+                    case "SCDl": ReadAudioBlock(data, blockData); break;
+                    case "SCLl": data.LoopOffset = BitConverter.ToInt32(blockData); break;
+                    case "SCEl": return data.ToFile();
+                    default: 
+                        System.Diagnostics.Debug.Print($"Unknown ASF block type: {Encoding.Latin1.GetString(blockHeader.Magic)}. Length: {blockData.Length} bytes");
+                        br.BaseStream.Skip(blockData.Length);
+                        break;
+                }
             }
-        } 
+        }
+        catch (Exception ex)
+        {
+            throw new EndOfStreamException("Unexpected end of file.", ex);
+        }
     }
 
     private static void ReadAudioBlock(AsfData d, byte[] blockData)

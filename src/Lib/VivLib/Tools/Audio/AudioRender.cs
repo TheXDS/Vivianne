@@ -160,29 +160,27 @@ public static class AudioRender
     }
 
     /// <summary>
-    /// Combines the audio inputStreams from multiple ASF files into a single stream.
+    /// Combines the audio inputStreams from multiple ASF files into a single
+    /// stream.
     /// </summary>
-    /// <remarks>This method assumes that all input inputStreams are compatible and can be joined seamlessly. It
-    /// is the caller's responsibility to ensure that the inputStreams are in a compatible format.</remarks>
-    /// <param name="inputStreams">A collection of <see cref="AsfFile"/> objects representing the input audio inputStreams to be joined. The collection
-    /// must contain at least one stream.</param>
+    /// <remarks>
+    /// This method assumes that all input inputStreams are compatible and can
+    /// be joined seamlessly. It is the caller's responsibility to ensure that
+    /// the inputStreams are in a compatible format.
+    /// </remarks>
+    /// <param name="inputStreams">
+    /// A collection of <see cref="AsfFile"/> objects representing the input
+    /// audio inputStreams to be joined. The collection must contain at least
+    /// one stream.
+    /// </param>
     /// <returns>
-    /// An <see cref="AsfFile"/> object that contains the combined audio inputStreams from all provided inputStreams.
+    /// An <see cref="AsfFile"/> object that contains the combined audio
+    /// inputStreams from all provided inputStreams.
     /// </returns>
     public static AsfFile JoinStreams(IEnumerable<AsfFile> inputStreams)
     {
         var streams = inputStreams.ToList();
-        var result = new AsfFile()
-        { 
-            Properties = new Dictionary<byte, PtHeaderValue>(),
-            BytesPerSample = Quorum(streams.Select(p => p.BytesPerSample), streams.Count),
-            Compression = Quorum(streams.Select(p => p.Compression), streams.Count),
-            Channels = Quorum(streams.Select(p => p.Channels), streams.Count),
-            SampleRate = Quorum(streams.Select(p => p.SampleRate), streams.Count),
-            LoopStart = Quorum(streams.Select(p => p.LoopStart), streams.Count),
-            LoopEnd = Quorum(streams.Select(p => p.LoopEnd), streams.Count),
-
-        };
+        var result = GetJointStreamHeader(streams);
         foreach (var k in streams)
         {
             result.AudioBlocks.Add([.. k.AudioBlocks.SelectMany(p => p)]);
@@ -193,6 +191,34 @@ public static class AudioRender
             }
         }
         return result;
+    }
+
+    /// <summary>
+    /// Gets an empty <see cref="AsfFile"/> with joint stream properties that
+    /// can be used to later concatenate a series of audio streams.
+    /// </summary>
+    /// <param name="inputStreams">
+    /// A collection of <see cref="AsfFile"/> objects representing the input
+    /// audio inputStreams to be joined. The collection must contain at least
+    /// one stream.
+    /// </param>
+    /// <returns>
+    /// An empty <see cref="AsfFile"/> object that contains the combined audio
+    /// properties from all provided inputStreams.
+    /// </returns>
+    public static AsfFile GetJointStreamHeader(IEnumerable<AsfFile> inputStreams)
+    {
+        var streams = inputStreams.ToList();
+        return new AsfFile()
+        {
+            Properties = new Dictionary<byte, PtHeaderValue>(),
+            BytesPerSample = Quorum(streams.Select(p => p.BytesPerSample), streams.Count),
+            Compression = Quorum(streams.Select(p => p.Compression), streams.Count),
+            Channels = Quorum(streams.Select(p => p.Channels), streams.Count),
+            SampleRate = Quorum(streams.Select(p => p.SampleRate), streams.Count),
+            LoopStart = Quorum(streams.Select(p => p.LoopStart), streams.Count),
+            LoopEnd = Quorum(streams.Select(p => p.LoopEnd), streams.Count),
+        };
     }
 
     private static T Quorum<T>(IEnumerable<T> values, int quorumCount) where T : notnull

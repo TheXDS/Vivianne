@@ -34,8 +34,8 @@ public class AsfFileInfoExtractor(bool humanSize) : IEntityInfoExtractor<AsfFile
                 string.Format(St.BnkNfo_Format, value.BytesPerSample * 8, Mappings.AudioCodecDescriptions.GetValueOrDefault(value.Compression, "Unknown")),
                 string.Format(St.BnkNfo_SampleRate, value.SampleRate),
                 string.Format(St.BnkNfo_Size, totalBytes.GetSize(humanSize)),
-                string.Format("PT Loop start: {0} ({1})", value.LoopStart, FromSample(value.LoopStart, value)),
-                string.Format("PT Loop end: {0} ({1})", value.LoopEnd, FromSample(value.LoopEnd, value)),
+                string.Format("PT Loop start: {0} ({1})", value.LoopStart * value.Channels, FromSample(value.LoopStart * value.Channels, value)),
+                string.Format("PT Loop end: {0} ({1})", value.LoopEnd * value.Channels, FromSample(value.LoopEnd * value.Channels, value)),
                 value.LoopOffset.HasValue ? string.Format("SCLl Loop offset: {0} ({1}) ", value.LoopOffset.Value, FromSample(value.LoopOffset.Value, value)) : null,
             }.NotNull(),
             .. value.Properties.Select(p => $"PTHeader {p.Key:X2}: {p.Value.Value} (0x{p.Value.Value:X8})")

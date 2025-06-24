@@ -22,14 +22,17 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <DockPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <ui:Button Margin="5" Icon="{ui:SymbolIcon Symbol=Play24}" Command="{Binding PlaySampleCommand, Mode=OneWay}"/>
-            <ui:Button Margin="5" Icon="{ui:SymbolIcon Symbol=Stop24}" Command="{Binding StopPlaybackCommand, Mode=OneWay}"/>
-            <ui:Button Margin="5" Icon="{ui:SymbolIcon Symbol=Save24}" Command="{Binding ExportAudioCommand, Mode=OneWay}" DockPanel.Dock="Right"/>
-            <TextBlock VerticalAlignment="Center" Margin="10,0">
-                <Run Text="{Binding CurrentPosition, Mode=OneWay, StringFormat='mm\\:ss'}"/> - <Run Text="{Binding Duration, Mode=OneWay, StringFormat='mm\\:ss'}"/>
-            </TextBlock>
-        </DockPanel>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5">
+            <DockPanel>
+                <ui:Button Margin="5" Icon="{ui:SymbolIcon Symbol=Play24}" Command="{Binding PlaySampleCommand, Mode=OneWay}"/>
+                <ui:Button Margin="5" Icon="{ui:SymbolIcon Symbol=Stop24}" Command="{Binding StopPlaybackCommand, Mode=OneWay}"/>
+                <ui:Button Margin="5" Icon="{ui:SymbolIcon Symbol=Save24}" Command="{Binding ExportAudioCommand, Mode=OneWay}" DockPanel.Dock="Right"/>
+                <TextBlock VerticalAlignment="Center" Margin="10,0">
+                    <Run Text="{Binding CurrentPosition, Mode=OneWay, StringFormat='mm\\:ss'}"/> - <Run Text="{Binding Duration, Mode=OneWay, StringFormat='mm\\:ss'}"/>
+                </TextBlock>
+            </DockPanel>
+            <ui:ToggleSwitch Content="Play looping" Margin="5" IsChecked="{Binding PlayLooping}" IsEnabled="{Binding CanPlayLooping, Mode=OneWay}"/>
+        </StackPanel>
         <TextBlock 
             Grid.Column="1"
             Text="{Binding Mus, Mode=OneWay, Converter={StaticResource mus2nfo}}"
