@@ -1,4 +1,5 @@
-﻿using TheXDS.MCART.Math;
+﻿using System.Reflection.Metadata.Ecma335;
+using TheXDS.MCART.Math;
 using TheXDS.Vivianne.Models.Carp;
 
 namespace TheXDS.Vivianne.Tools.Carp;
@@ -38,24 +39,60 @@ public class CarpAnalysis
     /// Estimates the time to accelerate from 0 to the specified speed.
     /// </summary>
     /// <param name="targetMphSpeed">Target speed, in MPH</param>
-    /// <param name="withShiftDelay">
-    /// If set to <see langword="true"/>, calculations will use the median
-    /// torque instead of the maximum, as well as include delays per each
-    /// required gear shift. If set to <see langword="false"/>, calculations
-    /// will use the maximum torque instead, and no gear shift delays will be
-    /// included.
-    /// </param>
+    /// <param name="withShiftDelay">Indicates whether to include gear shift delay in the calculation.</param>
     /// <returns>
     /// The estimated time in seconds required to reach the specified speed.
     /// </returns>
-    public double EstimateAcceleration(double targetMphSpeed, bool withShiftDelay = false)
+    public double EstimateAcceleration(double targetMphSpeed, bool withShiftDelay = true)
     {
-        var shiftDelay = withShiftDelay ? carp.GearShiftDelay * carp.VelocityToRpmManual.Count(p => carp.EngineMaxRpm / p > targetMphSpeed * 0.44704) : 0.0;
-        var torque = withShiftDelay ? carp.TorqueCurve.Median() : carp.TorqueCurve.Max();
-        const double FtLbToNewton = 4.448222;
-        const double rollingResistance = 0.02;
-        var a = torque * FtLbToNewton / carp.Mass - rollingResistance;
-        return Math.Sqrt(2 * 0.3048 * targetMphSpeed / a) + shiftDelay / 1000.0;
+        double mass = carp.Mass;
+        double timeElapsed = 0.0;
+        double speed = 0.0;
+        double targetSpeed = targetMphSpeed * 0.44704;
+        int gear = 2;
+        double wheelRadius = GetWheelRadius();
+
+        var torqueCurve = TorqueWithRpmCurve(carp);
+        double shiftDelay = withShiftDelay ? (carp.GearShiftDelay / 60.0) : 0.0;
+
+        while (speed < targetSpeed && gear < carp.GearRatioManual.Count)
+        {
+            double rpm = (speed * 60.0) / (2 * Math.PI * wheelRadius) * carp.GearRatioManual[gear] * carp.FinalGearManual;
+            rpm = Math.Clamp(rpm, carp.EngineMinRpm, carp.EngineMaxRpm);
+            var (torque, _) = torqueCurve.OrderBy(p => Math.Abs(p.rpm - rpm)).First();
+            double gearEff = carp.GearEfficiencyManual.Count > gear ? carp.GearEfficiencyManual[gear] : 1.0;
+            double force = (torque * carp.GearRatioManual[gear] * carp.FinalGearManual * gearEff) / wheelRadius;
+            double acceleration = force / mass;
+            if (acceleration <= 0.01)
+            {
+                gear++;
+                if (withShiftDelay) timeElapsed += shiftDelay;
+                continue;
+            }
+            double dt = 0.05;
+            double nextSpeed = speed + acceleration * dt;
+            if (nextSpeed > targetSpeed) dt = (targetSpeed - speed) / acceleration;
+            timeElapsed += dt;
+            speed += acceleration * dt;
+            double nextRpm = (speed * 60.0) / (2 * Math.PI * wheelRadius) * carp.GearRatioManual[gear] * carp.FinalGearManual;
+            if (nextRpm > carp.EngineMaxRpm && gear + 1 < carp.GearRatioManual.Count)
+            {
+                gear++;
+                if (withShiftDelay) timeElapsed += shiftDelay;
+            }
+        }
+        return timeElapsed;
+    }
+
+    private double GetWheelRadius()
+    {
+        // Use rear tire by default
+        int width = carp.TireWidthRear > 0 ? carp.TireWidthRear : 205;
+        int aspect = carp.TireSidewallRear > 0 ? carp.TireSidewallRear : 55;
+        int rim = carp.TireRimRear > 0 ? carp.TireRimRear : 16;
+        double sidewall = width * (aspect / 100.0);
+        double diameter = (rim * 25.4) + (2 * sidewall);
+        return diameter / 2000.0;
     }
 
     private static (double torque, int rpm)[] TorqueWithRpmCurve(ICarPerf carp)
