@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Text;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models.Audio.Base;
@@ -42,42 +41,43 @@ public class MusSerializer : ISerializer<MusFile>, IOutSerializer<AsfFile>
     private static AsfFile? ReadAsfFile(BinaryReader br)
     {
         AsfData data = new();
-        try
+        while (true)
         {
-            while (true)
-            {
-                var blockHeader = br.MarshalReadStruct<AsfBlockHeader>();
+            var blockHeader = br.MarshalReadStruct<AsfBlockHeader>();
 
-                // Check for possible alignment issues...
+            // Check for possible alignment issues...
+            if (!blockHeader.Magic[0..2].SequenceEqual("SC"u8.ToArray()))
+            {
+                // This file likely uses 4-byte alignment. Align to 4 bytes and try again.
+                br.BaseStream.Position -= Marshal.SizeOf<AsfBlockHeader>();
+                br.BaseStream.Position += 4 - (br.BaseStream.Position % 4);
+                blockHeader = br.MarshalReadStruct<AsfBlockHeader>();
+
+                // If we're still in the same situation, throw an exception.
                 if (!blockHeader.Magic[0..2].SequenceEqual("SC"u8.ToArray()))
                 {
-                    // This file likely uses 4-byte alignment. Align to 4 bytes and try again.
-                    br.BaseStream.Position -= Marshal.SizeOf<AsfBlockHeader>();
-                    br.BaseStream.Position += 4 - (br.BaseStream.Position % 4);
-                    blockHeader = br.MarshalReadStruct<AsfBlockHeader>();
-
-                    // If we're still in the same situation, throw an exception.
-                    if (!blockHeader.Magic[0..2].SequenceEqual("SC"u8.ToArray()))
-                    {
-                        throw new InvalidDataException($"Invalid or corrupt ASF block: {Encoding.Latin1.GetString(blockHeader.Magic)}");
-                    }
-                }
-                var blockData = br.ReadBytes(blockHeader.BlockSize - Marshal.SizeOf<AsfBlockHeader>());
-                switch (Encoding.Latin1.GetString(blockHeader.Magic))
-                {
-                    case "SCHl": ReadPtHeader(data, blockData); break;
-                    case "SCCl": ReadCount(data, blockData); break;
-                    case "SCDl": ReadAudioBlock(data, blockData); break;
-                    case "SCLl": data.LoopOffset = BitConverter.ToInt32(blockData); break;
-                    case "SCEl": return data.ToFile();
-                    default:
-                        throw new InvalidDataException($"Unknown ASF block type: {Encoding.Latin1.GetString(blockHeader.Magic)}. Length: {blockData.Length} bytes");
+                    throw new InvalidDataException($"Invalid or corrupt ASF block: '{Encoding.Latin1.GetString(blockHeader.Magic)}' (0x{BitConverter.ToInt32(blockHeader.Magic):X8})");
                 }
             }
-        }
-        catch (Exception ex)
-        {
-            throw new EndOfStreamException("Unexpected end of file.", ex);
+            byte[] blockData;
+            try
+            {
+                blockData = br.ReadBytes(blockHeader.BlockSize - Marshal.SizeOf<AsfBlockHeader>());
+            }
+            catch (Exception ex)
+            {
+                throw new EndOfStreamException("Unexpected end of file.", ex);
+            }
+            switch (Encoding.Latin1.GetString(blockHeader.Magic))
+            {
+                case "SCHl": ReadPtHeader(data, blockData); break;
+                case "SCCl": ReadCount(data, blockData); break;
+                case "SCDl": ReadAudioBlock(data, blockData); break;
+                case "SCLl": data.LoopOffset = BitConverter.ToInt32(blockData); break;
+                case "SCEl": return data.ToFile();
+                default:
+                    throw new InvalidDataException($"Unknown ASF block type: {Encoding.Latin1.GetString(blockHeader.Magic)}. Length: {blockData.Length} bytes");
+            }
         }
     }
 

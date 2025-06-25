@@ -224,16 +224,24 @@ public class VivEditorViewModel : StatefulFileEditorViewModelBase<VivEditorState
 
     private async Task<IViewModel> GetViewModel(byte[] rawData, string file)
     {
-        IViewModel vm = PlatformServices.ModifierKey switch
-        { 
-            ModifierKey.Alt => ContentVisualizerConfiguration.CreateExternalEditorViewModel(rawData, this, file),
-            ModifierKey.Ctrl => (await DialogService!.SelectOption(
-                Dialogs.OpenAs,
-                ContentVisualizers.Select(p => new NamedObject<ContentVisualizerViewModelFactory>(p.Value, p.Key)).ToArray())) is { Success:true, Result: { } factory }
-                ? factory.Invoke(rawData, this, file)
-                : null,
-            _ => FindContentVisualizer(file, rawData)
-        } ?? new FileErrorViewModel();
+        IViewModel vm;
+        try
+        {
+            vm = PlatformServices.ModifierKey switch
+            { 
+                ModifierKey.Alt => ContentVisualizerConfiguration.CreateExternalEditorViewModel(rawData, this, file),
+                ModifierKey.Ctrl => (await DialogService!.SelectOption(
+                    Dialogs.OpenAs,
+                    ContentVisualizers.Select(p => new NamedObject<ContentVisualizerViewModelFactory>(p.Value, p.Key)).ToArray())) is { Success:true, Result: { } factory }
+                    ? factory.Invoke(rawData, this, file)
+                    : null,
+                _ => FindContentVisualizer(file, rawData)
+            } ?? FileErrorViewModel.UnknownFileFormat;
+        }
+        catch (Exception ex)
+        {
+            vm = new FileErrorViewModel(ex);
+        }
         vm.Title = file;
         return vm;
     }

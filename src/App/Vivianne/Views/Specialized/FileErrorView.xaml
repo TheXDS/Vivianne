@@ -7,6 +7,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:local="clr-namespace:TheXDS.Vivianne.Views.Specialized"
     xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings.Views"
+    xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
+    d:DataContext="{d:DesignInstance Type=vm:FileErrorViewModel}"
     mc:Ignorable="d">
     <Border
         VerticalAlignment="Center"
@@ -36,7 +38,7 @@
                 Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"
                 Margin="20,0,10,0"
                 Grid.Column="1"
-                Text="{x:Static st:FileErrorView.ErrorMessage}"/>
+                Text="{Binding ErrorMessage, Mode=OneWay}"/>
         </Grid>
     </Border>
 </UserControl>

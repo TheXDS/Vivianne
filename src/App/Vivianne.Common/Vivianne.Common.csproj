@@ -56,6 +56,11 @@
 			<AutoGen>True</AutoGen>
 			<DependentUpon>FceEditorView.resx</DependentUpon>
 		</Compile>
+		<Compile Update="Resources\Strings\ViewModels\FileErrorViewModel.Designer.cs">
+		  <DependentUpon>FileErrorViewModel.resx</DependentUpon>
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		</Compile>
 		<Compile Update="Resources\Strings\ViewModels\FshEditorViewModel.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
@@ -118,6 +123,10 @@
 		<EmbeddedResource Update="Resources\Strings\ViewModels\FceEditorView.resx">
 			<Generator>ResXFileCodeGenerator</Generator>
 			<LastGenOutput>FceEditorView.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Strings\ViewModels\FileErrorViewModel.resx">
+		  <LastGenOutput>FileErrorViewModel.Designer.cs</LastGenOutput>
+		  <Generator>PublicResXFileCodeGenerator</Generator>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Strings\ViewModels\FshEditorViewModel.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>

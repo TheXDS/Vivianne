@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TheXDS.Vivianne.Resources.Strings.Views {
+namespace TheXDS.Vivianne.Resources.Strings.ViewModels {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace TheXDS.Vivianne.Resources.Strings.Views {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class FileErrorView {
+    public class FileErrorViewModel {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal FileErrorView() {
+        internal FileErrorViewModel() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace TheXDS.Vivianne.Resources.Strings.Views {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("TheXDS.Vivianne.Resources.Strings.Views.FileErrorView", typeof(FileErrorView).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("TheXDS.Vivianne.Resources.Strings.ViewModels.FileErrorViewModel", typeof(FileErrorViewModel).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -63,9 +63,9 @@ namespace TheXDS.Vivianne.Resources.Strings.Views {
         /// <summary>
         ///   Looks up a localized string similar to Vivianne could not understand this file format..
         /// </summary>
-        public static string ErrorMessage {
+        public static string UnknownFileFormat {
             get {
-                return ResourceManager.GetString("ErrorMessage", resourceCulture);
+                return ResourceManager.GetString("UnknownFileFormat", resourceCulture);
             }
         }
     }

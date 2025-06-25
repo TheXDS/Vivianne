@@ -159,7 +159,8 @@ public abstract class FileViewModelLauncherBase<TFile, TSerializer, TViewModel> 
         }
         catch (Exception ex)
         {
-            await DialogService!.Error(string.Format("Error opening {0}: {1}", friendlyName, ex.Message));
+            //await DialogService!.Error(string.Format("Error opening {0}: {1}", friendlyName, ex.Message));
+            await NavigationService!.Navigate(new FileErrorViewModel(ex));
             return;
         }        
         var recentFile = CreateRecentFileInfo(filePath, file);
