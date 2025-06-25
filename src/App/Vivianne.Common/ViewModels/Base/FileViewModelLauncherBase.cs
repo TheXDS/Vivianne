@@ -58,8 +58,7 @@ public abstract class FileViewModelLauncherBase<TFile, TSerializer, TViewModel> 
     {
         _openFilter = openFilter;
         PageName = pageName;
-        OpenFileCommand = new SimpleCommand(p => DialogService?.RunOperation(q => OnOpen(p)) ?? Task.CompletedTask);
-
+        OpenFileCommand = new SimpleCommand(p => DialogService?.RunOperation(q => OnOpen(p, q)) ?? Task.CompletedTask);
     }
 
     /// <inheritdoc/>
@@ -69,15 +68,9 @@ public abstract class FileViewModelLauncherBase<TFile, TSerializer, TViewModel> 
     }
 
     /// <inheritdoc/>
-    public async Task OnOpen(object? parameter)
+    public Task OnOpen(object? parameter)
     {
-        if (await GetFilePath(parameter, [], _openFilter) is not string filePath) return;
-        var file = await Task.Run(() => Serializer.Deserialize(File.OpenRead(filePath)));
-        var recentFile = CreateRecentFileInfo(filePath, file);
-        RecentFiles = Settings.Current.RecentFilesCount > 0 ? [recentFile, .. (RecentFiles?.Where(p => p.FilePath != filePath) ?? []).Take(Settings.Current.RecentFilesCount - 1)] : [];
-        Notify(nameof(RecentFiles));
-        await Settings.Save();
-        await NavigationService!.Navigate(CreateViewModel(recentFile.FriendlyName, file, filePath));
+        return OnOpen(parameter, new Progress<ProgressReport>());
     }
 
     /// <summary>
@@ -117,17 +110,17 @@ public abstract class FileViewModelLauncherBase<TFile, TSerializer, TViewModel> 
         };
     }
 
-    private Task<string?> GetFilePath(object? parameter, ICollection<RecentFileInfo> recentFiles, IEnumerable<FileFilterItem> filters)
+    private Task<(string?, string?)> GetFilePath(object? parameter, ICollection<RecentFileInfo> recentFiles, IEnumerable<FileFilterItem> filters)
     {
         return parameter switch
         {
             RecentFileInfo file => TryGetFile(file, recentFiles),
-            string file => Task.FromResult((string?)file),
+            string file => Task.FromResult<(string?, string?)>(((string?)file, Path.GetFileName(file))),
             _ => TryOpenFile(filters)
         };
     }
 
-    private async Task<string?> TryGetFile(RecentFileInfo file, ICollection<RecentFileInfo> recentFiles)
+    private async Task<(string?, string?)> TryGetFile(RecentFileInfo file, ICollection<RecentFileInfo> recentFiles)
     {
         recentFiles.Remove(file);
         IsBusy = true;
@@ -136,9 +129,9 @@ public abstract class FileViewModelLauncherBase<TFile, TSerializer, TViewModel> 
             if (!await Task.Run(() => File.Exists(file.FilePath)))
             {
                 await (DialogService?.Error(St.FileNotFound, St.FileNotFound2) ?? Task.CompletedTask);
-                return null;
+                return (null, null);
             }
-            return file.FilePath;
+            return (file.FilePath, file.FriendlyName);
         }
         finally
         {
@@ -146,9 +139,33 @@ public abstract class FileViewModelLauncherBase<TFile, TSerializer, TViewModel> 
         }
     }
 
-    private async Task<string?> TryOpenFile(IEnumerable<FileFilterItem> filters)
+    private async Task<(string?, string?)> TryOpenFile(IEnumerable<FileFilterItem> filters)
     {
-        var f = await DialogService!.GetFileOpenPath(filters);
-        return f.Result;
+        if (await DialogService!.GetFileOpenPath(filters) is { Success:true, Result: { } f })
+        {
+            return (f, Path.GetFileName(f));
+        }
+        return (null, null);
+    }
+
+    private async Task OnOpen(object? parameter, IProgress<ProgressReport> progress)
+    {
+        if (await GetFilePath(parameter, [], _openFilter) is not { Item1: string filePath, Item2: string friendlyName }) return;
+        progress.Report(string.Format("Opening {0}...", friendlyName));
+        TFile file;
+        try
+        {
+            file = await Task.Run(() => Serializer.Deserialize(File.OpenRead(filePath)));
+        }
+        catch (Exception ex)
+        {
+            await DialogService!.Error(string.Format("Error opening {0}: {1}", friendlyName, ex.Message));
+            return;
+        }        
+        var recentFile = CreateRecentFileInfo(filePath, file);
+        RecentFiles = Settings.Current.RecentFilesCount > 0 ? [recentFile, .. (RecentFiles?.Where(p => p.FilePath != filePath) ?? []).Take(Settings.Current.RecentFilesCount - 1)] : [];
+        Notify(nameof(RecentFiles));
+        await Settings.Save();
+        await NavigationService!.Navigate(CreateViewModel(recentFile.FriendlyName, file, filePath));
     }
 }

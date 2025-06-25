@@ -29,8 +29,12 @@ public class MusSerializer : ISerializer<MusFile>, IOutSerializer<AsfFile>
         do
         {
             mus.AsfSubStreams.Add((int)stream.Position, ReadAsfFile(br));
-            // There must be at least enough data for an AsfBlockHeader.
-        } while ((stream.Position + Marshal.SizeOf<AsfBlockHeader>()) <= stream.Length);
+            
+            if (stream.Position % 4 != 0)
+            {
+                stream.Position += 4 - (stream.Position % 4);
+            }
+        } while (stream.Position < stream.Length);
         return mus;
     }
 

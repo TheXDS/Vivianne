@@ -23,8 +23,14 @@ public class MusPlayerViewModelLauncher() : FileViewModelLauncherBase<MusFile, M
         set => Settings.Current.RecentAsfFiles = value;
     }
 
+    /// <summary>
+    /// Gets a reference to the command used to create a new file, which for this class is an invalid command.
+    /// </summary>
     public ICommand NewFileCommand { get; } = CommandBuilder.For<MusPlayerViewModelLauncher>(null!).BuildInvalid();
 
+    /// <summary>
+    /// Gets a value that determines if the "New" button should be available.
+    /// </summary>
     public bool CanCreateNew => false;
 
     /// <inheritdoc/>
