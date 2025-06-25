@@ -47,6 +47,8 @@ public class MusSerializer : ISerializer<MusFile>, IOutSerializer<AsfFile>
             while (true)
             {
                 var blockHeader = br.MarshalReadStruct<AsfBlockHeader>();
+
+                // Check for possible alignment issues...
                 if (!blockHeader.Magic[0..2].SequenceEqual("SC"u8.ToArray()))
                 {
                     // This file likely uses 4-byte alignment. Align to 4 bytes and try again.
@@ -60,7 +62,6 @@ public class MusSerializer : ISerializer<MusFile>, IOutSerializer<AsfFile>
                         throw new InvalidDataException($"Invalid or corrupt ASF block: {Encoding.Latin1.GetString(blockHeader.Magic)}");
                     }
                 }
-
                 var blockData = br.ReadBytes(blockHeader.BlockSize - Marshal.SizeOf<AsfBlockHeader>());
                 switch (Encoding.Latin1.GetString(blockHeader.Magic))
                 {
