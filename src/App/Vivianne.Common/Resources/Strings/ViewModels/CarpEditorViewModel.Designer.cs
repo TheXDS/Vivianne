@@ -70,7 +70,7 @@ namespace TheXDS.Vivianne.Resources.Strings.ViewModels {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to FeData SyncFeData3.
+        ///   Looks up a localized string similar to FeData Sync.
         /// </summary>
         internal static string FeDataSync {
             get {
@@ -105,7 +105,11 @@ namespace TheXDS.Vivianne.Resources.Strings.ViewModels {
         ///Tire specs: {5}
         ///Gearbox: {6}
         ///0 to 60 MPH: {7}
-        ///0 to 100 MPH: {8}.
+        ///0 to 100 MPH: {8}
+        ///
+        ///These estimations were made using the manual
+        ///transmission of the vehicle. Values experienced
+        ///in-game might be different..
         /// </summary>
         internal static string PerformanceMetricsDetails {
             get {

@@ -138,6 +138,11 @@ RPM máximas: {4}
 Especificaciones de neumáticos: {5}
 Caja de cambios: {6}
 0 a 100 Km/h: {7}
-0 a 160 Km/h: {8}</value>
+0 a 160 Km/h: {8}
+
+
+Estas estimaciones fueron realizadas utilizando la
+transmisión manual del vehículo. Los valores reales
+en el juego podrían variar.</value>
   </data>
 </root>
