@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.IO;
+using System.Runtime.InteropServices;
 using System.Text;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models.Audio.Base;
@@ -27,9 +28,8 @@ public class MusSerializer : ISerializer<MusFile>, IOutSerializer<AsfFile>
         var mus = new MusFile();
         do
         {
-            mus.AsfSubStreams.Add((int)stream.Position, ReadAsfFile(br));
-            stream.Position += 4 - (stream.Position % 4);
-        } while (stream.Position < stream.Length);
+            if (ReadAsfFile(br) is { } asf) mus.AsfSubStreams.Add((int)stream.Position, asf);
+        } while ((stream.Position + Marshal.SizeOf<AsfBlockHeader>()) < stream.Length);
         return mus;
     }
 
@@ -39,7 +39,7 @@ public class MusSerializer : ISerializer<MusFile>, IOutSerializer<AsfFile>
         throw new NotImplementedException();
     }
 
-    private static AsfFile ReadAsfFile(BinaryReader br)
+    private static AsfFile? ReadAsfFile(BinaryReader br)
     {
         AsfData data = new();
         try
@@ -47,6 +47,20 @@ public class MusSerializer : ISerializer<MusFile>, IOutSerializer<AsfFile>
             while (true)
             {
                 var blockHeader = br.MarshalReadStruct<AsfBlockHeader>();
+                if (!blockHeader.Magic[0..2].SequenceEqual("SC"u8.ToArray()))
+                {
+                    // This file likely uses 4-byte alignment. Align to 4 bytes and try again.
+                    br.BaseStream.Position -= Marshal.SizeOf<AsfBlockHeader>();
+                    br.BaseStream.Position += 4 - (br.BaseStream.Position % 4);
+                    blockHeader = br.MarshalReadStruct<AsfBlockHeader>();
+
+                    // If we're still in the same situation, throw an exception.
+                    if (!blockHeader.Magic[0..2].SequenceEqual("SC"u8.ToArray()))
+                    {
+                        throw new InvalidDataException($"Invalid or corrupt ASF block: {Encoding.Latin1.GetString(blockHeader.Magic)}");
+                    }
+                }
+
                 var blockData = br.ReadBytes(blockHeader.BlockSize - Marshal.SizeOf<AsfBlockHeader>());
                 switch (Encoding.Latin1.GetString(blockHeader.Magic))
                 {
@@ -55,10 +69,8 @@ public class MusSerializer : ISerializer<MusFile>, IOutSerializer<AsfFile>
                     case "SCDl": ReadAudioBlock(data, blockData); break;
                     case "SCLl": data.LoopOffset = BitConverter.ToInt32(blockData); break;
                     case "SCEl": return data.ToFile();
-                    default: 
-                        System.Diagnostics.Debug.Print($"Unknown ASF block type: {Encoding.Latin1.GetString(blockHeader.Magic)}. Length: {blockData.Length} bytes");
-                        br.BaseStream.Skip(blockData.Length);
-                        break;
+                    default:
+                        throw new InvalidDataException($"Unknown ASF block type: {Encoding.Latin1.GetString(blockHeader.Magic)}. Length: {blockData.Length} bytes");
                 }
             }
         }
@@ -95,6 +107,6 @@ public class MusSerializer : ISerializer<MusFile>, IOutSerializer<AsfFile>
     AsfFile IOutSerializer<AsfFile>.Deserialize(Stream stream)
     {
         using BinaryReader br = new(stream);
-        return ReadAsfFile(br);
+        return ReadAsfFile(br) ?? throw new InvalidDataException("The file does not seem to be a valid ASF stream.");
     }
 }
