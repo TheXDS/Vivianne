@@ -1,5 +1,4 @@
-﻿using SixLabors.ImageSharp.Processing.Processors.Filters;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Text;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models.Audio.Base;
