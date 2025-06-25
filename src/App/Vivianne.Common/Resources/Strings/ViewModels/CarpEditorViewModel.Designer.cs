@@ -109,7 +109,10 @@ namespace TheXDS.Vivianne.Resources.Strings.ViewModels {
         ///
         ///These estimations were made using the manual
         ///transmission of the vehicle. Values experienced
-        ///in-game might be different..
+        ///in-game might be different.
+        ///
+        ///If you see unexpected units of measure, check
+        ///your preferred FeData language in settings..
         /// </summary>
         internal static string PerformanceMetricsDetails {
             get {

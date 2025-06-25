@@ -142,6 +142,9 @@ Gearbox: {6}
 
 These estimations were made using the manual
 transmission of the vehicle. Values experienced
-in-game might be different.</value>
+in-game might be different.
+
+If you see unexpected units of measure, check
+your preferred FeData language in settings.</value>
   </data>
 </root>
