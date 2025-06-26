@@ -21,9 +21,7 @@ public partial class App : Application
     /// </summary>
     public App()
     {
-        UiThread.SetProxy(new DispatcherUiThreadProxy());
         PlatformServices.SetKeyboardProxy(new WpfKeyboardProxy());
-        //PlatformServices.SetFceRender(new WpfStaticFceRender());
 
 #if !DEBUG
         AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;

@@ -13,6 +13,7 @@ using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Properties;
 using TheXDS.Vivianne.ViewModels.Asf;
 using TheXDS.Vivianne.ViewModels.Base;
+using TheXDS.Vivianne.ViewModels.Bnk;
 using TheXDS.Vivianne.ViewModels.Fce;
 using TheXDS.Vivianne.ViewModels.Fsh;
 using TheXDS.Vivianne.ViewModels.Viv;
@@ -34,8 +35,8 @@ public class StartupViewModel : ViewModel
     private static Task? TryOpenFileFromCmdArgs(StartupViewModel vm)
     {
         if (Environment.GetCommandLineArgs().ElementAtOrDefault(1) is not string file || file.IsEmpty()) return null;
-        var extension = Path.GetExtension(file);
-        return vm.Launchers.OfType<IFileEditorViewModelLauncher>().FirstOrDefault(p => p.CanOpen(extension))?.OnOpen(file);
+        var extension = Path.GetExtension(file).ToLowerInvariant();
+        return vm.Launchers.OfType<IFileViewerViewModelLauncher>().FirstOrDefault(p => p.CanOpen($"*{extension}"))?.OnOpen(file);
     }
 
     private readonly IEnumerable<IViewModelLauncher> _Launchers;
@@ -90,6 +91,7 @@ public class StartupViewModel : ViewModel
             new VivFileEditorLauncher(() => DialogService!) { IsActive = true },
             new FshFileEditorLauncher(() => DialogService!),
             new FceFileEditorLauncher(() => DialogService!),
+            new BnkEditorViewModelLauncher(() => DialogService!),
             new MusPlayerViewModelLauncher(),
             new ExtraToolsViewModelLauncher()
         ];
@@ -116,8 +118,6 @@ public class StartupViewModel : ViewModel
             j.DialogService ??= DialogService;
             j.NavigationService ??= NavigationService;
         }
-
-        if (IsInitialized) return;
         await Settings.Load();
         foreach (var initAction in _InitActions)
         {

@@ -21,6 +21,9 @@ namespace TheXDS.Vivianne.ViewModels.Fsh;
 /// <summary>
 /// Implements a launcher to create and/or edit FSH and QFS files.
 /// </summary>
+/// <param name="dialogSvc">
+/// Dialog service used to create dialogs for the launcher.
+/// </param>
 public class FshFileEditorLauncher(Func<IDialogService> dialogSvc)
     : FileEditorViewModelLauncher<FshEditorState, FshFile, FshSerializer, FshEditorViewModel>(dialogSvc, "FSH/QFS", FileFilters.FshQfsOpenFileFilter, FileFilters.FshQfsSaveFileFilter)
 {

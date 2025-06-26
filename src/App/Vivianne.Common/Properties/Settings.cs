@@ -7,6 +7,7 @@ using TheXDS.Vivianne.Models;
 using TheXDS.MCART.Resources.Strings;
 using TheXDS.Vivianne.Models.Viv;
 using TheXDS.Vivianne.Models.Fe;
+using System.IO;
 
 namespace TheXDS.Vivianne.Properties;
 
@@ -20,11 +21,11 @@ public class Settings
 
     static Settings()
     {
-#if DEBUG
-        string[] sourceArray = ["./settings.development.json", "./settings.debug.json"];
-        var _configurationStore = new LocalFileSettingsStore(sourceArray.FirstOrDefault(System.IO.File.Exists) ?? "./settings.json");
+#if !DEBUG
+        string[] sourceArray = [$"{Path.GetDirectoryName(Environment.ProcessPath)}/settings.development.json", $"{Path.GetDirectoryName(Environment.ProcessPath)}/settings.debug.json"];
+        var _configurationStore = new LocalFileSettingsStore(sourceArray.FirstOrDefault(System.IO.File.Exists) ?? $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/Vivianne/settings.json");
 #else
-        var _configurationStore = new LocalFileSettingsStore("./settings.json");
+        var _configurationStore = new LocalFileSettingsStore($"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/Vivianne/settings.json");
 #endif
         _repository = new JsonConfigurationRepository<Settings>(_configurationStore);
     }
@@ -73,6 +74,7 @@ public class Settings
         RecentFshFiles = [];
         RecentFceFiles = [];
         RecentAsfFiles = [];
+        RecentBnkFiles = [];
         RecentFilesCount = 10;
         Viv_FileSorting = SortType.FileKind;
         Fce_ShadowByDefault = true;
@@ -98,6 +100,11 @@ public class Settings
     /// Gets or sets the list of recent ASF/MUS files.
     /// </summary>
     public RecentFileInfo[] RecentAsfFiles { get; set; }
+
+    /// <summary>
+    /// Gets or sets the collection of recently accessed .bnk files.
+    /// </summary>
+    public RecentFileInfo[] RecentBnkFiles { get; set; }
 
     /// <summary>
     /// Gets or sets the path to the NFS3 main directory.

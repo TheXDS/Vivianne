@@ -31,7 +31,7 @@
 		<EmbeddedResource Include="Resources\Embedded\EarlyAlphaNote.txt" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="TheXDS.Ganymede.Wpf" Version="0.4.0-alpha.23" />
+		<PackageReference Include="TheXDS.Ganymede.WpfUI" Version="0.5.0-alpha.4" />
 		<PackageReference Include="WPF-UI" Version="4.0.3" />
 	</ItemGroup>
 	<ItemGroup>

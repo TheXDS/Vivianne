@@ -69,11 +69,14 @@
                 <TabItem Header="FCE Editor" IsSelected="{Binding Launchers[2].IsActive}">
                     <ct:FileEditorLauncherView Launcher="{Binding Launchers[2], Mode=OneWay}"/>
                 </TabItem>
-                <TabItem Header="MUS/ASF player" IsSelected="{Binding Launchers[3].IsActive}">
+                <TabItem Header="BNK Editor" IsSelected="{Binding Launchers[3].IsActive}">
                     <ct:FileEditorLauncherView Launcher="{Binding Launchers[3], Mode=OneWay}"/>
                 </TabItem>
-                <TabItem Header="{x:Static st:StartupView.ExtraTools}" IsSelected="{Binding Launchers[4].IsActive}">
-                    <ItemsControl Background="{ui:ThemeResource ControlSolidFillColorDefaultBrush}" ItemsSource="{Binding Launchers[4].AdditionalInteractions, Mode=OneWay}">
+                <TabItem Header="MUS/ASF player" IsSelected="{Binding Launchers[4].IsActive}">
+                    <ct:FileEditorLauncherView Launcher="{Binding Launchers[4], Mode=OneWay}"/>
+                </TabItem>
+                <TabItem Header="{x:Static st:StartupView.ExtraTools}" IsSelected="{Binding Launchers[5].IsActive}">
+                    <ItemsControl Background="{ui:ThemeResource ControlSolidFillColorDefaultBrush}" ItemsSource="{Binding Launchers[5].AdditionalInteractions, Mode=OneWay}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <UniformGrid VerticalAlignment="Top" Margin="20"/>

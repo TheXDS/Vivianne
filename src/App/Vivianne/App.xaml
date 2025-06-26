@@ -3,17 +3,17 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:gn="http://schemas.thexds.local/ganymede"
     StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Ganymede.Wpf;component/Themes/Generic.xaml"/>
+                <gn:GanymedeDictionary/>
                 <ResourceDictionary Source="/MCART.Wpf.Controls;component/Themes/Generic.xaml"/>
                 <ResourceDictionary Source="/Resources/ControlTemplates.xaml"/>
                 <ResourceDictionary Source="/Resources/Fonts.xaml"/>
                 <ResourceDictionary Source="/Resources/Brushes.xaml"/>
                 <ui:ThemesDictionary Theme="Dark" />
-                <ui:ControlsDictionary />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
