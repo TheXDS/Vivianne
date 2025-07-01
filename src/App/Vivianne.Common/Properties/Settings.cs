@@ -7,7 +7,6 @@ using TheXDS.Vivianne.Models;
 using TheXDS.MCART.Resources.Strings;
 using TheXDS.Vivianne.Models.Viv;
 using TheXDS.Vivianne.Models.Fe;
-using System.IO;
 
 namespace TheXDS.Vivianne.Properties;
 
@@ -22,8 +21,14 @@ public class Settings
     static Settings()
     {
 #if DEBUG
-        string[] sourceArray = [$"{Path.GetDirectoryName(Environment.ProcessPath)}/settings.development.json", $"{Path.GetDirectoryName(Environment.ProcessPath)}/settings.debug.json"];
-        var _configurationStore = new LocalFileSettingsStore(sourceArray.FirstOrDefault(System.IO.File.Exists) ?? $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/Vivianne/settings.json");
+        string localAppData = $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/Vivianne/";
+        string rootDir = System.IO.Path.GetDirectoryName(Environment.ProcessPath) ?? localAppData;
+        string[] sourceArray = [
+            System.IO.Path.Combine(rootDir, "settings.development.json"),
+            System.IO.Path.Combine(rootDir, "settings.debug.json"),
+            System.IO.Path.Combine(rootDir, "settings.json")
+            ];
+        var _configurationStore = new LocalFileSettingsStore(sourceArray.FirstOrDefault(System.IO.File.Exists) ?? System.IO.Path.Combine(localAppData, "settings.json"));
 #else
         var _configurationStore = new LocalFileSettingsStore($"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/Vivianne/settings.json");
 #endif
