@@ -88,6 +88,7 @@ public static class Mappings
         "G266",
         "G290",
         "G315",
+        "G335",
         "G344",
         "G354",
     ];
@@ -480,12 +481,15 @@ public static class Mappings
     /// </param>
     /// <returns>
     /// A <see cref="FeDataTextProvider"/> that gets the localized performance
-    /// metrics from the specified <see cref="ICarPerf"/>.
+    /// metrics from the specified <see cref="ICarPerf"/>. If the specified
+    /// region is not one of the supported regions, a default English provider
+    /// will be returned.
     /// </returns>
     public static FeDataTextProvider GetTextProviderFromCulture(ICarPerf c, string culture)
     {
         return culture.ToLowerInvariant() switch
         {
+            "uk" => new BriUnitTextProvider(c),
             "fr" => new FreUnitTextProvider(c),
             "de" => new GerUnitTextProvider(c),
             "it" => new ItaUnitTextProvider(c),

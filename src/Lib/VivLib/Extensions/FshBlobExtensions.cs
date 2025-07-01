@@ -1,6 +1,7 @@
 ﻿using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing.Processors.Quantization;
+using System.Collections.ObjectModel;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Codecs.Textures;
 using TheXDS.Vivianne.Models.Fsh;
@@ -194,9 +195,16 @@ public static class FshBlobExtensions
         return [.. GetColors().ToArray(), .. GetGrayscale()];
     }
 
-    private static readonly byte[] paletteHeader = [0x2a, 0x00, 0x00, 0x00, 0x00, 0x01, 0x01, 0x00];
-
     private record class FooterIdentifierElement(FshBlobFooterType Value, Func<byte[], bool> Predicate);
+
+    private static readonly ReadOnlyDictionary<FshBlobFormat, int> FshBlobPaletteSize = new Dictionary<FshBlobFormat, int>()
+    {
+        { FshBlobFormat.Palette32,      1040 },
+        { FshBlobFormat.Palette24,      784 },
+        { FshBlobFormat.Palette24Dos,   784 },
+        { FshBlobFormat.Palette16Nfs5,  528 },
+        { FshBlobFormat.Palette16,      528 },
+    }.AsReadOnly();
 
     private static IEnumerable<FooterIdentifierElement> FshBlobFooterIdentifier { get; } = [
         // The following footer types generally occupy the whole footer.
@@ -206,11 +214,12 @@ public static class FshBlobExtensions
 
         // These footer types allow for more than one attachment to exist.
         new(FshBlobFooterType.MetalBin,        b => b.Length >= 0x50 && b[0..4].SequenceEqual(new byte[] { 0x69, 0x50, 0x00, 0x00 })),
-        new(FshBlobFooterType.ColorPalette,    b => b.Length >= 1040 && b[0..8].SequenceEqual(paletteHeader)),
+        new(FshBlobFooterType.ColorPalette,    b => b.Length >= 528 && FshBlobPaletteSize.ContainsKey((FshBlobFormat)b[0]) && b.Length >= FshBlobPaletteSize[(FshBlobFormat)b[0]]),
         new(FshBlobFooterType.BlobName,        b => b.Length >= 0x10 && b[0..4].SequenceEqual(new byte[] { 0x70, 0x00, 0x00, 0x00 })),
     ];
 
-    private static IReadOnlyDictionary<FshBlobFooterType, int> FooterLengths = new Dictionary<FshBlobFooterType, int> {
+
+    private static readonly ReadOnlyDictionary<FshBlobFooterType, int> FooterLengths = new Dictionary<FshBlobFooterType, int> {
         { FshBlobFooterType.MetalBin, 0x50 },
         { FshBlobFooterType.ColorPalette, 1040 },
         { FshBlobFooterType.BlobName, 0x10 }

@@ -9,6 +9,7 @@
 		<Nullable>enable</Nullable>
 		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
 		<PackageId>TheXDS.$(AssemblyName)</PackageId>
+		<GenerateDocumentationFile>false</GenerateDocumentationFile>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)'=='Debug'">
 		<DebugType>full</DebugType>

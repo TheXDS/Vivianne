@@ -3,7 +3,6 @@ using TheXDS.Vivianne.Extensions;
 using TheXDS.Vivianne.Models.Audio.Base;
 using TheXDS.Vivianne.Models.Audio.Mus;
 using TheXDS.Vivianne.Resources;
-using TheXDS.Vivianne.Tools.Audio;
 using St = TheXDS.Vivianne.Resources.Strings.Info.Bnk.BnkStreamInfoExtractor;
 
 namespace TheXDS.Vivianne.Info.Bnk;
@@ -45,15 +44,5 @@ public class AsfFileInfoExtractor(bool humanSize) : IEntityInfoExtractor<AsfFile
     private static TimeSpan FromSample(int sampleNumber, AudioStreamBase audioProps)
     {
         return TimeSpan.FromSeconds(sampleNumber / audioProps.Channels / audioProps.SampleRate);
-    }
-}
-
-public class MusFileInfoExtractor(bool humanSize) : AsfFileInfoExtractor(humanSize), IEntityInfoExtractor<MusFile>
-{
-    /// <inheritdoc/>
-    public string[] GetInfo(MusFile value)
-    {
-        var jointSubStreams = AudioRender.JoinStreams(value.AsfSubStreams.Values);
-        return GetInfo(jointSubStreams);
     }
 }

@@ -3,6 +3,7 @@ using TheXDS.MCART.Math;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Models.Carp;
+using C = System.Globalization.CultureInfo;
 
 namespace TheXDS.Vivianne.Serializers.Carp;
 
@@ -14,12 +15,12 @@ public class CarpSerializerBase<TCarClass, TFile> : ISerializer<TFile> where TCa
 {
     private static int TryInt(string value)
     {
-        return int.TryParse(value, System.Globalization.CultureInfo.InvariantCulture, out var s) ? s : 0;
+        return int.TryParse(value, C.InvariantCulture, out var s) ? s : 0;
     }
 
     private static double TryDouble(string value)
     {
-        return double.TryParse(value, System.Globalization.CultureInfo.InvariantCulture, out var s) ? s : 0.0;
+        return double.TryParse(value, C.InvariantCulture, out var s) ? s : 0.0;
     }
 
     private static IEnumerable<T> TryArray<T>(Dictionary<int, string> dic, int key, Func<string, T> parse)
@@ -216,7 +217,7 @@ public class CarpSerializerBase<TCarClass, TFile> : ISerializer<TFile> where TCa
             carp.TireSidewallFront = tirespecs[1];
             carp.TireRimFront = tirespecs[2];
         }
-        tirespecs = TryIntArray(dic, 36).ToArray();
+        tirespecs = [.. TryIntArray(dic, 36)];
         if (tirespecs.Length == 3)
         {
             carp.TireWidthRear = tirespecs[0];
@@ -236,161 +237,161 @@ public class CarpSerializerBase<TCarClass, TFile> : ISerializer<TFile> where TCa
         Car Classification(1)
         {Convert.ToInt32(entity.CarClass)}
         mass [kg](2)
-        {entity.Mass}
+        {entity.Mass.ToString(C.InvariantCulture)}
         number of gears (reverse + neutral + forward gears)(3)
-        {entity.NumberOfGearsManual}
+        {entity.NumberOfGearsManual.ToString(C.InvariantCulture)}
         number of gears (automatic, r, n, forward)(75)
-        {entity.NumberOfGearsAuto}
+        {entity.NumberOfGearsAuto.ToString(C.InvariantCulture)}
         gear shift delay (ticks)(4)
-        {entity.GearShiftDelay}
-        shift blip in rpm (size {entity.ShiftBlip.Count})(5)
-        {string.Join(",", entity.ShiftBlip)}
-        brake blip in rpm (size {entity.BrakeBlip.Count})(6)
-        {string.Join(",", entity.BrakeBlip)}
-        velocity to rpm ratio (size {entity.VelocityToRpmManual.Count})(7)
-        {string.Join(",", entity.VelocityToRpmManual)}
-        velocity to rpm ratio (size {entity.VelocityToRpmAuto.Count})(76)
-        {string.Join(",", entity.VelocityToRpmAuto)}
-        gear ratios (size {entity.GearRatioManual.Count})(8)
-        {string.Join(",", entity.GearRatioManual)}
-        gear ratios automatic (size {entity.GearRatioAuto.Count})(77)
-        {string.Join(",", entity.GearRatioAuto)}
-        gear efficiency (size {entity.GearEfficiencyManual.Count})(9)
-        {string.Join(",", entity.GearEfficiencyManual)}
-        gear efficiency automatic (size {entity.GearEfficiencyAuto.Count})(78)
-        {string.Join(",", entity.GearEfficiencyAuto)}
-        torque curve (size {entity.TorqueCurve.Count}) in {(entity.TorqueCurve.Count != 0 ? (entity.EngineMaxRpm / entity.TorqueCurve.Count).Clamp(256, entity.EngineMaxRpm) : 0)} rpm increments(10)
-        {string.Join(",", entity.TorqueCurve)}
+        {entity.GearShiftDelay.ToString(C.InvariantCulture)}
+        shift blip in rpm (size {entity.ShiftBlip.Count.ToString(C.InvariantCulture)})(5)
+        {string.Join(",", entity.ShiftBlip.Select(p => p.ToString(C.InvariantCulture)))}
+        brake blip in rpm (size {entity.BrakeBlip.Count.ToString(C.InvariantCulture)})(6)
+        {string.Join(",", entity.BrakeBlip.Select(p => p.ToString(C.InvariantCulture)))}
+        velocity to rpm ratio (size {entity.VelocityToRpmManual.Count.ToString(C.InvariantCulture)})(7)
+        {string.Join(",", entity.VelocityToRpmManual.Select(p => p.ToString(C.InvariantCulture)))}
+        velocity to rpm ratio (size {entity.VelocityToRpmAuto.Count.ToString(C.InvariantCulture)})(76)
+        {string.Join(",", entity.VelocityToRpmAuto.Select(p => p.ToString(C.InvariantCulture)))}
+        gear ratios (size {entity.GearRatioManual.Count.ToString(C.InvariantCulture)})(8)
+        {string.Join(",", entity.GearRatioManual.Select(p => p.ToString(C.InvariantCulture)))}
+        gear ratios automatic (size {entity.GearRatioAuto.Count.ToString(C.InvariantCulture)})(77)
+        {string.Join(",", entity.GearRatioAuto.Select(p => p.ToString(C.InvariantCulture)))}
+        gear efficiency (size {entity.GearEfficiencyManual.Count.ToString(C.InvariantCulture)})(9)
+        {string.Join(",", entity.GearEfficiencyManual.Select(p => p.ToString(C.InvariantCulture)))}
+        gear efficiency automatic (size {entity.GearEfficiencyAuto.Count.ToString(C.InvariantCulture)})(78)
+        {string.Join(",", entity.GearEfficiencyAuto.Select(p => p.ToString(C.InvariantCulture)))}
+        torque curve (size {entity.TorqueCurve.Count.ToString(C.InvariantCulture)}) in {(entity.TorqueCurve.Count != 0 ? (entity.EngineMaxRpm / entity.TorqueCurve.Count).Clamp(256, entity.EngineMaxRpm) : 0).ToString(C.InvariantCulture)} rpm increments(10)
+        {string.Join(",", entity.TorqueCurve.Select(p => p.ToString(C.InvariantCulture)))}
         final gear(11)
-        {entity.FinalGearManual}
+        {entity.FinalGearManual.ToString(C.InvariantCulture)}
         final gear automatic(79)
-        {entity.FinalGearAuto}
+        {entity.FinalGearAuto.ToString(C.InvariantCulture)}
         engine minimum rpm(12)
-        {entity.EngineMinRpm}
+        {entity.EngineMinRpm.ToString(C.InvariantCulture)}
         engine redline in rpm(13)
-        {entity.EngineMaxRpm}
+        {entity.EngineMaxRpm.ToString(C.InvariantCulture)}
         Maximum velocity of car [m/s](14)
-        {entity.MaxVelocity}
+        {entity.MaxVelocity.ToString(C.InvariantCulture)}
         top speed cap [m/s](15)
-        {entity.TopSpeed}
+        {entity.TopSpeed.ToString(C.InvariantCulture)}
         front drive ratio(16)
-        {entity.FrontDriveRatio}
+        {entity.FrontDriveRatio.ToString(C.InvariantCulture)}
         Uses Antilock Brake System(17)
-        {(entity.Abs ? 1 : 0)}
+        {(entity.Abs ? 1 : 0).ToString(C.InvariantCulture)}
         Maximum braking deceleration(18)
-        {entity.MaxBrakeDecel}
+        {entity.MaxBrakeDecel.ToString(C.InvariantCulture)}
         front bias brake ratio(19)
-        {entity.FrontBrakeBias}
+        {entity.FrontBrakeBias.ToString(C.InvariantCulture)}
         gas increasing curve(20)
-        {string.Join(",", entity.GasIncreaseCurve)}
+        {string.Join(",", entity.GasIncreaseCurve.Select(p => p.ToString(C.InvariantCulture)))}
         gas decreasing curve(21)
-        {string.Join(",", entity.GasDecreaseCurve)}
+        {string.Join(",", entity.GasDecreaseCurve.Select(p => p.ToString(C.InvariantCulture)))}
         brake increasing curve(22)
-        {string.Join(",", entity.BrakeIncreaseCurve)}
+        {string.Join(",", entity.BrakeIncreaseCurve.Select(p => p.ToString(C.InvariantCulture)))}
         brake decreasing curve(23)
-        {string.Join(",", entity.BrakeDecreaseCurve)}
+        {string.Join(",", entity.BrakeDecreaseCurve.Select(p => p.ToString(C.InvariantCulture)))}
         wheel base(24)
-        {entity.WheelBase}
+        {entity.WheelBase.ToString(C.InvariantCulture)}
         front grip bias(25)
-        {entity.FrontGripBias}
+        {entity.FrontGripBias.ToString(C.InvariantCulture)}
         power steering (boolean)(26)
-        {(entity.PowerSteering ? 1 : 0)}
+        {(entity.PowerSteering ? 1 : 0).ToString(C.InvariantCulture)}
         minimum steering acceleration(27)
-        {entity.MinimumSteerAccel}
+        {entity.MinimumSteerAccel.ToString(C.InvariantCulture)}
         turn in ramp(28)
-        {entity.TurnInRamp}
+        {entity.TurnInRamp.ToString(C.InvariantCulture)}
         turn out ramp(29)
-        {entity.TurnOutRamp}
+        {entity.TurnOutRamp.ToString(C.InvariantCulture)}
         lateral acceleration grip multiplier(30)
-        {entity.LateralAccGripMult}
+        {entity.LateralAccGripMult.ToString(C.InvariantCulture)}
         aerodynamic downforce multiplier(31)
-        {entity.AeroDownMult}
+        {entity.AeroDownMult.ToString(C.InvariantCulture)}
         gas off factor(32)
-        {entity.GasOffFactor}
+        {entity.GasOffFactor.ToString(C.InvariantCulture)}
         g transfer factor(33)
-        {entity.GTransferFactor}
+        {entity.GTransferFactor.ToString(C.InvariantCulture)}
         turning circle radius(34)
-        {entity.TurnCircleRadius}
+        {entity.TurnCircleRadius.ToString(C.InvariantCulture)}
         tire specs front(35)
-        {entity.TireWidthFront},{entity.TireSidewallFront},{entity.TireRimFront}
+        {entity.TireWidthFront.ToString(C.InvariantCulture)},{entity.TireSidewallFront.ToString(C.InvariantCulture)},{entity.TireRimFront.ToString(C.InvariantCulture)}
         tire specs rear(36)
-        {entity.TireWidthRear},{entity.TireSidewallRear},{entity.TireRimRear}
+        {entity.TireWidthRear.ToString(C.InvariantCulture)},{entity.TireSidewallRear.ToString(C.InvariantCulture)},{entity.TireRimRear.ToString(C.InvariantCulture)}
         tire wear(37)
-        {entity.TireWear}
+        {entity.TireWear.ToString(C.InvariantCulture)}
         Slide Multiplier(38)
-        {entity.SlideMult}
+        {entity.SlideMult.ToString(C.InvariantCulture)}
         Spin Velocity Cap(39)
-        {entity.SpinVelocityCap}
+        {entity.SpinVelocityCap.ToString(C.InvariantCulture)}
         Slide Velocity Cap(40)
-        {entity.SlideVelocityCap}
+        {entity.SlideVelocityCap.ToString(C.InvariantCulture)}
         Slide Assistance Factor(41)
-        {entity.SlideAssistanceFactor}
+        {entity.SlideAssistanceFactor.ToString(C.InvariantCulture)}
         Push Factor(42)
-        {entity.PushFactor}
+        {entity.PushFactor.ToString(C.InvariantCulture)}
         Low Turn Factor (the lower the figure, the better the turn)(43)
-        {entity.LowTurnFactor}
+        {entity.LowTurnFactor.ToString(C.InvariantCulture)}
         High Turn Factor (the lower the figure, the better the turn)(44)
-        {entity.HighTurnFactor}
+        {entity.HighTurnFactor.ToString(C.InvariantCulture)}
         pitch roll factor(45)
-        {entity.PitchRollFactor}
+        {entity.PitchRollFactor.ToString(C.InvariantCulture)}
         road bumpiness factor(46)
-        {entity.RoadBumpFactor}
+        {entity.RoadBumpFactor.ToString(C.InvariantCulture)}
         spoiler function type(47)
-        {entity.SpoilerFunctionType}
+        {entity.SpoilerFunctionType.ToString(C.InvariantCulture)}
         spoiler activation speed [m/s](48)
-        {entity.SpoilerActivationSpeed}
+        {entity.SpoilerActivationSpeed.ToString(C.InvariantCulture)}
         gradual turn cutoff(49)
-        {entity.GradualTurnCutoff}
+        {entity.GradualTurnCutoff.ToString(C.InvariantCulture)}
         medium turn cutoff(50)
-        {entity.MediumTurnCutoff}
+        {entity.MediumTurnCutoff.ToString(C.InvariantCulture)}
         sharp turn cutoff(51)
-        {entity.SharpTurnCutoff}
+        {entity.SharpTurnCutoff.ToString(C.InvariantCulture)}
         medium turn speed modifier(52)
-        {entity.MediumTurnSpdMod}
+        {entity.MediumTurnSpdMod.ToString(C.InvariantCulture)}
         sharp turn speed modifier(53)
-        {entity.SharpTurnSpdMod}
+        {entity.SharpTurnSpdMod.ToString(C.InvariantCulture)}
         extreme turn speed modifier(54)
-        {entity.ExtremeTurnSpdMod}
+        {entity.ExtremeTurnSpdMod.ToString(C.InvariantCulture)}
         subdivide level(55)
-        {entity.SubdivideLevel}
+        {entity.SubdivideLevel.ToString(C.InvariantCulture)}
         camera arm(56)
-        {entity.CameraArm}
+        {entity.CameraArm.ToString(C.InvariantCulture)}
         Body Damage(57)
-        {entity.BodyDamage}
+        {entity.BodyDamage.ToString(C.InvariantCulture)}
         Engine Damage(58)
-        {entity.EngineDamage}
+        {entity.EngineDamage.ToString(C.InvariantCulture)}
         Suspension Damage(59)
-        {entity.SuspensionDamage}
+        {entity.SuspensionDamage.ToString(C.InvariantCulture)}
         Engine Tuning(60)
-        {entity.EngineTuning}
+        {entity.EngineTuning.ToString(C.InvariantCulture)}
         Brake Balance(61)
-        {entity.BrakeBalance}
+        {entity.BrakeBalance.ToString(C.InvariantCulture)}
         Steering TopSpeed(62)
-        {entity.SteeringSpeed}
+        {entity.SteeringSpeed.ToString(C.InvariantCulture)}
         Gear Rat Factor(63)
-        {entity.GearRatFactor}
+        {entity.GearRatFactor.ToString(C.InvariantCulture)}
         Suspension Stiffness(64)
-        {entity.SuspensionStiffness}
+        {entity.SuspensionStiffness.ToString(C.InvariantCulture)}
         Aero Factor(65)
-        {entity.AeroFactor}
+        {entity.AeroFactor.ToString(C.InvariantCulture)}
         Tire Factor(66)
-        {entity.TireFactor}
+        {entity.TireFactor.ToString(C.InvariantCulture)}
         AI ACC0 acceleration table section(67)
-        {string.Join(",", entity.AiCurve0)}
+        {string.Join(",", entity.AiCurve0.Select(p => p.ToString(C.InvariantCulture)))}
         AI ACC1 acceleration table section(68)
-        {string.Join(",", entity.AiCurve1)}
+        {string.Join(",", entity.AiCurve1.Select(p => p.ToString(C.InvariantCulture)))}
         AI ACC2 acceleration table section(69)
-        {string.Join(",", entity.AiCurve2)}
+        {string.Join(",", entity.AiCurve2.Select(p => p.ToString(C.InvariantCulture)))}
         AI ACC3 acceleration table section(70)
-        {string.Join(",", entity.AiCurve3)}
+        {string.Join(",", entity.AiCurve3.Select(p => p.ToString(C.InvariantCulture)))}
         AI ACC4 acceleration table section(71)
-        {string.Join(",", entity.AiCurve4)}
+        {string.Join(",", entity.AiCurve4.Select(p => p.ToString(C.InvariantCulture)))}
         AI ACC5 acceleration table section(72)
-        {string.Join(",", entity.AiCurve5)}
+        {string.Join(",", entity.AiCurve5.Select(p => p.ToString(C.InvariantCulture)))}
         AI ACC6 acceleration table section(73)
-        {string.Join(",", entity.AiCurve6)}
+        {string.Join(",", entity.AiCurve6.Select(p => p.ToString(C.InvariantCulture)))}
         AI ACC7 acceleration table section(74)
-        {string.Join(",", entity.AiCurve7)}
+        {string.Join(",", entity.AiCurve7.Select(p => p.ToString(C.InvariantCulture)))}
         {GetExtraProps(entity)}
 
         """));

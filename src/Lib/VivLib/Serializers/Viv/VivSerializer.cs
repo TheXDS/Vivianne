@@ -1,6 +1,5 @@
 ﻿using TheXDS.MCART.Helpers;
 using TheXDS.MCART.Types.Extensions;
-using TheXDS.Vivianne.Models.Fe;
 using TheXDS.Vivianne.Models.Viv;
 using static System.Text.Encoding;
 using St = TheXDS.Vivianne.Resources.Strings.Serializers.VivSerializer;
@@ -11,10 +10,8 @@ namespace TheXDS.Vivianne.Serializers.Viv;
 /// Implements a serializer that can read and write <see cref="VivFile"/>
 /// entities.
 /// </summary>
-public class VivSerializer : ISerializer<VivFile>
+public partial class VivSerializer : ISerializer<VivFile>
 {
-    private static readonly byte[] Header = "BIGF"u8.ToArray();
-
     /// <summary>
     /// Gets or sets the directory sorting algorithm to use.
     /// </summary>
@@ -42,7 +39,16 @@ public class VivSerializer : ISerializer<VivFile>
             var offset = reader.ReadInt32().FlipEndianness();
             var length = reader.ReadInt32().FlipEndianness();
             var name = reader.ReadNullTerminatedString();
-            fileOffsets.Add(name, (offset, length));
+            if (!fileOffsets.TryAdd(name, (offset, length)))
+            {
+                var rename = 1;
+                string newName;
+                do
+                {
+                    newName = $"{Path.GetFileNameWithoutExtension(name)} ({rename++}){Path.GetExtension(name)}";
+                } while (fileOffsets.ContainsKey(newName));
+                fileOffsets.Add(newName, (offset, length));
+            }
         }
         if (stream.CanSeek && stream.Position != blobPool)
         {
@@ -69,7 +75,7 @@ public class VivSerializer : ISerializer<VivFile>
         {
             writer.Write(o.FlipEndianness());
             writer.Write(j.Value.Length.FlipEndianness());
-            writer.Write(ASCII.GetBytes(j.Key));
+            writer.Write(ASCII.GetBytes(DedupName(j.Key)));
             writer.Write((byte)0);
             o += j.Value.Length;
         }
@@ -103,44 +109,5 @@ public class VivSerializer : ISerializer<VivFile>
             sum += j.Key.Length + 9 + j.Value;
         }
         return sum;
-    }
-
-    private static int GetDirectoryOffset(Dictionary<string, byte[]> directory)
-    {
-        var sum = 16;
-        foreach (var j in directory)
-        {
-            sum += j.Key.Length + 9;
-        }
-        return sum;
-    }
-
-    private IEnumerable<KeyValuePair<string, (int offset, int length)>> ApplySort(IEnumerable<KeyValuePair<string, (int offset, int length)>> dir)
-    {
-        return Sort?.Invoke() switch
-        {
-            SortType.FileName => dir.OrderBy(p => p.Key, StringComparer.InvariantCultureIgnoreCase),
-            SortType.FileType => dir.OrderBy(p => Path.GetExtension(p.Key), StringComparer.InvariantCultureIgnoreCase).ThenBy(p => p.Key, StringComparer.InvariantCultureIgnoreCase),
-            SortType.FileSize => dir.OrderByDescending(p => p.Value.length),
-            SortType.FileKind => dir.OrderBy(GetFileKindOrdinal).ThenBy(p => p.Key, StringComparer.InvariantCultureIgnoreCase),
-            SortType.FileOffset => dir.OrderBy(p => p.Value.offset),
-            _ => dir
-        };
-    }
-
-    private int GetFileKindOrdinal(KeyValuePair<string, (int offset, int length)> element)
-    {
-        string[][] kinds =
-        [
-            [".txt"],
-            FeDataBase.KnownExtensions,
-            [".fsh", ".qfs"],
-            [".tga"],
-            [".fce"],
-            [".bnk"],
-        ];
-        var extension = Path.GetExtension(element.Key).ToLowerInvariant();
-        var kind = kinds.WithIndex().FirstOrDefault(p => p.element.Contains(extension));
-        return kind.element is not null ? kind.index : int.MaxValue;
     }
 }
