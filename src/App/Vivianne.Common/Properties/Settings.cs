@@ -21,7 +21,7 @@ public class Settings
 
     static Settings()
     {
-#if !DEBUG
+#if DEBUG
         string[] sourceArray = [$"{Path.GetDirectoryName(Environment.ProcessPath)}/settings.development.json", $"{Path.GetDirectoryName(Environment.ProcessPath)}/settings.debug.json"];
         var _configurationStore = new LocalFileSettingsStore(sourceArray.FirstOrDefault(System.IO.File.Exists) ?? $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/Vivianne/settings.json");
 #else
