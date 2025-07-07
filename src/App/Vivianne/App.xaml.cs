@@ -1,6 +1,4 @@
 ﻿using System.Windows;
-using TheXDS.Ganymede.Helpers;
-using TheXDS.Ganymede.Services;
 using TheXDS.Vivianne.Component;
 
 #if !DEBUG

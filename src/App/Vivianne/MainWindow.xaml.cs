@@ -22,6 +22,10 @@ public partial class MainWindow
         {
             WindowBackdropType = Wpf.Ui.Controls.WindowBackdropType.Acrylic;
         }
+        else
+        {
+            Background = Brushes.Gray;
+        }
     }
 
 

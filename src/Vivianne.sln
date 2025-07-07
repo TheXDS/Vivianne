@@ -40,6 +40,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{7FDC379A-68DE-46ED-821E-9BB814F241F8}"
 	ProjectSection(SolutionItems) = preProject
 		..\docs\BUILDING.md = ..\docs\BUILDING.md
+		..\docs\OldOS.md = ..\docs\OldOS.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vivcli", "App\Vivcli\Vivcli.csproj", "{97EDB4BF-D005-42FA-A8E4-4455A493891E}"
