@@ -29,6 +29,7 @@ public class CarpEditorViewModel<TState, TFile, TCarClass> : StatefulFileEditorV
         var cb = CommandBuilder.For(this);
         EditIntCurveCommand = cb.BuildSimple(OnEditIntCurve);
         EditDoubleCurveCommand = cb.BuildSimple(OnEditDoubleCurve);
+        EditDoubleStaticCurveCommand = cb.BuildSimple(OnEditDoubleStaticCurve);
         CopyTransToAutoCommand = cb.BuildSimple(OnCopyTransToAuto);
         CopyTransToManualCommand = cb.BuildSimple(OnCopyTransToManual);
         CopyTiresToFrontCommand = cb.BuildSimple(OnCopyTiresToFront);
@@ -61,6 +62,12 @@ public class CarpEditorViewModel<TState, TFile, TCarClass> : StatefulFileEditorV
     /// <see cref="double"/> values.
     /// </summary>
     public ICommand EditDoubleCurveCommand { get; }
+
+    /// <summary>
+    /// Gets a reference to the command used to edit a static
+    /// curve of <see cref="double"/> values.
+    /// </summary>
+    public ICommand EditDoubleStaticCurveCommand { get; }
 
     /// <summary>
     /// Gets a reference to the command used to copy gearbox data from manual
@@ -107,7 +114,14 @@ public class CarpEditorViewModel<TState, TFile, TCarClass> : StatefulFileEditorV
             _ => Task.CompletedTask
         };
     }
-
+    private Task OnEditDoubleStaticCurve(object? parameter)
+    {
+        return parameter switch
+        {
+            ICollection<double> c => RunCurveEditor(c, false),
+            _ => Task.CompletedTask
+        };
+    }
     private async Task OnEditIntCurve(object? parameter)
     {
         ICollection<int>? collection = null;
@@ -184,9 +198,9 @@ public class CarpEditorViewModel<TState, TFile, TCarClass> : StatefulFileEditorV
         State.UnsavedChanges = true;        
     }
 
-    private async Task<ICollection<double>> RunCurveEditor(ICollection<double> c)
+    private async Task<ICollection<double>> RunCurveEditor(ICollection<double> c, bool allowCollectionGrow = true)
     {
-        var vm = new CurveEditorDialogViewModel(new(c)) { Message = St.EditCurve };
+        var vm = new CurveEditorDialogViewModel(new(c), allowCollectionGrow) { Message = St.EditCurve };
         vm.StateSaved += Vm_StateSaved;
         await DialogService!.Show(vm);
         vm.StateSaved -= Vm_StateSaved;

@@ -119,9 +119,9 @@
                                         Value="{Binding State.FinalGearManual, UpdateSourceTrigger=PropertyChanged}"/>
                                 </mcart:StretchyWrapPanel>
                                 <UniformGrid Columns="1">
-                                    <ct:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="{x:Static st:CarpEditorView.VelocityToRPM}" ItemsSource="{Binding State.VelocityToRpmManual}"/>
-                                    <ct:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="{x:Static st:CarpEditorView.GearRatios}" ItemsSource="{Binding State.GearRatioManual}"/>
-                                    <ct:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="{x:Static st:CarpEditorView.GearEfficiency}" ItemsSource="{Binding State.GearEfficiencyManual}"/>
+                                    <ct:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleStaticCurveCommand, Mode=OneWay}" Title="{x:Static st:CarpEditorView.VelocityToRPM}" ItemsSource="{Binding State.VelocityToRpmManual}"/>
+                                    <ct:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleStaticCurveCommand, Mode=OneWay}" Title="{x:Static st:CarpEditorView.GearRatios}" ItemsSource="{Binding State.GearRatioManual}"/>
+                                    <ct:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleStaticCurveCommand, Mode=OneWay}" Title="{x:Static st:CarpEditorView.GearEfficiency}" ItemsSource="{Binding State.GearEfficiencyManual}"/>
                                 </UniformGrid>
                             </StackPanel>
                         </Expander>
@@ -148,9 +148,9 @@
                                         Value="{Binding State.FinalGearAuto, UpdateSourceTrigger=PropertyChanged}"/>
                                 </mcart:StretchyWrapPanel>
                                 <UniformGrid Columns="1">
-                                    <ct:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="{x:Static st:CarpEditorView.VelocityToRPM}" ItemsSource="{Binding State.VelocityToRpmAuto}"/>
-                                    <ct:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="{x:Static st:CarpEditorView.GearRatios}" ItemsSource="{Binding State.GearRatioAuto}"/>
-                                    <ct:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="{x:Static st:CarpEditorView.GearEfficiency}" ItemsSource="{Binding State.GearEfficiencyAuto}"/>
+                                    <ct:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleStaticCurveCommand, Mode=OneWay}" Title="{x:Static st:CarpEditorView.VelocityToRPM}" ItemsSource="{Binding State.VelocityToRpmAuto}"/>
+                                    <ct:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleStaticCurveCommand, Mode=OneWay}" Title="{x:Static st:CarpEditorView.GearRatios}" ItemsSource="{Binding State.GearRatioAuto}"/>
+                                    <ct:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleStaticCurveCommand, Mode=OneWay}" Title="{x:Static st:CarpEditorView.GearEfficiency}" ItemsSource="{Binding State.GearEfficiencyAuto}"/>
                                 </UniformGrid>
                             </StackPanel>
                         </Expander>

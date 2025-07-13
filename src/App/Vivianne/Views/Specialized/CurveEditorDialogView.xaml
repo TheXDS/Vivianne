@@ -12,17 +12,35 @@
     mc:Ignorable="d">
     <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
         <DockPanel>
-            <ScrollViewer Height="600" VerticalScrollBarVisibility="Auto">
-                <controls:DoubleCollectionEditor ItemsSource="{Binding State.Collection}" Width="200" Margin="0,36,20,0"/>
-            </ScrollViewer>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="36"/>
+                    <RowDefinition Height="600"/>
+                </Grid.RowDefinitions>
+                <UniformGrid Rows="1">
+                    <ui:Button
+                        Command="{Binding AddValueCommand, Mode=OneWay}"
+                        Icon="{ui:SymbolIcon Symbol=Add24}"/>
+                    <ui:Button
+                        Command="{Binding CopyToStringCommand, Mode=OneWay}"
+                        Icon="{ui:SymbolIcon Symbol=Copy24}"/>
+                    <ui:Button
+                        Command="{Binding CreateFromStringCommand, Mode=oneway}"
+                        Icon="{ui:SymbolIcon Symbol=ClipboardPaste24}"/>
+                </UniformGrid>
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <controls:DoubleCollectionEditor
+                        ItemsSource="{Binding State.Collection}"
+                        Width="200"/>
+                </ScrollViewer>
+            </Grid>
             <controls:DraggableLineGraph
                 Style="{StaticResource DraggableLineGraphBig}"
                 ItemsSource="{Binding State.Collection}"
                 BorderThickness="1"
                 CornerRadius="5"
-                Margin="5"
-                Width="700"
-                Height="600"
+                Margin="5,0"
+                Width="700"                
                 Background="{ui:ThemeResource ControlSolidFillColorDefaultBrush}"
                 MinValue="{Binding State.Minimum}"
                 MaxValue="{Binding State.Maximum}"/>
