@@ -38,8 +38,8 @@ public class BnkVisualizerConverter : IOneWayValueConverter<BnkStream?, ImageSou
             {
                 double x1 = (double)i / normalizedSamples.Length * width;
                 double x2 = (double)(i + 1) / normalizedSamples.Length * width;
-                double y1 = height / 2 - normalizedSamples[i] * height / 2;
-                double y2 = height / 2 - normalizedSamples[i + 1] * height / 2;
+                double y1 = (height / 2) - (normalizedSamples[i] * height / 2);
+                double y2 = (height / 2) - (normalizedSamples[i + 1] * height / 2);
                 if ((i == loopStart || i == loopEnd) && loopStart < loopEnd && loopEnd != 0)
                 {
                     graphics.DrawLine(gridPen, (float)x1, 0, (float)x1, 1024);
@@ -65,8 +65,8 @@ public class BnkVisualizerConverter : IOneWayValueConverter<BnkStream?, ImageSou
         var samples = CommonHelpers.MaptoSByte(rawData);
         int maxSample = sbyte.MaxValue;
         return [.. samples.Select(p => (double)p / maxSample)];
-
     }
+
     private static double[] Parse16bitStream(byte[] rawData)
     {
         short[] samples = new short[rawData.Length / 2];
@@ -74,5 +74,4 @@ public class BnkVisualizerConverter : IOneWayValueConverter<BnkStream?, ImageSou
         int maxSample = (int)Math.Pow(2, 16) / 2;
         return [.. samples.Select(p => (double)p / maxSample)];
     }
-
 }

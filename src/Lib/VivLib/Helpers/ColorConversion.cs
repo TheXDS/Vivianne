@@ -24,8 +24,8 @@ public static class ColorConversion
         int i = (int)Math.Floor(h);
         double f = h - i;
         double p = v * (1.0 - s);
-        double q = v * (1.0 - s * f);
-        double t = v * (1.0 - s * (1.0 - f));
+        double q = v * (1.0 - (s * f));
+        double t = v * (1.0 - (s * (1.0 - f)));
 
         return i switch
         {

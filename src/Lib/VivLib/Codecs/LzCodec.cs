@@ -167,8 +167,8 @@ public static class LzCodec
         byte[] cData = new byte[dData.Length + 1028];
         cData[0] = 0x10;
         cData[1] = 0xFB;
-        cData[2] = (byte)(dData.Length >> 16 & 0xff);
-        cData[3] = (byte)(dData.Length >> 8 & 0xff);
+        cData[2] = (byte)((dData.Length >> 16) & 0xff);
+        cData[3] = (byte)((dData.Length >> 8) & 0xff);
         cData[4] = (byte)(dData.Length & 0xff);
         return cData;
     }
@@ -192,7 +192,7 @@ public static class LzCodec
                 bestLength = matchLength;
                 bestOffset = dPos - offset;
             }
-            offset = rev_similar[offset & rev_similar.Length - 1] - 1;
+            offset = rev_similar[offset & (rev_similar.Length - 1)] - 1;
             idx++;
         }
 
@@ -242,7 +242,7 @@ public static class LzCodec
                 matchLength = 0x1B;
             }
             cData[cPos++] = (byte)(0xE0 + matchLength);
-            matchLength = 4 * matchLength + 4;
+            matchLength = (4 * matchLength) + 4;
             SlowMemCopy(cData, cPos, dData, lastwrote, matchLength);
             lastwrote += matchLength;
             cPos += matchLength;
@@ -299,7 +299,7 @@ public static class LzCodec
     private static void ReadRawBlock(byte[] sourceBytes, ref byte[] destinationBytes, ref int sourcePosition, ref int destinationPosition)
     {
         byte ctrlByte1 = sourceBytes[sourcePosition++];
-        int length = (ctrlByte1 & 0x1F) * 4 + 4;
+        int length = ((ctrlByte1 & 0x1F) * 4) + 4;
         LZCompliantCopy(ref sourceBytes, sourcePosition, ref destinationBytes, destinationPosition, length);
         sourcePosition += length;
         destinationPosition += length;
@@ -317,8 +317,8 @@ public static class LzCodec
         sourcePosition += length;
         destinationPosition += length;
 
-        length = (ctrlByte1 >> 2 & 3) * 256 + ctrlByte4 + 5;
-        int offset = ((ctrlByte1 & 0x10) << 12) + 256 * ctrlByte2 + ctrlByte3 + 1;
+        length = (((ctrlByte1 >> 2) & 3) * 256) + ctrlByte4 + 5;
+        int offset = ((ctrlByte1 & 0x10) << 12) + (256 * ctrlByte2) + ctrlByte3 + 1;
         LZCompliantCopy(ref destinationBytes, destinationPosition - offset, ref destinationBytes, destinationPosition, length);
         destinationPosition += length;
     }
@@ -329,13 +329,13 @@ public static class LzCodec
         byte ctrlByte2 = sourceBytes[sourcePosition++];
         byte ctrlByte3 = sourceBytes[sourcePosition++];
 
-        int length = ctrlByte2 >> 6 & 3;
+        int length = (ctrlByte2 >> 6) & 3;
         LZCompliantCopy(ref sourceBytes, sourcePosition, ref destinationBytes, destinationPosition, length);
         sourcePosition += length;
         destinationPosition += length;
 
         length = (ctrlByte1 & 0x3F) + 4;
-        int offset = (ctrlByte2 & 0x3F) * 256 + ctrlByte3 + 1;
+        int offset = ((ctrlByte2 & 0x3F) * 256) + ctrlByte3 + 1;
         LZCompliantCopy(ref destinationBytes, destinationPosition - offset, ref destinationBytes, destinationPosition, length);
         destinationPosition += length;
     }
@@ -374,8 +374,8 @@ public static class LzCodec
 
     private static void WriteSmallBlock(ref byte[] cData, ref int cPos, ref byte[] dData, ref int lastwrote, ref int bestLength, ref int bestOffset, ref int remainingMatchLength)
     {
-        cData[cPos++] = (byte)((bestOffset - 1) / 256 * 32 + (bestLength - 3) * 4 + remainingMatchLength);
-        cData[cPos++] = (byte)(bestOffset - 1 & 0xFF);
+        cData[cPos++] = (byte)(((bestOffset - 1) / 256 * 32) + ((bestLength - 3) * 4) + remainingMatchLength);
+        cData[cPos++] = (byte)((bestOffset - 1) & 0xFF);
         SlowMemCopy(cData, cPos, dData, lastwrote, remainingMatchLength);
         lastwrote += remainingMatchLength;
         cPos += remainingMatchLength;
@@ -385,8 +385,8 @@ public static class LzCodec
     private static void WriteMediumBlock(ref byte[] cData, ref int cPos, ref byte[] dData, ref int lastwrote, ref int bestLength, ref int bestOffset, ref int remainingMatchLength)
     {
         cData[cPos++] = (byte)(0x80 + (bestLength - 4));
-        cData[cPos++] = (byte)(remainingMatchLength * 64 + (bestOffset - 1) / 256);
-        cData[cPos++] = (byte)(bestOffset - 1 & 0xFF);
+        cData[cPos++] = (byte)((remainingMatchLength * 64) + ((bestOffset - 1) / 256));
+        cData[cPos++] = (byte)((bestOffset - 1) & 0xFF);
         SlowMemCopy(cData, cPos, dData, lastwrote, remainingMatchLength);
         lastwrote += remainingMatchLength;
         cPos += remainingMatchLength;
@@ -396,10 +396,10 @@ public static class LzCodec
     private static void WriteLargeBlock(ref byte[] cData, ref int cPos, ref byte[] dData, ref int lastwrote, ref int bestLength, ref int bestOffset, ref int remainingMatchLength)
     {
         bestOffset--;
-        cData[cPos++] = (byte)(0xC0 + bestOffset / 65536 * 16 + (bestLength - 5) / 256 * 4 + remainingMatchLength);
-        cData[cPos++] = (byte)(bestOffset / 256 & 0xFF);
+        cData[cPos++] = (byte)(0xC0 + (bestOffset / 65536 * 16) + ((bestLength - 5) / 256 * 4) + remainingMatchLength);
+        cData[cPos++] = (byte)((bestOffset / 256) & 0xFF);
         cData[cPos++] = (byte)(bestOffset & 0xFF);
-        cData[cPos++] = (byte)(bestLength - 5 & 0xFF);
+        cData[cPos++] = (byte)((bestLength - 5) & 0xFF);
         SlowMemCopy(cData, cPos, dData, lastwrote, remainingMatchLength);
         lastwrote += remainingMatchLength;
         cPos += remainingMatchLength;
@@ -408,10 +408,10 @@ public static class LzCodec
 
     private static void WriteRawBlock(ref int dPos, ref byte[] cData, ref int cPos, ref byte[] dData, ref int lastwrote)
     {
-        int matchLength = (dPos - lastwrote) / 4 - 1;
+        int matchLength = ((dPos - lastwrote) / 4) - 1;
         if (matchLength > 0x1B) matchLength = 0x1B;
         cData[cPos++] = (byte)(0xE0 + matchLength);
-        matchLength = 4 * matchLength + 4;
+        matchLength = (4 * matchLength) + 4;
         SlowMemCopy(cData, cPos, dData, lastwrote, matchLength);
         lastwrote += matchLength;
         cPos += matchLength;

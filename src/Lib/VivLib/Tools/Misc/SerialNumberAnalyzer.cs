@@ -1,4 +1,5 @@
-﻿using TheXDS.MCART.Math;
+﻿/*
+using TheXDS.MCART.Math;
 using TheXDS.Vivianne.Info;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Models.Carp;
@@ -13,9 +14,11 @@ using Fe3 = TheXDS.Vivianne.Models.Fe.Nfs3.FeData;
 using Fe4 = TheXDS.Vivianne.Models.Fe.Nfs4.FeData;
 using FeS3 = TheXDS.Vivianne.Serializers.Fe.Nfs3.FeDataSerializer;
 using FeS4 = TheXDS.Vivianne.Serializers.Fe.Nfs4.FeDataSerializer;
+*/
 
 namespace TheXDS.Vivianne.Tools.Misc;
 
+/*
 public class SerialNumberAnalyzer
 {
 }
@@ -117,3 +120,4 @@ public class SerialNumberSetter : SerialNumberAnalyzerBase
         };
     }
 }
+*/

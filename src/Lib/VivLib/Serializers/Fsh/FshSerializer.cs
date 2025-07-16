@@ -100,7 +100,7 @@ public class FshSerializer : ISerializer<FshFile>
         writer.Write(GetFileSize(entity.Entries));
         writer.Write(entity.Entries.Count);
         writer.Write(Latin1.GetBytes(entity.DirectoryId));
-        int o = entity.Entries.Count * 8 + 16;
+        int o = (entity.Entries.Count * 8) + 16;
         foreach (var j in entity.Entries)
         {
             writer.Write(Latin1.GetBytes(j.Key));

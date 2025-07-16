@@ -47,7 +47,7 @@ public class FeDataSerializerBase<T> where T : IFeData
     /// <returns>The entire contents of the string pool.</returns>
     protected static byte[] WriteStrings(BinaryWriter offsetsWriter, T feData, int stringTableOffset)
     {
-        uint lastOffset = (uint)(stringTableOffset + feData.StringEntries * 4);
+        uint lastOffset = (uint)(stringTableOffset + (feData.StringEntries * 4));
         using var ms = new MemoryStream();
         using (var bw = new BinaryWriter(ms))
         {

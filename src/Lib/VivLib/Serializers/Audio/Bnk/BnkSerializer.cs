@@ -34,7 +34,7 @@ public class BnkSerializer : ISerializer<BnkFile>
                 ptHeaders.Add(null);
                 continue;
             }
-            br.BaseStream.Seek(headerSize + offset + sizeof(int) * index, SeekOrigin.Begin);
+            br.BaseStream.Seek(headerSize + offset + (sizeof(int) * index), SeekOrigin.Begin);
             if (!br.ReadBytes(4).SequenceEqual("PT\0\0"u8.ToArray()))
             {
                 throw new InvalidDataException();
@@ -89,11 +89,11 @@ public class BnkSerializer : ISerializer<BnkFile>
                 continue;
             }
             var pt = WritePtHeaderData(poolBw, j, poolOffset);
-            headerOffsets.Add((int)headersStream.Position + entity.Streams.Count * 4 - 4 * index);
+            headerOffsets.Add((int)headersStream.Position + (entity.Streams.Count * 4) - (4 * index));
             headersBw.Write("PT\0\0"u8.ToArray());
             PtHeaderSerializerHelper.WritePtHeader(headersBw, pt);
             headersBw.Write((byte)PtHeaderField.EndOfHeader);
-            var padding = 8 - (int)headersStream.Length % 8;
+            var padding = 8 - ((int)headersStream.Length % 8);
             if (padding != 8)
             { 
                 headersBw.Write(new byte[padding]);
@@ -169,7 +169,7 @@ public class BnkSerializer : ISerializer<BnkFile>
 
     private static int CalculateBnkHeaderSize(BnkFile bnk)
     {
-        return Marshal.SizeOf<BnkHeader>() + (bnk.FileVersion == 4 ? Marshal.SizeOf<BnkV4Header>() : 0) + bnk.Streams.Count * sizeof(int);
+        return Marshal.SizeOf<BnkHeader>() + (bnk.FileVersion == 4 ? Marshal.SizeOf<BnkV4Header>() : 0) + (bnk.Streams.Count * sizeof(int));
     }
 
     private static int CalculateTotalPtHeadersSize(BnkFile entity)
@@ -180,13 +180,13 @@ public class BnkSerializer : ISerializer<BnkFile>
          * padding bytes might be necessary to align the PT header to an 8-byte
          * boundary.
          */
-        return entity.Streams.NotNull().Select(ToPtHeader).Sum(CalculatePtHeaderSize) + entity.Streams.NotNull().Count() * 5;
+        return entity.Streams.NotNull().Select(ToPtHeader).Sum(CalculatePtHeaderSize) + (entity.Streams.NotNull().Count() * 5);
     }
 
     private static int CalculatePtHeaderSize(PtHeader header)
     {
         var sum = CalculatePtHeaderSizeNoAdjust(header);
-        var padding = 8 - (sum + 4) % 8;
+        var padding = 8 - ((sum + 4) % 8);
         sum += padding != 8 ? padding : 0;
         return sum - 1;
     }

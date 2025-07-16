@@ -48,7 +48,7 @@ public class FceInfoExtractor<T>(bool humanSize, bool showRsvdContents) : IEntit
         byte[][] chunks = new byte[numberOfChunks][];
         for (int i = 0; i < numberOfChunks; i++)
         {
-            int currentChunkSize = Math.Min(chunkSize, data.Length - i * chunkSize);
+            int currentChunkSize = Math.Min(chunkSize, data.Length - (i * chunkSize));
             chunks[i] = new byte[currentChunkSize];
             Array.Copy(data, i * chunkSize, chunks[i], 0, currentChunkSize);
         }

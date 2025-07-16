@@ -99,8 +99,8 @@ public class EaAdpcmCodec : IAudioCodec
                 right = right << 0x1C >> dright;
 
                 // Calculate new samples with predictor coefficients
-                long leftSample = left + lCurSampleLeft * c1left + lPrevSampleLeft * c2left + 0x80L >> 8;
-                long rightSample = right + lCurSampleRight * c1right + lPrevSampleRight * c2right + 0x80L >> 8;
+                long leftSample = (left + (lCurSampleLeft * c1left) + (lPrevSampleLeft * c2left) + 0x80L) >> 8;
+                long rightSample = (right + (lCurSampleRight * c1right) + (lPrevSampleRight * c2right) + 0x80L) >> 8;
 
                 leftSample = Clip16BitSample(leftSample);
                 rightSample = Clip16BitSample(rightSample);
@@ -143,8 +143,8 @@ public class EaAdpcmCodec : IAudioCodec
                 right = right << 0x1C >> dright;
 
                 // Calculate new samples with predictor coefficients
-                long leftSample = left + lCurSampleLeft * c1left + lPrevSampleLeft * c2left + 0x80L >> 8;
-                long rightSample = right + lCurSampleRight * c1right + lPrevSampleRight * c2right + 0x80L >> 8;
+                long leftSample = (left + (lCurSampleLeft * c1left) + (lPrevSampleLeft * c2left) + 0x80L) >> 8;
+                long rightSample = (right + (lCurSampleRight * c1right) + (lPrevSampleRight * c2right) + 0x80L) >> 8;
 
                 leftSample = Clip16BitSample(leftSample);
                 rightSample = Clip16BitSample(rightSample);
