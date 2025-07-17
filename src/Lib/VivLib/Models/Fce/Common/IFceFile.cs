@@ -6,8 +6,7 @@ namespace TheXDS.Vivianne.Models.Fce.Common;
 /// Defines a set of members to be implemented by a type that represents the
 /// essential contents of an FCE file.
 /// </summary>
-/// <typeparam name="TPart"></typeparam>
-public interface IFceFile<TPart> where TPart : FcePart
+public interface IFceFile
 {
     /// <summary>
     /// Gets a value that indicates the game version that this FCE4 file is for.
@@ -47,16 +46,6 @@ public interface IFceFile<TPart> where TPart : FcePart
     /// size of the model in the Z axis. 
     /// </summary>
     float ZHalfSize { get; }
-
-    /// <summary>
-    /// Gets a table containing all defined Parts in the FCE.
-    /// </summary>
-    /// <remarks>
-    /// This table should never exceed <c>64</c>
-    /// <typeparamref name="TPart"/> elements.
-    /// elements.
-    /// </remarks>
-    IList<TPart> Parts { get; }
 
     /// <summary>
     /// Gets a table containing all the Dummies.

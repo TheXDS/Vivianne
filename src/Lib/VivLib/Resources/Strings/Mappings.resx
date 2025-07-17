@@ -195,4 +195,7 @@
   <data name="FceMagicToString_Unknown" xml:space="preserve">
     <value>unknown</value>
   </data>
+  <data name="FceMagicToString_Fce3" xml:space="preserve">
+    <value>Need For Speed 3 FCE</value>
+  </data>
 </root>

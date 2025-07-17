@@ -187,12 +187,15 @@
     <value>Nombre de blob</value>
   </data>
   <data name="FceMagicToString_Fce4" xml:space="preserve">
-    <value>FCE de Need FOr Speed 4</value>
+    <value>FCE de Need For Speed 4</value>
   </data>
   <data name="FceMagicToString_Fce4M" xml:space="preserve">
     <value>FCE de Motor City Online</value>
   </data>
   <data name="FceMagicToString_Unknown" xml:space="preserve">
     <value>desconocido</value>
+  </data>
+  <data name="FceMagicToString_Fce3" xml:space="preserve">
+    <value>FCE de Need For Speed 3</value>
   </data>
 </root>

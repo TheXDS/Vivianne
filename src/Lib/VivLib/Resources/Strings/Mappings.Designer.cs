@@ -70,6 +70,15 @@ namespace TheXDS.Vivianne.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Need For Speed 3 FCE.
+        /// </summary>
+        public static string FceMagicToString_Fce3 {
+            get {
+                return ResourceManager.GetString("FceMagicToString_Fce3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Need For Speed 4 FCE.
         /// </summary>
         public static string FceMagicToString_Fce4 {

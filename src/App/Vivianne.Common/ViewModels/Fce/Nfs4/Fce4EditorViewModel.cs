@@ -6,6 +6,7 @@ using System.Windows.Input;
 using TheXDS.Ganymede.Helpers;
 using TheXDS.Vivianne.Models.Fce;
 using TheXDS.Vivianne.Models.Fce.Nfs4;
+using TheXDS.Vivianne.Tools.Fce;
 using TheXDS.Vivianne.ViewModels.Fce.Common;
 
 namespace TheXDS.Vivianne.ViewModels.Fce.Nfs4;
@@ -37,12 +38,18 @@ public class Fce4EditorViewModel : FceEditorViewModelBase<
     public ICommand ColorEditorCommand { get; }
 
     /// <summary>
+    /// Gets a reference to the command used to regenerate a damaged model for this FCE file.
+    /// </summary>
+    public ICommand RegenerateDamagedModelCommand { get; }
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="Fce4EditorViewModel"/> class.
     /// </summary>
     public Fce4EditorViewModel()
     {
         var cb = CommandBuilder.For(this);
         ColorEditorCommand = cb.BuildSimple(OnColorEditor);
+        RegenerateDamagedModelCommand = cb.BuildSimple(OnRegenerateDamagedModel);
     }
 
     /// <inheritdoc/>
@@ -69,6 +76,16 @@ public class Fce4EditorViewModel : FceEditorViewModelBase<
         await DialogService!.Show(vm);
         await LoadColorNames();
         State.SelectedColor = State.Colors.FirstOrDefault();
+        OnVisibleChanged();
+    }
+
+    private void OnRegenerateDamagedModel()
+    {
+        foreach (var part in State.Parts.Select(p => p.Part).Where(p => ((string[])[":HB", ":MB", ":LB"]).Contains(p.Name)))
+        {
+            part.DamagedVertices = FceDamageGenerator.GenerateDamageMesh(part.Vertices);
+            part.DamagedNormals = FceDamageGenerator.GenerateDamageMesh(part.Normals);
+        }
         OnVisibleChanged();
     }
 }

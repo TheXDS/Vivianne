@@ -14,6 +14,7 @@ using TheXDS.Vivianne.Extensions;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Models.Audio.Base;
 using TheXDS.Vivianne.Models.Carp;
+using TheXDS.Vivianne.Models.Fce.Common;
 using TheXDS.Vivianne.Models.Fe;
 using TheXDS.Vivianne.Models.Fsh;
 using TheXDS.Vivianne.Models.Fsh.Nfs3;
@@ -123,19 +124,20 @@ public static class Mappings
     }
 
     /// <summary>
-    /// Maps the FCE file h magic number to a string that describes the
+    /// Maps the FCE file header magic number to a string that describes the
     /// internal file format used from within the available variants of FCE4.
     /// </summary>
     /// <param name="file">File to infer the format description for.</param>
     /// <returns>
     /// A string that describes the file format and/or origin of the FCE file.
     /// </returns>
-    public static string FceMagicToString(Models.Fce.Nfs4.FceFile file)
+    public static string FceMagicToString(IFceFile file)
     {
         return file.Magic switch
         {
             0x00101014 => St.FceMagicToString_Fce4,
             0x00101015 => St.FceMagicToString_Fce4M,
+            0x00000000 => St.FceMagicToString_Fce3,
             _ => St.FceMagicToString_Unknown
         };
     }
