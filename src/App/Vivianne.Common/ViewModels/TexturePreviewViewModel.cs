@@ -10,6 +10,7 @@ using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Models.Fsh;
 using TheXDS.Vivianne.Resources;
 using TheXDS.Vivianne.ViewModels.Base;
+using SixLabors.ImageSharp.Formats.Tga;
 
 namespace TheXDS.Vivianne.ViewModels;
 
@@ -85,7 +86,7 @@ public class TexturePreviewViewModel : StatefulFileEditorViewModelBase<RawFileEd
                 IsBusy = true;
                 var img = await Image.LoadAsync(File.OpenRead(textureFile));
                 using var ms = new MemoryStream();
-                await img.SaveAsTgaAsync(ms);
+                await img.SaveAsTgaAsync(ms, new TgaEncoder() { BitsPerPixel = TgaBitsPerPixel.Pixel32, Compression = TgaCompression.None });
                 State.Data = ms.ToArray();
             }
             catch (Exception ex)
