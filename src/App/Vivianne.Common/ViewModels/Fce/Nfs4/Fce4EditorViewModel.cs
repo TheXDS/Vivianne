@@ -107,7 +107,7 @@ public class Fce4EditorViewModel : FceEditorViewModelBase<
         if (BackingStore?.Store.AsDictionary() is not { } d) return;
         ISerializer<FceFile> serializer = new FceSerializer();
         IsBusy = true;
-        foreach (var j in ((string[])["car", "car1", "car2", "car3"]).Select(p => $"{p}.fce").ExceptFor(BackingStore.FileName))
+        foreach (string j in ((string[])["car", "car1", "car2", "car3"]).Select(p => $"{p}.fce").ExceptFor(BackingStore.FileName).NotNull())
         {
             if (d.TryGetValue(j, out byte[]? fceFile))
             {

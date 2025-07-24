@@ -25,6 +25,7 @@ public class FshSerializer : ISerializer<FshFile>
         public byte[] DirectoryId;
     }
 
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
     private struct FshDirEntry
     {
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
