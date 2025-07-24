@@ -103,7 +103,7 @@ public class FceFileEditorLauncher : ViewModel, IFileEditorViewModelLauncher
         var recentFile = CreateRecentFileInfo(filePath);
         RecentFiles = Settings.Current.RecentFilesCount > 0 ? [recentFile, .. (RecentFiles?.Where(p => p.FilePath != filePath) ?? []).Take(Settings.Current.RecentFilesCount - 1)] : [];
         Notify(nameof(RecentFiles));
-        await Settings.Save();
+        await Settings.SaveAsync();
         var vm = new TEditor()
         {
             Title = recentFile.FriendlyName,

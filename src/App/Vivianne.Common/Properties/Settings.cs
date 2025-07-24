@@ -41,7 +41,7 @@ public class Settings
     /// <returns>
     /// A task that can be used to await the async operation.
     /// </returns>
-    public static async Task Load()
+    public static async Task LoadAsync()
     {
         try
         {
@@ -60,7 +60,7 @@ public class Settings
     /// <returns>
     /// A task that can be used to await the async operation.
     /// </returns>
-    public static Task Save()
+    public static Task SaveAsync()
     {
         return _repository.Save(Current);
     }
@@ -228,6 +228,6 @@ public class Settings
     public Task AddRecentVivFile(RecentFileInfo file)
     {
         RecentVivFiles = RecentFilesCount > 0 ? [file, .. (RecentVivFiles?.Where(p => p.FilePath != file.FilePath) ?? []).Take(RecentFilesCount - 1)] : [];
-        return Save();
+        return SaveAsync();
     }
 }

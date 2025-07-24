@@ -7,6 +7,8 @@ namespace Vivianne;
 /// </summary>
 public partial class MainWindow
 {
+    private int currentTheme;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="MainWindow"/> class.
     /// </summary>
@@ -27,9 +29,6 @@ public partial class MainWindow
             Background = Brushes.Gray;
         }
     }
-
-
-    private int currentTheme;
 
     private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
     {

@@ -115,6 +115,6 @@ public class SettingsViewModel : EditorViewModelBase<SettingsState>
         Settings.Current.RecentVivFiles = recentVivFiles;
         Settings.Current.RecentFshFiles = recentFshFiles;
         Settings.Current.RecentFceFiles = recentFce3Files;
-        return Settings.Save();
+        return Settings.SaveAsync();
     }
 }

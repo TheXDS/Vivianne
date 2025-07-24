@@ -39,7 +39,7 @@ public class StartupViewModel : ViewModel
         return vm.Launchers.OfType<IFileViewerViewModelLauncher>().FirstOrDefault(p => p.CanOpen($"*{extension}"))?.OnOpen(file);
     }
 
-    private readonly IEnumerable<IViewModelLauncher> _Launchers;
+    private readonly IEnumerable<IViewModelLauncher> _launchers;
     private bool _isNfsRunning;
 
     /// <summary>
@@ -66,7 +66,7 @@ public class StartupViewModel : ViewModel
     /// <summary>
     /// Enumerates all available file editor launchers.
     /// </summary>
-    public IEnumerable<IViewModelLauncher> Launchers => _Launchers;
+    public IEnumerable<IViewModelLauncher> Launchers => _launchers;
 
     /// <summary>
     /// Gets a value that indicates if Need For Speed is running.
@@ -87,7 +87,7 @@ public class StartupViewModel : ViewModel
     /// </summary>
     public StartupViewModel()
     {
-        _Launchers = [
+        _launchers = [
             new VivFileEditorLauncher(() => DialogService!) { IsActive = true },
             new FshFileEditorLauncher(() => DialogService!),
             new FceFileEditorLauncher(() => DialogService!),
@@ -118,7 +118,6 @@ public class StartupViewModel : ViewModel
             j.DialogService ??= DialogService;
             j.NavigationService ??= NavigationService;
         }
-        await Settings.Load();
         foreach (var initAction in _InitActions)
         {
             await (initAction.Invoke(this) ?? Task.CompletedTask);

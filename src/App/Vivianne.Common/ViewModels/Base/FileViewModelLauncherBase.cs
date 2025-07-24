@@ -165,7 +165,7 @@ public abstract class FileViewModelLauncherBase<TFile, TSerializer, TViewModel> 
         var recentFile = CreateRecentFileInfo(filePath, file);
         RecentFiles = Settings.Current.RecentFilesCount > 0 ? [recentFile, .. (RecentFiles?.Where(p => p.FilePath != filePath) ?? []).Take(Settings.Current.RecentFilesCount - 1)] : [];
         Notify(nameof(RecentFiles));
-        await Settings.Save();
+        await Settings.SaveAsync();
         await NavigationService!.Navigate(CreateViewModel(recentFile.FriendlyName, file, filePath));
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using TheXDS.Vivianne.Component;
+using TheXDS.Vivianne.Properties;
 
 #if !DEBUG
 using System.IO;
@@ -20,6 +21,7 @@ public partial class App : Application
     public App()
     {
         PlatformServices.SetKeyboardProxy(new WpfKeyboardProxy());
+        Startup += App_Startup;
 
 #if !DEBUG
         AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
@@ -42,5 +44,10 @@ public partial class App : Application
             Environment.FailFast("Unhandled exception", (Exception)e.ExceptionObject);
         }
 #endif
+    }
+
+    private async void App_Startup(object sender, StartupEventArgs e)
+    {
+        await Settings.LoadAsync();
     }
 }
