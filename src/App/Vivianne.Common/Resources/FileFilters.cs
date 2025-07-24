@@ -93,6 +93,7 @@ public static class FileFilters
         new FileFilterItem(St.GIFImage, "*.gif"),
         new FileFilterItem(St.JPEGPicture, ["*.jpg", "*.jpeg"]),
         new FileFilterItem(St.BMPBitmapImage, "*.bmp"),
+        new FileFilterItem("TrueVision TGA", "*.tga"),
         FileFilterItem.AllFiles
         ];
 
@@ -101,7 +102,7 @@ public static class FileFilters
     /// with common bitmap file formats.
     /// </summary>
     public static IEnumerable<FileFilterItem> CommonBitmapOpenFormats { get; } = [
-        new FileFilterItem(St.CommonImageFiles, ["*.png", "*.gif", "*.jpg", "*.jpeg", "*.bmp"]),
+        new FileFilterItem(St.CommonImageFiles, ["*.png", "*.gif", "*.jpg", "*.jpeg", "*.bmp", "*.tga"]),
         FileFilterItem.AllFiles
     ];
 }

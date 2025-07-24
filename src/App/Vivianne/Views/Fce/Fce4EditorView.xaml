@@ -115,6 +115,7 @@
                             <Button Margin="5" HorizontalAlignment="Stretch" Command="{Binding ColorEditorCommand, Mode=OneWay}" Content="{x:Static st:FceEditorView.EditColors}"/>
                             <Button Margin="5" HorizontalAlignment="Stretch" Command="{Binding FceCenterCommand, Mode=OneWay}" Content="Fce Center"/>
                             <Button Margin="5" HorizontalAlignment="Stretch" Command="{Binding RegenerateDamagedModelCommand, Mode=OneWay}" Content="Damage model"/>
+                            <Button Margin="5" HorizontalAlignment="Stretch" Command="{Binding SyncColorTablesCommand, Mode=OneWay}" Content="Sync colors"/>
                         </StackPanel>
                     </Expander>
                     <Expander Margin="10" IsExpanded="True" Header="Parts">

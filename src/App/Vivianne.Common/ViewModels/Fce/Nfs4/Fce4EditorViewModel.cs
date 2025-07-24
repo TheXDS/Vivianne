@@ -1,11 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TheXDS.Ganymede.Helpers;
+using TheXDS.MCART.Component;
+using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models.Fce;
 using TheXDS.Vivianne.Models.Fce.Nfs4;
+using TheXDS.Vivianne.Serializers;
+using TheXDS.Vivianne.Serializers.Fce.Nfs4;
 using TheXDS.Vivianne.Tools.Fce;
 using TheXDS.Vivianne.ViewModels.Fce.Common;
 
@@ -43,6 +49,11 @@ public class Fce4EditorViewModel : FceEditorViewModelBase<
     public ICommand RegenerateDamagedModelCommand { get; }
 
     /// <summary>
+    /// Gets a reference to the command used to sync the color tables across other FCE models.
+    /// </summary>
+    public SimpleCommand SyncColorTablesCommand { get; }
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="Fce4EditorViewModel"/> class.
     /// </summary>
     public Fce4EditorViewModel()
@@ -50,12 +61,14 @@ public class Fce4EditorViewModel : FceEditorViewModelBase<
         var cb = CommandBuilder.For(this);
         ColorEditorCommand = cb.BuildSimple(OnColorEditor);
         RegenerateDamagedModelCommand = cb.BuildSimple(OnRegenerateDamagedModel);
+        SyncColorTablesCommand = cb.BuildSimple(OnSyncColorTablesCommand);
     }
 
     /// <inheritdoc/>
     protected override Task OnCreated()
     {
         State.SelectedColor = State.Colors.FirstOrDefault();
+        SyncColorTablesCommand.SetCanExecute(BackingStore?.FileName?.StartsWith("car", StringComparison.InvariantCultureIgnoreCase) ?? false);
         return base.OnCreated();
     }
 
@@ -87,5 +100,29 @@ public class Fce4EditorViewModel : FceEditorViewModelBase<
             part.DamagedNormals = FceDamageGenerator.GenerateDamageMesh(part.Normals);
         }
         OnVisibleChanged();
+    }
+
+    private async Task OnSyncColorTablesCommand()
+    {
+        if (BackingStore?.Store.AsDictionary() is not { } d) return;
+        ISerializer<FceFile> serializer = new FceSerializer();
+        IsBusy = true;
+        foreach (var j in ((string[])["car", "car1", "car2", "car3"]).Select(p => $"{p}.fce").ExceptFor(BackingStore.FileName))
+        {
+            if (d.TryGetValue(j, out byte[]? fceFile))
+            {
+                try
+                {
+                    var fce = await serializer.DeserializeAsync(fceFile);
+                    fce.PrimaryColors = [.. State.Colors.Select(p => p.PrimaryColor)];
+                    fce.SecondaryColors = [.. State.Colors.Select(p => p.SecondaryColor)];
+                    fce.InteriorColors = [.. State.Colors.Select(p => p.InteriorColor)];
+                    fce.DriverHairColors = [.. State.Colors.Select(p => p.DriverHairColor)];
+                    d[j] = await serializer.SerializeAsync(fce);
+                }
+                catch { }
+            }
+        }
+        IsBusy = false;
     }
 }
