@@ -30,7 +30,7 @@ public class PtHeader
         { PtAudioHeaderField.NumSamples, new(4, 0) },
         { PtAudioHeaderField.LoopOffset, new(2, 0) },
         { PtAudioHeaderField.LoopEnd, new(2, 0) },
-        { PtAudioHeaderField.DataOffset, new(4, 0) },
+        { PtAudioHeaderField.DataOffset, new(0, 0) },
         { PtAudioHeaderField.BytesPerSample, new(1, 2) },
         { PtAudioHeaderField.EndOfHeader, new(4, 0) },
     };

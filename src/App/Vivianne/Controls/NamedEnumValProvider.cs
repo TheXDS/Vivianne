@@ -35,6 +35,6 @@ public partial class NamedEnumValProvider : MarkupExtension
     /// <inheritdoc/>
     public override object ProvideValue(IServiceProvider serviceProvider)
     {
-        return enumType is not null ? Enum.GetValues(enumType).Cast<Enum>().Select(p => new NamedObject<Enum>(p, p.NameOf())).ToArray() : Array.Empty<NamedObject<Enum>>();
+        return enumType is not null ? Enum.GetValues(enumType).Cast<Enum>().Select(p => new NamedObject<Enum>(p.NameOf(), p)).ToArray() : [];
     }
 }

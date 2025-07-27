@@ -1,9 +1,5 @@
 ﻿using System.Runtime.InteropServices;
-using System.Text;
-using TheXDS.MCART.Types.Extensions;
-using TheXDS.Vivianne.Models.Audio.Base;
 using TheXDS.Vivianne.Models.Audio.Mus;
-using TheXDS.Vivianne.Resources;
 
 namespace TheXDS.Vivianne.Serializers.Audio.Mus;
 
@@ -18,7 +14,7 @@ namespace TheXDS.Vivianne.Serializers.Audio.Mus;
 /// only implement deserialization of <see cref="AsfFile"/> instances, even if
 /// the formats are otherwise equivalent.
 /// </remarks>
-public class MusSerializer : ISerializer<MusFile>, IOutSerializer<AsfFile>
+public partial class MusSerializer : ISerializer<MusFile>, ISerializer<AsfFile>
 {
     /// <inheritdoc/>
     public MusFile Deserialize(Stream stream)
@@ -35,74 +31,18 @@ public class MusSerializer : ISerializer<MusFile>, IOutSerializer<AsfFile>
     /// <inheritdoc/>
     public void SerializeTo(MusFile entity, Stream stream)
     {
-        throw new NotImplementedException();
-    }
-
-    private static AsfFile? ReadAsfFile(BinaryReader br)
-    {
-        AsfData data = new();
-        while (true)
+        using BinaryWriter bw = new(stream);
+        foreach (AsfFile asf in entity.AsfSubStreams.Values)
         {
-            var blockHeader = br.MarshalReadStruct<AsfBlockHeader>();
-
-            // Check for possible alignment issues...
-            if (!blockHeader.Magic[0..2].SequenceEqual("SC"u8.ToArray()))
-            {
-                // This file likely uses 4-byte alignment. Align to 4 bytes and try again.
-                br.BaseStream.Position -= Marshal.SizeOf<AsfBlockHeader>();
-                br.BaseStream.Position += 4 - (br.BaseStream.Position % 4);
-                blockHeader = br.MarshalReadStruct<AsfBlockHeader>();
-
-                // If we're still in the same situation, throw an exception.
-                if (!blockHeader.Magic[0..2].SequenceEqual("SC"u8.ToArray()))
-                {
-                    throw new InvalidDataException($"Invalid or corrupt ASF block: '{Encoding.Latin1.GetString(blockHeader.Magic)}' (0x{BitConverter.ToInt32(blockHeader.Magic):X8})");
-                }
-            }
-            byte[] blockData;
-            try
-            {
-                blockData = br.ReadBytes(blockHeader.BlockSize - Marshal.SizeOf<AsfBlockHeader>());
-            }
-            catch (Exception ex)
-            {
-                throw new EndOfStreamException("Unexpected end of file.", ex);
-            }
-            switch (Encoding.Latin1.GetString(blockHeader.Magic))
-            {
-                case "SCHl": ReadPtHeader(data, blockData); break;
-                case "SCCl": ReadCount(data, blockData); break;
-                case "SCDl": ReadAudioBlock(data, blockData); break;
-                case "SCLl": data.LoopOffset = BitConverter.ToInt32(blockData); break;
-                case "SCEl": return data.ToFile();
-                default:
-                    throw new InvalidDataException($"Unknown ASF block type: {Encoding.Latin1.GetString(blockHeader.Magic)}. Length: {blockData.Length} bytes");
-            }
+            WriteAsf(asf, bw);
         }
     }
 
-    private static void ReadAudioBlock(AsfData d, byte[] blockData)
+    /// <inheritdoc/>
+    public void SerializeTo(AsfFile entity, Stream stream)
     {
-        var data = Mappings.AudioCodecSelector.TryGetValue((CompressionMethod)d.PtHeader[PtAudioHeaderField.Compression].Value, out var codec)
-            ? codec.Invoke().Decode(blockData, d.PtHeader)
-            : throw new InvalidOperationException($"Unsupported audio codec: {d.PtHeader[PtAudioHeaderField.Compression].Value:X2}");
-
-        d.AudioBlocks.Add(data);
-    }
-
-    private static void ReadCount(AsfData d, byte[] blockData)
-    {
-        d.BlockCount = BitConverter.ToInt32(blockData);
-    }
-
-    private static void ReadPtHeader(AsfData d, byte[] blockData)
-    {
-        using BinaryReader br = new(new MemoryStream(blockData));
-        if (!br.ReadBytes(4).SequenceEqual("PT\0\0"u8.ToArray()))
-        {
-            throw new InvalidDataException();
-        }
-        d.PtHeader = PtHeaderSerializerHelper.ReadPtHeader(br);
+        using BinaryWriter bw = new(stream);
+        WriteAsf(entity, bw);
     }
 
     AsfFile IOutSerializer<AsfFile>.Deserialize(Stream stream)

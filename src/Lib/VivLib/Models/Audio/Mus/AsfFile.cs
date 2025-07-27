@@ -16,7 +16,14 @@ public class AsfFile : AudioStreamBase
     public override int TotalSamples => AudioBlocks.Sum(p => p.Length) / BytesPerSample;
 
     /// <summary>
-    /// Gets or sets the offset in samples at which the audio stream should loop. Known to be used by Need For Speed II .ASF music files.
+    /// Gets or sets the offset in samples at which the audio stream should
+    /// loop. Known to be used by Need For Speed II .ASF music files.
     /// </summary>
     public int? LoopOffset { get; set; } = null;
+
+    /// <summary>
+    /// Gets or sets a value indicating internal byte alignment of each main
+    /// block on this .ASF file.
+    /// </summary>
+    public byte? ByteAlignment { get; set; } = null;
 }

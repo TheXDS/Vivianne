@@ -116,7 +116,7 @@ public abstract class FceEditorViewModelBase<TState, TFile, TFceColor, THsbColor
     {
         State.RenderShadow = Settings.Current.Fce_ShadowByDefault;
         await foreach (var j in GetTextures(BackingStore?.Store)) State.CarTextures.Add(j);
-        State.CarTextures.Add(new(null!, St.NoTexture));
+        State.CarTextures.Add(new(St.NoTexture, null!));
         if (State.CarTextures.FirstOrDefault(p => p.Name.StartsWith(Path.GetFileNameWithoutExtension(BackingStore!.FileName)!)) is { Value: byte[] texture })
         {
             State.SelectedTexture = texture;
@@ -208,7 +208,7 @@ public abstract class FceEditorViewModelBase<TState, TFile, TFceColor, THsbColor
         {
             if (await store!.ReadAsync(file) is byte[] contents)
             {
-                yield return new NamedObject<byte[]>(contents, file);
+                yield return new NamedObject<byte[]>(file, contents);
             }
         }
     }

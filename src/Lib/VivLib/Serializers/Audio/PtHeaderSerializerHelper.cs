@@ -44,14 +44,75 @@ internal static class PtHeaderSerializerHelper
 
     public static void WritePtHeader(BinaryWriter bw, PtHeader header)
     {
+        bw.Write("PT\0\0"u8.ToArray());
+        WritePtHeaderContents(bw, header);
+        bw.Write((byte)PtHeaderField.EndOfHeader);
+    }
+
+    private static void WritePtHeaderContents(BinaryWriter bw, PtHeader header)
+    {
         WritePtHeaderValues(bw, header);
         bw.Write((byte)PtHeaderField.AudioHeader);
         WriteAudioHeaderValues(bw, header);
         if (header.AltStream is not null)
         {
             bw.Write((byte)PtHeaderField.AlternateStream);
-            WritePtHeader(bw, header.AltStream);
+            WritePtHeaderContents(bw, header.AltStream);
         }
+    }
+
+    public static PtHeader ToPtHeader(AudioStreamBase blob)
+    {
+        var header = new PtHeader();
+        header.Values.AddRange(blob.Properties.Select(p => new KeyValuePair<PtHeaderField, PtHeaderValue>((PtHeaderField)p.Key, p.Value)));
+        header[PtAudioHeaderField.Channels] = blob.Channels;
+        header[PtAudioHeaderField.Compression] = (byte)blob.Compression;
+        header[PtAudioHeaderField.SampleRate] = blob.SampleRate;
+        header[PtAudioHeaderField.NumSamples] = blob.TotalSamples;
+        header[PtAudioHeaderField.LoopOffset] = blob.LoopStart;
+        header[PtAudioHeaderField.LoopEnd] = blob.LoopEnd;
+        header[PtAudioHeaderField.BytesPerSample] = blob.BytesPerSample;
+        return header;
+    }
+
+    public static int CalculatePtHeaderSize(PtHeader header)
+    {
+        var sum = CalculatePtHeaderSizeNoAdjust(header);
+        var padding = 8 - ((sum + 4) % 8);
+        sum += padding != 8 ? padding : 0;
+        return sum - 1;
+    }
+
+    private static int CalculatePtHeaderSizeNoAdjust(PtHeader header)
+    {
+        /* The calculated size for a single PT header is equal to the sum of
+         * each defined value, where a single header value includes a 1 byte
+         * value ID, 1 byte indicating the value length (ranging from 1 to 4)
+         * and the actual value, which is a Big endian int value.
+         * 
+         * Sub-headers (such as, audio props, alternate audio stream)
+         * follow this same logic, but need to add 1 extra byte that marks the
+         * start of that special sub-header.
+         * 
+         * Audio props header is always present. End of audio props header has
+         * its own marker with an actual value. Alt stream might be missing,
+         * and if included will end on the same end-of-PT-header marker, so no
+         * additional bytes are necessary.
+         * 
+         * Another consideraion is that the PT headers must be aligned to
+         * 8-byte boundaries. This means that writing a PT header may require
+         * adding some bytes of padding to make sure those boundaries are
+         * respected.
+         * 
+         * Finally, not all audio properties should be present. If a value is
+         * equal to the defaults then it has to be ommitted. that way, older
+         * parsers won't get confused in terms of how to attempt to load the
+         * data. This is not a requirement *per the spec*, but it's an
+         * unofficial requirement given how the games try to load audio data.
+         */
+        return header.Values.Sum(p => p.Value.Length + 2) +
+            header.AudioValues.Where(p => p.Key == PtAudioHeaderField.EndOfHeader || (p.Key == PtAudioHeaderField.DataOffset && p.Value.Length != 0) || p.Value.Value != PtHeader.Default[p.Key].Value).Sum(p => p.Value.Length + 2) + 1 +
+            (header.AltStream is not null ? CalculatePtHeaderSizeNoAdjust(header.AltStream) + 1 : 0) + (header.AudioValues[PtAudioHeaderField.NumSamples] != 0 ? 2 : 0);
     }
 
     private static void ReadAudioHeader(PtHeader result, BinaryReader br)

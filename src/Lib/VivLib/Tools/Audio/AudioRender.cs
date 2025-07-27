@@ -1,4 +1,6 @@
-﻿using System.Runtime.InteropServices;
+﻿using BCnEncoder.Decoder;
+using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 using System.Text;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models.Audio.Base;
@@ -71,7 +73,7 @@ public static class AudioRender
     }
 
     /// <summary>
-    /// Creates a new BnkStream from the specified .WAV data.
+    /// Creates a new <see cref="BnkStream"/> from the specified .WAV data.
     /// </summary>
     /// <param name="data">Raw .WAV data to create the BNK stream from.</param>
     /// <returns>
@@ -80,26 +82,41 @@ public static class AudioRender
     /// </returns>
     public static BnkStream BnkFromWav(byte[] data)
     {
-        using var ms = new MemoryStream(data);
-        using var br = new BinaryReader(ms);
-        var fileHeader = br.MarshalReadStruct<RiffFileHeader>();
-        var fmtHeaderLength = br.ReadInt32();
-        var fmt = br.MarshalReadStruct<WavFmtHeader>();
-        _ = br.ReadBytes(4 + (fmtHeaderLength - Marshal.SizeOf<WavFmtHeader>()));
-        var dataLength = br.ReadInt32();
-        var rawData = br.ReadBytes(dataLength);
+        return FromWav<BnkStream>(data, (bnk, rawData) => bnk.SampleData = rawData);
+    }
 
-        return new BnkStream()
+    /// <summary>
+    /// Creates a new <see cref="AsfFile"/> from the specified .WAV data.
+    /// </summary>
+    /// <param name="data">Raw .WAV data to create the ASF stream from.</param>
+    /// <returns>
+    /// A new <see cref="AsfFile"/> that has the same audio contents as the
+    /// input .WAV file.
+    /// </returns>
+    public static AsfFile AsfFromWav(byte[] data)
+    {
+        return FromWav<AsfFile>(data, (asf, rawData) => asf.AudioBlocks.Add(rawData));
+    }
+
+    /// <summary>
+    /// Creates a new <see cref="AsfFile"/> from the specified .WAV data.
+    /// </summary>
+    /// <param name="stream">.WAV stream to create the ASF stream from.</param>
+    /// <param name="chunks">
+    /// Number of slices or chunks that the entire contents should be split
+    /// into.
+    /// </param>
+    /// <returns>
+    /// A new <see cref="AsfFile"/> that has the same audio contents as the
+    /// input .WAV file.
+    /// </returns>
+    public static AsfFile AsfFromWav(Stream stream, int chunks)
+    {
+        return FromWav<AsfFile>(stream, (asf, rawData) =>
         {
-            Properties = new Dictionary<byte, PtHeaderValue>(),
-            BytesPerSample = (byte)(fmt.BitsPerSample / 8),
-            Compression = CompressionMethod.None,
-            Channels = (byte)fmt.Channels,
-            LoopStart = 0,
-            LoopEnd = dataLength / (fmt.BitsPerSample / 8),
-            SampleRate = (ushort)fmt.SampleRate,
-            SampleData = rawData
-        };
+            foreach (IEnumerable<byte> j in rawData.Slice(chunks))
+                asf.AudioBlocks.Add([.. j]);
+        });
     }
 
     /// <summary>
@@ -212,22 +229,40 @@ public static class AudioRender
         return new AsfFile()
         {
             Properties = new Dictionary<byte, PtHeaderValue>(),
-            BytesPerSample = Quorum(streams.Select(p => p.BytesPerSample), streams.Count),
-            Compression = Quorum(streams.Select(p => p.Compression), streams.Count),
-            Channels = Quorum(streams.Select(p => p.Channels), streams.Count),
-            SampleRate = Quorum(streams.Select(p => p.SampleRate), streams.Count),
-            LoopStart = Quorum(streams.Select(p => p.LoopStart), streams.Count),
-            LoopEnd = Quorum(streams.Select(p => p.LoopEnd), streams.Count),
+            BytesPerSample = streams.Select(p => p.BytesPerSample).Quorum(streams.Count),
+            Compression = streams.Select(p => p.Compression).Quorum(streams.Count),
+            Channels = streams.Select(p => p.Channels).Quorum(streams.Count),
+            SampleRate = streams.Select(p => p.SampleRate).Quorum(streams.Count),
+            LoopStart = streams.Select(p => p.LoopStart).Quorum(streams.Count),
+            LoopEnd = streams.Select(p => p.LoopEnd).Quorum(streams.Count),
         };
     }
 
-    private static T Quorum<T>(IEnumerable<T> values, int quorumCount) where T : notnull
+    private static T FromWav<T>(byte[] data, Action<T, byte[]> setSampleDataCallback) where T : AudioStreamBase, new()
     {
-        var x = values.GroupBy(p => p).OrderByDescending(p => p.Count()).FirstOrDefault();
-        if (x is null || x.Count() < quorumCount)
+        using var ms = new MemoryStream(data);
+        return FromWav(ms, setSampleDataCallback);
+    }
+
+    private static T FromWav<T>(Stream stream, Action<T, byte[]> setSampleDataCallback) where T : AudioStreamBase, new()
+    {
+        using var br = new BinaryReader(stream);
+        var fileHeader = br.MarshalReadStruct<RiffFileHeader>();
+        var fmtHeaderLength = br.ReadInt32();
+        var fmt = br.MarshalReadStruct<WavFmtHeader>();
+        _ = br.ReadBytes(4 + (fmtHeaderLength - Marshal.SizeOf<WavFmtHeader>()));
+        var dataLength = br.ReadInt32();
+        var rawData = br.ReadBytes(dataLength);
+        var audioObject = new T()
         {
-            throw new InvalidOperationException("No quorum found for the provided values.");
-        }
-        return x.First();
+            BytesPerSample = (byte)(fmt.BitsPerSample / 8),
+            Compression = CompressionMethod.None,
+            Channels = (byte)fmt.Channels,
+            LoopStart = 0,
+            LoopEnd = dataLength / (fmt.BitsPerSample / 8),
+            SampleRate = (ushort)fmt.SampleRate,
+        };
+        setSampleDataCallback.Invoke(audioObject, rawData);
+        return audioObject;
     }
 }

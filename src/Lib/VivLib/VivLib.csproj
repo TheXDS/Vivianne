@@ -7,7 +7,7 @@
 	<ItemGroup>
 		<PackageReference Include="BCnEncoder.Net.ImageSharp" Version="1.1.2" />
 		<PackageReference Include="SixLabors.ImageSharp" Version="3.1.10" />
-		<PackageReference Include="TheXDS.MCART" Version="0.18.0" />
+		<PackageReference Include="TheXDS.MCART" Version="0.18.1-alpha.2" />
 	</ItemGroup>
 	<ItemGroup>
 		<EmbeddedResource Update="Resources\Strings\Common.resx">

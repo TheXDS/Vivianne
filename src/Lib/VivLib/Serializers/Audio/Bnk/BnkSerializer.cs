@@ -90,9 +90,7 @@ public class BnkSerializer : ISerializer<BnkFile>
             }
             var pt = WritePtHeaderData(poolBw, j, poolOffset);
             headerOffsets.Add((int)headersStream.Position + (entity.Streams.Count * 4) - (4 * index));
-            headersBw.Write("PT\0\0"u8.ToArray());
             PtHeaderSerializerHelper.WritePtHeader(headersBw, pt);
-            headersBw.Write((byte)PtHeaderField.EndOfHeader);
             var padding = 8 - ((int)headersStream.Length % 8);
             if (padding != 8)
             { 

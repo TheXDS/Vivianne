@@ -6,9 +6,6 @@ using TheXDS.Vivianne.Tools.Audio;
 
 namespace TheXDS.Vivianne.Commands.Mus;
 
-/// <summary>
-/// Defines a command that allows the user to interact with a BNK file.
-/// </summary>
 public partial class MusCommand
 {
     private static Command BuildExtractBlobCommand(Argument<FileInfo> fileArg)

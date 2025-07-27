@@ -1,5 +1,6 @@
 ﻿using System.CommandLine;
 using TheXDS.MCART.Types.Extensions;
+using TheXDS.Vivianne.Serializers;
 using static TheXDS.MCART.Helpers.ReflectionHelpers;
 
 namespace TheXDS.Vivianne.Commands.Base;
@@ -87,4 +88,111 @@ public abstract class VivianneCommand
     /// </summary>
     /// <returns>A command that can be invoked in Vivianne CLI.</returns>
     public abstract Command GetCommand();
+
+    /// <summary>
+    /// Executes a file transaction.
+    /// </summary>
+    /// <param name="file">File to be read/written.</param>
+    /// <param name="action">
+    /// Action to execute on the deserialized contents of the file.
+    /// </param>
+    /// <returns>
+    /// A <see cref="Task"/> that can be used to <see langword="await"/> the
+    /// <see langword="async"/> operation.
+    /// </returns>
+    protected static Task FileTransaction<TFile, TSerializer>(FileInfo file, Action<TFile> action)
+        where TSerializer : ISerializer<TFile>, new()
+    {
+        return FileTransaction<TFile, TSerializer>(file, f => Task.Run(() => action.Invoke(f)));
+    }
+
+    /// <summary>
+    /// Executes a read/write file transaction.
+    /// </summary>
+    /// <param name="file">File to be read/written.</param>
+    /// <param name="action">
+    /// Action to execute on the deserialized contents of the file.
+    /// </param>
+    /// <returns>
+    /// A <see cref="Task"/> that can be used to <see langword="await"/> the
+    /// <see langword="async"/> operation.
+    /// </returns>
+    protected static async Task FileTransaction<TFile, TSerializer>(FileInfo file, Func<TFile, Task> action)
+        where TSerializer : ISerializer<TFile>, new()
+    {
+        ISerializer<TFile> serializer = new TSerializer();
+        TFile value = default!;
+        try
+        {
+            using var fs = file.OpenRead();
+            value = serializer.Deserialize(fs);
+        }
+        catch
+        {
+            Fail("The file you specified was either corrupt or invalid.");
+        }
+        try
+        {
+            await action.Invoke(value);
+            using var outFs = file.OpenWrite();
+            outFs.Destroy();
+            await serializer.SerializeToAsync(value, outFs);
+        }
+        catch (Exception ex)
+        {
+            Fail(ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// Executes a read-only file transaction.
+    /// </summary>
+    /// <param name="file">File to be read.</param>
+    /// <param name="action">
+    /// Action to execute on the deserialized contents of the file.
+    /// </param>
+    /// <returns>
+    /// A <see cref="Task"/> that can be used to <see langword="await"/> the
+    /// <see langword="async"/> operation.
+    /// </returns>
+    protected static Task ReadOnlyFileTransaction<TFile, TSerializer>(FileInfo file, Action<TFile> action)
+        where TSerializer : IOutSerializer<TFile>, new()
+    {
+        return ReadOnlyFileTransaction<TFile, TSerializer>(file, f => Task.Run(() => action.Invoke(f)));
+    }
+
+    /// <summary>
+    /// Executes a read-only file transaction.
+    /// </summary>
+    /// <param name="file">File to be read.</param>
+    /// <param name="action">
+    /// Action to execute on the deserialized contents of the file.
+    /// </param>
+    /// <returns>
+    /// A <see cref="Task"/> that can be used to <see langword="await"/> the
+    /// <see langword="async"/> operation.
+    /// </returns>
+    protected static async Task ReadOnlyFileTransaction<TFile, TSerializer>(FileInfo file, Func<TFile, Task> action)
+        where TSerializer : IOutSerializer<TFile>, new()
+    {
+        IOutSerializer<TFile> serializer = new TSerializer();
+        TFile value = default!;
+        try
+        {
+            using var fs = file.OpenRead();
+            value = serializer.Deserialize(fs);
+        }
+        catch
+        {
+            Fail("The file you specified was either corrupt or invalid.");
+        }
+        try
+        {
+            await action.Invoke(value);
+        }
+        catch (Exception ex)
+        {
+            Fail(ex.Message);
+        }
+    }
 }

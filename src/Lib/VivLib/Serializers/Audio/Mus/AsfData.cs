@@ -27,6 +27,7 @@ internal class AsfData
             LoopEnd = PtHeader.AudioValues.GetValueOrDefault(PtAudioHeaderField.LoopEnd, default).Value,
             Properties = new Dictionary<byte, PtHeaderValue>(ToProps(PtHeader.Values)),
             LoopOffset = LoopOffset,
+            ByteAlignment = ByteAlignment,
         };
         file.AudioBlocks.AddRange(AudioBlocks);
         return file;
@@ -39,6 +40,8 @@ internal class AsfData
     public List<byte[]> AudioBlocks { get; } = [];
 
     public int? LoopOffset { get; set; } = null;
+
+    public byte? ByteAlignment { get; set; } = null;
 
     private static IEnumerable<KeyValuePair<byte, PtHeaderValue>> ToProps<T>(IEnumerable<KeyValuePair<T, PtHeaderValue>> props) where T : Enum
     {
