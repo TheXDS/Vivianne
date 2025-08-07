@@ -73,6 +73,14 @@ internal static class ContentVisualizerConfiguration
 
         yield return new(".asf", CreateMusPlayerViewModel);
         yield return new(".mus", CreateMusPlayerViewModel);
+
+        yield return new(".md", CreateRawReadOnlyViewModel);
+        yield return new(".nfo", CreateRawReadOnlyViewModel);
+    }
+
+    public static RawContentViewModel CreateRawReadOnlyViewModel(byte[] data, VivEditorViewModel vm, string name)
+    {
+        return new RawContentViewModel(data);
     }
 
     public static ExternalFileViewModel CreateExternalEditorViewModel(byte[] data, VivEditorViewModel vm, string name)

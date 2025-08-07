@@ -2,6 +2,7 @@
 using System.IO;
 using System.Windows.Media;
 using TheXDS.MCART.ValueConverters.Base;
+using Wpf.Ui.Controls;
 
 namespace TheXDS.Vivianne.ValueConverters;
 
@@ -16,9 +17,10 @@ public class FileExtensionToColorConverter : IOneWayValueConverter<string, Brush
     {
         return Path.GetExtension(value.ToLowerInvariant()) switch
         {
-            ".txt" => Brushes.MediumSlateBlue,
-            ".bnk" => Brushes.Coral,
-            ".fce" => Brushes.ForestGreen,
+            ".md" or ".nfo" => Brushes.SkyBlue,
+            ".txt" or ".dat" or ".qda" => Brushes.MediumSlateBlue,
+            ".bnk" or ".asf" or ".mus" => Brushes.Coral,
+            ".fce" or ".geo" => Brushes.ForestGreen,
             ".tga" or ".fsh" or ".qfs" => Brushes.CadetBlue,
             ".bri" or ".eng" or ".fre" or ".ger" or ".ita" or ".spa" or ".swe" => Brushes.MediumVioletRed,
             _ => Brushes.White

@@ -6,7 +6,7 @@ namespace TheXDS.Vivianne.ViewModels;
 /// Base class for all ViewModels that reference the raw contents of a file.
 /// </summary>
 /// <param name="rawFile">Raw contents of a file.</param>
-public abstract class RawContentViewModel(byte[] rawFile) : ViewModel
+public class RawContentViewModel(byte[] rawFile) : ViewModel
 {
     /// <summary>
     /// Gets a reference to the raw contents of a file.
