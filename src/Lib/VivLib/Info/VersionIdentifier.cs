@@ -1,4 +1,6 @@
-﻿namespace TheXDS.Vivianne.Info;
+﻿using TheXDS.Vivianne.Codecs;
+
+namespace TheXDS.Vivianne.Info;
 
 /// <summary>
 /// Contains functions that help identify the game version for which a file is
@@ -68,5 +70,10 @@ public static class VersionIdentifier
     /// </summary>
     /// <param name="file">File contents to check.</param>
     /// <returns>A value that indicates the game for which this file is intended.</returns>
-    public static NfsVersion CarpVersion(byte[] file) => System.Text.Encoding.Latin1.GetString(file).Contains("understeer gradient(80)") ? NfsVersion.Nfs4 : NfsVersion.Nfs3;
+    public static NfsVersion CarpVersion(byte[] file)
+    {
+        if (LzCodec.IsCompressed(file)) file = LzCodec.Decompress(file);
+        if (file.Length == 356) return NfsVersion.Nfs2;
+        return System.Text.Encoding.Latin1.GetString(file).Contains("understeer gradient(80)") ? NfsVersion.Nfs4 : NfsVersion.Nfs3;
+    }
 }

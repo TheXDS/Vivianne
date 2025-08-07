@@ -65,6 +65,8 @@ internal static class ContentVisualizerConfiguration
         yield return new(".spa", CreateFeDataEditorViewModel);
         yield return new(".swe", CreateFeDataEditorViewModel);
 
+        yield return new(".dat", CreateCarpEditorViewModel);
+        yield return new(".qda", CreateCarpEditorViewModel);
         yield return new(".txt", CreateCarpEditorViewModel);
         yield return new(".fce", CreateFceEditorViewModel);
         yield return new(".bnk", CreateBnkEditorViewModel);
@@ -92,6 +94,7 @@ internal static class ContentVisualizerConfiguration
     {
         return VersionIdentifier.CarpVersion(data) switch
         {
+            NfsVersion.Nfs2 => CreateEditorViewModel<ViewModels.Carp.Nfs2.CarpEditorViewModel, Models.Carp.Nfs2.CarpEditorState, Models.Carp.Nfs2.CarPerf, Serializers.Carp.Nfs2.CarpSerializer>(data, vm, name),
             NfsVersion.Nfs3 => CreateEditorViewModel<ViewModels.Carp.Nfs3.CarpEditorViewModel, Models.Carp.Nfs3.CarpEditorState, Models.Carp.Nfs3.CarPerf, Serializers.Carp.Nfs3.CarpSerializer>(data, vm, name),
             NfsVersion.Nfs4 => CreateEditorViewModel<ViewModels.Carp.Nfs4.CarpEditorViewModel, Models.Carp.Nfs4.CarpEditorState, Models.Carp.Nfs4.CarPerf, Serializers.Carp.Nfs4.CarpSerializer>(data, vm, name),
             _ => null

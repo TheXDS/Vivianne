@@ -5,10 +5,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:gn="http://schemas.thexds.local/ganymede"
+    xmlns:carp2vm="clr-namespace:TheXDS.Vivianne.ViewModels.Carp.Nfs2;assembly=Vivianne.Common"
     xmlns:carp3vm="clr-namespace:TheXDS.Vivianne.ViewModels.Carp.Nfs3;assembly=Vivianne.Common"
     xmlns:carp4vm="clr-namespace:TheXDS.Vivianne.ViewModels.Carp.Nfs4;assembly=Vivianne.Common"
     xmlns:fce4vm="clr-namespace:TheXDS.Vivianne.ViewModels.Fce.Nfs4;assembly=Vivianne.Common"
     xmlns:views="clr-namespace:TheXDS.Vivianne.Views"
+    xmlns:vcarp="clr-namespace:TheXDS.Vivianne.Views.Carp"
     xmlns:viewsSpec="clr-namespace:TheXDS.Vivianne.Views.Specialized"
     xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings.Views"
     xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
@@ -138,6 +140,7 @@
                 Navigator="{Binding ChildNavService}">
                 <gn:NavigationHost.VisualResolver>
                     <gn:WpfResolverStack>
+                        <gn:ResolverEntry ViewModel="{x:Type carp2vm:CarpEditorViewModel}" View="{x:Type vcarp:Carp2EditorView}"/>
                         <gn:ResolverEntry ViewModel="{x:Type carp3vm:CarpEditorViewModel}" View="{x:Type views:Carp3EditorView}"/>
                         <gn:ResolverEntry ViewModel="{x:Type carp4vm:CarpEditorViewModel}" View="{x:Type views:Carp4EditorView}"/>
                         <gn:ResolverEntry ViewModel="{x:Type vm:ExternalFileViewModel}" View="{x:Type Control}"/>

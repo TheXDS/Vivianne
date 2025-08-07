@@ -4,7 +4,7 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="NAudio" Version="2.2.1" />
-		<PackageReference Include="System.Windows.Extensions" Version="9.0.7" />
+		<PackageReference Include="System.Windows.Extensions" Version="9.0.8" />
 		<PackageReference Include="TheXDS.Ganymede" Version="0.5.0-alpha.18" />
 	</ItemGroup>
 	<ItemGroup>

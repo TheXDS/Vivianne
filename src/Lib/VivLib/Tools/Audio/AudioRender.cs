@@ -1,6 +1,4 @@
-﻿using BCnEncoder.Decoder;
-using System.Collections.Concurrent;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Text;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models.Audio.Base;
@@ -110,13 +108,9 @@ public static class AudioRender
     /// A new <see cref="AsfFile"/> that has the same audio contents as the
     /// input .WAV file.
     /// </returns>
-    public static AsfFile AsfFromWav(Stream stream, int chunks)
+    public static AsfFile AsfFromWav(Stream stream)
     {
-        return FromWav<AsfFile>(stream, (asf, rawData) =>
-        {
-            foreach (IEnumerable<byte> j in rawData.Slice(chunks))
-                asf.AudioBlocks.Add([.. j]);
-        });
+        return FromWav<AsfFile>(stream, (asf, rawData) => asf.AudioBlocks.Add(rawData));
     }
 
     /// <summary>
@@ -236,6 +230,20 @@ public static class AudioRender
             LoopStart = streams.Select(p => p.LoopStart).Quorum(streams.Count),
             LoopEnd = streams.Select(p => p.LoopEnd).Quorum(streams.Count),
         };
+    }
+
+    public static void ReSliceAsf(AsfFile asf, int slices)
+    {
+        List<byte> bytes = [];
+        foreach (var j in asf.AudioBlocks)
+        {
+            bytes.AddRange(j);
+        }
+        asf.AudioBlocks.Clear();
+        foreach (var j in bytes.Slice(slices))
+        {
+            asf.AudioBlocks.Add([.. j]);
+        }
     }
 
     private static T FromWav<T>(byte[] data, Action<T, byte[]> setSampleDataCallback) where T : AudioStreamBase, new()

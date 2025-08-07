@@ -10,6 +10,14 @@ public enum NfsVersion
     /// </summary>
     Unknown,
     /// <summary>
+    /// The file is intended for The Need For Speed (AKA, Need For Speed 1)
+    /// </summary>
+    Tnfs,
+    /// <summary>
+    /// The File is intended for Need For Speed 2.
+    /// </summary>
+    Nfs2,
+    /// <summary>
     /// The file is intended for Need For Speed 3.
     /// </summary>
     Nfs3,

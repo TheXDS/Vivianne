@@ -1,0 +1,145 @@
+﻿<UserControl
+    x:Class="TheXDS.Vivianne.Views.Carp.Carp2EditorView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mdl="clr-namespace:TheXDS.Vivianne.Models.Fe.Nfs3;assembly=VivLib"
+    xmlns:gn="http://schemas.thexds.local/ganymede"
+    xmlns:ct="clr-namespace:TheXDS.Vivianne.Controls"
+    xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings.Views"
+    xmlns:models="clr-namespace:TheXDS.Vivianne.Models;assembly=Vivianne.Common"
+    xmlns:vc="clr-namespace:TheXDS.Vivianne.ValueConverters"
+    xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels.Carp.Nfs2;assembly=Vivianne.Common"
+    xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.ObjectModel"
+    xmlns:sys="clr-namespace:System;assembly=netstandard"
+    xmlns:hlp="clr-namespace:TheXDS.Vivianne.Helpers"
+    xmlns:mcart="http://schemas.thexds.local/mcart"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    mc:Ignorable="d" 
+    d:DataContext="{d:DesignInstance Type=vm:CarpEditorViewModel}"
+    d:DesignWidth="800">
+    <UserControl.Resources>
+        <sys:Double x:Key="gearGraphHeight">100</sys:Double>
+        <Style TargetType="ct:DraggableLineGraph" BasedOn="{StaticResource {x:Type ct:DraggableLineGraph}}">
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="5"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Background" Value="#40808080"/>
+            <Setter Property="MaxHeight" Value="500"/>
+        </Style>
+        <Style TargetType="ui:NumberBox" BasedOn="{StaticResource {x:Type ui:NumberBox}}">
+            <Setter Property="MinWidth" Value="200"/>
+            <Setter Property="ClearButtonEnabled" Value="False"/>
+            <Setter Property="HorizontalContentAlignment" Value="Right"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+        <vc:GraphDrawingContext x:Key="gdc"/>
+    </UserControl.Resources>
+    <DockPanel>
+        <ct:FileEditorCommandBar Editor="{Binding}" DockPanel.Dock="Top" ShowClose="False"/>
+        <Grid Background="{ui:ThemeResource ControlSolidFillColorDefaultBrush}">
+            <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
+                <StackPanel Margin="10,10,15,10">
+                    <Expander Header="{x:Static st:CarpEditorView.BasicInformation}" IsExpanded="True">
+                        <mcart:StretchyWrapPanel StretchProportionally="False">
+                            <ui:NumberBox MinWidth="200" hlp:Form.Label="{x:Static st:CarpEditorView.MassKg}" Minimum="1" Value="{Binding State.Mass, UpdateSourceTrigger=PropertyChanged}"/>
+                        </mcart:StretchyWrapPanel>
+                    </Expander>
+                    <Expander Header="{x:Static st:CarpEditorView.Drivetrain}" IsExpanded="True">
+                        <mcart:StretchyWrapPanel StretchProportionally="False">
+                            <StackPanel>
+                                <ui:NumberBox
+                                    Margin="5"
+                                    hlp:Form.Label="{x:Static st:CarpEditorView.MaxVelocityMS}"
+                                    Minimum="0"
+                                    Value="{Binding State.MaxVelocity, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox
+                                    Margin="5"
+                                    hlp:Form.Label="{x:Static st:CarpEditorView.FrontDriveRatio}"
+                                    Maximum="1"                                
+                                    Minimum="0"
+                                    SmallChange="0.1"
+                                    LargeChange="0.5"
+                                    Icon="%"
+                                    Value="{Binding State.FrontDriveRatio, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox                                
+                                    Margin="5"
+                                    hlp:Form.Label="{x:Static st:CarpEditorView.GearShiftDelay}"
+                                    Minimum="0"
+                                    Value="{Binding State.GearShiftDelay, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                        </mcart:StretchyWrapPanel>
+                    </Expander>
+                    <mcart:StretchyWrapPanel StretchProportionally="False">
+                        <Expander IsExpanded="True" MinWidth="400" Header="{}{x:Static st:CarpEditorView.Gearbox}">
+                            <StackPanel>
+                                <mcart:StretchyWrapPanel StretchProportionally="False">
+                                    <ui:NumberBox
+                                        hlp:Form.Label="{x:Static st:CarpEditorView.NumberOfGears}"
+                                        Minimum="3"
+                                        Maximum="8"
+                                        Value="{Binding State.NumberOfGears, UpdateSourceTrigger=PropertyChanged}"/>
+                                </mcart:StretchyWrapPanel>
+                                <UniformGrid Columns="1">
+                                    <ct:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="{x:Static st:CarpEditorView.VelocityToRPM}" ItemsSource="{Binding State.VelocityToRpm}"/>
+                                    <ct:DraggableLineGraph OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="{x:Static st:CarpEditorView.GearEfficiency}" ItemsSource="{Binding State.GearEfficiency}"/>
+                                </UniformGrid>
+                            </StackPanel>
+                        </Expander>
+                    </mcart:StretchyWrapPanel>
+                    <Expander Header="{x:Static st:CarpEditorView.Engine}" IsExpanded="True">
+                        <StackPanel>
+                            <mcart:StretchyWrapPanel StretchProportionally="False">
+                                <ui:NumberBox
+                                    MinWidth="200"
+                                    hlp:Form.Label="{x:Static st:CarpEditorView.MaximumRPM}"
+                                    Value="{Binding State.EngineMaxRpm, UpdateSourceTrigger=PropertyChanged}"
+                                    Minimum="0"/>
+                            </mcart:StretchyWrapPanel>
+                            <ct:DraggableLineGraph
+                                Title="Torque curve"
+                                ItemsSource="{Binding State.TorqueCurve}"
+                                Height="200"
+                                MinValue="0"
+                                OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}"/>
+                        </StackPanel>
+                    </Expander>
+                    <Expander Header="{x:Static st:CarpEditorView.DriveDynamics}" IsExpanded="True">
+                        <StackPanel>
+                            <mcart:StretchyWrapPanel StretchProportionally="False">
+                                <mcart:StretchyWrapPanel StretchProportionally="False">
+                                    <ct:DraggableLineGraph MinWidth="200" OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="{x:Static st:CarpEditorView.GasIncreaseCurve}" ItemsSource="{Binding State.GasIncreaseCurve}" Height="{StaticResource gearGraphHeight}" MinValue="0"/>
+                                    <ct:DraggableLineGraph MinWidth="200" OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="{x:Static st:CarpEditorView.GasDecreaseCurve}" ItemsSource="{Binding State.GasDecreaseCurve}" Height="{StaticResource gearGraphHeight}" MinValue="0"/>
+                                </mcart:StretchyWrapPanel>
+                                <mcart:StretchyWrapPanel StretchProportionally="False">
+                                    <ct:DraggableLineGraph MinWidth="200" OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="{x:Static st:CarpEditorView.BrakeIncreaseCurve}" ItemsSource="{Binding State.BrakeIncreaseCurve}" Height="{StaticResource gearGraphHeight}" MinValue="0"/>
+                                    <ct:DraggableLineGraph MinWidth="200" OpenEditorDialogCommand="{Binding EditDoubleCurveCommand, Mode=OneWay}" Title="{x:Static st:CarpEditorView.BrakeDecreaseCurve}" ItemsSource="{Binding State.BrakeDecreaseCurve}" Height="{StaticResource gearGraphHeight}" MinValue="0"/>
+                                </mcart:StretchyWrapPanel>
+                            </mcart:StretchyWrapPanel>
+                            <mcart:StretchyWrapPanel StretchProportionally="False">
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.MaxBrakingDecel}" Value="{Binding State.MaxBrakeDecel, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.FrontBiasBrakeRatio}" Value="{Binding State.FrontBrakeBias, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Maximum="1" SmallChange="0.05" LargeChange="0.1"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.WheelBase}" Minimum="0.01" Value="{Binding State.WheelBase, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.FrontGripBias}" Value="{Binding State.FrontGripBias, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Maximum="1" SmallChange="0.5" LargeChange="0.1"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.TurnInRamp}" Value="{Binding State.TurnInRamp, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.TurnOutRamp}" Value="{Binding State.TurnOutRamp, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.LateralAccGripMult}" Value="{Binding State.LateralAccGripMult, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.AeroDownforceMult}" Value="{Binding State.AeroDownMult, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.GasOffFactor}" Value="{Binding State.GasOffFactor, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.GTransferFactor}" Value="{Binding State.GTransferFactor, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.SlideMultiplier}" Value="{Binding State.SlideMult, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.SpinVelocityCap}" Value="{Binding State.SpinVelocityCap, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.SlideVelocityCap}" Value="{Binding State.SlideVelocityCap, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.SlideAssistanceFactor}" Value="{Binding State.SlideAssistanceFactor, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.PushFactor}" Value="{Binding State.PushFactor, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.LowTurnFactor}" Value="{Binding State.LowTurnFactor, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ui:NumberBox hlp:Form.Label="{x:Static st:CarpEditorView.HighTurnFactor}" Value="{Binding State.HighTurnFactor, UpdateSourceTrigger=PropertyChanged}"/>
+                            </mcart:StretchyWrapPanel>
+                        </StackPanel>
+                    </Expander>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </DockPanel>
+</UserControl>
