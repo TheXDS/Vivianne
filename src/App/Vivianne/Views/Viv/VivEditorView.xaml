@@ -144,8 +144,8 @@
                         <gn:ResolverEntry ViewModel="{x:Type carp3vm:CarpEditorViewModel}" View="{x:Type views:Carp3EditorView}"/>
                         <gn:ResolverEntry ViewModel="{x:Type carp4vm:CarpEditorViewModel}" View="{x:Type views:Carp4EditorView}"/>
                         <gn:ResolverEntry ViewModel="{x:Type vm:ExternalFileViewModel}" View="{x:Type Control}"/>
-                        <!--<gn:ResolverEntry ViewModel="{x:Type fce4vm:Fce4EditorViewModel}" View="{x:Type viewsSpec:ComingSoonView}"/>-->
-                        <gn:ResolverEntry ViewModel="{x:Type vm:RawContentViewModel}" View="{x:Type viewsSpec:ComingSoonView}"/>
+                        <gn:ResolverEntry ViewModel="{x:Type vm:RawContentViewModel}" View="{x:Type views:RawReadOnlyContentView}"/>
+                        <gn:ResolverEntry ViewModel="{x:Type vm:ComingSoonViewModel}" View="{x:Type viewsSpec:ComingSoonView}"/>
                         <gn:WpfConventionVisualResolver/>
                         <gn:WpfConstResolver View="{x:Type viewsSpec:MissingView}"/>
                     </gn:WpfResolverStack>

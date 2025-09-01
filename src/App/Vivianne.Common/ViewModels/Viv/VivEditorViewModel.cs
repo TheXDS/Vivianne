@@ -252,11 +252,30 @@ public class VivEditorViewModel : StatefulFileEditorViewModelBase<VivEditorState
         {
             if (cancel.IsCancellationRequested) return;
             var keyName = Path.GetFileName(j).ToLower();
-            if (!State.Directory.ContainsKey(keyName) || await DialogService.AskYn(St.ReplaceFile, string.Format(St.TheFileXAlreadyExist, keyName)))
+            if (State.Directory.ContainsKey(keyName))
             {
-                progress.Report(new ProgressReport(index * 100.0 / files.Count(), $"Importing {j}..."));
-                State.Directory[keyName] = await File.ReadAllBytesAsync(j, cancel);
+                switch (await DialogService.Show<int>(CommonDialogTemplates.Question with
+                { 
+                    Title = St.ReplaceFile,
+                    Text = string.Format(St.TheFileXAlreadyExist, keyName)}, [("Yes", 0), ("No", 1), (St.Rename, 2)]))
+                {
+                    case 1: continue;
+                    case 2:
+                    {
+                        if (await DialogService.GetInputText(St.Rename, St.RenameHelp, keyName) is { Success: true, Result: string result })
+                        {
+                            keyName = result;
+                            break;
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                }
             }
+            progress.Report(new ProgressReport(index * 100.0 / files.Count(), $"Importing {j}..."));
+            State.Directory[keyName] = await File.ReadAllBytesAsync(j, cancel);
         }
     });
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using TheXDS.Ganymede.Types.Base;
 using TheXDS.Vivianne.Component;
 using TheXDS.Vivianne.Info;
@@ -76,7 +77,11 @@ internal static class ContentVisualizerConfiguration
 
         yield return new(".md", CreateRawReadOnlyViewModel);
         yield return new(".nfo", CreateRawReadOnlyViewModel);
+
+        yield return new(".geo", CreateComingSoonViewModel);
     }
+
+    private static ComingSoonViewModel CreateComingSoonViewModel(byte[] data, VivEditorViewModel vm, string fileName) => new();
 
     public static RawContentViewModel CreateRawReadOnlyViewModel(byte[] data, VivEditorViewModel vm, string name)
     {

@@ -57,7 +57,11 @@ public class BnkEditorState : FileStateBase<BnkFile>
         get => _loopStart;
         set
         {
-            if (Change(ref _loopStart, value) && SelectedStream is not null) SelectedStream.LoopStart = value;
+            if (Change(ref _loopStart, value) && SelectedStream is not null)
+            {
+                SelectedStream.LoopStart = value;
+                Notify(nameof(SelectedStream));
+            }
         }
     }
 
@@ -70,7 +74,10 @@ public class BnkEditorState : FileStateBase<BnkFile>
         get => _loopEnd;
         set
         {
-            if (Change(ref _loopEnd, value) && SelectedStream is not null) SelectedStream.LoopEnd = value;
+            if (Change(ref _loopEnd, value) && SelectedStream is not null)
+            {
+                SelectedStream.LoopEnd = value; Notify(nameof(SelectedStream));
+            }
         }
     }
 

@@ -1,6 +1,6 @@
 ﻿using TheXDS.Vivianne.Models.Base;
 
-namespace TheXDS.Vivianne.Models.Fsh;
+namespace TheXDS.Vivianne.Models;
 
 /// <summary>
 /// Represents the state of an editor for raw files.

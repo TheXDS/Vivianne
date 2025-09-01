@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Windows.Media;
 using TheXDS.MCART.Helpers;
+using TheXDS.MCART.Types.Extensions;
 using TheXDS.MCART.ValueConverters.Base;
 using TheXDS.Vivianne.Misc;
 using TheXDS.Vivianne.Models.Audio.Bnk;
@@ -26,28 +27,44 @@ public class BnkVisualizerConverter : IOneWayValueConverter<BnkStream?, ImageSou
         using (Graphics graphics = Graphics.FromImage(bitmap))
         {
             graphics.Clear(System.Drawing.Color.FromArgb(0,0,0,0));
-            System.Drawing.Pen pen1 = new(System.Drawing.Color.DarkOliveGreen, 1);
-            System.Drawing.Pen pen2 = new(System.Drawing.Color.DarkOrange, 1);
-            System.Drawing.Pen loopPen = new(System.Drawing.Color.SkyBlue, 1);
+
+            System.Drawing.Pen[] channelPens = [
+                new(System.Drawing.Color.DarkOliveGreen, 1),
+                new(System.Drawing.Color.DarkOrange, 1)
+                ];
+            System.Drawing.Pen[] loopPens = [
+                new(System.Drawing.Color.SkyBlue, 1),
+                new(System.Drawing.Color.SteelBlue, 1)
+                ];
             System.Drawing.Pen gridPen = new(System.Drawing.Color.LightGray);
             System.Drawing.Pen loopStartPen = new(System.Drawing.Color.Red);
-            var loopStart = value.LoopStart;
-            var loopEnd = value.LoopEnd;
+            var loopStart = value.LoopStart / value.Channels;
+            var loopEnd = value.LoopEnd / value.Channels;
             graphics.DrawLine(gridPen, 0, 512, 1024, 512);
-            for (int i = 0; i < normalizedSamples.Length - 1; i++)
+            foreach ((var currentChannelIndex, var currentChannelData) in Enumerable.Range(0, value.Channels).Select(p => GetChannelData(normalizedSamples, value.Channels, p)).WithIndex())
             {
-                double x1 = (double)i / normalizedSamples.Length * width;
-                double x2 = (double)(i + 1) / normalizedSamples.Length * width;
-                double y1 = (height / 2) - (normalizedSamples[i] * height / 2);
-                double y2 = (height / 2) - (normalizedSamples[i + 1] * height / 2);
-                if ((i == loopStart || i == loopEnd) && loopStart < loopEnd && loopEnd != 0)
+                var currentPen = channelPens[currentChannelIndex];
+                var loopPen = loopPens[currentChannelIndex];
+                for (int i = 0; i < currentChannelData.Length - 1; i++)
                 {
-                    graphics.DrawLine(gridPen, (float)x1, 0, (float)x1, 1024);
+                    double x1 = (double)i / currentChannelData.Length * width;
+                    double x2 = (double)(i + 1) / currentChannelData.Length * width;
+                    double y1 = (height / 2) - (currentChannelData[i] * height / 2);
+                    double y2 = (height / 2) - (currentChannelData[i + 1] * height / 2);
+                    if ((i == loopStart || i == loopEnd) && loopStart < loopEnd && loopEnd != 0)
+                    {
+                        graphics.DrawLine(gridPen, (float)x1, 0, (float)x1, 1024);
+                    }
+                    graphics.DrawLine(i.IsBetween(loopStart, loopEnd) ? loopPen : currentPen, (float)x1, (float)y1, (float)x2, (float)y2);
                 }
-                graphics.DrawLine(i.IsBetween(loopStart, loopEnd) ? loopPen : pen1, (float)x1, (float)y1, (float)x2, (float)y2);
             }
         }
         return bitmap.ToImage();
+    }
+
+    private static double[] GetChannelData(double[] rawData, int channels, int channel)
+    {
+        return [.. rawData.Slice(channels).ElementAt(channel)];
     }
 
     private static double[] ParseAudioStream(byte[] rawData, int bits)

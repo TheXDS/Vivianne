@@ -1,6 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using System.Text;
 using TheXDS.MCART.Types.Extensions;
+using TheXDS.Vivianne.Misc;
 using TheXDS.Vivianne.Models.Audio.Base;
 using TheXDS.Vivianne.Models.Audio.Bnk;
 using TheXDS.Vivianne.Models.Audio.Mus;
@@ -100,10 +101,6 @@ public static class AudioRender
     /// Creates a new <see cref="AsfFile"/> from the specified .WAV data.
     /// </summary>
     /// <param name="stream">.WAV stream to create the ASF stream from.</param>
-    /// <param name="chunks">
-    /// Number of slices or chunks that the entire contents should be split
-    /// into.
-    /// </param>
     /// <returns>
     /// A new <see cref="AsfFile"/> that has the same audio contents as the
     /// input .WAV file.
@@ -140,14 +137,21 @@ public static class AudioRender
             FormatTag = 1,
             Channels = blob.Channels,
             SampleRate = blob.SampleRate,
-            ByteRate = blob.SampleRate * blob.Channels * 2,
-            BlockAlign = (short)(blob.Channels * 2),
-            BitsPerSample = 16
+            ByteRate = blob.SampleRate * blob.Channels * blob.BytesPerSample,
+            BlockAlign = (short)(blob.Channels * blob.BytesPerSample),
+            BitsPerSample = (short)(blob.BytesPerSample * 8)
         });
         bw.Write("data"u8.ToArray());
         bw.Write(data.Length);
-        bw.Write(data);
+        bw.Write(blob.Channels == 1 ? data : InterpolateStereo(data));
         return wavStream.ToArray();
+    }
+
+    private static byte[] InterpolateStereo(byte[] data)
+    {
+        return data;
+        //var channels = CommonHelpers.MapToInt16(data).Slice(2).ToArray();
+        //return [.. CommonHelpers.MapToByte(channels[0].Zip(channels[1]).SelectMany(x => (short[])[x.First, x.Second]).ToArray())];
     }
 
     /// <summary>

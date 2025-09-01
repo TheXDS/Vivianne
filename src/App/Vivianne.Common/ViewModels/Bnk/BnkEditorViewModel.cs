@@ -8,18 +8,15 @@ using System.Windows.Input;
 using TheXDS.Ganymede.Helpers;
 using TheXDS.Ganymede.Models;
 using TheXDS.Ganymede.Resources;
-using TheXDS.Ganymede.Services;
 using TheXDS.Ganymede.Types.Base;
 using TheXDS.Ganymede.Types.Extensions;
 using TheXDS.MCART.Component;
 using TheXDS.MCART.Types.Base;
 using TheXDS.MCART.Types.Extensions;
-using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Models.Audio.Bnk;
 using TheXDS.Vivianne.Models.Bnk;
 using TheXDS.Vivianne.Properties;
 using TheXDS.Vivianne.Resources;
-using TheXDS.Vivianne.Serializers.Audio.Bnk;
 using TheXDS.Vivianne.Tools.Audio;
 using TheXDS.Vivianne.Tools.Audio.Bnk;
 using TheXDS.Vivianne.ViewModels.Base;
@@ -348,6 +345,6 @@ public class BnkEditorViewModel : StatefulFileEditorViewModelBase<BnkEditorState
     Task IViewModel.OnNavigateAway(CancelFlag navigation)
     {
         OnStopPlayback();
-        return InvokeNavigateBack(navigation);
+        return Task.CompletedTask;//InvokeNavigateBack(navigation);
     }
 }

@@ -1,0 +1,22 @@
+﻿<UserControl
+    x:Class="TheXDS.Vivianne.Views.RawReadOnlyContentView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:local="clr-namespace:TheXDS.Vivianne.Views"
+    xmlns:vc="clr-namespace:TheXDS.Vivianne.ValueConverters"
+    xmlns:viewmodels="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
+    d:DataContext="{d:DesignInstance Type=viewmodels:RawContentViewModel}"
+    mc:Ignorable="d"
+    Background="{ui:ThemeResource ControlSolidFillColorDefaultBrush}"
+    d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <vc:ByteToTextConverter x:Key="b2str"/>
+    </UserControl.Resources>
+    <Grid>
+        <TextBox BorderBrush="{x:Null}" Background="{x:Null}" IsReadOnly="True" x:Name="TxtRawContents" Margin="10" FontFamily="Cascadia Mono" TextWrapping="Wrap" Text="{Binding RawFile, Mode=OneWay, Converter={StaticResource b2str}}"/>
+        <ui:Button Icon="{ui:SymbolIcon Symbol=Copy24}" Click="Button_Click" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="20"/>
+    </Grid>
+</UserControl>

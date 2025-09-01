@@ -44,5 +44,10 @@ public enum PtAudioHeaderField : byte
     /// <summary>
     /// Special marker that indicates the end of the audio header section.
     /// </summary>
-    EndOfHeader = 0x8A
+    EndOfHeader = 0x8A,
+
+    /// <summary>
+    /// Unknown audio property.
+    /// </summary>
+    Unk_0x91 = 0x91
 }

@@ -53,7 +53,7 @@ public record struct PtHeaderValue(byte Length, int Value)
     /// <param name="value">Value to be converted.</param>
     public static implicit operator PtHeaderValue(short value)
     {
-        return new(2, value);
+        return new(CalculatePackSize((uint)value), value);
     }
 
     /// <summary>
@@ -63,7 +63,7 @@ public record struct PtHeaderValue(byte Length, int Value)
     /// <param name="value">Value to be converted.</param>
     public static implicit operator PtHeaderValue(ushort value)
     {
-        return new(2, value);
+        return new(CalculatePackSize(value), value);
     }
 
     /// <summary>
@@ -73,7 +73,7 @@ public record struct PtHeaderValue(byte Length, int Value)
     /// <param name="value">Value to be converted.</param>
     public static implicit operator PtHeaderValue(int value)
     {
-        return new(4, value);
+        return new(CalculatePackSize((uint)value), value);
     }
 
     /// <summary>
@@ -83,6 +83,13 @@ public record struct PtHeaderValue(byte Length, int Value)
     /// <param name="value">Value to be converted.</param>
     public static implicit operator PtHeaderValue(uint value)
     {
-        return new(4, (int)value);
+        return new(CalculatePackSize(value), (int)value);
     }
+
+    private static byte CalculatePackSize(uint value) => value switch
+    {
+        > ushort.MaxValue => 4,
+        > byte.MaxValue => 2,
+        _ => 1,
+    };
 }

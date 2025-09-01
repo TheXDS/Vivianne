@@ -7,7 +7,6 @@ using TheXDS.Ganymede.Helpers;
 using TheXDS.Ganymede.Resources;
 using TheXDS.Ganymede.Types.Extensions;
 using TheXDS.Vivianne.Models;
-using TheXDS.Vivianne.Models.Fsh;
 using TheXDS.Vivianne.Resources;
 using TheXDS.Vivianne.ViewModels.Base;
 using SixLabors.ImageSharp.Formats.Tga;

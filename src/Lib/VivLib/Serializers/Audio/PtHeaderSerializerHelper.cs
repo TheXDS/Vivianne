@@ -6,6 +6,8 @@ namespace TheXDS.Vivianne.Serializers.Audio;
 
 internal static class PtHeaderSerializerHelper
 {
+    private const int BlockAlignment = 4;
+
     public static PtHeader ReadPtHeader(BinaryReader br)
     {
         var result = new PtHeader();
@@ -78,8 +80,8 @@ internal static class PtHeaderSerializerHelper
     public static int CalculatePtHeaderSize(PtHeader header)
     {
         var sum = CalculatePtHeaderSizeNoAdjust(header);
-        var padding = 8 - ((sum + 4) % 8);
-        sum += padding != 8 ? padding : 0;
+        var padding = BlockAlignment - ((sum + 4) % BlockAlignment);
+        sum += padding != BlockAlignment ? padding : 0;
         return sum - 1;
     }
 
@@ -146,14 +148,22 @@ internal static class PtHeaderSerializerHelper
 
     private static void WriteAudioHeaderValues(BinaryWriter bw, PtHeader header)
     {
-        foreach (var j in header.AudioValues)
+        var specialSort = new Dictionary<PtAudioHeaderField, int>()
         {
-            if (j.Key == PtAudioHeaderField.EndOfHeader || j.Value.Value != PtHeader.Default[j.Key].Value)
+            { PtAudioHeaderField.NumSamples, 0 },
+            { PtAudioHeaderField.DataOffset, 256}
+        };
+
+        foreach (var j in header.AudioValues.OrderBy(p => specialSort.TryGetValue(p.Key, out var customOrder) ? customOrder : (int)p.Key))
+        {
+            if (j.Key != PtAudioHeaderField.EndOfHeader && (!PtHeader.Default.AudioValues.TryGetValue(j.Key, out var defaultValue) || j.Value.Value != defaultValue))
             {
                 bw.Write((byte)j.Key);
                 Write(bw, j.Value);
             }
         }
+        bw.Write((byte)PtAudioHeaderField.EndOfHeader);
+        Write(bw, new PtHeaderValue(4, 0));
     }
 
     private static int ReadBytes(BinaryReader br, byte count)

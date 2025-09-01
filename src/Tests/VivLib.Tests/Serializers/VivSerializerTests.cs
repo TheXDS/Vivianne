@@ -14,10 +14,10 @@ public class VivSerializerTests() : SerializerTestsBase<VivSerializer, VivFile>(
 
     protected override void TestParsedFile(VivFile expected, VivFile actual)
     {
-        Assert.Multiple(() =>
+        using (Assert.EnterMultipleScope())
         {
             Assert.That(actual.ContainsKey("test.txt"));
             Assert.That(actual["test.txt"], Is.EquivalentTo("TEST"u8.ToArray()));
-        });
+        }
     }
 }

@@ -33,6 +33,12 @@ public abstract class AudioStreamBase
     /// header for this stream.
     /// </summary>
     public IDictionary<byte, PtHeaderValue> Properties { get; set; } = new Dictionary<byte, PtHeaderValue>();
+    
+    /// <summary>
+    /// Gets or sets a dictionary with all custom properties on the audio PT
+    /// header for this stream.
+    /// </summary>
+    public IDictionary<byte, PtHeaderValue> CustomAudioProperties { get; set; } = new Dictionary<byte, PtHeaderValue>();
 
     /// <summary>
     /// Gets the estimated duration of the audio stream, based on the number of samples, sample rate, and number of channels.
