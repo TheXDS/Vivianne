@@ -120,7 +120,7 @@ public static class AudioRender
     /// <param name="data">
     /// Raw PCM data to store in the resulting .WAV file.
     /// </param>
-    /// <returns></returns>
+    /// <returns>A byte array that contains the entire rendered .WAV file.</returns>
     public static byte[] RenderData(AudioStreamBase blob, byte[] data)
     {
         int fileSize = 36 + data.Length;
@@ -143,15 +143,14 @@ public static class AudioRender
         });
         bw.Write("data"u8.ToArray());
         bw.Write(data.Length);
-        bw.Write(blob.Channels == 1 ? data : InterpolateStereo(data));
+        bw.Write(blob.Channels > 1 && blob.Interleaved ? InterleaveAudioData(data, blob.Channels) : data);
         return wavStream.ToArray();
     }
 
-    private static byte[] InterpolateStereo(byte[] data)
+    private static byte[] InterleaveAudioData(byte[] data, int channels)
     {
-        return data;
-        //var channels = CommonHelpers.MapToInt16(data).Slice(2).ToArray();
-        //return [.. CommonHelpers.MapToByte(channels[0].Zip(channels[1]).SelectMany(x => (short[])[x.First, x.Second]).ToArray())];
+        var channelData = CommonHelpers.MapToInt16(data).Slice(channels);
+        return [.. CommonHelpers.MapToByte(channelData.Interleave().ToArray())];
     }
 
     /// <summary>

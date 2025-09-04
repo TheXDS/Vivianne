@@ -59,4 +59,10 @@ public abstract class AudioStreamBase
     /// Gets or sets the offset where looping audio data ends.
     /// </summary>
     public int LoopEnd { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value that indicates whether the channels in the audio
+    /// stream are interpolated.
+    /// </summary>
+    public bool Interleaved { get; set; }
 }

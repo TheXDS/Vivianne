@@ -15,7 +15,7 @@ namespace TheXDS.Vivianne.ValueConverters;
 /// </summary>
 public class BnkVisualizerConverter : IOneWayValueConverter<BnkStream?, ImageSource?>
 {
-    const int width = 1024;
+    const int width = 2048;
     const int height = 1024;
 
     /// <inheritdoc/>
@@ -40,7 +40,7 @@ public class BnkVisualizerConverter : IOneWayValueConverter<BnkStream?, ImageSou
             System.Drawing.Pen loopStartPen = new(System.Drawing.Color.Red);
             var loopStart = value.LoopStart / value.Channels;
             var loopEnd = value.LoopEnd / value.Channels;
-            graphics.DrawLine(gridPen, 0, 512, 1024, 512);
+            graphics.DrawLine(gridPen, 0, height/2, width, height/2);
             foreach ((var currentChannelIndex, var currentChannelData) in Enumerable.Range(0, value.Channels).Select(p => GetChannelData(normalizedSamples, value.Channels, p)).WithIndex())
             {
                 var currentPen = channelPens[currentChannelIndex];
@@ -53,7 +53,7 @@ public class BnkVisualizerConverter : IOneWayValueConverter<BnkStream?, ImageSou
                     double y2 = (height / 2) - (currentChannelData[i + 1] * height / 2);
                     if ((i == loopStart || i == loopEnd) && loopStart < loopEnd && loopEnd != 0)
                     {
-                        graphics.DrawLine(gridPen, (float)x1, 0, (float)x1, 1024);
+                        graphics.DrawLine(gridPen, (float)x1, 0, (float)x1, height);
                     }
                     graphics.DrawLine(i.IsBetween(loopStart, loopEnd) ? loopPen : currentPen, (float)x1, (float)y1, (float)x2, (float)y2);
                 }

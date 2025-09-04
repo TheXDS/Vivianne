@@ -5,7 +5,7 @@
 	<ItemGroup>
 		<PackageReference Include="NAudio" Version="2.2.1" />
 		<PackageReference Include="System.Windows.Extensions" Version="9.0.8" />
-		<PackageReference Include="TheXDS.Ganymede" Version="0.5.0-alpha.18" />
+		<PackageReference Include="TheXDS.Ganymede" Version="0.5.0-alpha.19" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\..\Lib\VivLib\VivLib.csproj" />

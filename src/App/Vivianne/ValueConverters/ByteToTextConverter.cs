@@ -1,17 +1,17 @@
 ﻿using System.Globalization;
-using TheXDS.MCART.Helpers;
+using System.Text;
 using TheXDS.MCART.ValueConverters.Base;
 
 namespace TheXDS.Vivianne.ValueConverters;
 
 /// <summary>
-/// Returns the human-readable array size in bytes.
+/// Converts raw bytes into a string representation.
 /// </summary>
-public class ByteCountConverter : IOneWayValueConverter<byte[], string>
+public class ByteToTextConverter : IOneWayValueConverter<byte[], string>
 {
     /// <inheritdoc/>
     public string Convert(byte[] value, object? parameter, CultureInfo? culture)
     {
-        return Common.ByteUnits(value?.Length ?? 0);
+        return (parameter as Encoding ?? Encoding.Latin1).GetString(value);
     }
 }
