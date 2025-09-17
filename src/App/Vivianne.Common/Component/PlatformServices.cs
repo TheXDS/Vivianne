@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TheXDS.Vivianne.Component;
+﻿namespace TheXDS.Vivianne.Component;
 
 /// <summary>
 /// Static class that provides keyboard data in a platform agnostic way.
@@ -9,6 +7,7 @@ public static class PlatformServices
 {
     static IKeyboardProxy? _keyboardProxy;
     static IStaticFceRender? _staticFceRender;
+    static IOperatingSystemProxy? _operatingSystemProxy;
 
     /// <summary>
     /// Gets a value that indicates the current state of keyboard modifier keys.
@@ -26,6 +25,12 @@ public static class PlatformServices
             return result;
         }
     }
+
+    /// <summary>
+    /// Gets a value that indicates whether the current process is running with
+    /// elevated privileges.
+    /// </summary>
+    public static bool IsElevated => _operatingSystemProxy?.IsElevated ?? false;
 
     /// <summary>
     /// Gets a value that indicates if the <c>Shift</c> key is being held down.
@@ -64,6 +69,15 @@ public static class PlatformServices
     public static void SetKeyboardProxy(IKeyboardProxy proxy)
     {
         _keyboardProxy = proxy;
+    }
+
+    /// <summary>
+    /// Sets the operating system proxy to use on the application.
+    /// </summary>
+    /// <param name="proxy">Operating system proxy instance to use.</param>
+    public static void SetOperatingSystemProxy(IOperatingSystemProxy proxy)
+    {
+        _operatingSystemProxy = proxy;
     }
 
     /// <summary>

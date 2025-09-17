@@ -14,7 +14,7 @@ namespace TheXDS.Vivianne.Properties;
 /// Defines a set of values for a struct that exposes configuration for
 /// Vivianne.
 /// </summary>
-public class Settings
+public partial class Settings
 {
     private static readonly IConfigurationRepository<Settings> _repository;
 
@@ -145,81 +145,9 @@ public class Settings
     public FeDataLang PreferredFeDataLang { get; set; }
 
     /// <summary>
-    /// If enabled, runs a serial number check before saving a VIV file if any
-    /// FeData file exists.
-    /// </summary>
-    public bool Viv_CheckSnOnSave { get; set; }
-
-    /// <summary>
-    /// If enabled, runs cleanup tasks on an FCE file before saving a VIV file.
-    /// </summary>
-    public bool Fce_CleanupOnSave { get; set; }
-
-    /// <summary>
     /// Gets or sets the number of recent files to be recalled by Vivianne.
     /// </summary>
     public int RecentFilesCount { get; set; }
-
-    /// <summary>
-    /// Gets or sets a value that indicates if the info panel will be opened by
-    /// default.
-    /// </summary>
-    public bool Bnk_InfoOpenByDefault { get; set; }
-
-    /// <summary>
-    /// Gets or sets a value that indicates the default volume normalization
-    /// for the normalization tool in the BNK editor.
-    /// </summary>
-    public double Bnk_DefaultNormalization { get; set; }
-
-    /// <summary>
-    /// When enabled, forces the BNK editor to keep the trash that might exist
-    /// outside of sample data in BNK files.
-    /// </summary>
-    public bool Bnk_KeepTrash { get; set; }
-
-    /// <summary>
-    /// Gets or sets a value that indicates if the cleanup tool should also
-    /// trim any loops of audio to just the looping sections.
-    /// </summary>
-    public bool Bnk_TrimLoopsOnCleanup { get; set; }
-
-    /// <summary>
-    /// Gets or sets a value that indicates whether data sync to FeData files
-    /// is enabled when editing a Carp file.
-    /// </summary>
-    public bool Carp_SyncChanges { get; set; }
-
-    /// <summary>
-    /// Gets or sets a value that indicates if the FCE model will be centered
-    /// automatically when saving an FCE file.
-    /// </summary>
-    public bool Fce_CenterModel { get; set; }
-
-    /// <summary>
-    /// Gets or sets a value that indicates if the FCE editor will enable the
-    /// car shadow toggle by default.
-    /// </summary>
-    public bool Fce_ShadowByDefault { get; set; }
-
-    /// <summary>
-    /// Gets or sets a value that indicates whether all compatible images in
-    /// the data store will be listed as textures or if only <c>.tga</c> files
-    /// will be listed.
-    /// </summary>
-    public bool Fce_EnumerateAllImages { get; set; }
-
-    /// <summary>
-    /// Gets or sets a value that indicates whether data sync is enabled
-    /// between FeData files and carp when editing a FeData file.
-    /// </summary>
-    public bool Fe_SyncChanges { get; set; }
-
-    /// <summary>
-    /// Gets or sets a value that indicates the file sorting order for the VIV
-    /// directory.
-    /// </summary>
-    public SortType Viv_FileSorting { get; set; }
 
     /// <summary>
     /// Adds a recent VIV file to the recent files collection.

@@ -23,38 +23,12 @@ public partial class BnkSerializer : ISerializer<BnkFile>
             headerSize += Marshal.SizeOf<BnkV4Header>();
         }
         var ptHeaderOffsets = br.MarshalReadArray<int>(header.Streams);
-        List<PtHeader?> ptHeaders = [];
-        List<BnkStream?> streams = [];
-        foreach (var (index, offset) in ptHeaderOffsets.WithIndex())
-        {
-            if (offset == 0)
-            {
-                ptHeaders.Add(null);
-                continue;
-            }
-            br.BaseStream.Seek(headerSize + offset + (sizeof(int) * index), SeekOrigin.Begin);
-            if (!br.ReadBytes(4).SequenceEqual("PT\0\0"u8.ToArray()))
-            {
-                throw new InvalidDataException();
-            }
-            ptHeaders.Add(PtHeaderSerializerHelper.ReadPtHeader(br));
-        }
-        var streamOffsets = ptHeaders.NotNull().Select(p => p[PtAudioHeaderField.DataOffset].Value).ToArray();
-        foreach (var (index, ptHeader) in ptHeaders.WithIndex())
-        {
-            if (ptHeader is null)
-            {
-                streams.Add(null);
-            }
-            else
-            {
-                streams.Add(ToBnkStream(ptHeader, br, index.ToString(), false, streamOffsets));
-            }
-        }
+        var ptHeaders = ReadPtHeaders(br, headerSize, ptHeaderOffsets).ToArray();
+        var streams = ReadBnkStreams(br, ptHeaders);
         var bnk = new BnkFile()
         {
             FileVersion = header.Version,
-            PayloadSize = header.Version == 4 ? payloadSize : (int)stream.Length - headerSize
+            PayloadSize = header.Version == 4 ? payloadSize : (int)stream.Length - headerSize,
         };
         bnk.Streams.AddRange(streams);
         return bnk;
@@ -69,20 +43,13 @@ public partial class BnkSerializer : ISerializer<BnkFile>
         using MemoryStream poolStream = new();
         using BinaryWriter poolBw = new(poolStream);
 
+        var bnkHeader = CreateNewHeader(entity);
         var bnkHeaderSize = CalculateBnkHeaderSize(entity);
-        var ptHeadersSize = CalculateTotalPtHeadersSize(entity);
-        var poolOffset = bnkHeaderSize + ptHeadersSize;
-
+        var poolOffset = bnkHeaderSize + CalculateTotalPtHeadersSize(entity);
         var poolOffsetPadding = MajorBlockAlignment - (poolOffset % MajorBlockAlignment);
-        poolOffset += (poolOffsetPadding != MajorBlockAlignment ? poolOffsetPadding : 0);
-
-        var bnkHeader = new BnkHeader()
-        {
-            Magic = "BNKl"u8.ToArray(),
-            Version = entity.FileVersion,
-            Streams = (short)entity.Streams.Count,
-        };
         var headerOffsets = new List<int>();
+
+        poolOffset += (poolOffsetPadding != MajorBlockAlignment ? poolOffsetPadding : 0);
         foreach (var (index, j) in entity.Streams.WithIndex())
         {
             if (j is null)

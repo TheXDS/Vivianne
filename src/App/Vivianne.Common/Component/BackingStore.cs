@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using TheXDS.MCART.Exceptions;
 using TheXDS.Vivianne.Serializers;
 
@@ -56,5 +58,19 @@ public class BackingStore<TFile, TSerializer>(IBackingStore backingStore) : IBac
     private async Task<bool> PerformSave(TFile file)
     {
         return await backingStore.WriteAsync(FileName ?? throw new TamperException(), await Serializer.SerializeAsync(file));
+    }
+}
+
+public static class CommandLineStartup
+{
+    public static Dictionary<Guid, Action<string[]>> Handlers { get; } = [];
+
+    public static void FailIfNotElevated()
+    {
+        if (!PlatformServices.IsElevated)
+        {
+            MessageBox.Show("This operation requires elevated privileges.", "Operation not permitted", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            unchecked { Environment.Exit((int)0x80070005); }
+        }
     }
 }

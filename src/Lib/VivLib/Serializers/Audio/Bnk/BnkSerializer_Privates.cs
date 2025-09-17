@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+using TheXDS.MCART.Helpers;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models.Audio.Base;
 using TheXDS.Vivianne.Models.Audio.Bnk;
@@ -10,6 +11,40 @@ public partial class BnkSerializer : ISerializer<BnkFile>
 {
     private const int PtHeaderBlockAlignment = 4;
     private const int MajorBlockAlignment = 8;
+
+    private static IEnumerable<PtHeader?> ReadPtHeaders(BinaryReader br, int headerSize, int[] ptHeaderOffsets)
+    {
+        foreach (var (index, offset) in ptHeaderOffsets.WithIndex())
+        {
+            if (offset == 0)
+            {
+                yield return null;
+                continue;
+            }
+            br.BaseStream.Seek(headerSize + offset + (sizeof(int) * index), SeekOrigin.Begin);
+            if (!br.ReadBytes(4).SequenceEqual("PT\0\0"u8.ToArray()))
+            {
+                throw new InvalidDataException();
+            }
+            yield return PtHeaderSerializerHelper.ReadPtHeader(br);
+        }
+    }
+
+    private static IEnumerable<BnkStream?> ReadBnkStreams(BinaryReader br, PtHeader?[] ptHeaders)
+    {
+        var streamOffsets = ptHeaders.NotNull().Select(p => p[PtAudioHeaderField.DataOffset].Value).ToArray();
+        foreach (var (index, ptHeader) in ptHeaders.WithIndex())
+        {
+            if (ptHeader is null)
+            {
+                yield return null;
+            }
+            else
+            {
+                yield return ToBnkStream(ptHeader, br, index.ToString(), false, streamOffsets);
+            }
+        }
+    }
 
     private static PtHeader WriteAudioData(BinaryWriter bw, BnkStream stream, in int poolOffset)
     {
@@ -44,7 +79,6 @@ public partial class BnkSerializer : ISerializer<BnkFile>
             BytesPerSample = (byte)header[PtAudioHeaderField.BytesPerSample],
             SampleData = sampleData,
             IsAltStream = isAltStream,
-            PostAudioStreamData = GetPostData(br, header, sampleOffsets),
             AltStream = header.AltStream is { } altHeader ? ToBnkStream(altHeader, br, $"Alt {id}", true, sampleOffsets) : null,
             Properties = new Dictionary<byte, PtHeaderValue>(header.Values.Select(p => new KeyValuePair<byte, PtHeaderValue>((byte)p.Key, p.Value))),
             CustomAudioProperties = new Dictionary<byte, PtHeaderValue>(header.AudioValues.Select(p => new KeyValuePair<byte, PtHeaderValue>((byte)p.Key, p.Value)).Where(FilterOutCommonProps))
@@ -77,20 +111,6 @@ public partial class BnkSerializer : ISerializer<BnkFile>
             header[PtAudioHeaderField.Channels] * header[PtAudioHeaderField.BytesPerSample] * header[PtAudioHeaderField.NumSamples],
             0,
             (int)(br.BaseStream.Length - header[PtAudioHeaderField.DataOffset]));
-    }
-
-    private static byte[] GetPostData(BinaryReader br, PtHeader header, int[] allOffsets)
-    {
-        return [];
-        /*
-        int poolOffset = allOffsets.Min(); //304
-        var numberOfBytes = header[PtAudioHeaderField.Channels] * header[PtAudioHeaderField.BytesPerSample] * header[PtAudioHeaderField.NumSamples]; //86768
-        int nextOffset = allOffsets.OrderBy(p => p).FirstOrDefault(p => p > header[PtAudioHeaderField.DataOffset]); // 87072
-
-        return (numberOfBytes)
-            ? []
-            : br.ReadBytesAt(numberOfBytes, numberOfBytes - nextOffset);
-        */
     }
 
     private static int CalculateBnkHeaderSize(BnkFile bnk)
@@ -138,7 +158,7 @@ public partial class BnkSerializer : ISerializer<BnkFile>
          * respected.
          * 
          * Finally, not all audio properties should be present. If a value is
-         * equal to the defaults then it has to be ommitted. that way, older
+         * equal to the defaults then it has to be ommitted. That way, older
          * parsers won't get confused in terms of how to attempt to load the
          * data. This is not a requirement *per the spec*, but it's an
          * unofficial requirement given how the games try to load audio data.
@@ -180,5 +200,15 @@ public partial class BnkSerializer : ISerializer<BnkFile>
             header.AltStream = ToPtHeader(blob.AltStream, poolOffset);
         }
         return header;
+    }
+
+    private static BnkHeader CreateNewHeader(BnkFile entity)
+    {
+        return new BnkHeader()
+        {
+            Magic = "BNKl"u8.ToArray(),
+            Version = entity.FileVersion,
+            Streams = (short)entity.Streams.Count,
+        };
     }
 }

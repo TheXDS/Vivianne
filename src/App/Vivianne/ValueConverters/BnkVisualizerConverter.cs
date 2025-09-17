@@ -15,8 +15,8 @@ namespace TheXDS.Vivianne.ValueConverters;
 /// </summary>
 public class BnkVisualizerConverter : IOneWayValueConverter<BnkStream?, ImageSource?>
 {
-    const int width = 2048;
-    const int height = 1024;
+    const int width = 1920;
+    const int height = 800;
 
     /// <inheritdoc/>
     public ImageSource? Convert(BnkStream? value, object? parameter, CultureInfo? culture)
@@ -26,7 +26,7 @@ public class BnkVisualizerConverter : IOneWayValueConverter<BnkStream?, ImageSou
         using Bitmap bitmap = new(width, height);
         using (Graphics graphics = Graphics.FromImage(bitmap))
         {
-            graphics.Clear(System.Drawing.Color.FromArgb(0,0,0,0));
+            graphics.Clear(System.Drawing.Color.FromArgb(0, 0, 0, 0));
 
             System.Drawing.Pen[] channelPens = [
                 new(System.Drawing.Color.DarkOliveGreen, 1),
@@ -38,10 +38,14 @@ public class BnkVisualizerConverter : IOneWayValueConverter<BnkStream?, ImageSou
                 ];
             System.Drawing.Pen gridPen = new(System.Drawing.Color.LightGray);
             System.Drawing.Pen loopStartPen = new(System.Drawing.Color.Red);
+
             var loopStart = value.LoopStart / value.Channels;
             var loopEnd = value.LoopEnd / value.Channels;
-            graphics.DrawLine(gridPen, 0, height/2, width, height/2);
-            foreach ((var currentChannelIndex, var currentChannelData) in Enumerable.Range(0, value.Channels).Select(p => GetChannelData(normalizedSamples, value.Channels, p)).WithIndex())
+            var slicedChannels = normalizedSamples.Slice(value.Channels).ToArray();
+            var sampleResolution = double.Floor(value.TotalSamples / width);
+
+            graphics.DrawLine(gridPen, 0, height / 2, width, height / 2);
+            foreach ((var currentChannelIndex, var currentChannelData) in Enumerable.Range(0, value.Channels).Select(p => slicedChannels[p].Where((p, i) => i % sampleResolution == 0).ToArray()).WithIndex())
             {
                 var currentPen = channelPens[currentChannelIndex];
                 var loopPen = loopPens[currentChannelIndex];
@@ -60,11 +64,6 @@ public class BnkVisualizerConverter : IOneWayValueConverter<BnkStream?, ImageSou
             }
         }
         return bitmap.ToImage();
-    }
-
-    private static double[] GetChannelData(double[] rawData, int channels, int channel)
-    {
-        return [.. rawData.Slice(channels).ElementAt(channel)];
     }
 
     private static double[] ParseAudioStream(byte[] rawData, int bits)

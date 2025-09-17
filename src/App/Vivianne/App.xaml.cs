@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using Microsoft.Win32;
+using System.Windows;
 using TheXDS.Vivianne.Component;
 using TheXDS.Vivianne.Properties;
 
@@ -21,6 +22,7 @@ public partial class App : Application
     public App()
     {
         PlatformServices.SetKeyboardProxy(new WpfKeyboardProxy());
+        PlatformServices.SetOperatingSystemProxy(new WpfOperatingSystemProxy());
         Startup += App_Startup;
 
 #if !DEBUG
@@ -49,5 +51,33 @@ public partial class App : Application
     private async void App_Startup(object sender, StartupEventArgs e)
     {
         await Settings.LoadAsync();
+        RegisterCommandLineStartupCallbacks();
+    }
+
+    private void RegisterCommandLineStartupCallbacks()
+    {
+        CommandLineStartup.Handlers.Add(Guid.Parse("a8d0e6c8-2410-460c-ab29-7682c351a313"), RegisterFileTypes);
+    }
+
+    private void RegisterFileTypes(string[] obj)
+    {
+        
+        Dictionary<string, (string progId, string fileDescription)> types = new()
+        {
+            { ".viv", ("TheXDS.Vivianne.viv", "VIV container file") },
+            { ".bnk", ("TheXDS.Vivianne.bnk", "EA sound bank file") },
+        };
+
+        foreach (var (ext, fileType) in types)
+        {
+            using RegistryKey? key = Registry.ClassesRoot.CreateSubKey(ext);
+            key?.SetValue("", fileType.progId);
+            using RegistryKey? subKey = Registry.ClassesRoot.CreateSubKey(fileType.progId);
+            subKey?.SetValue("", fileType.fileDescription);
+            using RegistryKey? iconKey = subKey?.CreateSubKey("DefaultIcon");
+            iconKey?.SetValue("", $"\"{System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName}\",0");
+            using RegistryKey? commandKey = subKey?.CreateSubKey(@"Shell\Open\Command");
+            commandKey?.SetValue("", $"\"{System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName}\" \"%1\"");
+        }
     }
 }
