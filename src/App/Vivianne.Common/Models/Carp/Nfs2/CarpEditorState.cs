@@ -4,12 +4,15 @@ using TheXDS.Vivianne.Models.Base;
 
 namespace TheXDS.Vivianne.Models.Carp.Nfs2;
 
+/// <summary>
+/// Implements a <see cref="FileStateBase{T}"/> for NFS2 Carp files.
+/// </summary>
 public class CarpEditorState : FileStateBase<CarPerf>
 {
     private ObservableListWrap<byte>? _brakeDecreaseCurve;
     private ObservableListWrap<byte>? _brakeIncreaseCurve;
     private ObservableListWrap<byte>? _gasDecreaseCurve;
-    private ObservableListWrap<byte>? _gasIncreaseCurve;    
+    private ObservableListWrap<byte>? _gasIncreaseCurve;
     private ObservableListWrap<double>? _gearEfficiency;
     private ObservableListWrap<double>? _torqueCurve;
     private ObservableListWrap<double>? _velocityToRpm;

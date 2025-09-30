@@ -18,49 +18,29 @@ public static class PlatformServices
         {
             ModifierKey result = ModifierKey.None;
 
-            result |= IsShiftKeyDown ? ModifierKey.Shift : ModifierKey.None;
-            result |= IsAltKeyDown ? ModifierKey.Alt : ModifierKey.None;
-            result |= IsCtrlKeyDown ? ModifierKey.Ctrl : ModifierKey.None;
+            result |= Keyboard.IsShiftKeyDown ? ModifierKey.Shift : ModifierKey.None;
+            result |= Keyboard.IsAltKeyDown ? ModifierKey.Alt : ModifierKey.None;
+            result |= Keyboard.IsCtrlKeyDown ? ModifierKey.Ctrl : ModifierKey.None;
 
             return result;
         }
     }
 
     /// <summary>
-    /// Gets a value that indicates whether the current process is running with
-    /// elevated privileges.
+    /// Exposes an instance that provides FCE rendering services.
     /// </summary>
-    public static bool IsElevated => _operatingSystemProxy?.IsElevated ?? false;
+    public static IKeyboardProxy Keyboard => _keyboardProxy ??= new NullKeyboardProxy();
 
     /// <summary>
-    /// Gets a value that indicates if the <c>Shift</c> key is being held down.
+    /// Exposes an instance that provides FCE rendering services.
     /// </summary>
-    /// <value>
-    /// <see langword="true"/> if the <c>Shift</c> key is being held down,
-    /// <see langword="false"/> otherwise, or if the application did not set a
-    /// keyboard proxy on initialization.
-    /// </value>
-    public static bool IsShiftKeyDown => _keyboardProxy?.IsShiftKeyDown ?? false;
+    public static IStaticFceRender FceRender => _staticFceRender ??= new NullFceRender();
 
     /// <summary>
-    /// Gets a value that indicates if the <c>Alt</c> key is being held down.
+    /// Exposes an instance that provides operating system information and
+    ///  services.
     /// </summary>
-    /// <value>
-    /// <see langword="true"/> if the <c>Alt</c> key is being held down,
-    /// <see langword="false"/> otherwise, or if the application did not set a
-    /// keyboard proxy on initialization.
-    /// </value>
-    public static bool IsAltKeyDown => _keyboardProxy?.IsAltKeyDown ?? false;
-
-    /// <summary>
-    /// Gets a value that indicates if the <c>Ctrl</c> key is being held down.
-    /// </summary>
-    /// <value>
-    /// <see langword="true"/> if the <c>Ctrl</c> key is being held down,
-    /// <see langword="false"/> otherwise, or if the application did not set a
-    /// keyboard proxy on initialization.
-    /// </value>
-    public static bool IsCtrlKeyDown => _keyboardProxy?.IsCtrlKeyDown ?? false;
+    public static IOperatingSystemProxy OperatingSystem => _operatingSystemProxy ??= new NullOperatingSystemProxy();
 
     /// <summary>
     /// Sets the keyboard proxy to use on the application.

@@ -49,6 +49,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vivianne.Common", "App\Vivi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vivianne", "App\Vivianne\Vivianne.csproj", "{F437471B-90CD-4218-9FA9-8F73C43C0CB3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vivianne.Avalonia", "App\Vivianne.Avalonia\Vivianne.Avalonia.csproj", "{6934E280-1C92-4478-BFE0-1EEAF178C4AB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{F437471B-90CD-4218-9FA9-8F73C43C0CB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F437471B-90CD-4218-9FA9-8F73C43C0CB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F437471B-90CD-4218-9FA9-8F73C43C0CB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6934E280-1C92-4478-BFE0-1EEAF178C4AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6934E280-1C92-4478-BFE0-1EEAF178C4AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6934E280-1C92-4478-BFE0-1EEAF178C4AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6934E280-1C92-4478-BFE0-1EEAF178C4AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -89,6 +95,7 @@ Global
 		{97EDB4BF-D005-42FA-A8E4-4455A493891E} = {220AF92D-9C3B-4F85-83B7-737A97310A70}
 		{DAEB8603-3B61-42D9-93D5-15C5F49BDBCA} = {220AF92D-9C3B-4F85-83B7-737A97310A70}
 		{F437471B-90CD-4218-9FA9-8F73C43C0CB3} = {220AF92D-9C3B-4F85-83B7-737A97310A70}
+		{6934E280-1C92-4478-BFE0-1EEAF178C4AB} = {220AF92D-9C3B-4F85-83B7-737A97310A70}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {15D53ED9-24BB-437A-BDCA-C1DAAED01CCD}

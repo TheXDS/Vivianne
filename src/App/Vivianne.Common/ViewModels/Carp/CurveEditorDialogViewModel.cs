@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Windows.Input;
 using TheXDS.Ganymede.Helpers;
 using TheXDS.MCART.Component;
@@ -88,7 +87,7 @@ public class CurveEditorDialogViewModel : EditorViewModelBase<CurveEditorState>
 
     private async Task OnCreateFromString()
     {
-        var newCollection = Clipboard.GetText()
+        var newCollection = PlatformServices.OperatingSystem.ReadClipboardText()
             .Split(CultureInfo.CurrentCulture.TextInfo.ListSeparator)
             .Select(p => double.TryParse(p, out var r) ? r : 0.0).ToArray();
         if (!AllowCollectionGrow && State.Collection.Count != newCollection.Length)
@@ -102,7 +101,7 @@ public class CurveEditorDialogViewModel : EditorViewModelBase<CurveEditorState>
 
     private void OnCopyToString()
     {
-        Clipboard.SetText(string.Join(
+        PlatformServices.OperatingSystem.WriteClipboardText(string.Join(
             CultureInfo.CurrentCulture.TextInfo.ListSeparator,
             State.Collection.Select(p => p.ToString(CultureInfo.InvariantCulture))
             ));
@@ -111,14 +110,14 @@ public class CurveEditorDialogViewModel : EditorViewModelBase<CurveEditorState>
     private async Task OnAddValue()
     {
         double value = 0.0;
-        if (PlatformServices.IsCtrlKeyDown && await DialogService!.GetInputValue<int>(
+        if (PlatformServices.Keyboard.IsCtrlKeyDown && await DialogService!.GetInputValue<int>(
             Dialogs.GetValue, null, null) is { Success: bool s, Result: int v })
         {
             if (!s) return;
             value = v;
         }
 
-        if (PlatformServices.IsShiftKeyDown)
+        if (PlatformServices.Keyboard.IsShiftKeyDown)
         {
             if (await DialogService!.GetInputValue(
                 Dialogs.GetIndex, 0, State.Collection.Count, State.Collection.Count - 1) is { Success: true, Result: int index })

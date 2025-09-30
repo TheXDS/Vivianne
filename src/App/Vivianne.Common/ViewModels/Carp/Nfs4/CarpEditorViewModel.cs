@@ -10,7 +10,8 @@ namespace TheXDS.Vivianne.ViewModels.Carp.Nfs4;
 /// Implements a ViewModel for NFS4 Carp files.
 /// </summary>
 public class CarpEditorViewModel : CarpEditorViewModel<CarpEditorState, CarPerf, CarClass>
-{     /// <inheritdoc/>
+{
+    /// <inheritdoc/>
     protected override bool BeforeSave()
     {
         if (Settings.Current.Carp_SyncChanges)

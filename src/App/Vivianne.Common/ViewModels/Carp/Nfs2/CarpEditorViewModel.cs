@@ -11,6 +11,9 @@ using St = TheXDS.Vivianne.Resources.Strings.ViewModels.CarpEditorViewModel;
 
 namespace TheXDS.Vivianne.ViewModels.Carp.Nfs2;
 
+/// <summary>
+/// Implements a ViewModel for NFS2 Carp files.
+/// </summary>
 public class CarpEditorViewModel : StatefulFileEditorViewModelBase<CarpEditorState, CarPerf>
 {
     /// <summary>
@@ -24,6 +27,10 @@ public class CarpEditorViewModel : StatefulFileEditorViewModelBase<CarpEditorSta
     /// <see cref="double"/> values.
     /// </summary>
     public ICommand EditDoubleCurveCommand { get; }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CarpEditorViewModel"/> class.
+    /// </summary>
     public CarpEditorViewModel()
     {
         var cb = CommandBuilder.For(this);

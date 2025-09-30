@@ -1,0 +1,26 @@
+<UserControl
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
+    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+    x:Class="TheXDS.Vivianne.Views.StartupView">
+    <Design.DataContext>
+        <vm:StartupViewModel/>
+    </Design.DataContext>
+    <DockPanel>
+        <DockPanel DockPanel.Dock="Top" Margin="5">
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                <Button Margin="5" Content="Settings" x:DataType="{x:Type vm:StartupViewModel}" Command="{Binding SettingsCommand, Mode=OneWay}"/>
+            </StackPanel>
+            <TextBlock FontSize="36">Vivianne</TextBlock>
+        </DockPanel>
+        <TabControl TabStripPlacement="Left">
+            <TabItem Header="VIV Editor">
+            </TabItem>
+            <TabItem Header="FSH/QFS Editor">
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</UserControl>
