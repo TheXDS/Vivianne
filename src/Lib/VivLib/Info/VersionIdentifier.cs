@@ -74,6 +74,10 @@ public static class VersionIdentifier
     {
         if (LzCodec.IsCompressed(file)) file = LzCodec.Decompress(file);
         if (file.Length == 356) return NfsVersion.Nfs2;
-        return System.Text.Encoding.Latin1.GetString(file).Contains("understeer gradient(80)") ? NfsVersion.Nfs4 : NfsVersion.Nfs3;
+
+        var rawString = System.Text.Encoding.Latin1.GetString(file);
+
+        return rawString.Contains("understeer gradient(80)") ? NfsVersion.Nfs4 
+            : rawString.StartsWith("Serial") ? NfsVersion.Nfs3 : NfsVersion.Unknown;
     }
 }

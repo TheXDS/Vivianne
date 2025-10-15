@@ -51,6 +51,11 @@ public class FshEditorViewModel : StatefulFileEditorViewModelBase<FshEditorState
         CoordsEditorCommand = cb.BuildObserving(OnCoordsEditor).CanExecuteIfNotNull(p => p.CurrentImage).Build();
     }
 
+    /// <summary>
+    /// Gets a value that indicates if this editor is in read-only mode.
+    /// </summary>
+    public bool IsReadOnly => BackingStore is null;
+
     /// <inheritdoc/>
     protected override void OnInitialize(IPropertyBroadcastSetup broadcastSetup)
     {

@@ -66,6 +66,24 @@ public partial class App : Application
         {
             { ".viv", ("TheXDS.Vivianne.viv", "VIV container file") },
             { ".bnk", ("TheXDS.Vivianne.bnk", "EA sound bank file") },
+            { ".fce", ("TheXDS.Vivianne.fce", "FCE 3D model") },
+            { ".geo", ("TheXDS.Vivianne.fce", "NFS2 Geometry file") },
+            { ".bri", ("TheXDS.Vivianne.fe", "NFS3/4 front-end language file") },
+            { ".eng", ("TheXDS.Vivianne.fe", "NFS3/4 front-end language file") },
+            { ".fre", ("TheXDS.Vivianne.fe", "NFS3/4 front-end language file") },
+            { ".ger", ("TheXDS.Vivianne.fe", "NFS3/4 front-end language file") },
+            { ".ita", ("TheXDS.Vivianne.fe", "NFS3/4 front-end language file") },
+            { ".spa", ("TheXDS.Vivianne.fe", "NFS3/4 front-end language file") },
+            { ".swe", ("TheXDS.Vivianne.fe", "NFS3/4 front-end language file") },
+            { ".asf", ("TheXDS.Vivianne.asf", "EA music track file") },
+            { ".lin", ("TheXDS.Vivianne.mus", "EA interactive music bank file") },
+            { ".map", ("TheXDS.Vivianne.mus", "EA interactive music bank file") },
+            { ".mus", ("TheXDS.Vivianne.mus", "EA interactive music bank file") },
+            { ".fsh", ("TheXDS.Vivianne.fsh", "EA texture image") },
+            { ".qfs", ("TheXDS.Vivianne.fsh", "EA texture image") },
+            { ".tga", ("TheXDS.Vivianne.tga", "Truevision TGA image") },
+            { ".qda", ("TheXDS.Vivianne.carp2", "NFS2 car performance data") },
+
         };
 
         foreach (var (ext, fileType) in types)
@@ -78,6 +96,18 @@ public partial class App : Application
             iconKey?.SetValue("", $"\"{System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName}\",0");
             using RegistryKey? commandKey = subKey?.CreateSubKey(@"Shell\Open\Command");
             commandKey?.SetValue("", $"\"{System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName}\" \"%1\"");
+        }
+    }
+
+    internal static class RegistryFileTypeRegistration
+    {
+        private readonly record struct FileTypeInfo(
+            string[] FileExtensions,
+            string ProgId,
+            string FileDescription,
+            int IconIndex = 0,
+            bool IsPrimary = false)
+        {
         }
     }
 }

@@ -187,12 +187,9 @@ public interface ICarPerf : ISerialNumberModel
     double FrontBrakeBias { get; set; }
 
     /// <summary>
-    /// Gets or sets a value that indicates the front differential gear ratio.
+    /// Gets or sets a value between 0.0 and 1.0 that indicates the front drive
+    /// ratio.
     /// </summary>
-    /// <remarks>
-    /// This value is merely informational, and is apparently not used for
-    /// actual speed calculations.
-    /// </remarks>
     double FrontDriveRatio { get; set; }
 
     /// <summary>
@@ -513,7 +510,8 @@ public interface ICarPerf : ISerialNumberModel
     double TopSpeed { get; set; }
 
     /// <summary>
-    /// Gets a collection of values plotting the engine's torque curve, in Newton*Meters.
+    /// Gets a collection of values plotting the engine's torque curve, in
+    /// Newton*Meters.
     /// </summary>
     IList<double> TorqueCurve { get; }
 

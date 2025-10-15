@@ -49,7 +49,7 @@
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
                             </StackPanel>
-                            <DockPanel Grid.Column="1">
+                            <DockPanel>
                                 <TextBlock DockPanel.Dock="Top" Foreground="Gray" FontSize="18" Text="{x:Static st:FileEditorLauncherView.RecentFiles}"/>
                                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                                     <ItemsControl ItemsSource="{Binding Launcher.RecentFiles, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}">

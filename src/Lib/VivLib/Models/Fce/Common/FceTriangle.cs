@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using System.Runtime.InteropServices;
+using TheXDS.Vivianne.Models.Shared;
 
 namespace TheXDS.Vivianne.Models.Fce.Common;
 
@@ -38,7 +39,7 @@ public struct FceTriangle
     /// <summary>
     /// Gets a flagset that indicates properties for the triangle.
     /// </summary>
-    public int Flags;
+    public MaterialFlags Flags;
 
     /// <summary>
     /// Gets the U component of the UV coordinates for the first vertex of this triangle.

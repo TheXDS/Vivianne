@@ -2,6 +2,7 @@
 using TheXDS.Vivianne.Info;
 using TheXDS.Vivianne.Models.Fce;
 using TheXDS.Vivianne.Models.Fce.Nfs4;
+using TheXDS.Vivianne.Models.Shared;
 using TheXDS.Vivianne.ViewModels.Fce.Common;
 
 namespace TheXDS.Vivianne.ViewModels.Fce.Nfs4;

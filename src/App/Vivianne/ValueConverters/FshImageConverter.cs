@@ -6,6 +6,7 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using TheXDS.MCART.Helpers;
+using TheXDS.MCART.ValueConverters.Base;
 using TheXDS.Vivianne.Extensions;
 using TheXDS.Vivianne.Models.Fsh;
 using TheXDS.Vivianne.Resources;
@@ -16,14 +17,14 @@ namespace TheXDS.Vivianne.ValueConverters;
 /// Converts the data in a <see cref="FshBlob"/> into a
 /// <see cref="BitmapSource"/>.
 /// </summary>
-public class FshImageConverter : IMultiValueConverter
+public class FshImageConverter : IMultiValueConverter, IOneWayValueConverter<FshBlob, BitmapSource?>
 {
     /// <inheritdoc/>
     public object? Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
     {
         if (values.Length < 1 || values[0] is not FshBlob blob) return null;
         
-        var p = (values.ElementAtOrDefault(1) as IEnumerable<SixLabors.ImageSharp.Color>)?.ToArray() ?? blob.ReadLocalPalette();
+        var p = (values.ElementAtOrDefault(1) as IEnumerable<SixLabors.ImageSharp.Color>)?.ToArray() ?? blob.ReadLocalPalette() ?? (parameter as FshFile)?.GetPalette();
         var image = blob.ToImage(p);
         var alpha = values.ElementAtOrDefault(2) as bool? ?? true;
 
@@ -102,5 +103,11 @@ public class FshImageConverter : IMultiValueConverter
              * WPF need to be converted to BGRA32 */
             _ => PixelFormats.Bgra32 
         };
+    }
+
+    /// <inheritdoc/>
+    public BitmapSource? Convert(FshBlob value, object? parameter, CultureInfo? culture)
+    {
+        return Convert([value], typeof(BitmapSource), parameter!, culture! ) as BitmapSource;
     }
 }

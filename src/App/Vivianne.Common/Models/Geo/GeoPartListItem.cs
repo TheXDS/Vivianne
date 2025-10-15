@@ -1,23 +1,20 @@
 ﻿using TheXDS.MCART.Types.Base;
 
-namespace TheXDS.Vivianne.Models.Fce;
+namespace TheXDS.Vivianne.Models.Geo;
 
 /// <summary>
-/// Represents an item on a list that allows the user to show/hide FCE parts
+/// Represents an item on a list that allows the user to show/hide GEO parts
 /// for the render tree.
 /// </summary>
-/// <param name="part">
-/// Key/Value pair with the part and part name to be referenced by this
-/// instance.
-/// </param>
-public class FcePartListItem<TFcePart>(TFcePart part) : NotifyPropertyChanged
+/// <param name="part">Part referenced by this instance.</param>
+public class GeoPartListItem(GeoPart part) : NotifyPropertyChanged
 {
     private bool _IsVisible;
 
     /// <summary>
     /// Gets a reference to the part associated with this instance.
     /// </summary>
-    public TFcePart Part { get; } = part;
+    public GeoPart Part { get; } = part;
 
     /// <summary>
     /// Gets or sets a value that indicates whether or not the part referenced

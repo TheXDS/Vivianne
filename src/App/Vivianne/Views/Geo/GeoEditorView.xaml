@@ -1,0 +1,95 @@
+﻿<UserControl
+    x:Class="TheXDS.Vivianne.Views.Geo.GeoEditorView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"              
+    xmlns:ct="clr-namespace:TheXDS.Vivianne.Controls"
+    xmlns:hlp="clr-namespace:TheXDS.Vivianne.Helpers"
+    xmlns:mdl="clr-namespace:TheXDS.Vivianne.Models.Fce;assembly=Vivianne.Common"
+    xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings.Views"
+    xmlns:vc="clr-namespace:TheXDS.Vivianne.ValueConverters"
+    xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels.Fce.Nfs3;assembly=Vivianne.Common"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:mcart ="http://schemas.thexds.local/mcart"
+    xmlns:local="clr-namespace:TheXDS.Vivianne.Views.Geo"
+    xmlns:views="clr-namespace:TheXDS.Vivianne.Views"
+    xmlns:geo="clr-namespace:TheXDS.Vivianne.ViewModels.Geo;assembly=Vivianne.Common"
+    d:DataContext="{d:DesignInstance Type=geo:GeoEditorViewModel}"
+    mc:Ignorable="d" 
+    d:DesignHeight="450" d:DesignWidth="600">
+    <UserControl.Resources>
+        <vc:GeoRendererConverter x:Key="geovm2mesh"/>
+        <mcart:NotNullToBooleanConverter x:Key="notnull2bool"/>
+    </UserControl.Resources>
+    <DockPanel>
+        <ct:FileEditorCommandBar DockPanel.Dock="Top" ShowClose="False" Editor="{Binding}">
+            <StackPanel Orientation="Horizontal" Margin="5,0">
+                <Separator Margin="0,0,5,0"/>
+                <Button Content="Load FSH..." Command="{Binding LoadExtenralFshCommand, Mode=OneWay}"/>
+            </StackPanel>                        
+        </ct:FileEditorCommandBar>
+        <TabControl Background="{ui:ThemeResource ControlSolidFillColorDefaultBrush}">
+            <TabItem Header="Model">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Viewport3D Grid.ColumnSpan="2" Grid.Column="0">
+                        <Viewport3D.Camera>
+                            <PerspectiveCamera x:Name="ptcMain" UpDirection="1,0,0" LookDirection="-30,50,50" Position="30,-50,-50"/>
+                        </Viewport3D.Camera>
+                        <ModelVisual3D Content="{Binding State.RenderTree, Mode=OneWay, Converter={StaticResource geovm2mesh}}"/>
+                    </Viewport3D>
+                    <Expander
+                        Width="200"
+                        ExpandDirection="Left"
+                        Header="Scene information"
+                        VerticalAlignment="Bottom"
+                        HorizontalAlignment="Right"
+                        Grid.Column="1">
+                        <DockPanel>
+                            <Image
+                                Source="/Resources/Images/nfs2se.ICO"
+                                Stretch="None"
+                                Grid.Column="1"
+                                Margin="0,0,10,0"/>
+                            <TextBlock Width="150" TextWrapping="Wrap">
+                                Quads: <Run Text="{Binding State.RenderTree.QuadsCount, Mode=OneWay}"/><LineBreak/>
+                                Vertices: <Run Text="{Binding State.RenderTree.VertexCount, Mode=OneWay}"/><LineBreak/>
+                                Textures: <Run Text="{Binding State.RenderTree.Textures.Count, Mode=OneWay}"/>
+                            </TextBlock>
+                        </DockPanel>
+                    </Expander>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+                            <Expander Margin="10" IsExpanded="True" Header="View options">
+                                <StackPanel>
+                                    <CheckBox IsChecked="{Binding State.BrakelightsOn}" Content="Brakelights On"/>
+                                </StackPanel>
+                            </Expander>
+                            <Expander Margin="10" IsExpanded="True" Header="Parts">
+                                <ItemsControl
+                                    ItemsSource="{Binding State.Parts, Mode=OneWay}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <DockPanel>
+                                                <CheckBox IsChecked="{Binding IsVisible}" Style="{StaticResource ToggleSwitch}">
+                                                    <TextBlock Text="{Binding Part, Mode=OneWay}" Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"/>
+                                                </CheckBox>
+                                            </DockPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </Expander>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Textures" IsEnabled="{Binding State.FshFile, Mode=OneWay, Converter={StaticResource notnull2bool}}">
+                <views:FshEditorView DataContext="{Binding FshPreviewViewModel, Mode=OneWay}" Margin="5,10,0,0"/>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</UserControl>

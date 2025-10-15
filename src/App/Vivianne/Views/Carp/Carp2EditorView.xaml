@@ -37,7 +37,12 @@
         <vc:GraphDrawingContext x:Key="gdc"/>
     </UserControl.Resources>
     <DockPanel>
-        <ct:FileEditorCommandBar Editor="{Binding}" DockPanel.Dock="Top" ShowClose="False"/>
+        <ct:FileEditorCommandBar Editor="{Binding}" DockPanel.Dock="Top" ShowClose="False">
+            <StackPanel Orientation="Horizontal">
+                <Separator Height="32" Margin="5,0"/>
+                <Button Content="Upgrade to Carp3/4" Command="{Binding UpgradeToCarp34Command, Mode=OneWay}"/>
+            </StackPanel>
+        </ct:FileEditorCommandBar>
         <Grid Background="{ui:ThemeResource ControlSolidFillColorDefaultBrush}">
             <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
                 <StackPanel Margin="10,10,15,10">

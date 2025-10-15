@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using TheXDS.Vivianne.Models.Fce.Common;
+using TheXDS.Vivianne.Models.Shared;
 using TheXDS.Vivianne.ViewModels.Fce.Common;
 
 namespace TheXDS.Vivianne.ViewModels.Fce.Nfs3;

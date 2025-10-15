@@ -5,6 +5,9 @@ using TheXDS.Vivianne.Models.Carp.Nfs2;
 
 namespace TheXDS.Vivianne.Serializers.Carp.Nfs2;
 
+/// <summary>
+/// Implements a Carp serializer for NFS2 cars.
+/// </summary>
 public class CarpSerializer : IMarshalSerializer<CarPerf, CarpSerializer.CarpData>
 {
     CarPerf IMarshalSerializer<CarPerf, CarpData>.Convert(CarpData entity)

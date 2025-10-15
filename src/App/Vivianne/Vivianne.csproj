@@ -7,18 +7,20 @@
 		<UseWPF>true</UseWPF>
 		<EnableWindowsTargeting>true</EnableWindowsTargeting>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-		<ApplicationIcon>vivianne.ico</ApplicationIcon>
+		<Win32Resource>D:\TheXDS\Vivianne\src\App\Vivianne\Resources\Icons.res</Win32Resource>
 	</PropertyGroup>
 	<ItemGroup>
 		<None Remove="Resources\Embedded\EarlyAlphaNote.txt" />
 		<None Remove="Resources\Fonts\Muli-Light.ttf" />
 		<None Remove="Resources\Fonts\NFS_by_JLTV.ttf" />
+		<None Remove="Resources\Images\nfs2se.ICO" />
 		<None Remove="Resources\Images\vivianne.png" />
 		<None Remove="Resources\Images\nfs3.ico" />
 		<None Remove="Resources\Images\nfs4.ico" />
 		<None Remove="Resources\Images\mco.ico" />
 	</ItemGroup>
 	<ItemGroup>
+		<Resource Include="Resources\Images\nfs2se.ICO" />
 		<Resource Include="vivianne.ico" />
 		<Resource Include="Resources\Images\vivianne.png" />
 		<Resource Include="Resources\Images\nfs3.ico" />
@@ -193,5 +195,8 @@
 			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>VivInfoView.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Extensions\" />
 	</ItemGroup>
 </Project>

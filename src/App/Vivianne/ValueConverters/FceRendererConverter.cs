@@ -11,6 +11,7 @@ using TheXDS.MCART.Helpers;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.MCART.ValueConverters.Base;
 using TheXDS.Vivianne.Models.Fce.Common;
+using TheXDS.Vivianne.Models.Shared;
 using TheXDS.Vivianne.Models.Tga;
 using TheXDS.Vivianne.ViewModels.Fce.Common;
 
@@ -149,7 +150,7 @@ public class FceRendererConverter : IOneWayValueConverter<RenderState?, Model3DG
          * that uses (or prefers to use) per-vertex UV.
          */
 
-        var filteredTriangles = value.Triangles.Where(p => p.Flags == (int)flags).ToArray();
+        var filteredTriangles = value.Triangles.Where(p => p.Flags == flags).ToArray();
         if (filteredTriangles.Length == 0) return null;
         var vertex = new List<VertexUv?>(new VertexUv[value.Vertices.Length]);
         var workingCopy = new FceTriangle[filteredTriangles.Length];

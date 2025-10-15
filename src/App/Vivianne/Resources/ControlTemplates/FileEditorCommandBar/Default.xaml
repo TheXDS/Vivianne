@@ -17,8 +17,8 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:FileEditorCommandBar}">
                     <DockPanel Margin="5,0,0,5">
-                        <ui:Button VerticalAlignment="Stretch" Margin="5" Command="{Binding Editor.SaveCommand, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Icon="{ui:SymbolIcon Symbol=Save24}"/>
-                        <ui:Button VerticalAlignment="Stretch" Margin="5" Command="{Binding Editor.SaveAsCommand, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Icon="{ui:SymbolIcon Symbol=DocumentSave24}"/>
+                        <ui:Button VerticalAlignment="Stretch" Margin="5" Visibility="{Binding IsReadOnly, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource Bool2InvVisConv}}" Command="{Binding Editor.SaveCommand, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Icon="{ui:SymbolIcon Symbol=Save24}"/>
+                        <ui:Button VerticalAlignment="Stretch" Margin="5" Visibility="{Binding IsReadOnly, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource Bool2InvVisConv}}" Command="{Binding Editor.SaveAsCommand, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Icon="{ui:SymbolIcon Symbol=DocumentSave24}"/>
                         <ui:Button VerticalAlignment="Stretch" Margin="5" Visibility="{Binding ShowClose, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource Bool2VisConv}}" Command="{Binding Editor.SaveAndCloseCommand, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Icon="{ui:SymbolIcon Symbol=ArrowLeft24}"/>
                         <ui:Button VerticalAlignment="Stretch" Margin="5" Visibility="{Binding ShowClose, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource Bool2VisConv}}" Command="{Binding Editor.DiscardAndCloseCommand, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Icon="{ui:SymbolIcon Symbol=Backspace24}"/>
                         <ContentPresenter VerticalAlignment="Center" Content="{TemplateBinding Content}"/>

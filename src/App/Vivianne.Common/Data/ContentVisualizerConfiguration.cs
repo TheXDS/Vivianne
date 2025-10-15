@@ -21,6 +21,7 @@ using TheXDS.Vivianne.ViewModels.Fce.Nfs3;
 using TheXDS.Vivianne.ViewModels.Fce.Nfs4;
 using TheXDS.Vivianne.ViewModels.Fe;
 using TheXDS.Vivianne.ViewModels.Fsh;
+using TheXDS.Vivianne.ViewModels.Geo;
 using TheXDS.Vivianne.ViewModels.Viv;
 using MFce3 = TheXDS.Vivianne.Models.Fce.Nfs3;
 using MFce4 = TheXDS.Vivianne.Models.Fce.Nfs4;
@@ -67,7 +68,7 @@ internal static class ContentVisualizerConfiguration
         yield return new(".swe", CreateFeDataEditorViewModel);
 
         yield return new(".dat", CreateCarpEditorViewModel);
-        yield return new(".qda", CreateCarpEditorViewModel);
+        yield return new(".qda", CreateComingSoonViewModel);
         yield return new(".txt", CreateCarpEditorViewModel);
         yield return new(".fce", CreateFceEditorViewModel);
         yield return new(".bnk", CreateBnkEditorViewModel);
@@ -78,7 +79,7 @@ internal static class ContentVisualizerConfiguration
         yield return new(".md", CreateRawReadOnlyViewModel);
         yield return new(".nfo", CreateRawReadOnlyViewModel);
 
-        yield return new(".geo", CreateComingSoonViewModel);
+        yield return new(".geo", CreateGeoEditorViewModel);
     }
 
     private static ComingSoonViewModel CreateComingSoonViewModel(byte[] data, VivEditorViewModel vm, string fileName) => new();
@@ -127,6 +128,11 @@ internal static class ContentVisualizerConfiguration
             NfsVersion.Nfs4 or NfsVersion.Mco=> CreateEditorViewModel<VmFce4, Fce4EditorState, MFce4.FceFile, SNfs4>(data, vm, name),            
             _ => null
         };
+    }
+
+    private static GeoEditorViewModel? CreateGeoEditorViewModel(byte[] data, VivEditorViewModel vm, string name)
+    {
+        return CreateEditorViewModel<GeoEditorViewModel, GeoEditorState, Models.Geo.GeoFile, Serializers.Geo.GeoSerializer>(data, vm, name);
     }
 
     private static FshEditorViewModel? CreateFshEditorViewModel(byte[] data, VivEditorViewModel vm, string name)

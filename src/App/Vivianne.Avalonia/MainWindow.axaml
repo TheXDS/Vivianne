@@ -8,7 +8,8 @@
     xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
     x:Class="Vivianne.Avalonia.MainWindow"
-    Title="Vivianne.Avalonia">
+	TransparencyLevelHint="AcrylicBlur"
+    Title="Vivianne.Avalonia">	
     <gn:NavigationHost
 		DialogService="{gn2:NavDialogService}"
 		Navigator="{gn2:NavService Home={x:Type vm:StartupViewModel}}"

@@ -1,14 +1,13 @@
-﻿using System;
-
-namespace TheXDS.Vivianne.ViewModels.Fce.Common;
+﻿namespace TheXDS.Vivianne.Models.Shared;
 
 /// <summary>
-/// Enumerates predefined material types for FCE models and dummies.
+/// Enumerates predefined material types for 3D models and dummies.
 /// </summary>
 /// <remarks>
-/// FCE models do not include material definitions, and rely on triangle flags
-/// to determine how each triangle would be rendered. By default, the base
-/// material is a single textured diffuse map with semi-gloss effects applied.
+/// FCE/GEO models do not include material definitions, and rely on triangle
+/// flags to determine how each triangle would be rendered. By default, the
+/// base material is a single textured diffuse map with semi-gloss effects
+/// applied.
 /// </remarks>
 [Flags]
 public enum MaterialFlags

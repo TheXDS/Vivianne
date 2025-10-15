@@ -20,11 +20,17 @@ public class FileEditorCommandBar : ContentControl
     /// </summary>
     public static readonly DependencyProperty ShowCloseProperty;
 
+    /// <summary>
+    /// Identifies the <see cref="IsReadOnly"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty IsReadOnlyProperty;
+
     static FileEditorCommandBar()
     {
         SetControlStyle<FileEditorCommandBar>(DefaultStyleKeyProperty);
         EditorProperty = NewDp<IFileEditorViewModel, FileEditorCommandBar>(nameof(Editor));
         ShowCloseProperty = NewDp<bool, FileEditorCommandBar>(nameof(ShowClose), true);
+        IsReadOnlyProperty = NewDp<bool, FileEditorCommandBar>(nameof(IsReadOnly), false);
     }
 
     /// <summary>
@@ -44,5 +50,11 @@ public class FileEditorCommandBar : ContentControl
     {
         get => (bool)GetValue(ShowCloseProperty);
         set => SetValue(ShowCloseProperty, value);
+    }
+
+    public bool IsReadOnly
+    {
+        get => (bool)GetValue(IsReadOnlyProperty);
+        set => SetValue(IsReadOnlyProperty, value);
     }
 }

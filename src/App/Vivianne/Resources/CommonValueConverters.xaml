@@ -1,5 +1,6 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mcart="http://schemas.thexds.local/mcart">
     <BooleanToVisibilityConverter x:Key="Bool2VisConv"/>
+    <mcart:BooleanToInvVisibilityConverter x:Key="Bool2InvVisConv"/>
 </ResourceDictionary>

@@ -1,0 +1,30 @@
+<UserControl
+	xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+	xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels.Base;assembly=Vivianne.Common"
+	xmlns:mcart="http://schemas.thexds.local/mcart"
+	x:DataType="{x:Type vm:IFileViewerViewModelLauncher}"
+    x:Class="TheXDS.Vivianne.FileEditorLauncherView">
+	<!--<mcart:BusyContainer IsBusy="{Binding IsBusy, Mode=OneWay}">-->
+		<!--<mcart:BusyContainer.Content>-->
+			<DockPanel>
+				<DockPanel.Resources>
+					
+				</DockPanel.Resources>
+
+				<StackPanel>
+					<StackPanel Margin="5">
+						<Button
+							Margin="5"
+							HorizontalAlignment="Stretch">
+							<TextBlock>New</TextBlock>
+						</Button>
+					</StackPanel>
+				</StackPanel>
+			</DockPanel>
+		<!--</mcart:BusyContainer.Content>-->
+	<!--</mcart:BusyContainer>-->
+</UserControl>
