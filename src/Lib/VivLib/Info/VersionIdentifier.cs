@@ -72,7 +72,7 @@ public static class VersionIdentifier
     /// <returns>A value that indicates the game for which this file is intended.</returns>
     public static NfsVersion CarpVersion(byte[] file)
     {
-        if (LzCodec.IsCompressed(file)) file = LzCodec.Decompress(file);
+        if (RefPackCodec.IsCompressed(file)) file = RefPackCodec.Decompress(file);
         if (file.Length == 356) return NfsVersion.Nfs2;
 
         var rawString = System.Text.Encoding.Latin1.GetString(file);

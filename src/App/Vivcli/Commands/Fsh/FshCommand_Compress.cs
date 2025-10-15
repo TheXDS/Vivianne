@@ -31,6 +31,6 @@ public partial class FshCommand
             return;
         }
         using var outputStream = outOpt?.OpenWrite() ?? Console.OpenStandardOutput();
-        await outputStream.WriteAsync(LzCodec.Compress(rawContents));
+        await outputStream.WriteAsync(RefPackCodec.Compress(rawContents));
     }
 }

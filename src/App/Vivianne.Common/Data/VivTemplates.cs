@@ -116,7 +116,7 @@ internal static class VivTemplates
         var fsh = new FshFile();
         fsh.Entries.Add("0000", cabinBlob);
         fsh.Entries.Add("0001", steerBlob);
-        return LzCodec.Compress(((ISerializer<FshFile>)new FshSerializer()).Serialize(fsh));
+        return RefPackCodec.Compress(((ISerializer<FshFile>)new FshSerializer()).Serialize(fsh));
     }
 
     private static byte[] EmptyCarp3()

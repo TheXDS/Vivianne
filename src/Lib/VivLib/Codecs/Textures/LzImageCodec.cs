@@ -8,12 +8,12 @@ public class LzImageCodec : IImageCodec
     /// <inheritdoc/>
     public byte[] Decode(byte[] sourceBytes, int width, int height)
     {
-        return LzCodec.Decompress(sourceBytes);
+        return RefPackCodec.Decompress(sourceBytes);
     }
 
     /// <inheritdoc/>
     public byte[] Encode(byte[] sourceBytes, int width, int height)
     {
-        return LzCodec.Compress(sourceBytes);
+        return RefPackCodec.Compress(sourceBytes);
     }
 }

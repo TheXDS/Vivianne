@@ -44,7 +44,7 @@ public abstract class RawImageConverterBase
         if (value is null) return null;
         try
         {
-            if (System.Text.Encoding.Latin1.GetString(value[0..4]) == "SHPI" || LzCodec.IsCompressed(value)) return TryLoadFsh(value, textureColor, enableAlpha);        
+            if (System.Text.Encoding.Latin1.GetString(value[0..4]) == "SHPI" || RefPackCodec.IsCompressed(value)) return TryLoadFsh(value, textureColor, enableAlpha);        
             return Image.Load(value) switch
             {
                 Image<Rgba32> i => ConvertImageToBitmapSource(FshBlobFormat.Argb32, i, textureColor, enableAlpha),

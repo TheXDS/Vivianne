@@ -27,7 +27,7 @@ public partial class FshCommand
             Console.WriteLine(string.Format(St.Info_Info3, fshFile.Length.GetSize(humanOpt)));
             if (fsh.IsCompressed)
             {
-                var uncompressedDataLength = LzCodec.Decompress(await File.ReadAllBytesAsync(fshFile.FullName)).Length;
+                var uncompressedDataLength = RefPackCodec.Decompress(await File.ReadAllBytesAsync(fshFile.FullName)).Length;
                 Console.WriteLine(St.Info_Info4);
                 Console.WriteLine(string.Format(St.Info_Info5, uncompressedDataLength.GetSize(humanOpt)));
                 Console.WriteLine(string.Format(St.Info_Info6, (double)uncompressedDataLength / fshFile.Length));

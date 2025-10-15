@@ -39,7 +39,7 @@ public class FshBlobSerializer : ISerializer<FshBlob?>
         {
             using var compressedMs = new MemoryStream();
             stream.CopyTo(compressedMs);
-            pixelData = LzCodec.Decompress(compressedMs.ToArray());
+            pixelData = RefPackCodec.Decompress(compressedMs.ToArray());
         }
         else if (Mappings.FshBlobBytesPerPixel.TryGetValue(blobHeader.Magic, out byte value))
         {
@@ -84,7 +84,7 @@ public class FshBlobSerializer : ISerializer<FshBlob?>
         });
         if (Mappings.CompressedToRaw.TryGetValue(entity.Magic, out var rawMagic))
         {
-            writer.Write(LzCodec.Compress(entity.PixelData));
+            writer.Write(RefPackCodec.Compress(entity.PixelData));
         }
         else
         {

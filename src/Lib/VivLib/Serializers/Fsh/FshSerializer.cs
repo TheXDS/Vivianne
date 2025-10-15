@@ -44,7 +44,7 @@ public class FshSerializer : ISerializer<FshFile>
     {
         using var ms = new MemoryStream();
         stream.CopyTo(ms);
-        var x = ((ISerializer<FshFile>)this).Deserialize(LzCodec.Decompress(ms.ToArray()));
+        var x = ((ISerializer<FshFile>)this).Deserialize(RefPackCodec.Decompress(ms.ToArray()));
         x.IsCompressed = true;
         return x;
     }
@@ -52,7 +52,7 @@ public class FshSerializer : ISerializer<FshFile>
     /// <inheritdoc/>
     public FshFile Deserialize(Stream stream)
     {
-        if (LzCodec.IsCompressed(stream)) return DeserializeQfs(stream);
+        if (RefPackCodec.IsCompressed(stream)) return DeserializeQfs(stream);
         using var reader = new BinaryReader(stream);
 
         var header = reader.MarshalReadStruct<FshHeader>();
@@ -93,7 +93,7 @@ public class FshSerializer : ISerializer<FshFile>
             entity.IsCompressed = false;
             SerializeTo(entity, ms);
             entity.IsCompressed = true;
-            stream.WriteBytes(LzCodec.Compress(ms.ToArray()));
+            stream.WriteBytes(RefPackCodec.Compress(ms.ToArray()));
             return;
         }
         using BinaryWriter writer = new(stream);

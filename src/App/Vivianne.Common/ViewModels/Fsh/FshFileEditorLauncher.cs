@@ -38,7 +38,7 @@ public class FshFileEditorLauncher(Func<IDialogService> dialogSvc)
         {
             p.Report(St2.ProcessMsg);
             var qfs = await File.ReadAllBytesAsync(fin.Result);
-            var fsh = await Task.Run(() => LzCodec.Decompress(qfs));
+            var fsh = await Task.Run(() => RefPackCodec.Decompress(qfs));
             await File.WriteAllBytesAsync(fout.Result, fsh);
         });
     }
@@ -54,7 +54,7 @@ public class FshFileEditorLauncher(Func<IDialogService> dialogSvc)
         {
             p.Report(St.ProcessMsg);
             var fsh = await File.ReadAllBytesAsync(fin.Result);
-            var qfs = await Task.Run(() => LzCodec.Compress(fsh));
+            var qfs = await Task.Run(() => RefPackCodec.Compress(fsh));
             await File.WriteAllBytesAsync(fout.Result, qfs);
         });
     }

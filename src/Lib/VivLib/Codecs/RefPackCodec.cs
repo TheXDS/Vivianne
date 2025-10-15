@@ -55,7 +55,7 @@ namespace TheXDS.Vivianne.Codecs;
 /// <item>César Morgan (xds_xps_ivx@hotmail.com)</item>
 /// </list>
 /// </remarks>
-public static class LzCodec
+public static class RefPackCodec
 {
     private const ushort LZ_Signature = 0xFB10;
     private static readonly IEnumerable<KeyValuePair<int?, BlockDecompression>> BlockDecompressors = [
