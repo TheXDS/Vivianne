@@ -100,10 +100,10 @@ public static class Mappings
     /// </summary>
     public static IReadOnlyDictionary<FshBlobFormat, IImageCodecInfo<IImageCodec>> CompressedToRaw { get; } = new Dictionary<FshBlobFormat, IImageCodecInfo<IImageCodec>>()
     {
-        { FshBlobFormat.LzArgb32,       new ImageCodecInfo<LzImageCodec>(FshBlobFormat.Argb32) },
-        { FshBlobFormat.LzArgb1555,     new ImageCodecInfo<LzImageCodec>(FshBlobFormat.Argb1555) },
-        { FshBlobFormat.LzRgb565,       new ImageCodecInfo<LzImageCodec>(FshBlobFormat.Rgb565) },
-        { (FshBlobFormat)0xed,          new ImageCodecInfo<LzImageCodec>(FshBlobFormat.Indexed8) },
+        { FshBlobFormat.LzArgb32,       new ImageCodecInfo<RefpackImageCodec>(FshBlobFormat.Argb32) },
+        { FshBlobFormat.LzArgb1555,     new ImageCodecInfo<RefpackImageCodec>(FshBlobFormat.Argb1555) },
+        { FshBlobFormat.LzRgb565,       new ImageCodecInfo<RefpackImageCodec>(FshBlobFormat.Rgb565) },
+        { (FshBlobFormat)0xed,          new ImageCodecInfo<RefpackImageCodec>(FshBlobFormat.Indexed8) },
         { FshBlobFormat.Dxt1,           new ImageCodecInfo<Dxt1ImageCodec>(FshBlobFormat.Argb32) },
         { FshBlobFormat.Dxt3,           new ImageCodecInfo<Dxt3ImageCodec>(FshBlobFormat.Argb32) },
     }.AsReadOnly();

@@ -15,6 +15,4 @@ public partial class Settings
     /// FeData file exists.
     /// </summary>
     public bool Viv_CheckSnOnSave { get; set; }
-
-
 }

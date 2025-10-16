@@ -10,6 +10,7 @@ public partial class GeoSerializer : ISerializer<GeoFile>
 {
     private static readonly byte[] BendMarker = [0x42, 0x45, 0x4E, 0x44, 0x00, 0x00];
 
+    /// <inheritdoc/>
     public GeoFile Deserialize(Stream stream)
     {
         using var reader = new BinaryReader(stream);
@@ -75,9 +76,9 @@ public partial class GeoSerializer : ISerializer<GeoFile>
         };
     }
 
+    /// <inheritdoc/>
     public void SerializeTo(GeoFile entity, Stream stream)
     {
-
         throw new NotImplementedException();
     }
 }

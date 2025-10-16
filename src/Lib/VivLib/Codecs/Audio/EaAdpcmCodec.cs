@@ -184,15 +184,17 @@ public class EaAdpcmCodec : IAudioCodec
         for (int i = 0; i < left.Length; i++)
         {
             left[i] = pcm[i * 2];
-            right[i] = pcm[i * 2 + 1];
+            right[i] = pcm[(i * 2) + 1];
         }
 
         var (lPredictor, lShift, lCompressed, lState) = EncodeChannel(left);
         var (rPredictor, rShift, rCompressed, rState) = EncodeChannel(right);
 
-        var compressed = new List<byte>();
-        compressed.Add((byte)((lPredictor << 4) | rPredictor));
-        compressed.Add((byte)(((lShift - 8) << 4) | (rShift - 8)));
+        var compressed = new List<byte>
+        {
+            (byte)((lPredictor << 4) | rPredictor),
+            (byte)(((lShift - 8) << 4) | (rShift - 8))
+        };
         for (int i = 0; i < lCompressed.Length; i++)
         {
             compressed.Add((byte)((lCompressed[i] << 4) | (rCompressed[i] & 0x0F)));

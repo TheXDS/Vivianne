@@ -100,7 +100,6 @@ public class GeoRendererConverter : IOneWayValueConverter<RenderState?, Model3DG
             Normals = [.. vertex.Select(p => p?.Vertex ?? default).Select(p => new Vector3D(-p.Z * 1.1, p.X * 1.1, -p.Y * 1.1))],
             TextureCoordinates = [.. vertex.Select(p => p?.Uv is { X: float x, Y: float y } ? new Point(x, y) : default)],
         };
-
     }
 
     private static void TryCloneVertex(List<VertexUv?> vertex, Point3D vert, int vertIndex, Vector2 uv, Action<int> vertexSetCallback)

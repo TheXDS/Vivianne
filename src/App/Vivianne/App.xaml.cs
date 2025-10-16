@@ -61,7 +61,6 @@ public partial class App : Application
 
     private void RegisterFileTypes(string[] obj)
     {
-        
         Dictionary<string, (string progId, string fileDescription)> types = new()
         {
             { ".viv", ("TheXDS.Vivianne.viv", "VIV container file") },
@@ -74,7 +73,7 @@ public partial class App : Application
             { ".ger", ("TheXDS.Vivianne.fe", "NFS3/4 front-end language file") },
             { ".ita", ("TheXDS.Vivianne.fe", "NFS3/4 front-end language file") },
             { ".spa", ("TheXDS.Vivianne.fe", "NFS3/4 front-end language file") },
-            { ".swe", ("TheXDS.Vivianne.fe", "NFS3/4 front-end language file") },
+            { ".swe", ("TheXDS.Vivianne.fe", "NFS3/4 front-end language file") },   
             { ".asf", ("TheXDS.Vivianne.asf", "EA music track file") },
             { ".lin", ("TheXDS.Vivianne.mus", "EA interactive music bank file") },
             { ".map", ("TheXDS.Vivianne.mus", "EA interactive music bank file") },
@@ -83,7 +82,6 @@ public partial class App : Application
             { ".qfs", ("TheXDS.Vivianne.fsh", "EA texture image") },
             { ".tga", ("TheXDS.Vivianne.tga", "Truevision TGA image") },
             { ".qda", ("TheXDS.Vivianne.carp2", "NFS2 car performance data") },
-
         };
 
         foreach (var (ext, fileType) in types)

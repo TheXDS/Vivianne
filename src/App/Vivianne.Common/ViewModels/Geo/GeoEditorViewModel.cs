@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
@@ -8,81 +7,49 @@ using System.Windows.Input;
 using TheXDS.Ganymede.Types.Extensions;
 using TheXDS.MCART.Component;
 using TheXDS.MCART.Types.Base;
-using TheXDS.Vivianne.Models.Base;
 using TheXDS.Vivianne.Models.Fsh;
 using TheXDS.Vivianne.Models.Geo;
 using TheXDS.Vivianne.Resources;
 using TheXDS.Vivianne.Serializers;
 using TheXDS.Vivianne.Serializers.Fsh;
 using TheXDS.Vivianne.ViewModels.Base;
+using FshVm = TheXDS.Vivianne.ViewModels.Fsh.FshEditorViewModel;
 
 namespace TheXDS.Vivianne.ViewModels.Geo
 {
-    public class GeoEditorState : FileStateBase<GeoFile>
-    {
-        private ObservableCollection<GeoPartListItem>? _parts;
-        private RenderState? _renderTree;
-        private bool _brakelightsOn;
-        private FshFile? _fshFile;
-
-        /// <summary>
-        /// Gets a reference to an object that describes the rendered scene.
-        /// </summary>
-        public RenderState? RenderTree
-        {
-            get => _renderTree;
-            set => Change(ref _renderTree, value);
-        }
-
-        /// <summary>
-        /// Gets or sets a value that indicates whether the brakelights should
-        /// be rendered as being on (changes the object defining the
-        /// brakelights to one referencing them as being on).
-        /// </summary>
-        public bool BrakelightsOn
-        { 
-            get => _brakelightsOn;
-            set => Change(ref _brakelightsOn, value);
-        }
-
-        /// <summary>
-        /// Gets or sets a reference to the FSH file that contains the textures
-        /// used by this GEO model.
-        /// </summary>
-        public FshFile? FshFile
-        { 
-            get => _fshFile;
-            set => Change(ref _fshFile, value);
-        }
-
-        /// <summary>
-        /// Gets a collection of all available elements from the FCE file.
-        /// </summary>
-        public ObservableCollection<GeoPartListItem> Parts => _parts ??= [.. GetListItem(File.Parts)];
-
-        private static IEnumerable<GeoPartListItem> GetListItem(IList<GeoPart> elements)
-        {
-            return elements.Select(p => new GeoPartListItem(p));
-        }
-    }
-
+    /// <summary>
+    /// ViewModel that allows the user to preview and interact with a .GEO 3D
+    /// model.
+    /// </summary>
     public class GeoEditorViewModel : StatefulFileEditorViewModelBase<GeoEditorState, GeoFile>
     {
         private bool _refreshEnabled;
         private static readonly GeoRenderStateBuilder _render = new();
-        private TheXDS.Vivianne.ViewModels.Fsh.FshEditorViewModel? _fshViewModel;
+        private FshVm? _fshViewModel;
 
+        /// <summary>
+        /// Gets a reference to the command used to load an external FSH/QFS
+        /// file as the texture dictionary for this .GEO model.
+        /// </summary>
         public ICommand LoadExtenralFshCommand { get; }
 
-        public GeoEditorViewModel()
-        {
-            LoadExtenralFshCommand = new SimpleCommand(OnLoadExternalFsh);
-        }
-
-        public TheXDS.Vivianne.ViewModels.Fsh.FshEditorViewModel? FshPreviewViewModel
+        /// <summary>
+        /// Gets a reference to the children ViewModel used to preview a loaded
+        /// FSH/QFS file.
+        /// </summary>
+        public FshVm? FshPreviewViewModel
         { 
             get => _fshViewModel;
             private set => Change(ref _fshViewModel, value);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GeoEditorViewModel"/>
+        /// class.
+        /// </summary>
+        public GeoEditorViewModel()
+        {
+            LoadExtenralFshCommand = new SimpleCommand(OnLoadExternalFsh);
         }
 
         private async Task OnLoadExternalFsh()
@@ -91,9 +58,8 @@ namespace TheXDS.Vivianne.ViewModels.Geo
             {
                 try
                 {
-                    ISerializer<FshFile> serializer = new FshSerializer();
-                    State.FshFile = await serializer.DeserializeAsync(System.IO.File.OpenRead(fshFile));
-                    FshPreviewViewModel = new TheXDS.Vivianne.ViewModels.Fsh.FshEditorViewModel
+                    State.FshFile = await ((ISerializer<FshFile>)new FshSerializer()).DeserializeAsync(System.IO.File.OpenRead(fshFile));
+                    FshPreviewViewModel = new FshVm
                     {
                         State = new FshEditorState() { File = State.FshFile },
                         DialogService = DialogService,

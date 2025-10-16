@@ -16,8 +16,9 @@
     xmlns:views="clr-namespace:TheXDS.Vivianne.Views"
     xmlns:geo="clr-namespace:TheXDS.Vivianne.ViewModels.Geo;assembly=Vivianne.Common"
     d:DataContext="{d:DesignInstance Type=geo:GeoEditorViewModel}"
-    mc:Ignorable="d" 
-    d:DesignHeight="450" d:DesignWidth="600">
+    mc:Ignorable="d"
+    d:DesignHeight="450" d:DesignWidth="600"
+    hlp:Form.BetaMessage="This feature is in preview">
     <UserControl.Resources>
         <vc:GeoRendererConverter x:Key="geovm2mesh"/>
         <mcart:NotNullToBooleanConverter x:Key="notnull2bool"/>
