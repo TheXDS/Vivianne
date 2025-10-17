@@ -1,8 +1,10 @@
 ﻿using System.Runtime.InteropServices;
 using TheXDS.Vivianne.Models.Geo;
+using TheXDS.Vivianne.Serializers.Misc;
 
 namespace TheXDS.Vivianne.Serializers.Geo;
 
+// TODO: This parser is partially broken - origins for objects are not being loaded properly somehow.
 public partial class GeoSerializer
 {
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
@@ -19,9 +21,9 @@ public partial class GeoSerializer
     {
         public int VertexCount;
         public int PolyCount;
-        public int XCoord;
-        public int YCoord;
-        public int ZCoord;
+        public FixedPointDecimal32 XCoord;
+        public FixedPointDecimal32 YCoord;
+        public FixedPointDecimal32 ZCoord;
         public int Unk_0x14;
         public int Unk_0x18;
         public long Unk_0x1C; // = 0

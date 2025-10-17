@@ -137,7 +137,7 @@ public class GeoRendererConverter : IOneWayValueConverter<RenderState?, Model3DG
         return new Point3D(SizeFactor * vertex.Y, SizeFactor * -vertex.Z, SizeFactor * vertex.X);
     }
 
-    private static DiffuseMaterial ToMaterial(FshBlob? fsh, FshFile fshFile)
+    private static Material ToMaterial(FshBlob? fsh, FshFile fshFile)
     {
         return fsh is not null ? new DiffuseMaterial(new ImageBrush(_fsh2Brush.Convert(fsh, fshFile, CultureInfo.InvariantCulture))
         {

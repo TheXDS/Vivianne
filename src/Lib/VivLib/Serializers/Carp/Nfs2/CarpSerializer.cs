@@ -1,7 +1,6 @@
-﻿using System.Globalization;
-using System.Runtime.InteropServices;
-using TheXDS.MCART.Types.Extensions;
+﻿using System.Runtime.InteropServices;
 using TheXDS.Vivianne.Models.Carp.Nfs2;
+using TheXDS.Vivianne.Serializers.Misc;
 
 namespace TheXDS.Vivianne.Serializers.Carp.Nfs2;
 
@@ -86,36 +85,6 @@ public class CarpSerializer : IMarshalSerializer<CarPerf, CarpSerializer.CarpDat
         };
     }
 
-    [StructLayout(LayoutKind.Sequential, Pack = 2)]
-    private struct FixedPointDecimal32
-    {
-        public ushort Fraction;
-        public short Integer;
-
-        public static implicit operator float(FixedPointDecimal32 x)
-        {
-            return x.Integer + float.Parse($"0.{x.Fraction}", CultureInfo.InvariantCulture);
-        }
-
-        public static implicit operator double(FixedPointDecimal32 x)
-        {
-            return x.Integer + double.Parse($"0.{x.Fraction}", CultureInfo.InvariantCulture);
-        }
-
-        public static implicit operator FixedPointDecimal32(float x)
-        {
-            return (double)x;
-        }
-
-        public static implicit operator FixedPointDecimal32(double x)
-        {
-            return new FixedPointDecimal32()
-            {
-                Integer = (short)Math.Floor(x),
-                Fraction = ushort.Parse((x - Math.Floor(x)).ToString(CultureInfo.InvariantCulture).ChopStart("0."), CultureInfo.InvariantCulture)
-            };
-        }
-    }
 
     [StructLayout(LayoutKind.Sequential, Pack = 2)]
     private struct CarpData

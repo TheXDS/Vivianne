@@ -25,4 +25,14 @@ public class GeoPartListItem(GeoPart part) : NotifyPropertyChanged
         get => _IsVisible;
         set => Change(ref _IsVisible, value);
     }
+
+    /// <summary>
+    /// Gets a description for the part.
+    /// </summary>
+    public string PartDescription => GetPartDescription();
+
+    private string GetPartDescription()
+    {
+        return $"{Part.Unk_0x14:b},{Part.Unk_0x18:b}";
+    }
 }

@@ -9,7 +9,7 @@
     xmlns:mdl="clr-namespace:TheXDS.Vivianne.Models.Fce;assembly=Vivianne.Common"
     xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings.Views"
     xmlns:vc="clr-namespace:TheXDS.Vivianne.ValueConverters"
-    xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels.Fce.Nfs3;assembly=Vivianne.Common"
+    xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels.Geo;assembly=Vivianne.Common"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:mcart ="http://schemas.thexds.local/mcart"
     xmlns:local="clr-namespace:TheXDS.Vivianne.Views.Geo"
@@ -59,7 +59,7 @@
                             <TextBlock Width="150" TextWrapping="Wrap">
                                 Quads: <Run Text="{Binding State.RenderTree.QuadsCount, Mode=OneWay}"/><LineBreak/>
                                 Vertices: <Run Text="{Binding State.RenderTree.VertexCount, Mode=OneWay}"/><LineBreak/>
-                                Textures: <Run Text="{Binding State.RenderTree.Textures.Count, Mode=OneWay}"/>
+                                Textures: <Run Text="{Binding State.RenderTree.TexturesCount, Mode=OneWay}"/>
                             </TextBlock>
                         </DockPanel>
                     </Expander>
@@ -68,6 +68,10 @@
                             <Expander Margin="10" IsExpanded="True" Header="View options">
                                 <StackPanel>
                                     <CheckBox IsChecked="{Binding State.BrakelightsOn}" Content="Brakelights On"/>
+                                    <ComboBox
+                                        hlp:Form.Label="Wheels state"
+                                        SelectedItem="{Binding State.WheelsState}"
+                                        ItemsSource="{ct:EnumValProvider EnumType={x:Type vm:WheelsState}}"/>
                                 </StackPanel>
                             </Expander>
                             <Expander Margin="10" IsExpanded="True" Header="Parts">
@@ -77,7 +81,7 @@
                                         <DataTemplate>
                                             <DockPanel>
                                                 <CheckBox IsChecked="{Binding IsVisible}" Style="{StaticResource ToggleSwitch}">
-                                                    <TextBlock Text="{Binding Part, Mode=OneWay}" Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"/>
+                                                    <TextBlock Text="{Binding PartDescription, Mode=OneWay}" Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"/>
                                                 </CheckBox>
                                             </DockPanel>
                                         </DataTemplate>

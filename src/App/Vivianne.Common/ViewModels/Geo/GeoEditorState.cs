@@ -1,12 +1,22 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Numerics;
+using TheXDS.MCART.Types;
 using TheXDS.Vivianne.Models.Base;
 using TheXDS.Vivianne.Models.Fsh;
 using TheXDS.Vivianne.Models.Geo;
 
 namespace TheXDS.Vivianne.ViewModels.Geo
 {
+    public enum WheelsState : byte
+    {
+        Static,
+        SlowSpin1,
+        SlowSpin2,
+        SpinningFast
+    }
+
     /// <summary>
     /// Represents the current state of the <see cref="GeoEditorViewModel"/>.
     /// </summary>
@@ -16,6 +26,8 @@ namespace TheXDS.Vivianne.ViewModels.Geo
         private RenderState? _renderTree;
         private bool _brakelightsOn;
         private FshFile? _fshFile;
+        private WheelsState _wheelsState;
+        private bool _spoilerDeployed;
 
         /// <summary>
         /// Gets a reference to an object that describes the rendered scene.
@@ -28,13 +40,33 @@ namespace TheXDS.Vivianne.ViewModels.Geo
 
         /// <summary>
         /// Gets or sets a value that indicates whether the brakelights should
-        /// be rendered as being on (changes the object defining the
-        /// brakelights to one referencing them as being on).
+        /// be rendered as being on (changes the texture defining the
+        /// brakelights to one showing them as being on).
         /// </summary>
         public bool BrakelightsOn
         { 
             get => _brakelightsOn;
             set => Change(ref _brakelightsOn, value);
+        }
+
+        /// <summary>
+        /// Gets or sets a value that indicates the state in which to render
+        /// the wheels.
+        /// </summary>
+        public WheelsState WheelsState
+        { 
+            get => _wheelsState;
+            set => Change(ref _wheelsState, value);
+        }
+
+        /// <summary>
+        /// Gets or sets a value that indicates whether the active spoiler
+        /// should be rendered as deployed or not.
+        /// </summary>
+        public bool SpoilerDeployed
+        {
+            get => _spoilerDeployed;
+            set => Change(ref _spoilerDeployed, value);
         }
 
         /// <summary>
@@ -51,6 +83,24 @@ namespace TheXDS.Vivianne.ViewModels.Geo
         /// Gets a collection of all available elements from the FCE file.
         /// </summary>
         public ObservableCollection<GeoPartListItem> Parts => _parts ??= [.. GetListItem(File.Parts)];
+
+        /// <summary>
+        /// Calculates a <see cref="Vector3"/> that can be used to center the entire model.
+        /// </summary>
+        public Vector3 GetCenteringVector()
+        {
+            var verts = Parts.SelectMany(p => p.Part.TransformedVertices).ToArray();
+            var minX = verts.Min(p => p.X);
+            var minY = verts.Min(p => p.Y);
+            var minZ = verts.Min(p => p.Z);
+            float sizeX = verts.Max(p => p.X) - minX;
+            float sizeY = verts.Max(p => p.Y) - minY;
+            float sizeZ = verts.Max(p => p.Z) - minZ;
+            var xDiff = minX + (sizeX / 2);
+            var yDiff = minY + (sizeY / 2);
+            var zDiff = minZ + (sizeZ / 2);
+            return new Vector3(xDiff, yDiff, zDiff);
+        }
 
         private static IEnumerable<GeoPartListItem> GetListItem(IList<GeoPart> elements)
         {

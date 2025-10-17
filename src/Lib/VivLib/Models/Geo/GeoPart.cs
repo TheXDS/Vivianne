@@ -1,5 +1,4 @@
-﻿using System.Numerics;
-using TheXDS.Vivianne.Models.Shared;
+﻿using TheXDS.Vivianne.Models.Shared;
 
 namespace TheXDS.Vivianne.Models.Geo;
 

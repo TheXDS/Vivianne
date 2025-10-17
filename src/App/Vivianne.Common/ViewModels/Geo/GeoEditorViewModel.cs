@@ -24,7 +24,6 @@ namespace TheXDS.Vivianne.ViewModels.Geo
     public class GeoEditorViewModel : StatefulFileEditorViewModelBase<GeoEditorState, GeoFile>
     {
         private bool _refreshEnabled;
-        private static readonly GeoRenderStateBuilder _render = new();
         private FshVm? _fshViewModel;
 
         /// <summary>
@@ -101,7 +100,7 @@ namespace TheXDS.Vivianne.ViewModels.Geo
         {
             if (!_refreshEnabled) return;
             _refreshEnabled = false;
-            State.RenderTree = _render.Build(State);
+            State.RenderTree = GeoRenderStateBuilder.Build(State);
             _refreshEnabled = true;
         }
     }

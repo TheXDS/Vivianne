@@ -60,8 +60,8 @@ public partial class GeoSerializer : ISerializer<GeoFile>
                     Vertex4 = p.Vertex4,
                     TextureName = System.Text.Encoding.ASCII.GetString(p.TextureName).TrimEnd('\0')
                 })],
-                Unk_0x14 = geoPartBlockHeader.Unk_0x14,
-                Unk_0x18 = geoPartBlockHeader.Unk_0x18,
+                Unk_0x14 = (int)geoPartBlockHeader.Unk_0x14,
+                Unk_0x18 = (int)geoPartBlockHeader.Unk_0x18,
                 Unk_0x1C = geoPartBlockHeader.Unk_0x1C,
                 Unk_0x24 = geoPartBlockHeader.Unk_0x24,
                 Unk_0x2C = geoPartBlockHeader.Unk_0x2C

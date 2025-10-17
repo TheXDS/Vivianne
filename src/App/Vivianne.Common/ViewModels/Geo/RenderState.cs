@@ -35,6 +35,12 @@ public sealed class RenderState
     public int VertexCount => Objects.Sum(p => p.Vertices.Length);
 
     /// <summary>
+    /// Counts the total number of distinct textures being used in the current
+    /// render.
+    /// </summary>
+    public int TexturesCount => Objects.SelectMany(p => p.Faces).Select(p => p.TextureName).Distinct().Count();
+
+    /// <summary>
     /// Gets a dictionary containing each texture used by the scene.
     /// </summary>
     public required FshFile Textures { get; init; }
