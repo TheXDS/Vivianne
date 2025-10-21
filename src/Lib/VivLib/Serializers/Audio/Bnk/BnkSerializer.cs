@@ -17,18 +17,22 @@ public partial class BnkSerializer : ISerializer<BnkFile>
         var header = br.MarshalReadStruct<BnkHeader>();
         var headerSize = Marshal.SizeOf<BnkHeader>();
         int payloadSize = 0;
+        BnkV4Header? bnkv4 = null;
         if (header.Version == 0x04)
         {
-            payloadSize = br.MarshalReadStruct<BnkV4Header>().PoolSize;
+            payloadSize = (bnkv4 = br.MarshalReadStruct<BnkV4Header>()).Value.PoolSize;
             headerSize += Marshal.SizeOf<BnkV4Header>();
         }
         var ptHeaderOffsets = br.MarshalReadArray<int>(header.Streams);
         var ptHeaders = ReadPtHeaders(br, headerSize, ptHeaderOffsets).ToArray();
+        var headerAttachment = ReadHeaderAttachment(br, header);
         var streams = ReadBnkStreams(br, ptHeaders);
         var bnk = new BnkFile()
         {
             FileVersion = header.Version,
             PayloadSize = header.Version == 4 ? payloadSize : (int)stream.Length - headerSize,
+            HeaderAttachment = headerAttachment,
+            Unk_0x10 = bnkv4?.Unk_0x10 ?? -1
         };
         bnk.Streams.AddRange(streams);
         return bnk;
@@ -45,7 +49,7 @@ public partial class BnkSerializer : ISerializer<BnkFile>
 
         var bnkHeader = CreateNewHeader(entity);
         var bnkHeaderSize = CalculateBnkHeaderSize(entity);
-        var poolOffset = bnkHeaderSize + CalculateTotalPtHeadersSize(entity);
+        var poolOffset = bnkHeaderSize + CalculateTotalPtHeadersSize(entity) + entity.HeaderAttachment.Length;
         var poolOffsetPadding = MajorBlockAlignment - (poolOffset % MajorBlockAlignment);
         var headerOffsets = new List<int>();
 
@@ -66,9 +70,10 @@ public partial class BnkSerializer : ISerializer<BnkFile>
                 headersBw.Write(new byte[padding]);
             }
         }
+        headersBw.Write(entity.HeaderAttachment);
         bnkHeader.PoolOffset = poolOffset;
         fileBw.MarshalWriteStruct(bnkHeader);
-        if (entity.FileVersion == 0x04) fileBw.MarshalWriteStruct(new BnkV4Header { PoolSize = (int)poolStream.Length, Unk_1 = -1 });
+        if (entity.FileVersion == 0x04) fileBw.MarshalWriteStruct(new BnkV4Header { PoolSize = (int)poolStream.Length, Unk_0x10 = entity.Unk_0x10 });
         fileBw.MarshalWriteStructArray(headerOffsets.ToArray());
         fileBw.Write(headersStream.ToArray());
 

@@ -1,4 +1,6 @@
-﻿namespace TheXDS.Vivianne.Models.Audio.Bnk;
+﻿using TheXDS.Vivianne.Serializers.Audio;
+
+namespace TheXDS.Vivianne.Models.Audio.Bnk;
 
 /// <summary>
 /// Represents a BNK audio library.
@@ -27,6 +29,12 @@ public class BnkFile
     /// This value can be (and must be) ignored on BNK v2 files.
     /// </remarks>
     public int Unk_0x10 { get; set; }
+
+    /// <summary>
+    /// Gets or sets an attachment that may be present between the
+    /// <see cref="PtHeader"/> table and the audio payload.
+    /// </summary>
+    public byte[] HeaderAttachment { get; set; } = [];
 
     /// <summary>
     /// Gets the collection of audio stream blobs contained in this BNK

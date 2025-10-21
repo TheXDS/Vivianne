@@ -12,6 +12,13 @@ public partial class BnkSerializer : ISerializer<BnkFile>
     private const int PtHeaderBlockAlignment = 4;
     private const int MajorBlockAlignment = 8;
 
+    private static byte[] ReadHeaderAttachment(BinaryReader br, BnkHeader header)
+    {
+        var dataStart = (int)(br.BaseStream.Position + (PtHeaderBlockAlignment - (br.BaseStream.Position % PtHeaderBlockAlignment)));
+        var dataLength = header.PoolOffset - dataStart;
+        return dataLength > 0 ? br.ReadBytes(dataLength) : [];
+    }
+
     private static IEnumerable<PtHeader?> ReadPtHeaders(BinaryReader br, int headerSize, int[] ptHeaderOffsets)
     {
         foreach (var (index, offset) in ptHeaderOffsets.WithIndex())

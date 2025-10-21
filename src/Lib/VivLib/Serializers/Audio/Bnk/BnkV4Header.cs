@@ -6,5 +6,5 @@ namespace TheXDS.Vivianne.Serializers.Audio.Bnk;
 internal struct BnkV4Header
 {
     public int PoolSize;
-    public int Unk_1;
+    public int Unk_0x10;
 }
