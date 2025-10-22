@@ -29,6 +29,12 @@ public partial class GeoSerializer
         public long Unk_0x1C; // = 0
         public long Unk_0x24; // = 1
         public long Unk_0x2C; // = 1
+
+        public GeoPartBlock()
+        {
+            Unk_0x24 = 1;
+            Unk_0x2C = 1;
+        }
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 2)]

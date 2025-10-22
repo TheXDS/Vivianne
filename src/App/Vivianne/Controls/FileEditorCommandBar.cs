@@ -44,7 +44,8 @@ public class FileEditorCommandBar : ContentControl
     }
 
     /// <summary>
-    /// Gets or seta a value that indicates if the close button should be visible.
+    /// Gets or seta a value that indicates if the close button should be
+    /// visible.
     /// </summary>
     public bool ShowClose
     {
@@ -52,6 +53,10 @@ public class FileEditorCommandBar : ContentControl
         set => SetValue(ShowCloseProperty, value);
     }
 
+    /// <summary>
+    /// Gets or sets a value that determines if the save buttons should be
+    /// visible.
+    /// </summary>
     public bool IsReadOnly
     {
         get => (bool)GetValue(IsReadOnlyProperty);

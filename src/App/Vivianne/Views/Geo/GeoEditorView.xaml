@@ -17,6 +17,7 @@
     xmlns:geo="clr-namespace:TheXDS.Vivianne.ViewModels.Geo;assembly=Vivianne.Common"
     d:DataContext="{d:DesignInstance Type=geo:GeoEditorViewModel}"
     mc:Ignorable="d"
+    Name="vmRoot"
     d:DesignHeight="450" d:DesignWidth="600"
     hlp:Form.BetaMessage="This feature is in preview">
     <UserControl.Resources>
@@ -27,7 +28,10 @@
         <ct:FileEditorCommandBar DockPanel.Dock="Top" ShowClose="False" Editor="{Binding}">
             <StackPanel Orientation="Horizontal" Margin="5,0">
                 <Separator Margin="0,0,5,0"/>
-                <Button Content="Load FSH..." Command="{Binding LoadExtenralFshCommand, Mode=OneWay}"/>
+                <TextBlock VerticalAlignment="Center" Margin="0,0,10,0" Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}">
+                    FSH: <Run Text="{Binding State.FshName, Mode=OneWay}"/>
+                </TextBlock>
+                <ui:Button Icon="{ui:SymbolIcon Symbol=Open24}" Height="32" ToolTip="Load external FSH..." Command="{Binding LoadExtenralFshCommand, Mode=OneWay}"/>
             </StackPanel>                        
         </ct:FileEditorCommandBar>
         <TabControl Background="{ui:ThemeResource ControlSolidFillColorDefaultBrush}">
@@ -80,8 +84,15 @@
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <DockPanel>
+                                                <ui:Button
+                                                    Style="{StaticResource SmallUiEditButton}"
+                                                    ToolTip="Edit part..."
+                                                    Command="{Binding DataContext.EditGeoPartCommand, ElementName=vmRoot, Mode=OneWay}"
+                                                    CommandParameter="{Binding Part, Mode=OneWay}"/>
                                                 <CheckBox IsChecked="{Binding IsVisible}" Style="{StaticResource ToggleSwitch}">
-                                                    <TextBlock Text="{Binding PartDescription, Mode=OneWay}" Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"/>
+                                                    <TextBlock Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}">
+                                                        Part #<Run Text="{Binding Index, Mode=OneWay}"/>
+                                                    </TextBlock>
                                                 </CheckBox>
                                             </DockPanel>
                                         </DataTemplate>

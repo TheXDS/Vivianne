@@ -62,9 +62,8 @@ namespace TheXDS.Vivianne.Serializers.Misc
             return new FixedPointDecimal32()
             {
                 Integer = (short)Math.Floor(x),
-                Fraction = ushort.Parse((x - Math.Floor(x)).ToString(CultureInfo.InvariantCulture).ChopStart("0."), CultureInfo.InvariantCulture)
+                Fraction = ushort.Parse($"{(x - Math.Floor(x)).ToString(CultureInfo.InvariantCulture).ChopStart("0.")}000"[..4], CultureInfo.InvariantCulture)
             };
         }
     }
-
 }

@@ -14,8 +14,7 @@
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     mc:Ignorable="d" 
     d:DataContext="{d:DesignInstance Type=vm:Fce4EditorViewModel}"
-    x:Name="pgRoot"
-    d:DesignHeight="500" d:DesignWidth="500">
+    x:Name="pgRoot">
     <UserControl.Resources>
         <vc:FceRendererConverter x:Key="fcevm2mesh"/>
         <vc:FceColorToBrushConverter x:Key="dc2bc"/>
@@ -124,13 +123,11 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <DockPanel>
-                                        <Button
+                                        <ui:Button
                                             Command="{Binding DataContext.RenamePartCommand, ElementName=pgRoot, Mode=OneWay}"
                                             CommandParameter="{Binding}"
-                                            Background="Transparent"
-                                            BorderThickness="0"
-                                            DockPanel.Dock="Right"
-                                            ToolTip="{x:Static st:FceEditorView.Rename}">✏️</Button>
+                                            Style="{StaticResource SmallUiEditButton}"
+                                            ToolTip="{x:Static st:FceEditorView.Rename}"/>
                                         <CheckBox IsChecked="{Binding IsVisible}" Style="{StaticResource ToggleSwitch}">
                                             <TextBlock Text="{Binding Part.Name, Mode=OneWay}" Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"/>
                                         </CheckBox>
@@ -148,10 +145,8 @@
                                         <Button
                                             Command="{Binding DataContext.RenameDummyCommand, ElementName=pgRoot, Mode=OneWay}"
                                             CommandParameter="{Binding}"
-                                            Background="Transparent"
-                                            BorderThickness="0"
-                                            DockPanel.Dock="Right"
-                                            ToolTip="{x:Static st:FceEditorView.Rename}">✏️</Button>
+                                            Style="{StaticResource SmallUiEditButton}"
+                                            ToolTip="{x:Static st:FceEditorView.Rename}"/>
                                         <CheckBox IsChecked="{Binding IsVisible}" Style="{StaticResource ToggleSwitch}">
                                             <TextBlock Text="{Binding Part.Name, Mode=OneWay}" Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"/>
                                         </CheckBox>

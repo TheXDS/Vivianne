@@ -34,6 +34,12 @@ public class BnkFile
     /// Gets or sets an attachment that may be present between the
     /// <see cref="PtHeader"/> table and the audio payload.
     /// </summary>
+    /// <remarks>
+    /// This information is not an official part of the BNK spec, but it's a
+    /// consequence of how the format works by specifying the start of the data
+    /// pool, where it might not match the end of the <see cref="PtHeader"/>
+    /// table.
+    /// </remarks>
     public byte[] HeaderAttachment { get; set; } = [];
 
     /// <summary>

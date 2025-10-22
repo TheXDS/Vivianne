@@ -235,6 +235,15 @@ public static class AudioRender
         };
     }
 
+    /// <summary>
+    /// Merges, and then re-slices an ASF file into the specified number of
+    /// chunks.
+    /// </summary>
+    /// <param name="asf">ASF file to re-slice.</param>
+    /// <param name="slices">
+    /// Number of slices that the specified ASF file should contain. It should
+    /// be a positive number.
+    /// </param>
     public static void ReSliceAsf(AsfFile asf, int slices)
     {
         List<byte> bytes = [];

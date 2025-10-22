@@ -34,7 +34,6 @@ using St = TheXDS.Vivianne.Resources.Strings.QfsCodec;
 
 namespace TheXDS.Vivianne.Codecs;
 
-
 /// <summary>
 /// Implements a generic codec that can read and write data using LZ
 /// compression.

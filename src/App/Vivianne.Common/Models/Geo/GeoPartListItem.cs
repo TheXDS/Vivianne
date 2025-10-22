@@ -7,9 +7,15 @@ namespace TheXDS.Vivianne.Models.Geo;
 /// for the render tree.
 /// </summary>
 /// <param name="part">Part referenced by this instance.</param>
-public class GeoPartListItem(GeoPart part) : NotifyPropertyChanged
+/// <param name="index">Index of the part insid the GEO file.</param>
+public class GeoPartListItem(GeoPart part, int index) : NotifyPropertyChanged
 {
     private bool _IsVisible;
+
+    /// <summary>
+    /// Gets the index of the specified GEO part.
+    /// </summary>
+    public int Index { get; } = index;
 
     /// <summary>
     /// Gets a reference to the part associated with this instance.
@@ -26,13 +32,4 @@ public class GeoPartListItem(GeoPart part) : NotifyPropertyChanged
         set => Change(ref _IsVisible, value);
     }
 
-    /// <summary>
-    /// Gets a description for the part.
-    /// </summary>
-    public string PartDescription => GetPartDescription();
-
-    private string GetPartDescription()
-    {
-        return $"{Part.Unk_0x14:b},{Part.Unk_0x18:b}";
-    }
 }

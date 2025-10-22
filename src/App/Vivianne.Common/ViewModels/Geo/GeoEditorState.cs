@@ -2,21 +2,13 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Numerics;
-using TheXDS.MCART.Types;
+using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models.Base;
 using TheXDS.Vivianne.Models.Fsh;
 using TheXDS.Vivianne.Models.Geo;
 
 namespace TheXDS.Vivianne.ViewModels.Geo
 {
-    public enum WheelsState : byte
-    {
-        Static,
-        SlowSpin1,
-        SlowSpin2,
-        SpinningFast
-    }
-
     /// <summary>
     /// Represents the current state of the <see cref="GeoEditorViewModel"/>.
     /// </summary>
@@ -28,6 +20,7 @@ namespace TheXDS.Vivianne.ViewModels.Geo
         private FshFile? _fshFile;
         private WheelsState _wheelsState;
         private bool _spoilerDeployed;
+        private string _fshName = "<none>";
 
         /// <summary>
         /// Gets a reference to an object that describes the rendered scene.
@@ -44,7 +37,7 @@ namespace TheXDS.Vivianne.ViewModels.Geo
         /// brakelights to one showing them as being on).
         /// </summary>
         public bool BrakelightsOn
-        { 
+        {
             get => _brakelightsOn;
             set => Change(ref _brakelightsOn, value);
         }
@@ -54,7 +47,7 @@ namespace TheXDS.Vivianne.ViewModels.Geo
         /// the wheels.
         /// </summary>
         public WheelsState WheelsState
-        { 
+        {
             get => _wheelsState;
             set => Change(ref _wheelsState, value);
         }
@@ -74,15 +67,25 @@ namespace TheXDS.Vivianne.ViewModels.Geo
         /// used by this GEO model.
         /// </summary>
         public FshFile? FshFile
-        { 
+        {
             get => _fshFile;
             set => Change(ref _fshFile, value);
         }
 
         /// <summary>
+        /// Gets or sets the name of the FSH file that has been loaded into the
+        /// editor.
+        /// </summary>
+        public string FshName
+        {
+            get => _fshName;
+            set => Change(ref _fshName, value);
+        }
+
+        /// <summary>
         /// Gets a collection of all available elements from the FCE file.
         /// </summary>
-        public ObservableCollection<GeoPartListItem> Parts => _parts ??= [.. GetListItem(File.Parts)];
+        public ObservableCollection<GeoPartListItem> Parts => _parts ??= [.. GetListItem(File.Parts.NotNull())];
 
         /// <summary>
         /// Calculates a <see cref="Vector3"/> that can be used to center the entire model.
@@ -102,9 +105,9 @@ namespace TheXDS.Vivianne.ViewModels.Geo
             return new Vector3(xDiff, yDiff, zDiff);
         }
 
-        private static IEnumerable<GeoPartListItem> GetListItem(IList<GeoPart> elements)
+        private static IEnumerable<GeoPartListItem> GetListItem(IEnumerable<GeoPart> elements)
         {
-            return elements.Select(p => new GeoPartListItem(p));
+            return elements.Select((p, i) => new GeoPartListItem(p, i));
         }
     }
 }

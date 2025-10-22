@@ -13,6 +13,7 @@
                 <ResourceDictionary Source="/Resources/ControlTemplates.xaml"/>
                 <ResourceDictionary Source="/Resources/Fonts.xaml"/>
                 <ResourceDictionary Source="/Resources/Brushes.xaml"/>
+                <ResourceDictionary Source="/Resources/Styles.xaml"/>
                 <ui:ThemesDictionary Theme="Dark" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
