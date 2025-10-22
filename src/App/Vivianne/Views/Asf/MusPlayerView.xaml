@@ -12,6 +12,7 @@
     xmlns:vc="clr-namespace:TheXDS.Vivianne.ValueConverters"
     d:DataContext="{d:DesignInstance Type=asf:MusPlayerViewModel}"
     hlp:Form.BetaMessage="This feature is in early stages of development."
+    hlp:Form.BetaIndicator="True"
     mc:Ignorable="d"
     d:DesignWidth="500">
     <UserControl.Resources>
