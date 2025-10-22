@@ -16,7 +16,8 @@
     xmlns:hlp="clr-namespace:TheXDS.Vivianne.Helpers"
     xmlns:mcart="http://schemas.thexds.local/mcart"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-    mc:Ignorable="d" 
+    mc:Ignorable="d"
+    hlp:Form.BetaIndicator="True"
     d:DataContext="{d:DesignInstance Type=vm:CarpEditorViewModel}"
     d:DesignWidth="800">
     <UserControl.Resources>

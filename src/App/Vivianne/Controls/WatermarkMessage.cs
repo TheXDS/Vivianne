@@ -7,22 +7,23 @@ using TheXDS.MCART.Math;
 namespace TheXDS.Vivianne.Controls;
 
 /// <summary>
-/// Implements a Beta status adorner that displays an overlay text on top of visual elements with a message.
+/// Implements an adorner that displays an overlay text on top of visual
+/// elements with a message.
 /// </summary>
-public class BetaIndicator : Adorner
+public class WatermarkMessage : Adorner
 {
     private readonly FrameworkElement _control;
     private readonly string _message;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="BetaIndicator"/> class.
+    /// Initializes a new instance of the <see cref="WatermarkMessage"/> class.
     /// </summary>
     /// <param name="control">Control to draw the adorner onto.</param>
     /// <param name="message">
     /// Message to be displayed as an overlay to inform about a beta-related
     /// topic.
     /// </param>
-    public BetaIndicator(FrameworkElement control, string message) : base(control)
+    public WatermarkMessage(FrameworkElement control, string message) : base(control)
     {
         _control = control;
         _message = message;

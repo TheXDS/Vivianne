@@ -37,19 +37,25 @@ public static class Form
     /// Identifies the "<c>FceColorPreview</c>" attached property.
     /// </summary>
     public static readonly DependencyProperty FceColorPreviewProperty =
-        DependencyProperty.RegisterAttached("FceColorPreview", typeof(Fce3Color), typeof(Form), new FrameworkPropertyMetadata(default(Fce3Color), FrameworkPropertyMetadataOptions.AffectsRender, OnFceColorPreviewChanged));
+        DependencyProperty.RegisterAttached("FceColorPreview", typeof(Fce3Color), typeof(Form), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender, OnFceColorPreviewChanged));
 
     /// <summary>
     /// Identifies the "<c>FceColorPreview</c>" attached property.
     /// </summary>
     public static readonly DependencyProperty Fce4ColorPreviewProperty =
-        DependencyProperty.RegisterAttached("Fce4ColorPreview", typeof(Fce4Color), typeof(Form), new FrameworkPropertyMetadata(default(Fce3Color), FrameworkPropertyMetadataOptions.AffectsRender, OnFce4ColorPreviewChanged));
+        DependencyProperty.RegisterAttached("Fce4ColorPreview", typeof(Fce4Color), typeof(Form), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender, OnFce4ColorPreviewChanged));
 
     /// <summary>
     /// Identifies the "<c>MouseTrackingOverlay</c>" attached property.
     /// </summary>
     public static readonly DependencyProperty MouseTrackingOverlayProperty =
         DependencyProperty.RegisterAttached("MouseTrackingOverlay", typeof(bool), typeof(Form), new FrameworkPropertyMetadata(default(bool), FrameworkPropertyMetadataOptions.AffectsRender, OnMouseTrackingOverlayChanged));
+
+    /// <summary>
+    /// Identifies the "<c>BetaIndicator</c>" attached property.
+    /// </summary>
+    public static readonly DependencyProperty BetaIndicatorProperty =
+        DependencyProperty.RegisterAttached("BetaIndicator", typeof(bool), typeof(Form), new FrameworkPropertyMetadata(default(bool), FrameworkPropertyMetadataOptions.AffectsRender, OnBetaIndicatorChanged));
 
     /// <summary>
     /// Gets the value of the "<c>Label</c>" attached property.
@@ -201,6 +207,31 @@ public static class Form
         obj.SetValue(MouseTrackingOverlayProperty, value);
     }
 
+    /// <summary>
+    /// Gets the value of the "<c>FceColorPreview</c>" attached property.
+    /// </summary>
+    /// <param name="obj">
+    /// Object for which to get the value of the attached property.
+    /// </param>
+    /// <returns>The value of the "<c>FceColorPreview</c>" attached property.
+    /// </returns>
+    public static bool GetBetaIndicator(DependencyObject obj)
+    {
+        return (bool)obj.GetValue(BetaIndicatorProperty);
+    }
+
+    /// <summary>
+    /// Sets the value of the "<c>FceColorPreview</c>" attached property.
+    /// </summary>
+    /// <param name="obj">
+    /// Object onto which to set the value of the attached property.
+    /// </param>
+    /// <param name="value">Value of the attached property.</param>
+    public static void SetBetaIndicator(DependencyObject obj, bool value)
+    {
+        obj.SetValue(BetaIndicatorProperty, value);
+    }
+
     private static void OnMouseTrackingOverlayChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if ((bool)e.NewValue) AttachAdorner<MouseTrackingAdorner, bool>(d, e, (control, _) => new MouseTrackingAdorner(control));
@@ -212,14 +243,20 @@ public static class Form
         AttachAdorner<FormLabelAdorner, string>(obj, e, (control, text) => new FormLabelAdorner((Control)control, text));
     }
 
+    private static void OnBetaIndicatorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if ((bool)e.NewValue) AttachAdorner<BetaAdorner, bool>(d, e, (control, _) => new BetaAdorner(control));
+        else RemoveAdorner<BetaAdorner>((FrameworkElement)d);
+    }
+
     private static void OnBetaMessageChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
     {
-        AttachAdorner<BetaIndicator, string>(obj, e, (control, text) => new BetaIndicator(control, text));
+        AttachAdorner<WatermarkMessage, string>(obj, e, (control, text) => new WatermarkMessage(control, text));
     }
 
     private static void OnImportantMessageChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
     {
-        AttachAdorner<ImportantOverlayIndicator, string>(obj, e, (control, text) => new ImportantOverlayIndicator(control, text));
+        AttachAdorner<ImportantWatermarkMessage, string>(obj, e, (control, text) => new ImportantWatermarkMessage(control, text));
     }
 
     private static void OnFceColorPreviewChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)

@@ -9,6 +9,14 @@
     <SolidColorBrush x:Key="MidBackground" Color="{StaticResource MidBackgroundColor}"/>
     <SolidColorBrush x:Key="DarkBackground" Color="{StaticResource DarkBackgroundColor}"/>
     <SolidColorBrush x:Key="DarkAreaForeground" Color="{StaticResource MainBackgroundColor}"/>
+    <LinearGradientBrush x:Key="YellowFade" MappingMode="Absolute" StartPoint="0.0,0.0" EndPoint="0.0,14.5">
+        <GradientStop Color="#20ffff00" Offset="0.0"/>
+        <GradientStop Color="#00ffff00" Offset="1.0"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="BlackFade" MappingMode="Absolute" StartPoint="0.0,0.0" EndPoint="0.0,14.5">
+        <GradientStop Color="#20000000" Offset="0.0"/>
+        <GradientStop Color="#00000000" Offset="1.0"/>
+    </LinearGradientBrush>
     <DrawingBrush x:Key="CheckerboardBrush" Stretch="None" TileMode="Tile" Viewport="0,0,20,20" ViewportUnits="Absolute">
         <DrawingBrush.Drawing>
             <GeometryDrawing Brush="{StaticResource MidBackground}">
@@ -19,6 +27,34 @@
                     </GeometryGroup>
                 </GeometryDrawing.Geometry>
             </GeometryDrawing>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
+    <DrawingBrush x:Key="WarningBars" TileMode="Tile" Viewport="0,0,75,150" ViewportUnits="Absolute">
+        <DrawingBrush.Drawing>
+            <DrawingGroup>
+                <DrawingGroup>
+                    <GeometryDrawing Brush="{StaticResource YellowFade}">
+                        <GeometryDrawing.Geometry>
+                            <PathGeometry Figures="M 0 0 L 0 24 L 16 48 H 32 Z" FillRule="Nonzero"/>
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="{StaticResource BlackFade}">
+                        <GeometryDrawing.Geometry>
+                            <PathGeometry Figures="M 0 24 L 0 48 H 16 Z" FillRule="Nonzero"/>
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="{StaticResource YellowFade}">
+                        <GeometryDrawing.Geometry>
+                            <PathGeometry Figures="M 16 0 L 32 24 V 0 Z" FillRule="Nonzero"/>
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="{StaticResource BlackFade}">
+                        <GeometryDrawing.Geometry>
+                            <PathGeometry Figures="M 0 0 L 32 48 V 24 L 16 0 Z" FillRule="Nonzero"/>
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                </DrawingGroup>
+            </DrawingGroup>
         </DrawingBrush.Drawing>
     </DrawingBrush>
     <LinearGradientBrush x:Key="FadeInBackground" EndPoint="1,0">
@@ -37,9 +73,6 @@
         <GradientStop Color="{ui:ThemeResource ControlFillColorTransparent}" Offset="1"/>
         <GradientStop Color="{ui:ThemeResource ControlSolidFillColorDefault}"/>
     </LinearGradientBrush>
-    
-    
-    
     <LinearGradientBrush x:Key="MainAreaBackground" EndPoint="1,0">
         <LinearGradientBrush.GradientStops>
             <GradientStop Color="{StaticResource MidBackgroundColor}" Offset="0.2"/>

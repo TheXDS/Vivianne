@@ -18,13 +18,14 @@
     d:DataContext="{d:DesignInstance Type=geo:GeoEditorViewModel}"
     mc:Ignorable="d"
     Name="vmRoot"
+    hlp:Form.BetaIndicator="true"
     d:DesignHeight="450" d:DesignWidth="600"
     hlp:Form.BetaMessage="This feature is in preview">
     <UserControl.Resources>
         <vc:GeoRendererConverter x:Key="geovm2mesh"/>
         <mcart:NotNullToBooleanConverter x:Key="notnull2bool"/>
     </UserControl.Resources>
-    <DockPanel>
+    <DockPanel hlp:Form.MouseTrackingOverlay="True">
         <ct:FileEditorCommandBar DockPanel.Dock="Top" ShowClose="False" Editor="{Binding}">
             <StackPanel Orientation="Horizontal" Margin="5,0">
                 <Separator Margin="0,0,5,0"/>
