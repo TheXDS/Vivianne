@@ -31,5 +31,4 @@ public class GeoPartListItem(GeoPart part, int index) : NotifyPropertyChanged
         get => _IsVisible;
         set => Change(ref _IsVisible, value);
     }
-
 }
