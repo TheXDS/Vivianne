@@ -19,6 +19,18 @@ public class BetaAdorner(UIElement adornedElement) : Adorner(adornedElement)
     private static Typeface Typeface = (Application.Current.FindResource("nfsFont") as FontFamily)?.GetTypefaces().FirstOrDefault() ?? new Typeface("Segoe UI");
 
     /// <inheritdoc/>
+    protected override GeometryHitTestResult? HitTestCore(GeometryHitTestParameters hitTestParameters)
+    {
+        return null;
+    }
+
+    /// <inheritdoc/>
+    protected override HitTestResult? HitTestCore(PointHitTestParameters hitTestParameters)
+    {
+        return null;
+    }
+
+    /// <inheritdoc/>
     protected override void OnRender(DrawingContext c)
     {
         if (AdornedElement is not { IsVisible: true }) return;
