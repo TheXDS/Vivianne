@@ -66,40 +66,33 @@
                                     <ControlTemplate TargetType="RadioButton">
                                         <Border CornerRadius="10,0,0,10" x:Name="PART_SelectionBg" ToolTip="Alt+click to open externally">
                                             <DockPanel Margin="10,5">
-                                                <Button
+                                                <ui:Button
+                                                    Style="{StaticResource SmallUiEditButton}"
+                                                    Icon="{ui:SymbolIcon Symbol=Delete16}"
                                                     x:Name="PART_btnRemove"
                                                     DockPanel.Dock="Right"
-                                                    Background="Transparent"
-                                                    BorderThickness="0"
-                                                    VerticalAlignment="Center"
-                                                    Margin="0"
-                                                    Padding="3"
+                                                    ToolTip="Remove"
                                                     Command="{Binding DataContext.RemoveFileCommand, ElementName=ucRoot, Mode=OneWay}"
-                                                    CommandParameter="{Binding Mode=OneWay}" Content="❌"/>
-                                                <Button
+                                                    CommandParameter="{Binding Mode=OneWay}"/>
+                                                <ui:Button
                                                     x:Name="PART_btnRename"
                                                     DockPanel.Dock="Right"
-                                                    Background="Transparent"
-                                                    BorderThickness="0"
-                                                    Margin="0"
-                                                    Padding="3" 
-                                                    VerticalAlignment="Center"
+                                                    ToolTip="Rename..."
+                                                    Style="{StaticResource SmallUiEditButton}"
                                                     Command="{Binding DataContext.RenameFileCommand, ElementName=ucRoot, Mode=OneWay}"
-                                                    CommandParameter="{Binding Mode=OneWay}" Content="✏️"/>
-                                                <Button
+                                                    CommandParameter="{Binding Mode=OneWay}"/>
+                                                <ui:Button
                                                     x:Name="PART_btnExport"
                                                     DockPanel.Dock="Right"
-                                                    Background="Transparent"
-                                                    BorderThickness="0"
-                                                    Margin="0"
-                                                    Padding="3" 
-                                                    VerticalAlignment="Center"
+                                                    ToolTip="Export..."
+                                                    Style="{StaticResource SmallUiEditButton}"
+                                                    Icon="{ui:SymbolIcon Symbol=Save16}"
                                                     Command="{Binding DataContext.ExportFileCommand, ElementName=ucRoot, Mode=OneWay}"
-                                                    CommandParameter="{Binding Mode=OneWay}" Content="💾"/>
-                                                <ui:SymbolIcon
+                                                    CommandParameter="{Binding Mode=OneWay}"/>
+                                                <ui:SymbolIcon                                                    
                                                     Foreground="{Binding Key, Mode=OneWay, Converter={StaticResource fcolor}}"
                                                     Symbol="{Binding Key, Mode=OneWay, Converter={StaticResource ficon}}"
-                                                    FontSize="24"
+                                                    FontSize="16"
                                                     Filled="True"
                                                     Margin="0,0,5,0"/>
                                                 <StackPanel Margin="0,0,10,0">
