@@ -3,10 +3,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using TheXDS.Ganymede.Configuration;
-using TheXDS.Vivianne.Models;
 using TheXDS.MCART.Resources.Strings;
-using TheXDS.Vivianne.Models.Viv;
+using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Models.Fe;
+using TheXDS.Vivianne.Models.Viv;
 
 namespace TheXDS.Vivianne.Properties;
 
@@ -148,14 +148,4 @@ public partial class Settings
     /// Gets or sets the number of recent files to be recalled by Vivianne.
     /// </summary>
     public int RecentFilesCount { get; set; }
-
-    /// <summary>
-    /// Adds a recent VIV file to the recent files collection.
-    /// </summary>
-    /// <param name="file">File name to add.</param>
-    public Task AddRecentVivFile(RecentFileInfo file)
-    {
-        RecentVivFiles = RecentFilesCount > 0 ? [file, .. (RecentVivFiles?.Where(p => p.FilePath != file.FilePath) ?? []).Take(RecentFilesCount - 1)] : [];
-        return SaveAsync();
-    }
 }

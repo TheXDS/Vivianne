@@ -33,4 +33,25 @@ public interface IOperatingSystemProxy
     /// <param name="text">Text on the native message box.</param>
     /// <param name="caption">Title of the native message box.</param>
     void ShowNativeErrorBox(string text, string caption);
+
+    /// <summary>
+    /// Invokes a command through the operating system and awaits for the
+    /// process completion.
+    /// </summary>
+    /// <param name="command">Command to execute.</param>
+    /// <param name="args">Arguments to pass to the command.</param>
+    /// <param name="elevate">
+    /// Indicates whether the command should be elevated.
+    /// </param>
+    /// <returns>
+    /// A Task that can be used to await for the completion of the process.
+    /// </returns>
+    Task InvokeCommand(string command, string[] args, bool elevate = false);
+
+    Task InvokeSelfCallback(string callback, params string[] args)
+    {
+        return System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName is string thisFile
+            ? InvokeCommand(thisFile, [$"--Callback-{callback}", ..args], true)
+            : Task.CompletedTask;
+    }
 }

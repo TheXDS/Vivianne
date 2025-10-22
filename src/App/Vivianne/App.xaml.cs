@@ -22,7 +22,7 @@ public partial class App : Application
     public App()
     {
         PlatformServices.SetKeyboardProxy(new WpfKeyboardProxy());
-        PlatformServices.SetOperatingSystemProxy(new WpfOperatingSystemProxy());
+        PlatformServices.SetOperatingSystemProxy(new WindowsOperatingSystemProxy());
         Startup += App_Startup;
 
 #if !DEBUG
@@ -52,6 +52,17 @@ public partial class App : Application
     {
         await Settings.LoadAsync();
         RegisterCommandLineStartupCallbacks();
+        ProcessSpecialCommandLineStartupCallbacks(e.Args);
+    }
+
+    private static void ProcessSpecialCommandLineStartupCallbacks(string[] args)
+    {
+        if (args.Length >= 1 && args[0].StartsWith("--Callback-") && CommandLineStartup.Handlers.TryGetValue(Guid.Parse(args[0][11..]), out var handler))
+        {
+            Current.MainWindow = null;
+            handler.Invoke(args);
+            Environment.Exit(0);
+        }
     }
 
     private void RegisterCommandLineStartupCallbacks()
@@ -59,53 +70,44 @@ public partial class App : Application
         CommandLineStartup.Handlers.Add(Guid.Parse("a8d0e6c8-2410-460c-ab29-7682c351a313"), RegisterFileTypes);
     }
 
-    private void RegisterFileTypes(string[] obj)
+    private readonly record struct FileTypeInfo(
+        string[] FileExtensions,
+        string ProgId,
+        string FileDescription,
+        bool IsPrimary = true,
+        int IconIndex = 0)
     {
-        Dictionary<string, (string progId, string fileDescription)> types = new()
-        {
-            { ".viv", ("TheXDS.Vivianne.viv", "VIV container file") },
-            { ".bnk", ("TheXDS.Vivianne.bnk", "EA sound bank file") },
-            { ".fce", ("TheXDS.Vivianne.fce", "FCE 3D model") },
-            { ".geo", ("TheXDS.Vivianne.fce", "NFS2 Geometry file") },
-            { ".bri", ("TheXDS.Vivianne.fe", "NFS3/4 front-end language file") },
-            { ".eng", ("TheXDS.Vivianne.fe", "NFS3/4 front-end language file") },
-            { ".fre", ("TheXDS.Vivianne.fe", "NFS3/4 front-end language file") },
-            { ".ger", ("TheXDS.Vivianne.fe", "NFS3/4 front-end language file") },
-            { ".ita", ("TheXDS.Vivianne.fe", "NFS3/4 front-end language file") },
-            { ".spa", ("TheXDS.Vivianne.fe", "NFS3/4 front-end language file") },
-            { ".swe", ("TheXDS.Vivianne.fe", "NFS3/4 front-end language file") },   
-            { ".asf", ("TheXDS.Vivianne.asf", "EA music track file") },
-            { ".lin", ("TheXDS.Vivianne.mus", "EA interactive music bank file") },
-            { ".map", ("TheXDS.Vivianne.mus", "EA interactive music bank file") },
-            { ".mus", ("TheXDS.Vivianne.mus", "EA interactive music bank file") },
-            { ".fsh", ("TheXDS.Vivianne.fsh", "EA texture image") },
-            { ".qfs", ("TheXDS.Vivianne.fsh", "EA texture image") },
-            { ".tga", ("TheXDS.Vivianne.tga", "Truevision TGA image") },
-            { ".qda", ("TheXDS.Vivianne.carp2", "NFS2 car performance data") },
-        };
-
-        foreach (var (ext, fileType) in types)
-        {
-            using RegistryKey? key = Registry.ClassesRoot.CreateSubKey(ext);
-            key?.SetValue("", fileType.progId);
-            using RegistryKey? subKey = Registry.ClassesRoot.CreateSubKey(fileType.progId);
-            subKey?.SetValue("", fileType.fileDescription);
-            using RegistryKey? iconKey = subKey?.CreateSubKey("DefaultIcon");
-            iconKey?.SetValue("", $"\"{System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName}\",0");
-            using RegistryKey? commandKey = subKey?.CreateSubKey(@"Shell\Open\Command");
-            commandKey?.SetValue("", $"\"{System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName}\" \"%1\"");
-        }
     }
 
-    internal static class RegistryFileTypeRegistration
+    private void RegisterFileTypes(string[] obj)
     {
-        private readonly record struct FileTypeInfo(
-            string[] FileExtensions,
-            string ProgId,
-            string FileDescription,
-            int IconIndex = 0,
-            bool IsPrimary = false)
+        CommandLineStartup.FailIfNotElevated();
+        List<FileTypeInfo> types = [
+            new([".viv"],"TheXDS.Vivianne.viv", "VIV container file"),
+            new([".bnk"], "TheXDS.Vivianne.bnk", "EA sound bank file"),
+            new([".fce", ".geo"], "TheXDS.Vivianne.fce", "EA 3D model"),
+            new([".bri", ".eng", ".fre", ".ger", ".ita", ".spa", ".swe"], "TheXDS.Vivianne.fe", "NFS3/4 front-end localized language file"),
+            new([".asf"], "TheXDS.Vivianne.asf", "EA music track file", false),
+            new([".lin", ".map",".mus"],"TheXDS.Vivianne.mus", "EA interactive music bank file"),
+            new([".fsh", ".qfs"], "TheXDS.Vivianne.fsh", "EA texture image"),
+            new([".tga"], "TheXDS.Vivianne.tga", "Truevision TGA image", false),
+            new([".qda"], "TheXDS.Vivianne.carp", "NFS car performance data"),
+            new([".dat", ".txt"], "TheXDS.Vivianne.carp", "NFS car performance data", false),
+        ];
+
+        foreach (var j in types.Where(p => p.IsPrimary))
         {
+            foreach (var k in j.FileExtensions)
+            {
+                using RegistryKey? key = Registry.ClassesRoot.CreateSubKey(k);
+                key?.SetValue("", j.ProgId);
+            }
+            using RegistryKey? subKey = Registry.ClassesRoot.CreateSubKey(j.ProgId);
+            subKey?.SetValue("", j.FileDescription);
+            using RegistryKey? iconKey = subKey?.CreateSubKey("DefaultIcon");
+            iconKey?.SetValue("", $"\"{System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName}\",5");
+            using RegistryKey? commandKey = subKey?.CreateSubKey(@"Shell\Open\Command");
+            commandKey?.SetValue("", $"\"{System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName}\" \"%1\"");
         }
     }
 }

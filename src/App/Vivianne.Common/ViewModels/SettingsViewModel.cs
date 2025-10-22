@@ -6,7 +6,9 @@ using System.Windows.Input;
 using TheXDS.Ganymede.Helpers;
 using TheXDS.Ganymede.Models;
 using TheXDS.Ganymede.Resources;
+using TheXDS.MCART.Component;
 using TheXDS.MCART.Types.Extensions;
+using TheXDS.Vivianne.Component;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Properties;
 using TheXDS.Vivianne.ViewModels.Base;
@@ -45,6 +47,11 @@ public class SettingsViewModel : EditorViewModelBase<SettingsState>
     public ICommand BrowseNfs4PathCommand { get; }
 
     /// <summary>
+    /// Gets a command used to set file associations for Vivianne.
+    /// </summary>
+    public ICommand SetFileAssociationsCommand { get; }
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="SettingsViewModel"/>
     /// class.
     /// </summary>
@@ -53,6 +60,12 @@ public class SettingsViewModel : EditorViewModelBase<SettingsState>
         var cb = CommandBuilder.For(this);
         BrowseNfs3PathCommand = cb.BuildSimple(OnBrowseNfs3Path);
         BrowseNfs4PathCommand = cb.BuildSimple(OnBrowseNfs4Path);
+        SetFileAssociationsCommand = cb.BuildBusyOperation(OnSetFileAssociations);
+    }
+
+    private Task OnSetFileAssociations()
+    {
+        return PlatformServices.OperatingSystem.InvokeSelfCallback("a8d0e6c8-2410-460c-ab29-7682c351a313");
     }
 
     private async Task OnBrowseNfs3Path()

@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 namespace TheXDS.Vivianne.Component;
 
 /// <summary>
@@ -24,5 +26,11 @@ public class NullOperatingSystemProxy : IOperatingSystemProxy
     public void ShowNativeErrorBox(string text, string caption)
     {
         System.Diagnostics.Debug.WriteLine($"{caption}: {text}");
+    }
+
+    /// <inheritdoc/>
+    public Task InvokeCommand(string command, string[] args, bool elevate)
+    {
+        return Task.CompletedTask;
     }
 }

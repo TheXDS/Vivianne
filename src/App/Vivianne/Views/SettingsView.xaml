@@ -10,6 +10,7 @@
     xmlns:mdlfe="clr-namespace:TheXDS.Vivianne.Models.Fe;assembly=VivLib"
     xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings.Views"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:hlp="clr-namespace:TheXDS.Vivianne.Helpers"
     xmlns:viewmodels="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
     d:DataContext="{d:DesignInstance Type=viewmodels:SettingsViewModel}"
     mc:Ignorable="d" 
@@ -165,6 +166,27 @@
                             SelectedValuePath="Value"
                             DisplayMemberPath="Name"/>
                     </ui:CardControl>
+                    <ui:CardControl hlp:Form.BetaIndicator="true" Icon="{ui:SymbolIcon Symbol=Open24}">
+                        <ui:CardControl.Header>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <ui:TextBlock
+                                    Grid.Row="0"
+                                    FontTypography="BodyStrong"
+                                    Text="File associations" />
+                                <ui:TextBlock
+                                    TextWrapping="Wrap"
+                                    Grid.Row="1"
+                                    Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                    Text="Click this button to associate known file extensions with Vivianne." />
+                            </Grid>
+                        </ui:CardControl.Header>
+                        <ui:Button Icon="{ui:SymbolIcon Symbol=Shield24}" Content="Associate files" Command="{Binding SetFileAssociationsCommand, Mode=OneWay}"/>
+                    </ui:CardControl>
+
                 </StackPanel>
             </ScrollViewer>
         </TabItem>
@@ -454,7 +476,7 @@
                 <TextBlock Opacity="0.3" VerticalAlignment="Bottom" FontSize="8">Powered by MCART / Ganymede</TextBlock>
                 <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" TextBlock.FontFamily="{StaticResource MuliLight}">
                     <TextBlock HorizontalAlignment="Center" FontSize="24" FontFamily="{StaticResource nfsFont}">Vivianne</TextBlock>
-                    <TextBlock HorizontalAlignment="Center">A NFS3 modding tool</TextBlock>
+                    <TextBlock HorizontalAlignment="Center">A NFS modding tool</TextBlock>
                     <Separator/>
                     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                         <TextBlock TextWrapping="Wrap" Width="400">
@@ -465,7 +487,7 @@
                             Released under the <Hyperlink NavigateUri="https://mit-license.org/" Click="Hyperlink_Click">MIT</Hyperlink> license.
                             <LineBreak/><LineBreak/>
                             Special thanks to:<LineBreak/>
-                            Rata536, AJ_Lethal, Skoti_nfs, VEG, Exotic_Lover, TsTg, pete and the rest of the NFS3 modding community in our Discord server. You guys are awesome!
+                            Rata536, AJ_Lethal, Skoti_nfs, VEG, Exotic_Lover, TsTg, pete and the rest of the NFS2/3/4 modding community in our Discord server. You guys are awesome!
                         </TextBlock>
                     </ScrollViewer>
                 </StackPanel>
