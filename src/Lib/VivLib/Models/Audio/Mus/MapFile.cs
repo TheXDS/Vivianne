@@ -8,7 +8,13 @@
 public class MapFile
 {
     /// <summary>
-    /// Gets a collection of offsets to stitch together to form a linear playback audio stream.
+    /// Gets or sets a value at offset 0x04 whose purpose is currently unknown.
     /// </summary>
-    public List<int> LinearPlaybackOffsets { get; } = [];
+    public byte Unk_0x04 { get; set; }
+
+    /// <summary>
+    /// Gets a collection of items that correlate to ASF substreams in a .MUS
+    /// file on the same location and with the same name as this .MAP file.
+    /// </summary>
+    public List<MapItem> Items { get; init; } = [];
 }

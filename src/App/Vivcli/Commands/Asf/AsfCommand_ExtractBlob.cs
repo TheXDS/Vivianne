@@ -4,9 +4,9 @@ using TheXDS.Vivianne.Models.Audio.Mus;
 using TheXDS.Vivianne.Serializers.Audio.Mus;
 using TheXDS.Vivianne.Tools.Audio;
 
-namespace TheXDS.Vivianne.Commands.Mus;
+namespace TheXDS.Vivianne.Commands.Asf;
 
-public partial class MusCommand
+public partial class AsfCommand
 {
     private static Command BuildExtractBlobCommand(Argument<FileInfo> fileArg)
     {

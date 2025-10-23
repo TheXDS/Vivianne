@@ -7,6 +7,7 @@ internal static class Program
 {
     private static Task<int> Main(string[] args)
     {
+        Console.OutputEncoding = System.Text.Encoding.UTF8;
         var rootCmd = new RootCommand(Resources.Strings.VivCli.RootHelp);
         foreach (var j in VivianneCommand.GetCommands())
         {

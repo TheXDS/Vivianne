@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+using TheXDS.MCART.Attributes;
 
 namespace TheXDS.Vivianne.Serializers.Audio.Mus;
 
@@ -7,11 +8,10 @@ internal struct MapFileHeader
 {
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
     public byte[] Magic;
-    public byte Unknown1;
+    public byte Unk_0x04;
     public byte FirstSection;
     public byte NumberOfSections;
     public byte RecordSize;
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-    public byte[] Unknown2;
-    public byte NumRecords;
+    [Endianness(Endianness.BigEndian)]
+    public int NumRecords;
 }

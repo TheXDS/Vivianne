@@ -2,7 +2,7 @@
 
 internal struct MapSectionRecord
 {
-    public byte Unk_0x0;
+    public byte Unk_0x00;
     public byte Magic;
     public byte NextSection;
 }
