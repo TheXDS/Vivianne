@@ -142,7 +142,7 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <DockPanel>
-                                        <Button
+                                        <ui:Button
                                             Command="{Binding DataContext.RenameDummyCommand, ElementName=pgRoot, Mode=OneWay}"
                                             CommandParameter="{Binding}"
                                             Style="{StaticResource SmallUiEditButton}"
