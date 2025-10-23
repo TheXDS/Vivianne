@@ -26,6 +26,15 @@ public class MapSerializer : ISerializer<MapFile>
         }
         var offsets = reader.MarshalReadArray<int>(header.NumberOfSections).Select(p => p.FlipEndianness()).ToArray();
 
+        /* For some reason, MAP files have this apparent "shift" in the
+         * offset table, where the actual offset for each ASF substream
+         * in a .MUS file is one space ahead in the array.
+         * 
+         * It's odd to have to wrap the array this way...
+         * noneless, it works.
+         */
+        offsets = [.. offsets[1..], offsets[0]];
+
         List<MapItem> items = [];
 
         foreach (var (index, j) in sections.WithIndex())
@@ -39,7 +48,8 @@ public class MapSerializer : ISerializer<MapFile>
         return new()
         {
             Unk_0x04 = header.Unk_0x04,
-            Items = items
+            Items = items,
+            FirstItem = header.FirstSection,
         };
     }
 

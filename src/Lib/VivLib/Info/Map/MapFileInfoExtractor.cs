@@ -11,6 +11,7 @@ namespace TheXDS.Vivianne.Info.Map
             [
                 $"Unk_0x04: 0x{entity.Unk_0x04:X2}",
                 $"Items: {entity.Items.Count}",
+                $"First item: {entity.FirstItem}",
                 ..entity.Items.Select(DumpWithIndex)
             ];
         }

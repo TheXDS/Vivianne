@@ -17,4 +17,10 @@ public class MapFile
     /// file on the same location and with the same name as this .MAP file.
     /// </summary>
     public List<MapItem> Items { get; init; } = [];
+
+    /// <summary>
+    /// Gets or sets a value that indicates the index of the first
+    /// <see cref="MapItem"/> to play.
+    /// </summary>
+    public int FirstItem { get; set; }
 }
