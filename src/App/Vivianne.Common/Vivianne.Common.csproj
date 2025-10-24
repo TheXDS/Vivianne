@@ -8,9 +8,6 @@
 		<PackageReference Include="TheXDS.Ganymede" Version="0.5.0-alpha.19" />
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\..\Lib\VivLib\VivLib.csproj" />
-	</ItemGroup>
-	<ItemGroup>
 		<Compile Update="Resources\Strings\Common.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
