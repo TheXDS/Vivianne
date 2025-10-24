@@ -1,9 +1,9 @@
 # Vivianne notes on older operating systems
 This article describes some important caveats when trying to run Vivianne on older/unsupported operating systems. None of the operating systems described here are officially supported, but I took the time to test and verify the requirements to get Vivianne to an usable state.
 
-The earliest operating system that Vivianne is technically capable of running in (and, probably not reliably) is _Windows 7_. Vista and earlier just don't support the required runtimes.
+The earliest operating system that Vivianne is technically capable of running in (and, probably not reliably) is _Windows 7_. Vista and earlier just don't support the required runtimes sadly.
 
-> IMPORTANT: No Pre-release versions of Windows earlier than Windows 10 are or will ever be supported, so don't get any ideas of trying to run Vivianne in Windows Developer Preview 8102. But if you do, you're on your own.
+> IMPORTANT: No Pre-release versions of Windows earlier than Windows 10 are or will ever be supported, so don't get any ideas of trying to run Vivianne in Windows Developer Preview 8102 or something silly like Longhorn 4081. But if you do, you're on your own.
 
 ## Windows 10
 > WinSDK 19041 is the minimum officially supported target SDK version for Vivianne.
@@ -21,7 +21,7 @@ You'll need to install the following:
 - [.NET 8.0 Runtime](https://builds.dotnet.microsoft.com/dotnet/Runtime/8.0.17/dotnet-runtime-8.0.17-win-x64.exe)
 - [Microsoft Visual C++ 2015 Redistributable 14.0.24215 (also known as KB2999226)](https://www.microsoft.com/en-gb/download/details.aspx?id=48145)
 
-> **IMPORTANT**: If you find issues installing KB2999226, you may need to either troubleshoot the installation yourself, or extract all the required `.dll` files from the `.msu` package and copy them directly to the Vivianne folder. I'm not your personal tech support, so don't expect me to help you with this. I don't know why this happens on a fresh isntall of Windows 8.1, but it does.
+> **IMPORTANT**: If you find issues installing KB2999226, you may need to either troubleshoot the installation yourself, or extract all the required `.dll` files from the `.msu` package and copy them directly to the Vivianne folder. I don't have a good way to show you how, and it kinda goes outside the scope of this document, so just know that it's preferrable to have a seasoned installation instead of trying it out on a fresh copy. Sadly, this is just how Microsoft managed to mangle this OS with updates.
 
 > Tested with Windows 8.1 6.3.9600 64-bit.
 
@@ -32,9 +32,9 @@ You'll need to install the following:
 - [.NET 8.0 Runtime](https://builds.dotnet.microsoft.com/dotnet/Runtime/8.0.17/dotnet-runtime-8.0.17-win-x64.exe)
 - [Microsoft Visual C++ 2015 Redistributable 14.0.24215 (also known as KB2999226)](https://www.microsoft.com/en-gb/download/details.aspx?id=48145)
 
-> **IMPORTANT**: If you find issues installing KB2999226, you may need to either troubleshoot the installation yourself, or extract all the required `.dll` files from the `.msu` package and copy them directly to the Vivianne folder. I'm not your personal tech support, so don't expect me to help you with this.
+> **IMPORTANT**: If you find issues installing KB2999226, you may need to either troubleshoot the installation yourself, or extract all the required `.dll` files from the `.msu` package and copy them directly to the Vivianne folder. I don't have a good way to show you how, and it kinda goes outside the scope of this document, so just know that it's preferrable to have a seasoned installation instead of trying it out on a fresh copy. Sadly, this is just how Microsoft managed to mangle this OS with updates.
 
-> Tested with Windows 8 6.2 64-bit.
+> Tested with Windows 8 6.2.9200 64-bit.
 
 ## Windows 7
 This one is more complicated. While there's reports of people launching Vivianne in it, preparing the system to properly execute is more involved.

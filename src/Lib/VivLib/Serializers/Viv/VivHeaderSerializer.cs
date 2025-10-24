@@ -1,5 +1,4 @@
 using TheXDS.MCART.Types.Extensions;
-using TheXDS.Vivianne.Extensions;
 using TheXDS.Vivianne.Models;
 
 namespace TheXDS.Vivianne.Serializers.Viv;
@@ -14,11 +13,11 @@ public class VivHeaderSerializer : ISerializer<VivFileHeader>
     public VivFileHeader Deserialize(Stream stream)
     {
         using var reader = new BinaryReader(stream);
-        var header = reader.MarshalReadStructExt<VivHeader>();
+        var header = reader.MarshalReadStruct<VivHeader>();
         var dir = new Dictionary<string, VivDirectoryEntry>();
         for (int j = 0; j < header.Entries; j++)
         {
-            var entry = reader.MarshalReadStructExt<VivDirectoryEntry>();
+            var entry = reader.MarshalReadStruct<VivDirectoryEntry>();
             var name = reader.ReadNullTerminatedString();
             dir.Add(name, entry);
         }

@@ -1,5 +1,5 @@
 using System.Runtime.InteropServices;
-using TheXDS.Vivianne.Attributes;
+using TheXDS.MCART.Attributes;
 
 namespace TheXDS.Vivianne.Models;
 
