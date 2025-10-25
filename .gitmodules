@@ -1,0 +1,3 @@
+[submodule "lib/VivLib"]
+	path = lib/VivLib
+	url = https://github.com/TheXDS/VivLib

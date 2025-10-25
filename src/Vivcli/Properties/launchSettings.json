@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Vivcli": {
+      "commandName": "Project",
+      "commandLineArgs": "map \"E:\\Need For Speed III\\GameData\\audio\\pc\\emprrock.MAP\" info"
+    }
+  }
+}

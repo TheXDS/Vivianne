@@ -10,6 +10,10 @@
 	<ItemGroup>
 		<PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
 	</ItemGroup>
+	
+	<ItemGroup>
+	  <ProjectReference Include="..\..\lib\VivLib\src\VivLib\VivLib.csproj" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<Compile Update="Resources\Strings\BnkCommand.Designer.cs">

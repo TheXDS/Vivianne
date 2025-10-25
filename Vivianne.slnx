@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/lib/" />
+  <Folder Name="/lib/VivLib/">
+    <Project Path="lib/VivLib/src/VivLib.Tests/VivLib.Tests.csproj" />
+    <Project Path="lib/VivLib/src/VivLib/VivLib.csproj" />
+  </Folder>
+  <Project Path="src/Vivcli/Vivcli.csproj" />
+  <Project Path="src/Vivianne.Common/Vivianne.Common.csproj" />
+  <Project Path="src/Vivianne/Vivianne.csproj" />
+</Solution>
