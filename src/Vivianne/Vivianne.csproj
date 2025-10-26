@@ -7,7 +7,7 @@
 		<UseWPF>true</UseWPF>
 		<EnableWindowsTargeting>true</EnableWindowsTargeting>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-		<Win32Resource>D:\TheXDS\Vivianne\src\App\Vivianne\Resources\Icons.res</Win32Resource>
+		<Win32Resource>.\Resources\Icons.res</Win32Resource>
 	</PropertyGroup>
 	<ItemGroup>
 		<None Remove="Resources\Embedded\EarlyAlphaNote.txt" />
