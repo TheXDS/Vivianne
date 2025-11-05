@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using TheXDS.MCART.Helpers;
-using TheXDS.MCART.Types;
 using TheXDS.Vivianne.ViewModels.Base;
 
 namespace TheXDS.Vivianne.Models.Base;
@@ -68,66 +66,6 @@ public abstract class FileStateBase<T> : EditorViewModelStateBase, IFileState<T>
         return Change(propSelector, value, (oldValue, newValue) => oldValue == newValue);
     }
 
-    /// <summary>
-    /// Gets an observable wrap of the specified
-    /// <see cref="Dictionary{TKey, TValue}"/>.
-    /// </summary>
-    /// <typeparam name="TKey">Type of keys on the list.</typeparam>
-    /// <typeparam name="TValue">
-    /// Type of values held inthe list.
-    /// </typeparam>
-    /// <param name="dictionary">
-    /// Dictionary for which to get an observable version.
-    /// </param>
-    /// <returns>
-    /// A new observable wrap for the specified
-    /// <see cref="Dictionary{TKey, TValue}"/>.
-    /// </returns>
-    protected ObservableDictionaryWrap<TKey, TValue> GetObservable<TKey, TValue>(Dictionary<TKey, TValue> dictionary) where TKey : notnull
-    {
-        var d = new ObservableDictionaryWrap<TKey, TValue>(dictionary);
-        d.CollectionChanged += (_, e) => UnsavedChanges = true;
-        return d;
-    }
-
-    /// <summary>
-    /// Gets an observable wrap of the specified <see cref="IList{T}"/>.
-    /// </summary>
-    /// <typeparam name="TValue">
-    /// Type of values held in the list.
-    /// </typeparam>
-    /// <param name="list">
-    /// List for which to get an observable version.
-    /// </param>
-    /// <returns>
-    /// A new observable wrap for the specified <see cref="IList{T}"/>.
-    /// </returns>
-    protected ObservableListWrap<TValue> GetObservable<TValue>(IList<TValue> list)
-    {
-        var d = new ObservableListWrap<TValue>(list);
-        d.CollectionChanged += (_, e) => UnsavedChanges = true;
-        return d;
-    }
-
-    /// <summary>
-    /// Gets an observable wrap of the specified <see cref="ICollection{T}"/>.
-    /// </summary>
-    /// <typeparam name="TValue">
-    /// Type of values held in the list.
-    /// </typeparam>
-    /// <param name="collection">
-    /// Collection for which to get an observable version.
-    /// </param>
-    /// <returns>
-    /// A new observable wrap for the specified <see cref="ICollection{T}"/>.
-    /// </returns>
-    protected ObservableCollectionWrap<TValue> GetObservable<TValue>(ICollection<TValue> collection)
-    {
-        var d = new ObservableCollectionWrap<TValue>(collection);
-        d.CollectionChanged += (_, e) => UnsavedChanges = true;
-        return d;
-    }
-
     private bool Change<TValue>(Expression<Func<T, TValue>> propSelector, TValue newValue, Func<TValue, TValue, bool> compareCallback)
     {
         var prop = ReflectionHelpers.GetProperty(propSelector);
@@ -135,7 +73,7 @@ public abstract class FileStateBase<T> : EditorViewModelStateBase, IFileState<T>
         if (compareCallback(oldValue, newValue)) return false;
         prop.SetValue(File, newValue, null);
         Notify(prop.Name);
-        if (prop.Name != nameof(UnsavedChanges)) UnsavedChanges = true;
+        CheckUnsavedChanges(prop.Name);
         return true;
     }
 }
