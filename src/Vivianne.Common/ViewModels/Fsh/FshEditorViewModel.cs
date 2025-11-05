@@ -267,7 +267,7 @@ public class FshEditorViewModel : StatefulFileEditorViewModelBase<FshEditorState
     {
         var id = await DialogService!.GetInputText(CommonDialogTemplates.Input with { Title = St.FshId, Text = string.Format(St.FshXNewId, CurrentFshBlobId) }, CurrentFshBlobId);
         if (!id.Success || id.Result.IsEmpty()) return;
-        if (FshExtensions.IsNewGimxIdInvalid(id.Result, State.File, out var errorMsg))
+        if (FshExtensions.IsNewGimxIdInvalid(State.File, id.Result, out var errorMsg))
         {
             await DialogService.Error(St.InvalidFshId, errorMsg);
             return;
@@ -326,7 +326,7 @@ public class FshEditorViewModel : StatefulFileEditorViewModelBase<FshEditorState
 
     private async Task<(string file, string id, int formatIndex)?> GetNewFshBlobData()
     {
-        bool IsGimxInvalid(string? id, [NotNullWhen(true)] out string? errorMessage) => FshExtensions.IsNewGimxIdInvalid(id, State.File, out errorMessage);
+        bool IsGimxInvalid(string? id, [NotNullWhen(true)] out string? errorMessage) => FshExtensions.IsNewGimxIdInvalid(State.File, id, out errorMessage);
         IInputItemDescriptor[] inputs =
         [
             new InputItemDescriptor<string>(d => d.GetFileOpenPath(CommonDialogTemplates.FileOpen with
