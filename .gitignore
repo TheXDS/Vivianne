@@ -41,6 +41,7 @@ test-results/
 *.DotSettings
 src/nuget.config
 **/.buildconfig
+**/launchSettings.json
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

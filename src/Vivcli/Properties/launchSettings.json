@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "Vivcli": {
-      "commandName": "Project",
-      "commandLineArgs": "create asf E:\\tst2.asf \"E:\\Kiss The Go-Goat.wav\" --codec EA_ADPCM"
-    }
-  }
-}
