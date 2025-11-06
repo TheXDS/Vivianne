@@ -33,7 +33,7 @@ public class ExternalFileViewModel(IBackingStore store, string name) : ViewModel
             progress.Report($"Extracting {name}...");
             if (await CreateTempFile() is string tempFile)
             {
-                progress.Report("Waiting for external sapplication");
+                progress.Report("Waiting for external application");
                 var proc = Process.Start(new ProcessStartInfo(tempFile) { UseShellExecute = true });
                 if (!(proc is null || proc.HasExited))
                 {

@@ -212,44 +212,6 @@ public class VivEditorViewModel : StatefulFileEditorViewModelBase<VivEditorState
 
     private IBackingStore CreateBackingStore() => new VivBackingStore(this);
 
-//    private async Task<IViewModel> GetViewModel(byte[] rawData, string file)
-//    {
-//        IViewModel vm;
-//        try
-//        {
-//            vm = PlatformServices.ModifierKey switch
-//            { 
-//                ModifierKey.Alt => ContentVisualizerConfiguration.CreateExternalEditorViewModel(rawData, CreateBackingStore, file),
-//                ModifierKey.Ctrl => (await DialogService!.SelectOption(
-//                    Dialogs.OpenAs,
-//                    ContentVisualizers.Select(p => new NamedObject<ContentVisualizerViewModelFactory>(p.Key, p.Value)).ToArray())) is { Success:true, Result: { } factory }
-//                    ? factory.Invoke(rawData, CreateBackingStore, file)
-//                    : null,
-//                _ => FindContentVisualizer(file, rawData)
-//            } ?? FileErrorViewModel.UnknownFileFormat;
-//        }
-//        catch (Exception ex)
-//        {
-//#if DEBUG
-//            await DialogService!.Error(ex);
-//#else
-//            (await DialogService!.Show<Action>(CommonDialogTemplates.Error with
-//            {
-//                Title = $"Could not open {file}",
-//                Text = "The file might be damaged or corrupt; or may use a format not currently understood by Vivianne."
-//            },
-//            [
-//                new("Ok", () => { }),
-//                new("Copy details to clipboard", () => PlatformServices.OperatingSystem.WriteClipboardText(TheXDS.MCART.Resources.Strings.Composition.ExDump(ex, MCART.Resources.Strings.ExDumpOptions.Message)))
-//            ])).Invoke();
-//#endif
-
-//            vm = new FileErrorViewModel(ex);
-//        }
-//        vm.Title = file;
-//        return vm;
-//    }
-
     private Task<bool> ImportFiles(IEnumerable<string> files) => DialogService!.RunOperation(async (cancel, progress) =>
     {
         foreach ((var index, var j) in files.WithIndex())

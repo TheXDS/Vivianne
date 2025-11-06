@@ -4,7 +4,6 @@ using TheXDS.Vivianne.Component;
 using TheXDS.Vivianne.Properties;
 using TheXDS.Vivianne.Data;
 
-
 #if !DEBUG
 using System.IO;
 using static TheXDS.MCART.Resources.Strings.ExDumpOptions;
