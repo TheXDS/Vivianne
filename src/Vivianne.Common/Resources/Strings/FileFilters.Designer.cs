@@ -61,29 +61,47 @@ namespace TheXDS.Vivianne.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to EA music track file.
+        /// </summary>
+        public static string AsfFile {
+            get {
+                return ResourceManager.GetString("AsfFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ASF/MUS file.
+        /// </summary>
+        public static string AsfMusFile {
+            get {
+                return ResourceManager.GetString("AsfMusFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to BMP bitmap image.
         /// </summary>
-        public static string BMPBitmapImage {
+        public static string BmpFile {
             get {
-                return ResourceManager.GetString("BMPBitmapImage", resourceCulture);
+                return ResourceManager.GetString("BmpFile", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to BNK audio file.
+        ///   Looks up a localized string similar to EA sound bank file.
         /// </summary>
-        public static string BNKAudioFile {
+        public static string BnkFile {
             get {
-                return ResourceManager.GetString("BNKAudioFile", resourceCulture);
+                return ResourceManager.GetString("BnkFile", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Common image files.
+        ///   Looks up a localized string similar to NFS car performance data.
         /// </summary>
-        public static string CommonImageFiles {
+        public static string CarpFile {
             get {
-                return ResourceManager.GetString("CommonImageFiles", resourceCulture);
+                return ResourceManager.GetString("CarpFile", resourceCulture);
             }
         }
         
@@ -97,16 +115,25 @@ namespace TheXDS.Vivianne.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to FCE 3D model.
+        ///   Looks up a localized string similar to EA 3D model.
         /// </summary>
-        public static string FCE3DModel {
+        public static string EA3DModel {
             get {
-                return ResourceManager.GetString("FCE3DModel", resourceCulture);
+                return ResourceManager.GetString("EA3DModel", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to FSH texture.
+        ///   Looks up a localized string similar to Front-end localized language file.
+        /// </summary>
+        public static string FeDataFile {
+            get {
+                return ResourceManager.GetString("FeDataFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SHPI texture.
         /// </summary>
         public static string FshFile {
             get {
@@ -115,52 +142,88 @@ namespace TheXDS.Vivianne.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to FSH/QFS texture.
+        ///   Looks up a localized string similar to Generic NFS game resource file.
         /// </summary>
-        public static string FSHQFSTexture {
+        public static string GenericFile {
             get {
-                return ResourceManager.GetString("FSHQFSTexture", resourceCulture);
+                return ResourceManager.GetString("GenericFile", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to GIF image.
         /// </summary>
-        public static string GIFImage {
+        public static string GifFile {
             get {
-                return ResourceManager.GetString("GIFImage", resourceCulture);
+                return ResourceManager.GetString("GifFile", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to JPEG picture.
         /// </summary>
-        public static string JPEGPicture {
+        public static string JpgFile {
             get {
-                return ResourceManager.GetString("JPEGPicture", resourceCulture);
+                return ResourceManager.GetString("JpgFile", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Localized car FeData.
+        ///   Looks up a localized string similar to MUS linear playback metadata.
         /// </summary>
-        public static string LocalizedCarFeData {
+        public static string LinFile {
             get {
-                return ResourceManager.GetString("LocalizedCarFeData", resourceCulture);
+                return ResourceManager.GetString("LinFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MUS interactive playback metadata.
+        /// </summary>
+        public static string MapFile {
+            get {
+                return ResourceManager.GetString("MapFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Readme file.
+        /// </summary>
+        public static string MdFile {
+            get {
+                return ResourceManager.GetString("MdFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to EA interactive music bank file.
+        /// </summary>
+        public static string MusFile {
+            get {
+                return ResourceManager.GetString("MusFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pictures, textures and images.
+        /// </summary>
+        public static string PictureFile {
+            get {
+                return ResourceManager.GetString("PictureFile", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Portable Network Graphics.
         /// </summary>
-        public static string PortableNetworkGraphics {
+        public static string PngFile {
             get {
-                return ResourceManager.GetString("PortableNetworkGraphics", resourceCulture);
+                return ResourceManager.GetString("PngFile", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to QFS texture.
+        ///   Looks up a localized string similar to Compressed SHPI texture.
         /// </summary>
         public static string QfsFile {
             get {
@@ -169,11 +232,29 @@ namespace TheXDS.Vivianne.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to VIV file.
+        ///   Looks up a localized string similar to TrueVision TGA.
+        /// </summary>
+        public static string TgaFile {
+            get {
+                return ResourceManager.GetString("TgaFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to VIV container file.
         /// </summary>
         public static string VivFile {
             get {
                 return ResourceManager.GetString("VivFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WAV audio file.
+        /// </summary>
+        public static string WavFile {
+            get {
+                return ResourceManager.GetString("WavFile", resourceCulture);
             }
         }
     }

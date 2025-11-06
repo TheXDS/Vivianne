@@ -2,6 +2,8 @@
 using System.Windows;
 using TheXDS.Vivianne.Component;
 using TheXDS.Vivianne.Properties;
+using TheXDS.Vivianne.Data;
+
 
 #if !DEBUG
 using System.IO;
@@ -82,20 +84,8 @@ public partial class App : Application
     private void RegisterFileTypes(string[] obj)
     {
         CommandLineStartup.FailIfNotElevated();
-        List<FileTypeInfo> types = [
-            new([".viv"],"TheXDS.Vivianne.viv", "VIV container file"),
-            new([".bnk"], "TheXDS.Vivianne.bnk", "EA sound bank file"),
-            new([".fce", ".geo"], "TheXDS.Vivianne.fce", "EA 3D model"),
-            new([".bri", ".eng", ".fre", ".ger", ".ita", ".spa", ".swe"], "TheXDS.Vivianne.fe", "NFS3/4 front-end localized language file"),
-            new([".asf"], "TheXDS.Vivianne.asf", "EA music track file", false),
-            new([".lin", ".map",".mus"],"TheXDS.Vivianne.mus", "EA interactive music bank file"),
-            new([".fsh", ".qfs"], "TheXDS.Vivianne.fsh", "EA texture image"),
-            new([".tga"], "TheXDS.Vivianne.tga", "Truevision TGA image", false),
-            new([".qda"], "TheXDS.Vivianne.carp", "NFS car performance data"),
-            new([".dat", ".txt"], "TheXDS.Vivianne.carp", "NFS car performance data", false),
-        ];
 
-        foreach (var j in types.Where(p => p.IsPrimary))
+        foreach (var j in FileTypes.KnownFileTypes.Where(p => p.IsPrimary))
         {
             foreach (var k in j.FileExtensions)
             {
@@ -105,7 +95,7 @@ public partial class App : Application
             using RegistryKey? subKey = Registry.ClassesRoot.CreateSubKey(j.ProgId);
             subKey?.SetValue("", j.FileDescription);
             using RegistryKey? iconKey = subKey?.CreateSubKey("DefaultIcon");
-            iconKey?.SetValue("", $"\"{System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName}\",5");
+            iconKey?.SetValue("", $"\"{System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName}\",{j.IconIndex}");
             using RegistryKey? commandKey = subKey?.CreateSubKey(@"Shell\Open\Command");
             commandKey?.SetValue("", $"\"{System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName}\" \"%1\"");
         }

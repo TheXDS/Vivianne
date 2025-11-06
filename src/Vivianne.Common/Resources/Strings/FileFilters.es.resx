@@ -118,42 +118,69 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="FshFile" xml:space="preserve">
-    <value>Textura FSH</value>
+    <value>Textura SHPI</value>
   </data>
   <data name="VivFile" xml:space="preserve">
-    <value>Archivo VIV</value>
+    <value>Contenedor VIV</value>
   </data>
   <data name="QfsFile" xml:space="preserve">
-    <value>Textura QFS</value>
-  </data>
-  <data name="BMPBitmapImage" xml:space="preserve">
-    <value>Imagen de mapa de bits</value>
-  </data>
-  <data name="BNKAudioFile" xml:space="preserve">
-    <value>Archivo de audio BNK</value>
-  </data>
-  <data name="CommonImageFiles" xml:space="preserve">
-    <value>Archivos comunes de imagen</value>
+    <value>Textura SHPI comprimida</value>
   </data>
   <data name="CommonVIVContentFiles" xml:space="preserve">
-    <value>Archivos comunes de contenido de VIV</value>
+    <value>Contenidos comunes de VIV</value>
   </data>
-  <data name="FCE3DModel" xml:space="preserve">
-    <value>Modelo 3D FCE</value>
+  <data name="EA3DModel" xml:space="preserve">
+    <value>Modelo 3D de EA</value>
   </data>
-  <data name="FSHQFSTexture" xml:space="preserve">
-    <value>Textura FSH/QFS</value>
+  <data name="BnkFile" xml:space="preserve">
+    <value>Banco de sonido de EA</value>
   </data>
-  <data name="GIFImage" xml:space="preserve">
+  <data name="AsfFile" xml:space="preserve">
+    <value>Pista musical de EA</value>
+  </data>
+  <data name="PngFile" xml:space="preserve">
+    <value>Imagen PNG</value>
+  </data>
+  <data name="GifFile" xml:space="preserve">
     <value>Imagen GIF</value>
   </data>
-  <data name="JPEGPicture" xml:space="preserve">
+  <data name="JpgFile" xml:space="preserve">
     <value>Imagen JPEG</value>
   </data>
-  <data name="LocalizedCarFeData" xml:space="preserve">
-    <value>FeData localizada de vehículo</value>
+  <data name="BmpFile" xml:space="preserve">
+    <value>Imagen de mapa de bits</value>
   </data>
-  <data name="PortableNetworkGraphics" xml:space="preserve">
-    <value>Imagen PNG</value>
+  <data name="TgaFile" xml:space="preserve">
+    <value>Imagen TrueVision TGA</value>
+  </data>
+  <data name="PictureFile" xml:space="preserve">
+    <value>Imágenes y texturas</value>
+  </data>
+  <data name="FeDataFile" xml:space="preserve">
+    <value>Datos de Front-end y lenguaje</value>
+  </data>
+  <data name="CarpFile" xml:space="preserve">
+    <value>Datos de rendimiento de vehículo de NFS</value>
+  </data>
+  <data name="LinFile" xml:space="preserve">
+    <value>Metadatos de reproducción lineal de MUS</value>
+  </data>
+  <data name="MapFile" xml:space="preserve">
+    <value>Metadatos de reproducción interactiva de MUS</value>
+  </data>
+  <data name="MusFile" xml:space="preserve">
+    <value>Banco musical interactivo de EA</value>
+  </data>
+  <data name="MdFile" xml:space="preserve">
+    <value>Archivo Léeme</value>
+  </data>
+  <data name="GenericFile" xml:space="preserve">
+    <value>Archivo de recursos genérico de NFS</value>
+  </data>
+  <data name="WavFile" xml:space="preserve">
+    <value>Archivo WAV</value>
+  </data>
+  <data name="AsfMusFile" xml:space="preserve">
+    <value>Archivo ASF/MUS</value>
   </data>
 </root>

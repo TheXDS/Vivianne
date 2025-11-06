@@ -2,7 +2,7 @@
   "profiles": {
     "Vivcli": {
       "commandName": "Project",
-      "commandLineArgs": "map \"E:\\Need For Speed III\\GameData\\audio\\pc\\emprrock.MAP\" info"
+      "commandLineArgs": "create asf E:\\tst2.asf \"E:\\Kiss The Go-Goat.wav\" --codec EA_ADPCM"
     }
   }
 }

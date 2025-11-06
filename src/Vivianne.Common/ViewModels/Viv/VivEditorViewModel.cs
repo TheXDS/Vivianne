@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Xml.Linq;
 using TheXDS.Ganymede.Helpers;
 using TheXDS.Ganymede.Models;
 using TheXDS.Ganymede.Resources;
@@ -27,7 +28,6 @@ namespace TheXDS.Vivianne.ViewModels.Viv;
 /// </summary>
 public class VivEditorViewModel : StatefulFileEditorViewModelBase<VivEditorState, VivFile>
 {
-    private static readonly Dictionary<string, ContentVisualizerViewModelFactory> ContentVisualizers = new(ContentVisualizerConfiguration.Get());
     private static readonly Dictionary<string, (string, Func<byte[]>)[]> Templates = new(VivTemplates.Get());
     private readonly HostViewModel _childNavViewModel;
 
@@ -117,9 +117,9 @@ public class VivEditorViewModel : StatefulFileEditorViewModelBase<VivEditorState
             await currVm.OnNavigateAway(f);
             if (f.IsCancelled) return;
         }
-        if (parameter is KeyValuePair<string, byte[]> { Key: { } file, Value: { } rawData })
+        if (parameter is KeyValuePair<string, byte[]> { Key: { } file })
         {
-            await ChildNavService.NavigateAndReset(await GetViewModel(rawData, file));
+            await ChildNavService.NavigateAndReset(await FileTypes.GetViewModel(file, CreateBackingStore, DialogService));
         }
         else
         {
@@ -210,41 +210,45 @@ public class VivEditorViewModel : StatefulFileEditorViewModelBase<VivEditorState
         }
     }
 
-    private IViewModel? FindContentVisualizer(string fileName, byte[] rawData)
-    {
-        foreach (var j in ContentVisualizers.Where(p => fileName.EndsWith(p.Key, StringComparison.InvariantCultureIgnoreCase)))
-        {
-            if (j.Value is { } factory && factory.Invoke(rawData, this, fileName) is { } visualizer)
-            {
-                return visualizer;
-            }
-        }
-        return null;
-    }
+    private IBackingStore CreateBackingStore() => new VivBackingStore(this);
 
-    private async Task<IViewModel> GetViewModel(byte[] rawData, string file)
-    {
-        IViewModel vm;
-        try
-        {
-            vm = PlatformServices.ModifierKey switch
-            { 
-                ModifierKey.Alt => ContentVisualizerConfiguration.CreateExternalEditorViewModel(rawData, this, file),
-                ModifierKey.Ctrl => (await DialogService!.SelectOption(
-                    Dialogs.OpenAs,
-                    ContentVisualizers.Select(p => new NamedObject<ContentVisualizerViewModelFactory>(p.Key, p.Value)).ToArray())) is { Success:true, Result: { } factory }
-                    ? factory.Invoke(rawData, this, file)
-                    : null,
-                _ => FindContentVisualizer(file, rawData)
-            } ?? FileErrorViewModel.UnknownFileFormat;
-        }
-        catch (Exception ex)
-        {
-            vm = new FileErrorViewModel(ex);
-        }
-        vm.Title = file;
-        return vm;
-    }
+//    private async Task<IViewModel> GetViewModel(byte[] rawData, string file)
+//    {
+//        IViewModel vm;
+//        try
+//        {
+//            vm = PlatformServices.ModifierKey switch
+//            { 
+//                ModifierKey.Alt => ContentVisualizerConfiguration.CreateExternalEditorViewModel(rawData, CreateBackingStore, file),
+//                ModifierKey.Ctrl => (await DialogService!.SelectOption(
+//                    Dialogs.OpenAs,
+//                    ContentVisualizers.Select(p => new NamedObject<ContentVisualizerViewModelFactory>(p.Key, p.Value)).ToArray())) is { Success:true, Result: { } factory }
+//                    ? factory.Invoke(rawData, CreateBackingStore, file)
+//                    : null,
+//                _ => FindContentVisualizer(file, rawData)
+//            } ?? FileErrorViewModel.UnknownFileFormat;
+//        }
+//        catch (Exception ex)
+//        {
+//#if DEBUG
+//            await DialogService!.Error(ex);
+//#else
+//            (await DialogService!.Show<Action>(CommonDialogTemplates.Error with
+//            {
+//                Title = $"Could not open {file}",
+//                Text = "The file might be damaged or corrupt; or may use a format not currently understood by Vivianne."
+//            },
+//            [
+//                new("Ok", () => { }),
+//                new("Copy details to clipboard", () => PlatformServices.OperatingSystem.WriteClipboardText(TheXDS.MCART.Resources.Strings.Composition.ExDump(ex, MCART.Resources.Strings.ExDumpOptions.Message)))
+//            ])).Invoke();
+//#endif
+
+//            vm = new FileErrorViewModel(ex);
+//        }
+//        vm.Title = file;
+//        return vm;
+//    }
 
     private Task<bool> ImportFiles(IEnumerable<string> files) => DialogService!.RunOperation(async (cancel, progress) =>
     {

@@ -10,6 +10,8 @@ using TheXDS.Ganymede.Resources;
 using TheXDS.Ganymede.Types.Base;
 using TheXDS.Ganymede.Types.Extensions;
 using TheXDS.MCART.Types.Extensions;
+using TheXDS.Vivianne.Component;
+using TheXDS.Vivianne.Data;
 using TheXDS.Vivianne.Properties;
 using TheXDS.Vivianne.ViewModels.Asf;
 using TheXDS.Vivianne.ViewModels.Base;
@@ -32,11 +34,12 @@ public class StartupViewModel : ViewModel
         vm => (SearchForNfsProcess() is { } proc) ? vm.WaitForNfsProcess(proc) : null,
     ];
 
-    private static Task? TryOpenFileFromCmdArgs(StartupViewModel vm)
+    private static async Task TryOpenFileFromCmdArgs(StartupViewModel vm)
     {
-        if (Environment.GetCommandLineArgs().ElementAtOrDefault(1) is not string file || file.IsEmpty()) return null;
+        if (Environment.GetCommandLineArgs().ElementAtOrDefault(1) is not string file || file.IsEmpty()) return;
         var extension = Path.GetExtension(file).ToLowerInvariant();
-        return vm.Launchers.OfType<IFileViewerViewModelLauncher>().FirstOrDefault(p => p.CanOpen($"*{extension}"))?.OnOpen(file);
+        var viewModel = await FileTypes.GetViewModel(file, () => new FileSystemBackingStore(vm.DialogService!, [], file), vm.DialogService);
+        await vm.NavigationService!.NavigateAndReset(viewModel);
     }
 
     private readonly IEnumerable<IViewModelLauncher> _launchers;

@@ -18,6 +18,12 @@ public class FileErrorViewModel(string errorMessage) : ViewModel
     public static FileErrorViewModel UnknownFileFormat => new(St.UnknownFileFormat);
 
     /// <summary>
+    /// Gets a ViewModel that can be used to display an error message when the
+    /// specified file could not be found.
+    /// </summary>
+    public static FileErrorViewModel FileNotFound => new("File not found.");
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="FileErrorViewModel"/>
     /// class from an exception.
     /// </summary>

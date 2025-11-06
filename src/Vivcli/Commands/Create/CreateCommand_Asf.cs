@@ -39,7 +39,6 @@ public partial class CreateCommand
                 asf.AudioBlocks[j] = c.Encode(asf.AudioBlocks[j], new PtHeader());
             }
             asf.Compression = codec;
-            //throw new NotImplementedException();
         }
         ISerializer<AsfFile> serializer = new MusSerializer();
         using var outputStream = outputFile.OpenWrite();
