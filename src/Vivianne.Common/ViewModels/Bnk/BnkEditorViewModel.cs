@@ -345,6 +345,6 @@ public class BnkEditorViewModel : StatefulFileEditorViewModelBase<BnkEditorState
     Task IViewModel.OnNavigateAway(CancelFlag navigation)
     {
         OnStopPlayback();
-        return Task.CompletedTask;//InvokeNavigateBack(navigation);
+        return Task.CompletedTask;
     }
 }

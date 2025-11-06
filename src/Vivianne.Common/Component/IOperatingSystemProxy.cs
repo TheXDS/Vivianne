@@ -48,6 +48,15 @@ public interface IOperatingSystemProxy
     /// </returns>
     Task InvokeCommand(string command, string[] args, bool elevate = false);
 
+    /// <summary>
+    /// Invokes an internal Vivianne callback through the operating system,
+    /// requesting elevated permissions as needed.
+    /// </summary>
+    /// <param name="callback">GUID of the callback to execute.</param>
+    /// <param name="args">Arguments to pass to the command.</param>
+    /// <returns>
+    /// A Task that can be used to await for the completion of the process.
+    /// </returns>
     Task InvokeSelfCallback(string callback, params string[] args)
     {
         return System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName is string thisFile
