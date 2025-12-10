@@ -1,0 +1,42 @@
+﻿<UserControl
+    x:Class="TheXDS.Vivianne.Views.Specialized.FshBlobCoordsEditorView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:gn="http://schemas.thexds.local/ganymede"
+    xmlns:hlp="clr-namespace:TheXDS.Vivianne.Helpers"
+    xmlns:mcart="http://schemas.thexds.local/mcart"
+    xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings.Views.Specialized"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:vc="clr-namespace:TheXDS.Vivianne.ValueConverters"
+    xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels.Fsh;assembly=Vivianne.Common"
+    mc:Ignorable="d" 
+    d:DataContext="{d:DesignInstance Type=vm:FshBlobCoordsEditorViewModel}">
+    <UniformGrid Columns="2" Margin="5">
+        <UniformGrid.Resources>
+            <Style TargetType="ui:NumberBox" BasedOn="{StaticResource {x:Type ui:NumberBox}}">
+                <Setter Property="Minimum" Value="0"/>
+                <Setter Property="Margin" Value="5"/>
+                <Setter Property="HorizontalContentAlignment" Value="Right"/>
+                <Setter Property="Width" Value="200"/>
+            </Style>
+        </UniformGrid.Resources>
+        <ui:NumberBox
+            hlp:Form.Label="{x:Static st:FshBlobCoordsEditorView.RotationX}"
+            Value="{Binding State.XRotation}"
+            Maximum="{Binding State.Blob.Width, Mode=OneWay}"/>
+        <ui:NumberBox
+            hlp:Form.Label="{x:Static st:FshBlobCoordsEditorView.RotationY}"
+            Value="{Binding State.YRotation}"
+            Maximum="{Binding State.Blob.Height, Mode=OneWay}"/>
+        <ui:NumberBox
+            hlp:Form.Label="{x:Static st:FshBlobCoordsEditorView.PositionX}"
+            Value="{Binding State.XPosition}"
+            Maximum="{Binding State.Blob.Width, Mode=OneWay}"/>
+        <ui:NumberBox
+            hlp:Form.Label="{x:Static st:FshBlobCoordsEditorView.PositionY}"
+            Value="{Binding State.YPosition}"
+            Maximum="{Binding State.Blob.Height, Mode=OneWay}"/>
+    </UniformGrid>
+</UserControl>

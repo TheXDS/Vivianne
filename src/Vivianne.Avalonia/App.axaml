@@ -1,0 +1,11 @@
+<Application
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    x:Class="Vivianne.Avalonia.App"
+    xmlns:gn="using:TheXDS.Ganymede.Markup"
+    RequestedThemeVariant="Default">
+    <Application.Styles>
+        <FluentTheme />
+        <gn:GanymedeDictionary/>
+    </Application.Styles>
+</Application>

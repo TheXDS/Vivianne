@@ -41,6 +41,7 @@ test-results/
 *.DotSettings
 src/nuget.config
 **/.buildconfig
+**/launchSettings.json
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -302,3 +303,4 @@ __pycache__/
 
 # Docs generated with DocFX
 docs/_site/
+/src/App/Vivcli/Properties/launchSettings.json

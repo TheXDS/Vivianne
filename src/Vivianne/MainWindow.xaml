@@ -1,0 +1,62 @@
+﻿<ui:FluentWindow
+    x:Class="Vivianne.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:gn="http://schemas.thexds.local/ganymede"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:hlp="clr-namespace:TheXDS.Vivianne.Helpers"
+    xmlns:mcart="http://schemas.thexds.local/mcart"
+    xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings"
+    xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
+    mc:Ignorable="d"
+    WindowBackdropType="None"
+    Background="{ui:ThemeResource SmokeFillColorDefaultBrush}"
+    ui:Design.Background="{ui:ThemeResource ApplicationBackgroundBrush}"
+    ui:Design.Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"
+    ExtendsContentIntoTitleBar="true"
+    Height="450" Width="800" Icon="/vivianne.ico">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <ui:TitleBar
+            HorizontalContentAlignment="Stretch"
+            Height="30"
+            Icon="/vivianne.png"
+            CloseWindowByDoubleClickOnIcon="True"
+            Title="{Binding Navigator.CurrentViewModel.Title, Mode=OneWay, ElementName=vmHost, StringFormat='{}{0} - Vivianne' }">
+            <ui:TitleBar.TrailingContent>
+                <DockPanel HorizontalAlignment="Stretch" Margin="0 0 5 0">
+                    <ui:Button
+                        IsTabStop="False"
+                        Focusable="False"
+                        Command="{Binding Navigator.NavigateBackCommand, Mode=OneWay, ElementName=vmHost}"
+                        WindowChrome.IsHitTestVisibleInChrome="True"
+                        ToolTip="{x:Static st:MainWindow.SaveAndClose}"
+                        Background="Transparent"
+                        BorderBrush="{x:Null}"
+                        BorderThickness="0"
+                        Padding="10,7"
+                        Icon="{ui:SymbolIcon Symbol=ArrowLeft32}"/>
+                    <ui:Button Icon="{ui:SymbolIcon Symbol=DarkTheme24}" Click="Button_Click"/>
+                </DockPanel>
+            </ui:TitleBar.TrailingContent>
+        </ui:TitleBar>
+        <gn:NavigationHost
+            Grid.Row="1"
+            IsHitTestVisible="True"               
+            x:Name="vmHost"
+            DialogService="{gn:WpfNavDialogService}"
+            Navigator="{gn:NavService Home={x:Type vm:StartupViewModel}}"
+            VisualResolver="{gn:ConventionResolver}" Grid.RowSpan="2">
+            <gn:NavigationHost.Resources>
+                <Style TargetType="gn:DecoratedBorder">
+                    <Setter Property="Background" Value="{DynamicResource ApplicationBackgroundBrush}"/>
+                </Style>
+            </gn:NavigationHost.Resources>
+        </gn:NavigationHost>
+    </Grid>
+</ui:FluentWindow>
