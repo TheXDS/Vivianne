@@ -159,4 +159,19 @@
   <data name="EnableCleanupTasksOnFCEFilesWhenSavingAVIVFile" xml:space="preserve">
     <value>Habilitar limpieza de FCE al guardar un archivo VIV</value>
   </data>
+  <data name="NFS2RootDirectory" xml:space="preserve">
+    <value>Directorio raíz de NFS2 / NFS2SE</value>
+  </data>
+  <data name="NFS4RootDirectory" xml:space="preserve">
+    <value>Directorio raíz de NFS4 / NFSHS</value>
+  </data>
+  <data name="Nfs2ExeLaunchArguments" xml:space="preserve">
+    <value>Argumentos de nfs2.exe / nfs2se.exe</value>
+  </data>
+  <data name="Nfs4ExeLaunchArguments" xml:space="preserve">
+    <value>Argumentos de nfs4.exe / nfshs.exe</value>
+  </data>
+  <data name="AdvancedSettings" xml:space="preserve">
+    <value>Opciones avanzadas</value>
+  </data>
 </root>

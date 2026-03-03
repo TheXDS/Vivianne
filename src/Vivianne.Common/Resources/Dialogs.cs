@@ -1,10 +1,6 @@
-﻿using System;
-using TheXDS.Ganymede.Models;
+﻿using TheXDS.Ganymede.Models;
 using TheXDS.Ganymede.Resources;
-using TheXDS.MCART.Resources.Strings;
-using TheXDS.MCART.Types;
-using TheXDS.Vivianne.Component;
-using static TheXDS.MCART.Resources.Strings.Composition;
+using CarpSt = TheXDS.Vivianne.Resources.Strings.ViewModels.CarpEditorViewModel;
 
 namespace TheXDS.Vivianne.Resources;
 
@@ -48,11 +44,31 @@ public static class Dialogs
     /// Gets a dialog template for displaying an error message when a file
     /// cannot be opened due to it being corrupt or otherwise unreadable.
     /// </summary>
-    /// <param name="file"></param>
-    /// <returns></returns>
+    /// <param name="file">
+    /// Name of the file that was the cause of the error.
+    /// </param>
+    /// <returns>
+    /// A dialog template configured to show an error message whenever Vivianne
+    /// is unable to open a file due to it being corrupt or unreadable.
+    /// </returns>
     public static DialogTemplate CorruptFileError(string file) => CommonDialogTemplates.Error with
     {
         Title = $"Could not open {file}",
         Text = "The file might be damaged or corrupt; or may use a format not currently understood by Vivianne."
+    };
+
+    /// <summary>
+    /// Creates a dialog template displaying the specified performance metrics message.
+    /// </summary>
+    /// <param name="perfMetrics">
+    /// The performance metrics text to display in the dialog. Cannot be null.
+    /// </param>
+    /// <returns>
+    /// A dialog template configured to show the provided performance metrics
+    /// message with a performance metrics title.
+    /// </returns>
+    public static DialogTemplate PerfMetrics(string perfMetrics) => CommonDialogTemplates.Message with
+    {
+        Title = CarpSt.PerformanceMetrics, Text = perfMetrics
     };
 }

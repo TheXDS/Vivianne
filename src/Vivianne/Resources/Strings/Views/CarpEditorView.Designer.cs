@@ -19,7 +19,7 @@ namespace TheXDS.Vivianne.Resources.Strings.Views {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class CarpEditorView {
@@ -412,6 +412,15 @@ namespace TheXDS.Vivianne.Resources.Strings.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Gearbox.
+        /// </summary>
+        public static string Gearbox {
+            get {
+                return ResourceManager.GetString("Gearbox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Gear efficiency.
         /// </summary>
         public static string GearEfficiency {
@@ -790,7 +799,7 @@ namespace TheXDS.Vivianne.Resources.Strings.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SyncFeData3 with FeData.
+        ///   Looks up a localized string similar to Sync with FeData.
         /// </summary>
         public static string SyncWithFeData {
             get {
@@ -867,6 +876,24 @@ namespace TheXDS.Vivianne.Resources.Strings.Views {
         public static string TurnOutRamp {
             get {
                 return ResourceManager.GetString("TurnOutRamp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Understeer gradient.
+        /// </summary>
+        public static string UndersteerGradient {
+            get {
+                return ResourceManager.GetString("UndersteerGradient", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upgrade to Carp3/4.
+        /// </summary>
+        public static string UpgradeToCarp34 {
+            get {
+                return ResourceManager.GetString("UpgradeToCarp34", resourceCulture);
             }
         }
         

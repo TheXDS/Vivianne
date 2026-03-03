@@ -20,13 +20,13 @@ public static class FileFilters
     /// Gets a set of file filters to be used on file dialogs for opening and
     /// saving FSH files.
     /// </summary>
-    public static IEnumerable<FileFilterItem> FshFileFilter { get; } = [FileTypes.GetInfo(KnownFileType.Shpi).Filters[0], FileFilterItem.AllFiles];
+    public static IEnumerable<FileFilterItem> FshFileFilter { get; } = [FileTypes.GetInfo(KnownFileType.Shpi).Filters[1], FileFilterItem.AllFiles];
 
     /// <summary>
     /// Gets a set of file filters to be used on file dialogs for opening and
     /// saving QFS files.
     /// </summary>
-    public static IEnumerable<FileFilterItem> QfsFileFilter { get; } = [FileTypes.GetInfo(KnownFileType.Shpi).Filters[1], FileFilterItem.AllFiles];
+    public static IEnumerable<FileFilterItem> QfsFileFilter { get; } = [FileTypes.GetInfo(KnownFileType.Shpi).Filters[2], FileFilterItem.AllFiles];
 
     /// <summary>
     /// Gets a set of file filters to be used on file dialogs for opening and

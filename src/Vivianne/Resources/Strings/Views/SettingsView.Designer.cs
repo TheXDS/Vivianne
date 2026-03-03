@@ -19,7 +19,7 @@ namespace TheXDS.Vivianne.Resources.Strings.Views {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class SettingsView {
@@ -57,6 +57,15 @@ namespace TheXDS.Vivianne.Resources.Strings.Views {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Advanced settings.
+        /// </summary>
+        public static string AdvancedSettings {
+            get {
+                return ResourceManager.GetString("AdvancedSettings", resourceCulture);
             }
         }
         
@@ -142,6 +151,24 @@ namespace TheXDS.Vivianne.Resources.Strings.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to nfs2.exe / nfs2se.exe launch arguments.
+        /// </summary>
+        public static string Nfs2ExeLaunchArguments {
+            get {
+                return ResourceManager.GetString("Nfs2ExeLaunchArguments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NFS2 / NFS2SE root directory.
+        /// </summary>
+        public static string NFS2RootDirectory {
+            get {
+                return ResourceManager.GetString("NFS2RootDirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to nfs3.exe launch arguments.
         /// </summary>
         public static string Nfs3ExeLaunchArguments {
@@ -151,11 +178,29 @@ namespace TheXDS.Vivianne.Resources.Strings.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to NFS3 Root directory.
+        ///   Looks up a localized string similar to NFS3 root directory.
         /// </summary>
         public static string NFS3RootDirectory {
             get {
                 return ResourceManager.GetString("NFS3RootDirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to nfs4.exe / nfshs.exe launch arguments.
+        /// </summary>
+        public static string Nfs4ExeLaunchArguments {
+            get {
+                return ResourceManager.GetString("Nfs4ExeLaunchArguments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NFS4 / NFSHS root directory.
+        /// </summary>
+        public static string NFS4RootDirectory {
+            get {
+                return ResourceManager.GetString("NFS4RootDirectory", resourceCulture);
             }
         }
         

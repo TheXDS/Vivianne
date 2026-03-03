@@ -16,7 +16,7 @@
     ui:Design.Background="{ui:ThemeResource ApplicationBackgroundBrush}"
     ui:Design.Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"
     ExtendsContentIntoTitleBar="true"
-    Height="450" Width="800" Icon="/vivianne.ico">
+    Height="550" Width="800" Icon="/vivianne.ico">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -47,7 +47,7 @@
         </ui:TitleBar>
         <gn:NavigationHost
             Grid.Row="1"
-            IsHitTestVisible="True"               
+            IsHitTestVisible="True"
             x:Name="vmHost"
             DialogService="{gn:WpfNavDialogService}"
             Navigator="{gn:NavService Home={x:Type vm:StartupViewModel}}"

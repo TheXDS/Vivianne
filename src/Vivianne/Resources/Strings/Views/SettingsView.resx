@@ -121,7 +121,7 @@
     <value>Launcher settings</value>
   </data>
   <data name="NFS3RootDirectory" xml:space="preserve">
-    <value>NFS3 Root directory</value>
+    <value>NFS3 root directory</value>
   </data>
   <data name="Browse" xml:space="preserve">
     <value>Browse...</value>
@@ -158,5 +158,20 @@
   </data>
   <data name="EnableCleanupTasksOnFCEFilesWhenSavingAVIVFile" xml:space="preserve">
     <value>Enable cleanup tasks on FCE files when saving a VIV file</value>
+  </data>
+  <data name="NFS2RootDirectory" xml:space="preserve">
+    <value>NFS2 / NFS2SE root directory</value>
+  </data>
+  <data name="NFS4RootDirectory" xml:space="preserve">
+    <value>NFS4 / NFSHS root directory</value>
+  </data>
+  <data name="Nfs2ExeLaunchArguments" xml:space="preserve">
+    <value>nfs2.exe / nfs2se.exe launch arguments</value>
+  </data>
+  <data name="Nfs4ExeLaunchArguments" xml:space="preserve">
+    <value>nfs4.exe / nfshs.exe launch arguments</value>
+  </data>
+  <data name="AdvancedSettings" xml:space="preserve">
+    <value>Advanced settings</value>
   </data>
 </root>

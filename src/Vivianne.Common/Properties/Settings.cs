@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using TheXDS.Ganymede.Configuration;
 using TheXDS.MCART.Resources.Strings;
@@ -26,13 +27,17 @@ public partial class Settings
         string[] sourceArray = [
             System.IO.Path.Combine(rootDir, "settings.development.json"),
             System.IO.Path.Combine(rootDir, "settings.debug.json"),
-            System.IO.Path.Combine(rootDir, "settings.json")
             ];
         var _configurationStore = new LocalFileSettingsStore(sourceArray.FirstOrDefault(System.IO.File.Exists) ?? System.IO.Path.Combine(localAppData, "settings.json"));
+        _repository = new JsonConfigurationRepository<Settings>(_configurationStore, new System.Text.Json.JsonSerializerOptions()
+        {
+            Converters = { new JsonStringEnumConverter() },
+            WriteIndented = true
+        });
 #else
         var _configurationStore = new LocalFileSettingsStore($"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/Vivianne/settings.json");
-#endif
         _repository = new JsonConfigurationRepository<Settings>(_configurationStore);
+#endif
     }
 
     /// <summary>
@@ -110,6 +115,22 @@ public partial class Settings
     /// Gets or sets the collection of recently accessed .bnk files.
     /// </summary>
     public RecentFileInfo[] RecentBnkFiles { get; set; }
+
+    /// <summary>
+    /// Gets or sets the path to the NFS2 main directory.
+    /// </summary>
+    public string? Nfs2Path { get; set; }
+
+    /// <summary>
+    /// Gets or sets a string with the command line arguments to pass onto
+    /// <c>nfs2.exe</c>/<c>nfs2se.exe</c> upon invocation.
+    /// </summary>
+    public string? Nfs2LaunchArgs { get; set; }
+
+    /// <summary>
+    /// Gets or sets the preferred NFS2 executable to launch.
+    /// </summary>
+    public string? Nfs2PreferredExe { get; set; }
 
     /// <summary>
     /// Gets or sets the path to the NFS3 main directory.

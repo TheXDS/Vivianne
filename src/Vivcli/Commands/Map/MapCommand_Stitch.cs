@@ -24,7 +24,7 @@ public partial class MapCommand
         }
 
         foreach (var item in sequence)
-        { 
+        {
             Console.Write($"{item}, ");
         }
         Console.WriteLine($"🔁 Loop to {current}");

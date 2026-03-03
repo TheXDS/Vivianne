@@ -53,6 +53,11 @@ public class StartupViewModel : ViewModel
     /// <summary>
     /// Gets a reference to the command used to launch NFS3.
     /// </summary>
+    public ICommand LaunchNfs2Command { get; }
+
+    /// <summary>
+    /// Gets a reference to the command used to launch NFS3.
+    /// </summary>
     public ICommand LaunchNfs3Command { get; }
 
     /// <summary>
@@ -101,6 +106,7 @@ public class StartupViewModel : ViewModel
         Title = St.StartupPage;
         var cb = CommandBuilder.For(this);
         SettingsCommand = cb.BuildSimple(OnSettings);
+        LaunchNfs2Command = cb.BuildSimple(OnLaunchNfs2);
         LaunchNfs3Command = cb.BuildSimple(OnLaunchNfs3);
         LaunchNfs4Command = cb.BuildSimple(OnLaunchNfs4);
         TerminateProcessCommand = cb.BuildSimple(proc => (proc as Process)?.Kill());
@@ -130,6 +136,16 @@ public class StartupViewModel : ViewModel
     private Task OnSettings()
     {
         return DialogService!.Show<SettingsViewModel>(new Ganymede.Models.DialogTemplate() { Title = St.Settings });
+    }
+
+    private Task OnLaunchNfs2()
+    {
+        return OnLaunchNfsProcess(
+            Settings.Current.Nfs2Path,
+            Settings.Current.Nfs2PreferredExe ??
+            InferPreferredNfsExe(GlobalConstants.KnownNfs2ProcesNames, Settings.Current.Nfs2Path) ?? "nfs2.exe",
+            Settings.Current.Nfs2LaunchArgs,
+            "Need For Speed 2");
     }
 
     private Task OnLaunchNfs3()
@@ -191,6 +207,11 @@ public class StartupViewModel : ViewModel
 
     private static Process? SearchForNfsProcess()
     {
-        return Process.GetProcessesByName("nfs3").Concat(Process.GetProcessesByName("nfs4")).FirstOrDefault();
+        return GlobalConstants.KnownNfsProcessNames.SelectMany(Process.GetProcessesByName).FirstOrDefault();
+    }
+
+    private static string? InferPreferredNfsExe(string[] candidates, string? nfsPath)
+    {
+        return candidates.FirstOrDefault(c => File.Exists(Path.Combine(nfsPath ?? string.Empty, $"{c}.exe")));
     }
 }

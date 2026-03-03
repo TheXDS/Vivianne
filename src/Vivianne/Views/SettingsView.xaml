@@ -3,23 +3,42 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:ct="clr-namespace:TheXDS.Vivianne.Controls"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:hlp="clr-namespace:TheXDS.Vivianne.Helpers"
     xmlns:local="clr-namespace:TheXDS.Vivianne.Views"
-    xmlns:mdlviv="clr-namespace:TheXDS.Vivianne.Models.Viv;assembly=VivLib"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mdlfe="clr-namespace:TheXDS.Vivianne.Models.Fe;assembly=VivLib"
+    xmlns:mdlviv="clr-namespace:TheXDS.Vivianne.Models.Viv;assembly=VivLib"
     xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings.Views"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-    xmlns:hlp="clr-namespace:TheXDS.Vivianne.Helpers"
     xmlns:viewmodels="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
+    Height="400"
+    MaxWidth="800"
     d:DataContext="{d:DesignInstance Type=viewmodels:SettingsViewModel}"
-    mc:Ignorable="d" 
-    d:DesignWidth="750"
-    Height="400">
+    mc:Ignorable="d">
     <TabControl Grid.Row="1" Margin="10">
         <TabItem Header="{x:Static st:SettingsView.LauncherSettings}">
-            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                 <StackPanel>
+                    <ui:CardControl Icon="{ui:SymbolIcon Symbol=Folder16}">
+                        <ui:CardControl.Header>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <ui:TextBlock
+                                    Grid.Row="0"
+                                    FontTypography="Body"
+                                    Text="{x:Static st:SettingsView.NFS2RootDirectory}" />
+                                <ui:TextBlock
+                                    Grid.Row="1"
+                                    Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                    Text="{Binding State.Nfs2Path, Mode=OneWay}" />
+                            </Grid>
+                        </ui:CardControl.Header>
+                        <ui:Button Command="{Binding BrowseNfs2PathCommand, Mode=OneWay}" Content="{x:Static st:SettingsView.Browse}" />
+                    </ui:CardControl>
                     <ui:CardControl Icon="{ui:SymbolIcon Symbol=Folder16}">
                         <ui:CardControl.Header>
                             <Grid>
@@ -37,7 +56,7 @@
                                     Text="{Binding State.Nfs3Path, Mode=OneWay}" />
                             </Grid>
                         </ui:CardControl.Header>
-                        <ui:Button Content="{x:Static st:SettingsView.Browse}" Command="{Binding BrowseNfs3PathCommand, Mode=OneWay}"/>
+                        <ui:Button Command="{Binding BrowseNfs3PathCommand, Mode=OneWay}" Content="{x:Static st:SettingsView.Browse}" />
                     </ui:CardControl>
                     <ui:CardControl Icon="{ui:SymbolIcon Symbol=Folder16}">
                         <ui:CardControl.Header>
@@ -49,50 +68,96 @@
                                 <ui:TextBlock
                                     Grid.Row="0"
                                     FontTypography="Body"
-                                    Text="NFS4 root directory" />
+                                    Text="{x:Static st:SettingsView.NFS4RootDirectory}" />
                                 <ui:TextBlock
                                     Grid.Row="1"
                                     Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
                                     Text="{Binding State.Nfs4Path, Mode=OneWay}" />
                             </Grid>
                         </ui:CardControl.Header>
-                        <ui:Button Content="{x:Static st:SettingsView.Browse}" Command="{Binding BrowseNfs4PathCommand, Mode=OneWay}"/>
+                        <ui:Button Command="{Binding BrowseNfs4PathCommand, Mode=OneWay}" Content="{x:Static st:SettingsView.Browse}" />
                     </ui:CardControl>
-                    <ui:CardControl Icon="{ui:SymbolIcon Symbol=WindowConsole20}">
-                        <ui:CardControl.Header>
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                                <ui:TextBlock
-                                    Grid.Row="0"
-                                    FontTypography="Body"
-                                    Text="{x:Static st:SettingsView.Nfs3ExeLaunchArguments}" />
-                                <ui:TextBox Grid.Row="1" Margin="0,5,0,0" Text="{Binding State.Nfs4LaunchArgs}"/>
-                            </Grid>
-                        </ui:CardControl.Header>
-                    </ui:CardControl>
-                    <ui:CardControl Icon="{ui:SymbolIcon Symbol=WindowConsole20}">
-                        <ui:CardControl.Header>
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                                <ui:TextBlock
-                                    Grid.Row="0"
-                                    FontTypography="Body"
-                                    Text="nfs4.exe/nfshs.exe launch arguments" />
-                                <ui:TextBox Grid.Row="1" Margin="0,5,0,0" Text="{Binding State.Nfs4LaunchArgs}"/>
-                            </Grid>
-                        </ui:CardControl.Header>
-                    </ui:CardControl>
+                    <Expander Header="{x:Static st:SettingsView.AdvancedSettings}">
+                        <StackPanel>
+                            <ui:CardControl Icon="{ui:SymbolIcon Symbol=WindowConsole20}">
+                                <ui:CardControl.Header>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <ui:TextBlock
+                                            Grid.Row="0"
+                                            FontTypography="Body"
+                                            Text="Preferred NFS2 executable" />
+                                    </Grid>
+                                </ui:CardControl.Header>
+                                <ComboBox
+                                    Width="200"
+                                    ItemsSource="{Binding AvailableNfs2ExeNames, Mode=OneWay}"
+                                    SelectedItem="{Binding State.Nfs2PreferredExe, Mode=TwoWay}" />
+                            </ui:CardControl>
+                            <ui:CardControl Icon="{ui:SymbolIcon Symbol=WindowConsole20}">
+                                <ui:CardControl.Header>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <ui:TextBlock
+                                            Grid.Row="0"
+                                            FontTypography="Body"
+                                            Text="{x:Static st:SettingsView.Nfs2ExeLaunchArguments}" />
+                                        <ui:TextBox
+                                            Grid.Row="1"
+                                            Margin="0,5,0,0"
+                                            Text="{Binding State.Nfs2LaunchArgs}" />
+                                    </Grid>
+                                </ui:CardControl.Header>
+                            </ui:CardControl>
+                            <ui:CardControl Icon="{ui:SymbolIcon Symbol=WindowConsole20}">
+                                <ui:CardControl.Header>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <ui:TextBlock
+                                            Grid.Row="0"
+                                            FontTypography="Body"
+                                            Text="{x:Static st:SettingsView.Nfs3ExeLaunchArguments}" />
+                                        <ui:TextBox
+                                            Grid.Row="1"
+                                            Margin="0,5,0,0"
+                                            Text="{Binding State.Nfs4LaunchArgs}" />
+                                    </Grid>
+                                </ui:CardControl.Header>
+                            </ui:CardControl>
+                            <ui:CardControl Icon="{ui:SymbolIcon Symbol=WindowConsole20}">
+                                <ui:CardControl.Header>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <ui:TextBlock
+                                            Grid.Row="0"
+                                            FontTypography="Body"
+                                            Text="{x:Static st:SettingsView.Nfs4ExeLaunchArguments}" />
+                                        <ui:TextBox
+                                            Grid.Row="1"
+                                            Margin="0,5,0,0"
+                                            Text="{Binding State.Nfs4LaunchArgs}" />
+                                    </Grid>
+                                </ui:CardControl.Header>
+                            </ui:CardControl>
+                        </StackPanel>
+                    </Expander>
                 </StackPanel>
             </ScrollViewer>
         </TabItem>
         <TabItem Header="{x:Static st:SettingsView.General}">
-            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                 <StackPanel>
                     <ui:CardControl Icon="{ui:SymbolIcon Symbol=Document16}">
                         <ui:CardControl.Header>
@@ -106,13 +171,13 @@
                                     FontTypography="BodyStrong"
                                     Text="{x:Static st:SettingsView.FileBackup}" />
                                 <ui:TextBlock
-                                    TextWrapping="Wrap"
                                     Grid.Row="1"
                                     Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                                    Text="{x:Static st:SettingsView.BackupFilesUponSaving}" />
+                                    Text="{x:Static st:SettingsView.BackupFilesUponSaving}"
+                                    TextWrapping="Wrap" />
                             </Grid>
                         </ui:CardControl.Header>
-                        <ui:ToggleSwitch IsChecked="{Binding State.AutoBackup}"/>
+                        <ui:ToggleSwitch IsChecked="{Binding State.AutoBackup}" />
                     </ui:CardControl>
                     <ui:CardControl Icon="{ui:SymbolIcon Symbol=Document16}">
                         <ui:CardControl.Header>
@@ -126,19 +191,19 @@
                                     FontTypography="BodyStrong"
                                     Text="{x:Static st:SettingsView.RecentFiles}" />
                                 <ui:TextBlock
-                                    TextWrapping="Wrap"
                                     Grid.Row="1"
                                     Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                                    Text="{x:Static st:SettingsView.NumberOfRecentFilesToKeepOnTheList}" />
+                                    Text="{x:Static st:SettingsView.NumberOfRecentFilesToKeepOnTheList}"
+                                    TextWrapping="Wrap" />
                             </Grid>
                         </ui:CardControl.Header>
                         <ui:NumberBox
-                            Width="150"
                             Grid.Row="1"
-                            Minimum="0"
-                            Maximum="100"
+                            Width="150"
                             Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                            Value="{Binding State.RecentFilesCount}"/>
+                            Maximum="100"
+                            Minimum="0"
+                            Value="{Binding State.RecentFilesCount}" />
                     </ui:CardControl>
                     <ui:CardControl Icon="{ui:SymbolIcon Symbol=Globe24}">
                         <ui:CardControl.Header>
@@ -152,21 +217,21 @@
                                     FontTypography="BodyStrong"
                                     Text="Preferred FeData language" />
                                 <ui:TextBlock
-                                    TextWrapping="Wrap"
                                     Grid.Row="1"
                                     Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                                    Text="Specifies the preferred FeData language to use when showing FeData information, such as Car colors or performance metrics." />
+                                    Text="Specifies the preferred FeData language to use when showing FeData information, such as Car colors or performance metrics."
+                                    TextWrapping="Wrap" />
                             </Grid>
                         </ui:CardControl.Header>
                         <ComboBox
-                            SelectedValue="{Binding State.PreferredFeDataLang}"
-                            ItemsSource="{ct:NamedEnumValProvider EnumType={x:Type mdlfe:FeDataLang}}"
                             Width="250"
+                            DisplayMemberPath="Name"
                             IsEditable="False"
-                            SelectedValuePath="Value"
-                            DisplayMemberPath="Name"/>
+                            ItemsSource="{ct:NamedEnumValProvider EnumType={x:Type mdlfe:FeDataLang}}"
+                            SelectedValue="{Binding State.PreferredFeDataLang}"
+                            SelectedValuePath="Value" />
                     </ui:CardControl>
-                    <ui:CardControl hlp:Form.BetaIndicator="true" Icon="{ui:SymbolIcon Symbol=Open24}">
+                    <ui:CardControl Icon="{ui:SymbolIcon Symbol=Open24}">
                         <ui:CardControl.Header>
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -178,22 +243,25 @@
                                     FontTypography="BodyStrong"
                                     Text="File associations" />
                                 <ui:TextBlock
-                                    TextWrapping="Wrap"
                                     Grid.Row="1"
                                     Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                                    Text="Click this button to associate known file extensions with Vivianne." />
+                                    Text="Click this button to associate known file extensions with Vivianne."
+                                    TextWrapping="Wrap" />
                             </Grid>
                         </ui:CardControl.Header>
-                        <ui:Button Icon="{ui:SymbolIcon Symbol=Shield24}" Content="Associate files" Command="{Binding SetFileAssociationsCommand, Mode=OneWay}"/>
+                        <ui:Button
+                            Command="{Binding SetFileAssociationsCommand, Mode=OneWay}"
+                            Content="Associate files"
+                            Icon="{ui:SymbolIcon Symbol=Shield24}" />
                     </ui:CardControl>
 
                 </StackPanel>
             </ScrollViewer>
         </TabItem>
         <TabItem Header="{x:Static st:SettingsView.VIVEditor}">
-            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                 <StackPanel>
-                    <ui:CardControl Icon="{ui:SymbolIcon Symbol=Document16}">
+                    <ui:CardControl hlp:Form.BetaIndicator="True" Icon="{ui:SymbolIcon Symbol=Document16}">
                         <ui:CardControl.Header>
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -205,13 +273,13 @@
                                     FontTypography="BodyStrong"
                                     Text="{x:Static st:SettingsView.CheckSerialNumbers}" />
                                 <ui:TextBlock
-                                    TextWrapping="Wrap"
                                     Grid.Row="1"
                                     Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                                    Text="{x:Static st:SettingsView.EnableSerialNumberCheckupWhenSavingAVIVFile}" />
+                                    Text="{x:Static st:SettingsView.EnableSerialNumberCheckupWhenSavingAVIVFile}"
+                                    TextWrapping="Wrap" />
                             </Grid>
                         </ui:CardControl.Header>
-                        <ui:ToggleSwitch IsChecked="{Binding State.Viv_CheckSnOnSave}"/>
+                        <ui:ToggleSwitch IsChecked="{Binding State.Viv_CheckSnOnSave}" />
                     </ui:CardControl>
                     <ui:CardControl Icon="{ui:SymbolIcon Symbol=ArrowSort24}">
                         <ui:CardControl.Header>
@@ -225,25 +293,25 @@
                                     FontTypography="BodyStrong"
                                     Text="Directory sorting" />
                                 <ui:TextBlock
-                                    TextWrapping="Wrap"
                                     Grid.Row="1"
                                     Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                                    Text="Specifies the sorting to use on the VIV directory" />
+                                    Text="Specifies the sorting to use on the VIV directory"
+                                    TextWrapping="Wrap" />
                             </Grid>
                         </ui:CardControl.Header>
                         <ComboBox
-                            SelectedValue="{Binding State.Viv_FileSorting}"
-                            ItemsSource="{ct:NamedEnumValProvider EnumType={x:Type mdlviv:SortType}}"
                             Width="250"
+                            DisplayMemberPath="Name"
                             IsEditable="False"
-                            SelectedValuePath="Value"
-                            DisplayMemberPath="Name"/>
+                            ItemsSource="{ct:NamedEnumValProvider EnumType={x:Type mdlviv:SortType}}"
+                            SelectedValue="{Binding State.Viv_FileSorting}"
+                            SelectedValuePath="Value" />
                     </ui:CardControl>
                 </StackPanel>
             </ScrollViewer>
         </TabItem>
         <TabItem Header="BNK editor">
-            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                 <StackPanel>
                     <ui:CardControl Icon="{ui:SymbolIcon Symbol=Info16}">
                         <ui:CardControl.Header>
@@ -257,13 +325,13 @@
                                     FontTypography="BodyStrong"
                                     Text="Display info panel by default" />
                                 <ui:TextBlock
-                                    TextWrapping="Wrap"
                                     Grid.Row="1"
                                     Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                                    Text="When enabled, allows the info panel to be displayed by default when opening a BNK file." />
+                                    Text="When enabled, allows the info panel to be displayed by default when opening a BNK file."
+                                    TextWrapping="Wrap" />
                             </Grid>
                         </ui:CardControl.Header>
-                        <ui:ToggleSwitch IsChecked="{Binding State.Bnk_InfoOpenByDefault}"/>
+                        <ui:ToggleSwitch IsChecked="{Binding State.Bnk_InfoOpenByDefault}" />
                     </ui:CardControl>
                     <ui:CardControl Icon="{ui:SymbolIcon Symbol=Speaker224}">
                         <ui:CardControl.Header>
@@ -277,15 +345,21 @@
                                     FontTypography="BodyStrong"
                                     Text="Default volume normalization" />
                                 <ui:TextBlock
-                                    TextWrapping="Wrap"
                                     Grid.Row="1"
                                     Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                                    Text="Specifies the default max volume when using the 'Normalize Volume' tool in the BNK editor." />
+                                    Text="Specifies the default max volume when using the 'Normalize Volume' tool in the BNK editor."
+                                    TextWrapping="Wrap" />
                             </Grid>
                         </ui:CardControl.Header>
-                        <ui:NumberBox Value="{Binding State.Bnk_DefaultNormalization, StringFormat={}{0:0.00}}" Width="150" Minimum="0.0" Maximum="1.0" LargeChange="0.1" SmallChange="0.01"/>
+                        <ui:NumberBox
+                            Width="150"
+                            LargeChange="0.1"
+                            Maximum="1.0"
+                            Minimum="0.0"
+                            SmallChange="0.01"
+                            Value="{Binding State.Bnk_DefaultNormalization, StringFormat={}{0:0.00}}" />
                     </ui:CardControl>
-                    <ui:CardControl Icon="{ui:SymbolIcon Symbol=Delete24}">
+                    <ui:CardControl hlp:Form.BetaIndicator="True" Icon="{ui:SymbolIcon Symbol=Delete24}">
                         <ui:CardControl.Header>
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -297,15 +371,15 @@
                                     FontTypography="BodyStrong"
                                     Text="Keep trash outside of sample data" />
                                 <ui:TextBlock
-                                    TextWrapping="Wrap"
                                     Grid.Row="1"
                                     Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                                    Text="When enabled, forces the BNK editor to keep any unreferenced trash data that might exist outside of the sample data of all audio streams." />
+                                    Text="When enabled, forces the BNK editor to keep any unreferenced trash data that might exist outside of the sample data of all audio streams."
+                                    TextWrapping="Wrap" />
                             </Grid>
                         </ui:CardControl.Header>
-                        <ui:ToggleSwitch IsChecked="{Binding State.Bnk_KeepTrash}"/>
+                        <ui:ToggleSwitch IsChecked="{Binding State.Bnk_KeepTrash}" />
                     </ui:CardControl>
-                    <ui:CardControl Icon="{ui:SymbolIcon Symbol=Broom24}">
+                    <ui:CardControl hlp:Form.BetaIndicator="True" Icon="{ui:SymbolIcon Symbol=Broom24}">
                         <ui:CardControl.Header>
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -317,19 +391,19 @@
                                     FontTypography="BodyStrong"
                                     Text="Trim looping audio on cleanup" />
                                 <ui:TextBlock
-                                    TextWrapping="Wrap"
                                     Grid.Row="1"
                                     Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                                    Text="When enabled, running the cleanup tool will also trim the looping sections of audio on all streams by removing the sections outside their respective loops." />
+                                    Text="When enabled, running the cleanup tool will also trim the looping sections of audio on all streams by removing the sections outside their respective loops."
+                                    TextWrapping="Wrap" />
                             </Grid>
                         </ui:CardControl.Header>
-                        <ui:ToggleSwitch IsChecked="{Binding State.Bnk_TrimLoopsOnCleanup}"/>
+                        <ui:ToggleSwitch IsChecked="{Binding State.Bnk_TrimLoopsOnCleanup}" />
                     </ui:CardControl>
                 </StackPanel>
             </ScrollViewer>
         </TabItem>
         <TabItem Header="Carp editor">
-            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                 <StackPanel>
                     <ui:CardControl Icon="{ui:SymbolIcon Symbol=DocumentMultipleSync20}">
                         <ui:CardControl.Header>
@@ -343,19 +417,19 @@
                                     FontTypography="BodyStrong"
                                     Text="Sync Carp changes" />
                                 <ui:TextBlock
-                                    TextWrapping="Wrap"
                                     Grid.Row="1"
                                     Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                                    Text="When enabled, syncs changes made on the current Carp file for performance data to all FeData files in the VIV directory." />
+                                    Text="When enabled, syncs changes made on the current Carp file for performance data to all FeData files in the VIV directory."
+                                    TextWrapping="Wrap" />
                             </Grid>
                         </ui:CardControl.Header>
-                        <ui:ToggleSwitch IsChecked="{Binding State.Carp_SyncChanges}"/>
+                        <ui:ToggleSwitch IsChecked="{Binding State.Carp_SyncChanges}" />
                     </ui:CardControl>
                 </StackPanel>
             </ScrollViewer>
         </TabItem>
         <TabItem Header="FeData editor">
-            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                 <StackPanel>
                     <ui:CardControl Icon="{ui:SymbolIcon Symbol=DocumentMultipleSync20}">
                         <ui:CardControl.Header>
@@ -369,19 +443,19 @@
                                     FontTypography="BodyStrong"
                                     Text="Sync FeData changes" />
                                 <ui:TextBlock
-                                    TextWrapping="Wrap"
                                     Grid.Row="1"
                                     Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                                    Text="When enabled, syncs changes made on the current FeData file to the other FeData files in the VIV directory as well as Carp." />
+                                    Text="When enabled, syncs changes made on the current FeData file to the other FeData files in the VIV directory as well as Carp."
+                                    TextWrapping="Wrap" />
                             </Grid>
                         </ui:CardControl.Header>
-                        <ui:ToggleSwitch IsChecked="{Binding State.Fe_SyncChanges}"/>
+                        <ui:ToggleSwitch IsChecked="{Binding State.Fe_SyncChanges}" />
                     </ui:CardControl>
                 </StackPanel>
             </ScrollViewer>
         </TabItem>
         <TabItem Header="FCE editor">
-            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                 <StackPanel>
                     <ui:CardControl Icon="{ui:SymbolIcon Symbol=ArrowMove24}">
                         <ui:CardControl.Header>
@@ -395,15 +469,15 @@
                                     FontTypography="BodyStrong"
                                     Text="Center model automatically" />
                                 <ui:TextBlock
-                                    TextWrapping="Wrap"
                                     Grid.Row="1"
                                     Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                                    Text="When enabled, the model will be automatically centered when saving an FCE file." />
+                                    Text="When enabled, the model will be automatically centered when saving an FCE file."
+                                    TextWrapping="Wrap" />
                             </Grid>
                         </ui:CardControl.Header>
-                        <ui:ToggleSwitch IsChecked="{Binding State.Fce_CenterModel}"/>
+                        <ui:ToggleSwitch IsChecked="{Binding State.Fce_CenterModel}" />
                     </ui:CardControl>
-                    <ui:CardControl Icon="{ui:SymbolIcon Symbol=Broom24}">
+                    <ui:CardControl hlp:Form.BetaIndicator="True" Icon="{ui:SymbolIcon Symbol=Broom24}">
                         <ui:CardControl.Header>
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -417,11 +491,11 @@
                                 <ui:TextBlock
                                     Grid.Row="1"
                                     Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                                    TextWrapping="Wrap"
-                                    Text="When enabled, the FCE data will be cleaned up upon saving (removing unused names, naming unnamed parts, cleaning out invalid triangle flags, etc.)" />
+                                    Text="When enabled, the FCE data will be cleaned up upon saving (removing unused names, naming unnamed parts, cleaning out invalid triangle flags, etc.)"
+                                    TextWrapping="Wrap" />
                             </Grid>
                         </ui:CardControl.Header>
-                        <ui:ToggleSwitch IsChecked="{Binding State.Fce_CleanupOnSave}" IsEnabled="False"/>
+                        <ui:ToggleSwitch IsChecked="{Binding State.Fce_CleanupOnSave}" IsEnabled="False" />
                     </ui:CardControl>
                     <ui:CardControl Icon="{ui:SymbolIcon Symbol=SquareShadow20}">
                         <ui:CardControl.Header>
@@ -437,11 +511,11 @@
                                 <ui:TextBlock
                                     Grid.Row="1"
                                     Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                                    TextWrapping="Wrap"
-                                    Text="When enabled, the FCE editor will enable rendering of the car bounding box shadow by default." />
+                                    Text="When enabled, the FCE editor will enable rendering of the car bounding box shadow by default."
+                                    TextWrapping="Wrap" />
                             </Grid>
                         </ui:CardControl.Header>
-                        <ui:ToggleSwitch IsChecked="{Binding State.Fce_ShadowByDefault}"/>
+                        <ui:ToggleSwitch IsChecked="{Binding State.Fce_ShadowByDefault}" />
                     </ui:CardControl>
                     <ui:CardControl Icon="{ui:SymbolIcon Symbol=Image24}">
                         <ui:CardControl.Header>
@@ -457,11 +531,11 @@
                                 <ui:TextBlock
                                     Grid.Row="1"
                                     Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                                    TextWrapping="Wrap"
-                                    Text="When enabled, lists all compatible images as textures for rendering FCE models instead of .TGA files only." />
+                                    Text="When enabled, lists all compatible images as textures for rendering FCE models instead of listing .TGA files only."
+                                    TextWrapping="Wrap" />
                             </Grid>
                         </ui:CardControl.Header>
-                        <ui:ToggleSwitch IsChecked="{Binding State.Fce_EnumerateAllImages}"/>
+                        <ui:ToggleSwitch IsChecked="{Binding State.Fce_EnumerateAllImages}" />
                     </ui:CardControl>
                 </StackPanel>
             </ScrollViewer>
@@ -469,26 +543,39 @@
         <TabItem Header="About">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="2*" />
                 </Grid.ColumnDefinitions>
-                <Image Source="/Resources/Images/vivianne.png" Margin="50"/>
-                <TextBlock Opacity="0.3" VerticalAlignment="Bottom" FontSize="8">Powered by MCART / Ganymede</TextBlock>
-                <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" TextBlock.FontFamily="{StaticResource MuliLight}">
-                    <TextBlock HorizontalAlignment="Center" FontSize="24" FontFamily="{StaticResource nfsFont}">Vivianne</TextBlock>
+                <Image Margin="50" Source="/Resources/Images/vivianne.png" />
+                <TextBlock
+                    VerticalAlignment="Bottom"
+                    FontSize="8"
+                    Opacity="0.3">
+                    Powered by MCART / Ganymede
+                </TextBlock>
+                <StackPanel
+                    Grid.Column="1"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    TextBlock.FontFamily="{StaticResource MuliLight}">
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        FontFamily="{StaticResource nfsFont}"
+                        FontSize="24">
+                        Vivianne
+                    </TextBlock>
                     <TextBlock HorizontalAlignment="Center">A NFS modding tool</TextBlock>
-                    <Separator/>
-                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                        <TextBlock TextWrapping="Wrap" Width="400">
-                            Version <Run Text="{Binding Version, Mode=OneWay}"/>
-                            <LineBreak/><LineBreak/>
-                            Created by TheXDS!<LineBreak/><Hyperlink NavigateUri="https://github.com/TheXDS/Vivianne/" Click="Hyperlink_Click">GitHub Repo</Hyperlink>
-                            <LineBreak/><LineBreak/>
-                            Released under the <Hyperlink NavigateUri="https://mit-license.org/" Click="Hyperlink_Click">MIT</Hyperlink> license.
-                            <LineBreak/><LineBreak/>
-                            Special thanks to:<LineBreak/>
-                            Rata536, AJ_Lethal, Skoti_nfs, VEG, Exotic_Lover, TsTg, pete and the rest of the NFS2/3/4 modding community in our Discord server. You guys are awesome!
-                        </TextBlock>
+                    <Separator />
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                        <TextBlock Width="400" TextWrapping="Wrap">
+                            Version<Run Text="{Binding Version, Mode=OneWay}" />
+                            <LineBreak /><LineBreak />
+                            Created by TheXDS!<LineBreak /><Hyperlink Click="Hyperlink_Click" NavigateUri="https://github.com/TheXDS/Vivianne/">GitHub Repo</Hyperlink>
+                            <LineBreak /><LineBreak />
+                            Released under the<Hyperlink Click="Hyperlink_Click" NavigateUri="https://mit-license.org/">MIT</Hyperlink>
+                            license.<LineBreak /><LineBreak />
+                            Special thanks to:<LineBreak />
+                            Rata536, AJ_Lethal, Skoti_nfs, VEG, Exotic_Lover, TsTg, pete and the rest of the NFS2/3/4 modding community in our Discord server. You guys are awesome!</TextBlock>
                     </ScrollViewer>
                 </StackPanel>
             </Grid>

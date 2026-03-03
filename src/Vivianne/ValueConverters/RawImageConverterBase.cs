@@ -44,7 +44,7 @@ public abstract class RawImageConverterBase
         if (value is null) return null;
         try
         {
-            if (System.Text.Encoding.Latin1.GetString(value[0..4]) == "SHPI" || RefPackCodec.IsCompressed(value)) return TryLoadFsh(value, textureColor, enableAlpha);        
+            if (System.Text.Encoding.Latin1.GetString(value[0..4]) == "SHPI" || RefPackCodec.IsCompressed(value)) return TryLoadFsh(value, textureColor, enableAlpha);
             return Image.Load(value) switch
             {
                 Image<Rgba32> i => ConvertImageToBitmapSource(FshBlobFormat.Argb32, i, textureColor, enableAlpha),
@@ -123,8 +123,6 @@ public abstract class RawImageConverterBase
             FshBlobFormat.Argb32 => PixelFormats.Bgra32,
             FshBlobFormat.Rgb24 => PixelFormats.Bgr24,
             FshBlobFormat.Rgb565 => PixelFormats.Bgr565,
-            //FshBlobFormat.Indexed8 => PixelFormats.Indexed8,
-
             /* Formats that do not have a pixel format directly supported by
              * WPF need to be converted to BGRA32 */
             _ => PixelFormats.Bgra32

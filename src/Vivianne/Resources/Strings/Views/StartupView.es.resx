@@ -132,4 +132,19 @@
   <data name="ExtraTools" xml:space="preserve">
     <value>Herramientas adicionales</value>
   </data>
+  <data name="LaunchNFS4" xml:space="preserve">
+    <value>Ejecutar NFS4</value>
+  </data>
+  <data name="LaunchNFS2" xml:space="preserve">
+    <value>Ejecutar NFS2</value>
+  </data>
+  <data name="FceEditor" xml:space="preserve">
+    <value>Editor FCE</value>
+  </data>
+  <data name="BnkEditor" xml:space="preserve">
+    <value>Editor BNK</value>
+  </data>
+  <data name="MusAsfPlayer" xml:space="preserve">
+    <value>Reproductor MUS/ASF</value>
+  </data>
 </root>

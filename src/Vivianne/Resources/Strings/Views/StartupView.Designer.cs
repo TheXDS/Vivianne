@@ -19,7 +19,7 @@ namespace TheXDS.Vivianne.Resources.Strings.Views {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class StartupView {
@@ -61,11 +61,29 @@ namespace TheXDS.Vivianne.Resources.Strings.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to BNK Editor.
+        /// </summary>
+        public static string BnkEditor {
+            get {
+                return ResourceManager.GetString("BnkEditor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Extra tools.
         /// </summary>
         public static string ExtraTools {
             get {
                 return ResourceManager.GetString("ExtraTools", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FCE Editor.
+        /// </summary>
+        public static string FceEditor {
+            get {
+                return ResourceManager.GetString("FceEditor", resourceCulture);
             }
         }
         
@@ -79,11 +97,38 @@ namespace TheXDS.Vivianne.Resources.Strings.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Launch NFS2.
+        /// </summary>
+        public static string LaunchNFS2 {
+            get {
+                return ResourceManager.GetString("LaunchNFS2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Launch NFS3.
         /// </summary>
         public static string LaunchNFS3 {
             get {
                 return ResourceManager.GetString("LaunchNFS3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Launch NFS4.
+        /// </summary>
+        public static string LaunchNFS4 {
+            get {
+                return ResourceManager.GetString("LaunchNFS4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MUS/ASF player.
+        /// </summary>
+        public static string MusAsfPlayer {
+            get {
+                return ResourceManager.GetString("MusAsfPlayer", resourceCulture);
             }
         }
         

@@ -10,10 +10,13 @@ namespace TheXDS.Vivianne.Models;
 /// </summary>
 public class SettingsState : EditorViewModelStateBase
 {
+    private string? _nfs2Path;
     private string? _nfs3Path;
+    private string? _nfs2PreferredExe;
     private bool _autoBackup;
     private bool _vivCheckSnOnSave;
     private bool _fceCleanupOnSave;
+    private string? _nfs2LaunchArgs;
     private string? _nfs3LaunchArgs;
     private int _recentFilesCount;
     private bool _bnk_InfoOpenByDefault;
@@ -31,10 +34,38 @@ public class SettingsState : EditorViewModelStateBase
     private FeDataLang _preferredFeDataLang;
 
     /// <summary>
+    /// Gets or sets the path to the NFS2 main directory.
+    /// </summary>
+    public string? Nfs2Path
+    {
+        get => _nfs2Path;
+        set => Change(ref _nfs2Path, value);
+    }
+
+    /// <summary>
+    /// Gets or sets a string with the command line arguments to pass onto
+    /// <c>nfs2.exe</c>/<c>nfs2se.exe</c> upon invocation.
+    /// </summary>
+    public string? Nfs2LaunchArgs
+    {
+        get => _nfs2LaunchArgs;
+        set => Change(ref _nfs2LaunchArgs, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the preferred NFS2 executable to launch.
+    /// </summary>
+    public string? Nfs2PreferredExe
+    {
+        get => _nfs2PreferredExe;
+        set => Change(ref _nfs2PreferredExe, value);
+    }
+
+    /// <summary>
     /// Gets or sets the path to the NFS4 main directory.
     /// </summary>
     public string? Nfs4Path
-    { 
+    {
         get => _nfs4Path;
         set => Change(ref _nfs4Path, value);
     }
@@ -44,7 +75,7 @@ public class SettingsState : EditorViewModelStateBase
     /// <c>nfs4.exe</c> upon invocation.
     /// </summary>
     public string? Nfs4LaunchArgs
-    { 
+    {
         get => _nfs4LaunchArgs;
         set => Change(ref _nfs4LaunchArgs, value);
     }
@@ -72,7 +103,7 @@ public class SettingsState : EditorViewModelStateBase
     /// use for extraction and presentation of data throughout Vivianne.
     /// </summary>
     public FeDataLang PreferredFeDataLang
-    { 
+    {
         get => _preferredFeDataLang;
         set => Change(ref _preferredFeDataLang, value);
     }
@@ -117,7 +148,7 @@ public class SettingsState : EditorViewModelStateBase
     /// gets or sets a value that indicates if the info panel will be opened by default.
     /// </summary>
     public bool Bnk_InfoOpenByDefault
-    { 
+    {
         get => _bnk_InfoOpenByDefault;
         set => Change(ref _bnk_InfoOpenByDefault, value);
     }
@@ -127,7 +158,7 @@ public class SettingsState : EditorViewModelStateBase
     /// for the normalization tool in the BNK editor.
     /// </summary>
     public double Bnk_DefaultNormalization
-    { 
+    {
         get => _bnk_DefaultNormalization;
         set => Change(ref _bnk_DefaultNormalization, value);
     }
@@ -147,7 +178,7 @@ public class SettingsState : EditorViewModelStateBase
     /// trim any loops of audio to just the looping sections.
     /// </summary>
     public bool Bnk_TrimLoopsOnCleanup
-    { 
+    {
         get => _bnk_TrimLoopsOnCleanup;
         set => Change(ref _bnk_TrimLoopsOnCleanup, value);
     }
@@ -157,7 +188,7 @@ public class SettingsState : EditorViewModelStateBase
     /// is enabled when editing a Carp file.
     /// </summary>
     public bool Carp_SyncChanges
-    { 
+    {
         get => _carp_SyncChanges;
         set => Change(ref _carp_SyncChanges, value);
     }
@@ -166,7 +197,7 @@ public class SettingsState : EditorViewModelStateBase
     /// gets or sets a value that indicates if the FCE model will be centered automatically when saving an FCE file.
     /// </summary>
     public bool Fce_CenterModel
-    { 
+    {
         get => _fce_CenterModel;
         set => Change(ref _fce_CenterModel, value);
     }
@@ -176,7 +207,7 @@ public class SettingsState : EditorViewModelStateBase
     /// car shadow toggle by default.
     /// </summary>
     public bool Fce_ShadowByDefault
-    { 
+    {
         get => _fce_ShadowByDefault;
         set => Change(ref _fce_ShadowByDefault, value);
     }
@@ -187,7 +218,7 @@ public class SettingsState : EditorViewModelStateBase
     /// will be listed.
     /// </summary>
     public bool Fce_EnumerateAllImages
-    { 
+    {
         get => _fce_EnumerateAllImages;
         set => Change(ref _fce_EnumerateAllImages, value);
     }
@@ -197,7 +228,7 @@ public class SettingsState : EditorViewModelStateBase
     /// between FeData files and carp when editing a FeData file.
     /// </summary>
     public bool Fe_SyncChanges
-    { 
+    {
         get => _fe_SyncChanges;
         set => Change(ref _fe_SyncChanges, value);
     }
@@ -206,7 +237,7 @@ public class SettingsState : EditorViewModelStateBase
     /// Gets or sets a value that indicates the file sorting order for the VIV directory.
     /// </summary>
     public SortType Viv_FileSorting
-    { 
+    {
         get => _viv_FileSorting;
         set => Change(ref _viv_FileSorting, value);
     }
@@ -220,6 +251,9 @@ public class SettingsState : EditorViewModelStateBase
     {
         return new SettingsState
         {
+            Nfs2Path = settings.Nfs2Path,
+            Nfs2LaunchArgs = settings.Nfs2LaunchArgs,
+            Nfs2PreferredExe = settings.Nfs2PreferredExe,
             Nfs3Path = settings.Nfs3Path,
             Nfs3LaunchArgs = settings.Nfs3LaunchArgs,
             Nfs4Path = settings.Nfs4Path,
@@ -251,6 +285,9 @@ public class SettingsState : EditorViewModelStateBase
     {
         return new Settings
         {
+            Nfs2Path = settings.Nfs2Path,
+            Nfs2LaunchArgs = settings.Nfs2LaunchArgs,
+            Nfs2PreferredExe = settings.Nfs2PreferredExe,
             Nfs3Path = settings.Nfs3Path,
             Nfs3LaunchArgs = settings.Nfs3LaunchArgs,
             Nfs4Path = settings.Nfs4Path,

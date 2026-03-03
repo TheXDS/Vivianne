@@ -4,7 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TheXDS.Ganymede.Helpers;
+using TheXDS.Ganymede.Resources;
+using TheXDS.MCART.Types;
 using TheXDS.MCART.Types.Extensions;
+using TheXDS.Vivianne.Component;
 using TheXDS.Vivianne.Models.Carp.Base;
 using TheXDS.Vivianne.Properties;
 using TheXDS.Vivianne.Resources;
@@ -195,7 +198,7 @@ public class CarpEditorViewModel<TState, TFile, TCarClass> : StatefulFileEditorV
 
     private void Vm_StateSaved(object? sender, EventArgs e)
     {
-        State.UnsavedChanges = true;        
+        State.UnsavedChanges = true;
     }
 
     private async Task<ICollection<double>> RunCurveEditor(ICollection<double> c, bool allowCollectionGrow = true)
@@ -207,10 +210,10 @@ public class CarpEditorViewModel<TState, TFile, TCarClass> : StatefulFileEditorV
         return vm.State.TargetCollection;
     }
 
-    private Task OnPerformanceMetrics()
+    private async Task OnPerformanceMetrics()
     {
         var a = Mappings.GetTextProviderFromFeDataLanguage(State, Settings.Current.PreferredFeDataLang);
-        return DialogService!.Message(St.PerformanceMetrics, string.Format(St.PerformanceMetricsDetails,
+        var perfMetrics = string.Format(St.PerformanceMetricsDetails,
             a.Weight,
             a.TopSpeed,
             a.Power,
@@ -219,6 +222,8 @@ public class CarpEditorViewModel<TState, TFile, TCarClass> : StatefulFileEditorV
             a.Tires,
             a.Gearbox,
             a.Accel0To60,
-            a.Accel0To100));
+            a.Accel0To100);
+
+        (await DialogService!.Show(Dialogs.PerfMetrics(perfMetrics), DialogOptions.OkAndCopyText(perfMetrics))).Invoke();
     }
 }

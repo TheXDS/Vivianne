@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using TheXDS.Ganymede.Models;
+using TheXDS.MCART.Types.Extensions;
 
 namespace TheXDS.Vivianne.Data;
 
@@ -71,7 +72,7 @@ public readonly record struct FileTypeInfo(
         string progId,
         string fileDescription,
         bool isPrimary = true)
-        : this(fileExtensions, contentVisualizerFactory, progId, fileDescription, isPrimary, 5)        
+        : this(fileExtensions, contentVisualizerFactory, progId, fileDescription, isPrimary, 5)
     {
     }
 
@@ -103,7 +104,17 @@ public readonly record struct FileTypeInfo(
     /// file filters to use for opening or saving a file represented by this
     /// value.
     /// </summary>
-    public FileFilterItem[] Filters { get; } = [..FileExtensions.Select(p => new FileFilterItem(FileDescription, $"*{p}")), FileFilterItem.AllFiles];
+    public FileFilterItem[] Filters { get; } =
+        FileExtensions.Length >= 1
+        ? [
+            new FileFilterItem(FileDescription, [.. FileExtensions.Select(p => $"*{p}")]),
+            .. FileExtensions.Select(p => new FileFilterItem(FileDescription, $"*{p}")),
+            FileFilterItem.AllFiles]
+        : FileExtensions.Length == 1
+        ? [
+            new FileFilterItem(FileDescription, $"*{FileExtensions[0]}"),
+            FileFilterItem.AllFiles]
+        :[FileFilterItem.AllFiles];
 
     /// <summary>
     /// Gets an array of <see cref="FileFilterItem"/> objects that describe the

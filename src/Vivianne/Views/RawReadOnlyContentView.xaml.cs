@@ -1,5 +1,4 @@
-﻿using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 
 namespace TheXDS.Vivianne.Views;
 
@@ -15,10 +14,5 @@ public partial class RawReadOnlyContentView : UserControl
     public RawReadOnlyContentView()
     {
         InitializeComponent();
-    }
-
-    private void Button_Click(object sender, RoutedEventArgs e)
-    {
-        Clipboard.SetText(TxtRawContents.Text);
     }
 }

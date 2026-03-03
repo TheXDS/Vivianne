@@ -42,14 +42,15 @@ public class FileSystemBackingStore(IDialogService dialogSvc, IEnumerable<FileFi
 
     byte[] IDictionary<string, byte[]>.this[string key]
     {
-        get => File.ReadAllBytes(key);
-        set => File.WriteAllBytes(key, value);
+        get => File.ReadAllBytes(Path.Combine(Path.GetDirectoryName(path) ?? "", key));
+        set => File.WriteAllBytes(Path.Combine(Path.GetDirectoryName(path) ?? "", key), value);
     }
 
     /// <inheritdoc/>
     public async Task<byte[]?> ReadAsync(string fileName)
     {
-        return File.Exists(fileName) ? await File.ReadAllBytesAsync(fileName) : null;
+        var filePath = Path.Combine(Path.GetDirectoryName(path) ?? "", fileName);
+        return File.Exists(filePath) ? await File.ReadAllBytesAsync(filePath) : null;
     }
 
     /// <inheritdoc/>
@@ -57,8 +58,8 @@ public class FileSystemBackingStore(IDialogService dialogSvc, IEnumerable<FileFi
     {
         try
         {
-            if (Settings.Current.AutoBackup) FileBackup.Create(fileName);            
-            await File.WriteAllBytesAsync(Path.Combine(path, fileName), content);
+            if (Settings.Current.AutoBackup) FileBackup.Create(fileName);
+            await File.WriteAllBytesAsync(Path.Combine(Path.GetDirectoryName(path) ?? "", fileName), content);
             return true;
         }
         catch (System.Exception ex)

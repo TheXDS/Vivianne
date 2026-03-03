@@ -118,7 +118,7 @@ public static class FileTypes
 
         new([".txt", ".dat"],
             CreateCarpEditorViewModel, "TheXDS.Vivianne.carp", St.CarpFile, false),
-        
+
         new([".mus", ".lin", ".map"],
             CreateMusPlayerViewModel, "TheXDS.Vivianne.mus", St.MusFile)
         {
@@ -129,7 +129,7 @@ public static class FileTypes
                 FileFilterItem.AllFiles
             ]
         },
-        
+
         new([".md", ".nfo", ".1st"],
             CreateRawReadOnlyViewModel, "TheXDS.Vivianne.md", St.MdFile, false),
 

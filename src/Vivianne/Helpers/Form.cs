@@ -1,6 +1,8 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Controls;
@@ -56,6 +58,32 @@ public static class Form
     /// </summary>
     public static readonly DependencyProperty BetaIndicatorProperty =
         DependencyProperty.RegisterAttached("BetaIndicator", typeof(bool), typeof(Form), new FrameworkPropertyMetadata(default(bool), FrameworkPropertyMetadataOptions.AffectsRender, OnBetaIndicatorChanged));
+
+    /// <summary>
+    /// Identifies the "<c>DoubleClickCommand</c>" attached property.
+    /// </summary>
+    public static readonly DependencyProperty DoubleClickCommandProperty =
+        DependencyProperty.RegisterAttached("DoubleClickCommand", typeof(ICommand), typeof(Form), new FrameworkPropertyMetadata(null, OnDoubleClickChanged));
+
+    /// <summary>
+    /// Gets the command that is invoked when a double-click event occurs on the specified dependency object.
+    /// </summary>
+    /// <param name="obj">The dependency object from which to retrieve the double-click command. Typically a UI element.</param>
+    /// <returns>The command associated with the double-click event for the specified object, or null if no command is set.</returns>
+    public static ICommand GetDoubleClickCommand(DependencyObject obj)
+    {
+        return (ICommand)obj.GetValue(DoubleClickCommandProperty);
+    }
+
+    /// <summary>
+    /// Sets the command to be invoked when a double-click event occurs on the specified dependency object.
+    /// </summary>
+    /// <param name="obj">The dependency object on which to set the double-click command. Cannot be null.</param>
+    /// <param name="value">The command to execute when a double-click is detected. Can be null to clear the command.</param>
+    public static void SetDoubleClickCommand(DependencyObject obj, ICommand value)
+    {
+        obj.SetValue(DoubleClickCommandProperty, value);
+    }
 
     /// <summary>
     /// Gets the value of the "<c>Label</c>" attached property.
@@ -247,6 +275,27 @@ public static class Form
     {
         if ((bool)e.NewValue) AttachAdorner<BetaAdorner, bool>(d, e, (control, _) => new BetaAdorner(control));
         else RemoveAdorner<BetaAdorner>((FrameworkElement)d);
+    }
+
+    private static void OnDoubleClickChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        void Control_MouseDoubleClick(object sender, MouseButtonEventArgs e) => GetDoubleClickCommand(d)?.Execute(null);
+
+        if (d is not Control control)
+        {
+#if DEBUG
+            Debug.Print($"DoubleClickCommand can only be attached to Control-derived types. This is a {d?.GetType().Name ?? "<null>"}");
+#endif
+            return;
+        }
+        if (e.OldValue is ICommand)
+        {
+            control.MouseDoubleClick -= Control_MouseDoubleClick;
+        }
+        if (e.NewValue is ICommand)
+        {
+            control.MouseDoubleClick += Control_MouseDoubleClick;
+        }
     }
 
     private static void OnBetaMessageChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
