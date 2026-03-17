@@ -2,7 +2,6 @@
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
-using TheXDS.MCART.Math;
 
 namespace TheXDS.Vivianne.Controls;
 
@@ -15,8 +14,8 @@ namespace TheXDS.Vivianne.Controls;
 /// </param>
 public class BetaAdorner(UIElement adornedElement) : Adorner(adornedElement)
 {
-    private static Brush? WarningBarsBrush = Application.Current.FindResource("WarningBars") as Brush;
-    private static Typeface Typeface = (Application.Current.FindResource("nfsFont") as FontFamily)?.GetTypefaces().FirstOrDefault() ?? new Typeface("Segoe UI");
+    private static readonly Brush? WarningBarsBrush = Application.Current.FindResource("WarningBars") as Brush;
+    private static readonly Typeface Typeface = (Application.Current.FindResource("nfsFont") as FontFamily)?.GetTypefaces().FirstOrDefault() ?? new Typeface("Segoe UI");
 
     /// <inheritdoc/>
     protected override GeometryHitTestResult? HitTestCore(GeometryHitTestParameters hitTestParameters)

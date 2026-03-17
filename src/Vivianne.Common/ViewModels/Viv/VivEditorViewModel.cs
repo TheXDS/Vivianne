@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Xml.Linq;
 using TheXDS.Ganymede.Helpers;
 using TheXDS.Ganymede.Models;
 using TheXDS.Ganymede.Resources;
@@ -13,11 +12,9 @@ using TheXDS.Ganymede.Types.Base;
 using TheXDS.Ganymede.Types.Extensions;
 using TheXDS.Ganymede.ViewModels;
 using TheXDS.MCART.Helpers;
-using TheXDS.MCART.Types;
 using TheXDS.Vivianne.Component;
 using TheXDS.Vivianne.Data;
 using TheXDS.Vivianne.Models.Viv;
-using TheXDS.Vivianne.Resources;
 using TheXDS.Vivianne.ViewModels.Base;
 using St = TheXDS.Vivianne.Resources.Strings.ViewModels.VivEditorViewModel;
 
@@ -221,7 +218,7 @@ public class VivEditorViewModel : StatefulFileEditorViewModelBase<VivEditorState
             if (State.Directory.ContainsKey(keyName))
             {
                 switch (await DialogService.Show<int>(CommonDialogTemplates.Question with
-                { 
+                {
                     Title = St.ReplaceFile,
                     Text = string.Format(St.TheFileXAlreadyExist, keyName)}, [("Yes", 0), ("No", 1), (St.Rename, 2)]))
                 {

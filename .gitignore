@@ -1,3 +1,6 @@
+# Older and unwanted file formats
+*.sln
+
 # Windows garbage
 [Tt]humbs.db
 [Dd]esktop.ini
