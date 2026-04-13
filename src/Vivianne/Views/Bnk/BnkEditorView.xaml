@@ -2,41 +2,47 @@
     x:Class="TheXDS.Vivianne.Views.Bnk.BnkEditorView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:ct="clr-namespace:TheXDS.Vivianne.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:hlp="clr-namespace:TheXDS.Vivianne.Helpers"
-    xmlns:sys="clr-namespace:System;assembly=netstandard"
-    xmlns:vc="clr-namespace:TheXDS.Vivianne.ValueConverters"
-    xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels.Bnk;assembly=Vivianne.Common"
-    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mcart="http://schemas.thexds.local/mcart"
     xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings.ViewModels;assembly=Vivianne.Common"
+    xmlns:sys="clr-namespace:System;assembly=netstandard"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:vc="clr-namespace:TheXDS.Vivianne.ValueConverters"
+    xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels.Bnk;assembly=Vivianne.Common"
     d:DataContext="{d:DesignInstance Type=vm:BnkEditorViewModel}"
-    mc:Ignorable="d"
+    d:DesignWidth="700"
     hlp:Form.BetaIndicator="True"
-    d:DesignWidth="700">
+    mc:Ignorable="d">
     <UserControl.Resources>
-        <vc:BnkVisualizerConverter x:Key="bnkvis"/>
-        <vc:BnkStreamInformationConverter x:Key="bnkNfo"/>
-        <BooleanToVisibilityConverter x:Key="b2vc"/>
-        <mcart:NullToVisibilityConverter x:Key="n2vc"/>
-        <mcart:NotNullToBooleanConverter x:Key="nn2bc"/>
+        <vc:BnkVisualizerConverter x:Key="bnkvis" />
+        <vc:BnkStreamInformationConverter x:Key="bnkNfo" />
+        <BooleanToVisibilityConverter x:Key="b2vc" />
+        <mcart:NullToVisibilityConverter x:Key="n2vc" />
+        <mcart:NotNullToBooleanConverter x:Key="nn2bc" />
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <ct:FileEditorCommandBar ShowClose="False" Editor="{Binding}" Margin="0,0,10,0">
+        <ct:FileEditorCommandBar
+            Margin="0,0,10,0"
+            Editor="{Binding}"
+            ShowClose="False">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.ColumnSpan="2">
+                <StackPanel
+                    Grid.ColumnSpan="2"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
                     <ComboBox
                         Margin="5"
                         hlp:Form.Label="{x:Static st:BnkEditorViewModel.BNKVersion}"
@@ -45,130 +51,149 @@
                         <sys:Int16>4</sys:Int16>
                     </ComboBox>
                     <ComboBox
-                        hlp:Form.Label="{x:Static st:BnkEditorViewModel.Stream}"
                         MinWidth="150"
                         Margin="5"
+                        hlp:Form.Label="{x:Static st:BnkEditorViewModel.Stream}"
                         DisplayMemberPath="Id"
                         ItemsSource="{Binding State.AllStreams, Mode=OneWay}"
-                        SelectedValue="{Binding State.SelectedStream}"/>
+                        SelectedValue="{Binding State.SelectedStream}" />
                     <ui:Button
-                        Icon="{ui:SymbolIcon Symbol=Broom24}"
-                        VerticalAlignment="Stretch"
                         Margin="5"
-                        ToolTip="Remove unused data"
-                        Command="{Binding RemoveUnusedDataCommand, Mode=OneWay}"/>
+                        VerticalAlignment="Stretch"
+                        Command="{Binding RemoveUnusedDataCommand, Mode=OneWay}"
+                        Icon="{ui:SymbolIcon Symbol=Broom24}"
+                        ToolTip="Remove unused data" />
                 </StackPanel>
                 <CheckBox
                     Grid.Column="1"
-                    Style="{StaticResource ToggleSwitch}"
-                    Content="{x:Static st:BnkEditorViewModel.ShowInfo}"
-                    TextBlock.Foreground="White"
+                    Grid.ColumnSpan="2"
                     Margin="5"
+                    Content="{x:Static st:BnkEditorViewModel.ShowInfo}"
                     IsChecked="{Binding State.ShowInfo}"
-                    Grid.ColumnSpan="2"/>
+                    Style="{StaticResource ToggleSwitch}"
+                    TextBlock.Foreground="White" />
             </Grid>
         </ct:FileEditorCommandBar>
         <Grid Grid.Row="1" Background="{ui:ThemeResource ControlSolidFillColorDefaultBrush}">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <mcart:StretchyWrapPanel HorizontalAlignment="Stretch" Margin="5">
-                <ui:NumberBox 
+            <mcart:StretchyWrapPanel Margin="5" HorizontalAlignment="Stretch">
+                <ui:NumberBox
                     MinWidth="210"
                     Margin="5"
                     hlp:Form.Label="{x:Static st:BnkEditorViewModel.LoopStart}"
-                    Minimum="0"
                     Maximum="{Binding State.LoopEnd}"
-                    Value="{Binding State.LoopStart, UpdateSourceTrigger=PropertyChanged}"/>
+                    Minimum="0"
+                    Value="{Binding State.LoopStart, UpdateSourceTrigger=PropertyChanged}" />
                 <ui:NumberBox
                     MinWidth="210"
                     Margin="5"
                     hlp:Form.Label="Loop end"
-                    Minimum="{Binding State.LoopStart}"
                     Maximum="{Binding State.SelectedStream.TotalSamples, Mode=OneWay}"
-                    Value="{Binding State.LoopEnd, UpdateSourceTrigger=PropertyChanged}"/>
+                    Minimum="{Binding State.LoopStart}"
+                    Value="{Binding State.LoopEnd, UpdateSourceTrigger=PropertyChanged}" />
             </mcart:StretchyWrapPanel>
             <StackPanel
-                Orientation="Horizontal" Margin="5" Grid.Column="1" Grid.Row="1"
-                IsEnabled="{Binding Source, ElementName=imgPreview, Converter={StaticResource nn2bc}}">
-                <ui:Button Margin="5" Icon="{ui:SymbolIcon Symbol=Play24}" Command="{Binding PlaySampleCommand, Mode=OneWay}"/>
-                <ui:Button Margin="5" Icon="{ui:SymbolIcon Symbol=PlayMultiple16}" Command="{Binding PlayLoopingSampleCommand, Mode=OneWay}"/>
-                <ui:Button Margin="5" Icon="{ui:SymbolIcon Symbol=Stop24}" Command="{Binding StopPlaybackCommand, Mode=OneWay}"/>
+                Grid.Row="1"
+                Grid.Column="1"
+                Margin="5"
+                IsEnabled="{Binding Source, ElementName=imgPreview, Converter={StaticResource nn2bc}}"
+                Orientation="Horizontal">
+                <ui:Button
+                    Margin="5"
+                    Command="{Binding PlaySampleCommand, Mode=OneWay}"
+                    Icon="{ui:SymbolIcon Symbol=Play24}" />
+                <ui:Button
+                    Margin="5"
+                    Command="{Binding PlayLoopingSampleCommand, Mode=OneWay}"
+                    Icon="{ui:SymbolIcon Symbol=PlayMultiple16}" />
+                <ui:Button
+                    Margin="5"
+                    Command="{Binding StopPlaybackCommand, Mode=OneWay}"
+                    Icon="{ui:SymbolIcon Symbol=Stop24}" />
             </StackPanel>
         </Grid>
-        <Grid Grid.ColumnSpan="2" Grid.Row="2" Background="#202530">
+        <Grid
+            Grid.Row="2"
+            Grid.ColumnSpan="2"
+            Background="#202530">
             <Viewbox>
-                <TextBlock 
-                    Opacity="0.25"
-                    Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"
+                <TextBlock
                     Margin="20"
-                    Visibility="{Binding Source, ElementName=imgPreview, Converter={StaticResource n2vc}}"
-                    Text="{x:Static st:BnkEditorViewModel.UnsupportedAudioStream}"/>
+                    Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"
+                    Opacity="0.25"
+                    Text="{x:Static st:BnkEditorViewModel.UnsupportedAudioStream}"
+                    Visibility="{Binding Source, ElementName=imgPreview, Converter={StaticResource n2vc}}" />
             </Viewbox>
             <Image
                 x:Name="imgPreview"
                 Margin="10"
+                RenderOptions.BitmapScalingMode="Fant"
                 Source="{Binding State.SelectedStream, Converter={StaticResource bnkvis}}"
-                Stretch="Fill"
-                RenderOptions.BitmapScalingMode="Fant"/>
-            <TextBlock 
-                Visibility="{Binding State.ShowInfo, Mode=OneWay, Converter={StaticResource b2vc}}"
-                Text="{Binding State.SelectedStream, Converter={StaticResource bnkNfo}}"
+                Stretch="Fill" />
+            <TextBlock
+                Margin="10"
+                Padding="10"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Background="{ui:ThemeResource ControlFillColorTertiaryBrush}"
                 Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"
-                Margin="10"
-                Padding="10"/>
+                Text="{Binding State.SelectedStream, Converter={StaticResource bnkNfo}}"
+                Visibility="{Binding State.ShowInfo, Mode=OneWay, Converter={StaticResource b2vc}}" />
         </Grid>
-        <Border Padding="5" Grid.Row="3" Grid.ColumnSpan="2" Background="{ui:ThemeResource ControlSolidFillColorDefaultBrush}">
-            <mcart:StretchyWrapPanel IsEnabled="{Binding Source, ElementName=imgPreview, Converter={StaticResource nn2bc}}" VerticalAlignment="Center">
+        <Border
+            Grid.Row="3"
+            Grid.ColumnSpan="2"
+            Padding="5"
+            Background="{ui:ThemeResource ControlSolidFillColorDefaultBrush}">
+            <mcart:StretchyWrapPanel VerticalAlignment="Center" IsEnabled="{Binding Source, ElementName=imgPreview, Converter={StaticResource nn2bc}}">
                 <mcart:StretchyWrapPanel.Resources>
-                    <Style TargetType="ui:Button" BasedOn="{StaticResource {x:Type ui:Button}}">
-                        <Setter Property="VerticalAlignment" Value="Center"/>
-                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                        <Setter Property="Margin" Value="5"/>
+                    <Style BasedOn="{StaticResource {x:Type ui:Button}}" TargetType="ui:Button">
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                        <Setter Property="HorizontalAlignment" Value="Stretch" />
+                        <Setter Property="Margin" Value="5" />
                     </Style>
                 </mcart:StretchyWrapPanel.Resources>
                 <ui:Button
-                    Icon="{ui:SymbolIcon Symbol=Open24}"
                     Command="{Binding ImportWavCommand, Mode=OneWay}"
-                    Content="{x:Static st:BnkEditorViewModel.Import}"/>
+                    Content="{x:Static st:BnkEditorViewModel.Import}"
+                    Icon="{ui:SymbolIcon Symbol=Open24}" />
                 <ui:Button
-                    Icon="{ui:SymbolIcon Symbol=Open24}"
                     Command="{Binding ImportAsAltStreamCommand, Mode=OneWay}"
-                    Content="Import Alt stream"/>
+                    Content="Import Alt stream"
+                    Icon="{ui:SymbolIcon Symbol=Open24}" />
                 <ui:Button
-                    Icon="{ui:SymbolIcon Symbol=Broom24}"
-                    IsEnabled="{Binding State.SelectedStream.AltStream, Converter={StaticResource nn2bc}}"
                     Command="{Binding RemoveAltStreamCommand, Mode=OneWay}"
-                    Content="Remove Alt stream"/>
+                    Content="Remove Alt stream"
+                    Icon="{ui:SymbolIcon Symbol=Broom24}"
+                    IsEnabled="{Binding State.SelectedStream.AltStream, Converter={StaticResource nn2bc}}" />
                 <ui:Button
-                    Icon="{ui:SymbolIcon Symbol=Speaker024}"
-                    IsEnabled="{Binding State.SelectedStream, Converter={StaticResource nn2bc}}"
                     Command="{Binding AddAudioPaddingCommand, Mode=OneWay}"
-                    Content="Add audio padding"/>
+                    Content="Add audio padding"
+                    Icon="{ui:SymbolIcon Symbol=Speaker024}"
+                    IsEnabled="{Binding State.SelectedStream, Converter={StaticResource nn2bc}}" />
                 <ui:Button
-                    Icon="{ui:SymbolIcon Symbol=Board24}"
-                    IsEnabled="{Binding State.SelectedStream, Converter={StaticResource nn2bc}}"
                     Command="{Binding InjectPaddingCommand, Mode=OneWay}"
-                    Content="Inject padding bytes"/>
+                    Content="Inject padding bytes"
+                    Icon="{ui:SymbolIcon Symbol=Board24}"
+                    IsEnabled="{Binding State.SelectedStream, Converter={StaticResource nn2bc}}" />
                 <ui:Button
-                    Icon="{ui:SymbolIcon Symbol=Speaker224}"
-                    IsEnabled="{Binding State.SelectedStream, Converter={StaticResource nn2bc}}"
                     Command="{Binding NormalizeVolumeCommand, Mode=OneWay}"
-                    Content="Normalize"/>
+                    Content="Normalize"
+                    Icon="{ui:SymbolIcon Symbol=Speaker224}"
+                    IsEnabled="{Binding State.SelectedStream, Converter={StaticResource nn2bc}}" />
                 <ui:Button
-                    Icon="{ui:SymbolIcon Symbol=Save24}"
-                    IsEnabled="{Binding State.SelectedStream, Converter={StaticResource nn2bc}}"
                     Command="{Binding ExportSampleCommand, Mode=OneWay}"
-                    Content="{x:Static st:BnkEditorViewModel.Export}"/>
-                <ui:Button
+                    Content="{x:Static st:BnkEditorViewModel.Export}"
                     Icon="{ui:SymbolIcon Symbol=Save24}"
-                    IsEnabled="{Binding State.SelectedStream, Converter={StaticResource nn2bc}}"
+                    IsEnabled="{Binding State.SelectedStream, Converter={StaticResource nn2bc}}" />
+                <ui:Button
                     Command="{Binding ExportLoopCommand, Mode=OneWay}"
-                    Content="{x:Static st:BnkEditorViewModel.ExportLoop}"/>
+                    Content="{x:Static st:BnkEditorViewModel.ExportLoop}"
+                    Icon="{ui:SymbolIcon Symbol=Save24}"
+                    IsEnabled="{Binding State.SelectedStream, Converter={StaticResource nn2bc}}" />
             </mcart:StretchyWrapPanel>
         </Border>
     </Grid>

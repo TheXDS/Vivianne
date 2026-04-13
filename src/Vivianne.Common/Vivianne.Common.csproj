@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>net9.0;net8.0</TargetFrameworks>
+		<TargetFrameworks>net10.0;net8.0</TargetFrameworks>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="NAudio" Version="2.2.1" />
-		<PackageReference Include="System.Windows.Extensions" Version="9.0.8" />
-		<PackageReference Include="TheXDS.Ganymede" Version="0.5.0" />
+		<PackageReference Include="NAudio" Version="2.3.0" />
+		<PackageReference Include="System.Windows.Extensions" Version="10.0.5" />
+		<PackageReference Include="TheXDS.Ganymede" Version="0.5.1-beta.1" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\..\lib\VivLib\src\VivLib\VivLib.csproj" />
@@ -148,5 +148,8 @@
 			<Generator>ResXFileCodeGenerator</Generator>
 			<LastGenOutput>VivInfoViewModel.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
+	</ItemGroup>
+	<ItemGroup>
+	  <PackageReference Update="Microsoft.SourceLink.GitHub" Version="10.0.201" />
 	</ItemGroup>
 </Project>

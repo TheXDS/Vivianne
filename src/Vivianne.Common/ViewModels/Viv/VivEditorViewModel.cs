@@ -209,7 +209,7 @@ public class VivEditorViewModel : StatefulFileEditorViewModelBase<VivEditorState
 
     private IBackingStore CreateBackingStore() => new VivBackingStore(this);
 
-    private Task<bool> ImportFiles(IEnumerable<string> files) => DialogService!.RunOperation(async (cancel, progress) =>
+    private Task<bool> ImportFiles(IEnumerable<string> files) => DialogService!.RunOperation(async (progress, cancel) =>
     {
         foreach ((var index, var j) in files.WithIndex())
         {

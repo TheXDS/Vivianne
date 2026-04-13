@@ -17,7 +17,7 @@ public partial class FshCommand
         cmd.SetHandler(DecompressCommand, fileArg, outputOption);
         return cmd;
     }
-    
+
     private static async Task DecompressCommand(FileInfo fshFile, FileInfo? outOpt)
     {
         var rawContents = await File.ReadAllBytesAsync(fshFile.FullName);

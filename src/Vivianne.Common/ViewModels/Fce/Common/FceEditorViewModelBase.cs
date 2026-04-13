@@ -93,7 +93,7 @@ public abstract class FceEditorViewModelBase<TState, TFile, TFceColor, THsbColor
     /// </summary>
     /// <param name="preset">LOD preset to switch to.</param>
     protected abstract void OnSwitchToLod(FceLodPreset preset);
-    
+
     /// <summary>
     /// Reloads the names of all the colors defined in the FCE.
     /// </summary>

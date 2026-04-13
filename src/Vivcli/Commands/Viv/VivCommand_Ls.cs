@@ -26,7 +26,7 @@ public partial class VivCommand
         cmd.SetHandler(LsCommand, fileArg, sizeOption, offsetOption, humanOption, decOption);
         return cmd;
     }
-    
+
     private static Task LsCommand(FileInfo vivFile, bool sizeOpt, bool offsetOpt, bool humanOpt, bool decOpt)
     {
         return ReadOnlyFileTransaction<VivFileHeader, VivHeaderSerializer>(vivFile, viv =>

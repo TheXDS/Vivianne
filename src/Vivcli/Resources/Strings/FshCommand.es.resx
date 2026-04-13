@@ -132,6 +132,12 @@
   <data name="BlobInfo_Help" xml:space="preserve">
     <value>Muestra información sobre el blob FSH especificado.</value>
   </data>
+  <data name="Description" xml:space="preserve">
+    <value>Ejecuta operaciones en archivos FSH y QFS.</value>
+  </data>
+  <data name="Common_HumanOptionHelp" xml:space="preserve">
+    <value>El tamaño de los blobs binarios se mostrarán en formato legible por humanos.</value>
+  </data>
   <data name="BlobInfo_BlobName" xml:space="preserve">
     <value>Nombre del blob: {0}</value>
   </data>
@@ -155,12 +161,6 @@
   </data>
   <data name="BlobInfo_PrintBlobInfo6" xml:space="preserve">
     <value>Datos del footer: {0}</value>
-  </data>
-  <data name="Description" xml:space="preserve">
-    <value>Ejecuta operaciones en archivos FSH y QFS.</value>
-  </data>
-  <data name="Common_HumanOptionHelp" xml:space="preserve">
-    <value>El tamaño de los blobs binarios se mostrarán en formato legible por humanos.</value>
   </data>
   <data name="Compress_Help" xml:space="preserve">
     <value>Convierte un archivo FSH en un archivo QFS.</value>
@@ -230,5 +230,35 @@
   </data>
   <data name="Ls_SizeOptionHelp" xml:space="preserve">
     <value>Incluye el tamaño de los blobs en el listado.</value>
+  </data>
+  <data name="Footer_help" xml:space="preserve">
+    <value>Administra la información de footer para un blob en un archivo FSH/QFS.</value>
+  </data>
+  <data name="Footer_nameArg" xml:space="preserve">
+    <value>Nombre del blob a administrar.</value>
+  </data>
+  <data name="Footer_info" xml:space="preserve">
+    <value>Muestra información sobre el footer de un blob en el archivo FSH/QFS.</value>
+  </data>
+  <data name="Footer_print" xml:space="preserve">
+    <value>Imprime el contenido de los datos del footer.</value>
+  </data>
+  <data name="Footer_print_outputArg" xml:space="preserve">
+    <value>Especifica un archivo al cual escribir los datos del footer. Si no se especifica, los datos se escribirán en stdout.</value>
+  </data>
+  <data name="Footer_new" xml:space="preserve">
+    <value>Crea un nuevo footer para un blob en el archivo FSH/QFS. La nueva información se ajduntará al final de los datos de footer si ya existen.</value>
+  </data>
+  <data name="Footer_new_typeArg" xml:space="preserve">
+    <value>Tipo de footer a crear.</value>
+  </data>
+  <data name="Footer_remove" xml:space="preserve">
+    <value>Elimina los datos del footer para un blob en el archivo FSH/QFS.</value>
+  </data>
+  <data name="Footer_new_unkFooterType" xml:space="preserve">
+    <value>Tipo de footer desconocido.</value>
+  </data>
+  <data name="BlobIdRequired" xml:space="preserve">
+    <value>Se necesita un ID de blob.</value>
   </data>
 </root>

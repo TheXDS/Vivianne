@@ -1,5 +1,4 @@
 ﻿using System.Windows.Controls;
-using TheXDS.Vivianne.Helpers;
 
 namespace TheXDS.Vivianne.Views;
 
@@ -14,6 +13,5 @@ public partial class FshEditorView : UserControl
     public FshEditorView()
     {
         InitializeComponent();
-        _ = new ScrollHookHelper(brdContent, scvContent, sldZoom);
     }
 }

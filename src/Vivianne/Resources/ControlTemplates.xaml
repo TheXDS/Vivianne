@@ -1,4 +1,7 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:TheXDS.Vivianne.Controls">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Resources/ControlTemplates/CheckBox.xaml" />
         <ResourceDictionary Source="/Resources/ControlTemplates/DraggableLineGraph.xaml" />
@@ -7,5 +10,6 @@
         <ResourceDictionary Source="/Resources/ControlTemplates/FileEditorLauncherView.xaml" />
         <ResourceDictionary Source="/Resources/ControlTemplates/HsbColorEditor.xaml" />
         <ResourceDictionary Source="/Resources/ControlTemplates/ProcessMonitor.xaml" />
+        <ResourceDictionary Source="/Resources/ControlTemplates/ZoomableImageControl.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

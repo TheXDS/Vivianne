@@ -173,35 +173,22 @@
                     </Expander>
                 </StackPanel>
             </ScrollViewer>
-            <ScrollViewer
-                x:Name="scvContent"
+            <ct:ZoomableImageControl
                 Grid.Row="1"
                 Grid.Column="1"
-                HorizontalScrollBarVisibility="Auto"
-                VerticalScrollBarVisibility="Auto">
-                <Border
-                    x:Name="brdContent"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Background="{Binding Background, Converter={StaticResource bg2b}, Mode=OneWay}"
-                    Cursor="ScrollAll">
-                    <Image Stretch="None">
-                        <Image.LayoutTransform>
-                            <ScaleTransform ScaleX="{Binding ZoomLevel}" ScaleY="{Binding ZoomLevel}" />
-                        </Image.LayoutTransform>
-                        <Image.Source>
-                            <MultiBinding>
-                                <MultiBinding.Converter>
-                                    <vc:FshImageConverter />
-                                </MultiBinding.Converter>
-                                <Binding Mode="OneWay" Path="CurrentImage" />
-                                <Binding Mode="OneWay" Path="Palette" />
-                                <Binding Mode="OneWay" Path="Alpha" />
-                            </MultiBinding>
-                        </Image.Source>
-                    </Image>
-                </Border>
-            </ScrollViewer>
+                Background="{Binding Background, Converter={StaticResource bg2b}, Mode=OneWay}"
+                Zoom="{Binding ZoomLevel}">
+                <ct:ZoomableImageControl.Source>
+                    <MultiBinding>
+                        <MultiBinding.Converter>
+                            <vc:FshImageConverter />
+                        </MultiBinding.Converter>
+                        <Binding Mode="OneWay" Path="CurrentImage" />
+                        <Binding Mode="OneWay" Path="Palette" />
+                        <Binding Mode="OneWay" Path="Alpha" />
+                    </MultiBinding>
+                </ct:ZoomableImageControl.Source>
+            </ct:ZoomableImageControl>
             <Expander
                 x:Name="expDetails"
                 Grid.Row="1"

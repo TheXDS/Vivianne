@@ -50,7 +50,7 @@ public partial class Settings
     {
         try
         {
-            Current = await _repository.Load() ?? new();
+            Current = await _repository.LoadAsync() ?? new();
         }
         catch (Exception ex)
         {
@@ -67,7 +67,7 @@ public partial class Settings
     /// </returns>
     public static Task SaveAsync()
     {
-        return _repository.Save(Current);
+        return _repository.SaveAsync(Current);
     }
 
     /// <summary>

@@ -81,7 +81,12 @@ public abstract class HexNumberFormatter<T> : INumberFormatter, INumberParser
 
     private string FormatHex(T value)
     {
-        return $"0x{string.Join(string.Empty, GetBytes(value).Reverse().Select(p => p.ToString("X2")))}";
+        var strings = GetBytes(value)
+#if !NET10_0_OR_GREATER
+        .AsEnumerable()
+#endif
+        .Reverse().Select(p => p.ToString("X2"));
+        return $"0x{string.Concat(strings)}";
     }
 
     string INumberFormatter.FormatDouble(double? value) => FormatHex(From(value));

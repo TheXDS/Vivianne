@@ -12,7 +12,7 @@ public partial class VivCommand() : FileCommandBase(
     St.Arg1,
     St.Arg1Description,
     [
-        BuildAddCommand, 
+        BuildAddCommand,
         BuildExtractCommand,
         BuildInfoCommand,
         BuildLsCommand,

@@ -17,7 +17,7 @@ public partial class FshCommand
         cmd.SetHandler(InfoCommand, fileArg, humanOption);
         return cmd;
     }
-    
+
     private static Task InfoCommand(FileInfo fshFile, bool humanOpt)
     {
         return ReadOnlyFileTransaction<FshFile, FshSerializer>(fshFile, async fsh =>

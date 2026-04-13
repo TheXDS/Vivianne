@@ -1,13 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
-		<TargetFrameworks>net8.0-windows10.0.19041;net9.0-windows10.0.19041</TargetFrameworks>
+		<TargetFrameworks>net8.0-windows10.0.19041;net10.0-windows10.0.19041</TargetFrameworks>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<UseWPF>true</UseWPF>
 		<EnableWindowsTargeting>true</EnableWindowsTargeting>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<Win32Resource>.\Resources\Icons.res</Win32Resource>
+		<LangVersion>14.0</LangVersion>
 	</PropertyGroup>
 	<ItemGroup>
 		<None Remove="Resources\Embedded\EarlyAlphaNote.txt" />
@@ -33,8 +34,8 @@
 		<EmbeddedResource Include="Resources\Embedded\EarlyAlphaNote.txt" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="TheXDS.Ganymede.WpfUI" Version="0.5.0" />
-		<PackageReference Include="WPF-UI" Version="4.1.0" />
+		<PackageReference Include="TheXDS.Ganymede.WpfUI" Version="0.5.1-beta.1" />
+		<PackageReference Include="WPF-UI" Version="4.2.0" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Vivianne.Common\Vivianne.Common.csproj" />
@@ -195,5 +196,8 @@
 			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>VivInfoView.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
+	</ItemGroup>
+	<ItemGroup>
+	  <PackageReference Update="Microsoft.SourceLink.GitHub" Version="10.0.201" />
 	</ItemGroup>
 </Project>

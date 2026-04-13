@@ -1,14 +1,11 @@
 ﻿using System.CommandLine;
 using TheXDS.MCART.Helpers;
-using TheXDS.Vivianne.Info.Bnk;
+using TheXDS.Vivianne.Info.Audio;
 using TheXDS.Vivianne.Models.Audio.Mus;
 using TheXDS.Vivianne.Serializers.Audio.Mus;
 
 namespace TheXDS.Vivianne.Commands.Asf;
 
-/// <summary>
-/// Defines a command that allows the user to interact with a BNK file.
-/// </summary>
 public partial class AsfCommand
 {
     private static Command BuildInfoCommand(Argument<FileInfo> fileArg)

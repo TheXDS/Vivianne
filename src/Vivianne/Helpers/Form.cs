@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -6,6 +7,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Controls;
+using static System.Windows.FrameworkPropertyMetadataOptions;
+using static TheXDS.MCART.Helpers.DependencyObjectHelpers;
 using Fce3Color = TheXDS.Vivianne.Models.Fce.Nfs3.FceColor;
 using Fce4Color = TheXDS.Vivianne.Models.Fce.Nfs4.FceColor;
 
@@ -17,53 +20,55 @@ namespace TheXDS.Vivianne.Helpers;
 /// </summary>
 public static class Form
 {
+    private static DependencyProperty NewDpa<T>(string name, PropertyChangedCallback? changedCallback = null, FrameworkPropertyMetadataOptions options = FrameworkPropertyMetadataOptions.AffectsRender, [MaybeNull]T defaultValue = default!)
+    {
+        return NewAttachedDp(typeof(Form), name, options, defaultValue, changedValue: changedCallback);
+    }
+
     /// <summary>
     /// Identifies the "<c>Label</c>" attached property.
     /// </summary>
-    public static readonly DependencyProperty LabelProperty =
-        DependencyProperty.RegisterAttached("Label", typeof(string), typeof(Form), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender, OnLabelChanged));
+    public static readonly DependencyProperty LabelProperty = NewDpa<string>("Label", OnLabelChanged, AffectsArrange);
 
     /// <summary>
     /// Identifies the "<c>BetaMessage</c>" attached property.
     /// </summary>
-    public static readonly DependencyProperty BetaMessageProperty =
-        DependencyProperty.RegisterAttached("BetaMessage", typeof(string), typeof(Form), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender, OnBetaMessageChanged));
+    public static readonly DependencyProperty BetaMessageProperty = NewDpa<string>("BetaMessage", OnBetaMessageChanged);
 
     /// <summary>
     /// Identifies the "<c>BetaMessage</c>" attached property.
     /// </summary>
-    public static readonly DependencyProperty ImportantMessageProperty =
-        DependencyProperty.RegisterAttached("ImportantMessage", typeof(string), typeof(Form), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender, OnImportantMessageChanged));
+    public static readonly DependencyProperty ImportantMessageProperty = NewDpa<string>("ImportantMessage", OnImportantMessageChanged);
 
     /// <summary>
     /// Identifies the "<c>FceColorPreview</c>" attached property.
     /// </summary>
-    public static readonly DependencyProperty FceColorPreviewProperty =
-        DependencyProperty.RegisterAttached("FceColorPreview", typeof(Fce3Color), typeof(Form), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender, OnFceColorPreviewChanged));
+    public static readonly DependencyProperty FceColorPreviewProperty = NewDpa<Fce3Color>("FceColorPreview", OnFceColorPreviewChanged);
 
     /// <summary>
     /// Identifies the "<c>FceColorPreview</c>" attached property.
     /// </summary>
-    public static readonly DependencyProperty Fce4ColorPreviewProperty =
-        DependencyProperty.RegisterAttached("Fce4ColorPreview", typeof(Fce4Color), typeof(Form), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender, OnFce4ColorPreviewChanged));
+    public static readonly DependencyProperty Fce4ColorPreviewProperty = NewDpa<Fce4Color>("Fce4ColorPreview", OnFce4ColorPreviewChanged);
 
     /// <summary>
     /// Identifies the "<c>MouseTrackingOverlay</c>" attached property.
     /// </summary>
-    public static readonly DependencyProperty MouseTrackingOverlayProperty =
-        DependencyProperty.RegisterAttached("MouseTrackingOverlay", typeof(bool), typeof(Form), new FrameworkPropertyMetadata(default(bool), FrameworkPropertyMetadataOptions.AffectsRender, OnMouseTrackingOverlayChanged));
+    public static readonly DependencyProperty MouseTrackingOverlayProperty = NewDpa<bool>("MouseTrackingOverlay", OnMouseTrackingOverlayChanged);
+
+    /// <summary>
+    /// Identifies the "<c>MouseTrackingZoomLevelSource</c>" attached dependency property.
+    /// </summary>
+    public static readonly DependencyProperty MouseTrackingZoomLevelSourceProperty = NewDpa("MouseTrackingZoomLevelSource", defaultValue: 1.0);
 
     /// <summary>
     /// Identifies the "<c>BetaIndicator</c>" attached property.
     /// </summary>
-    public static readonly DependencyProperty BetaIndicatorProperty =
-        DependencyProperty.RegisterAttached("BetaIndicator", typeof(bool), typeof(Form), new FrameworkPropertyMetadata(default(bool), FrameworkPropertyMetadataOptions.AffectsRender, OnBetaIndicatorChanged));
+    public static readonly DependencyProperty BetaIndicatorProperty = NewDpa<bool>("BetaIndicator", OnBetaIndicatorChanged);
 
     /// <summary>
     /// Identifies the "<c>DoubleClickCommand</c>" attached property.
     /// </summary>
-    public static readonly DependencyProperty DoubleClickCommandProperty =
-        DependencyProperty.RegisterAttached("DoubleClickCommand", typeof(ICommand), typeof(Form), new FrameworkPropertyMetadata(null, OnDoubleClickChanged));
+    public static readonly DependencyProperty DoubleClickCommandProperty = NewDpa<ICommand>("DoubleClickCommand", OnDoubleClickChanged);
 
     /// <summary>
     /// Gets the command that is invoked when a double-click event occurs on the specified dependency object.
@@ -136,12 +141,12 @@ public static class Form
     }
 
     /// <summary>
-    /// Gets the value of the "<c>BetaMessage</c>" attached property.
+    /// Gets the value of the "<c>ImportantMessage</c>" attached property.
     /// </summary>
     /// <param name="obj">
     /// Object for which to get the value of the attached property.
     /// </param>
-    /// <returns>The value of the "<c>BetaMessage</c>" attached property.
+    /// <returns>The value of the "<c>ImportantMessage</c>" attached property.
     /// </returns>
     public static string GetImportantMessage(DependencyObject obj)
     {
@@ -149,7 +154,7 @@ public static class Form
     }
 
     /// <summary>
-    /// Sets the value of the "<c>BetaMessage</c>" attached property.
+    /// Sets the value of the "<c>ImportantMessage</c>" attached property.
     /// </summary>
     /// <param name="obj">
     /// Object onto which to set the value of the attached property.
@@ -186,12 +191,12 @@ public static class Form
     }
 
     /// <summary>
-    /// Gets the value of the "<c>FceColorPreview</c>" attached property.
+    /// Gets the value of the "<c>Fce4ColorPreview</c>" attached property.
     /// </summary>
     /// <param name="obj">
     /// Object for which to get the value of the attached property.
     /// </param>
-    /// <returns>The value of the "<c>FceColorPreview</c>" attached property.
+    /// <returns>The value of the "<c>Fce4ColorPreview</c>" attached property.
     /// </returns>
     public static Fce4Color GetFce4ColorPreview(DependencyObject obj)
     {
@@ -199,7 +204,7 @@ public static class Form
     }
 
     /// <summary>
-    /// Sets the value of the "<c>FceColorPreview</c>" attached property.
+    /// Sets the value of the "<c>Fce4ColorPreview</c>" attached property.
     /// </summary>
     /// <param name="obj">
     /// Object onto which to set the value of the attached property.
@@ -211,12 +216,12 @@ public static class Form
     }
 
     /// <summary>
-    /// Gets the value of the "<c>FceColorPreview</c>" attached property.
+    /// Gets the value of the "<c>MouseTrackingOverlay</c>" attached property.
     /// </summary>
     /// <param name="obj">
     /// Object for which to get the value of the attached property.
     /// </param>
-    /// <returns>The value of the "<c>FceColorPreview</c>" attached property.
+    /// <returns>The value of the "<c>MouseTrackingOverlay</c>" attached property.
     /// </returns>
     public static bool GetMouseTrackingOverlay(DependencyObject obj)
     {
@@ -224,7 +229,7 @@ public static class Form
     }
 
     /// <summary>
-    /// Sets the value of the "<c>FceColorPreview</c>" attached property.
+    /// Sets the value of the "<c>MouseTrackingOverlay</c>" attached property.
     /// </summary>
     /// <param name="obj">
     /// Object onto which to set the value of the attached property.
@@ -236,12 +241,37 @@ public static class Form
     }
 
     /// <summary>
-    /// Gets the value of the "<c>FceColorPreview</c>" attached property.
+    /// Gets the value of the "<c>MouseTrackingZoomLevelSource</c>" attached property.
     /// </summary>
     /// <param name="obj">
     /// Object for which to get the value of the attached property.
     /// </param>
-    /// <returns>The value of the "<c>FceColorPreview</c>" attached property.
+    /// <returns>The value of the "<c>MouseTrackingZoomLevelSource</c>" attached property.
+    /// </returns>
+    public static double GetMouseTrackingZoomLevelSource(DependencyObject obj)
+    {
+        return (double)obj.GetValue(MouseTrackingZoomLevelSourceProperty);
+    }
+
+    /// <summary>
+    /// Sets the value of the "<c>MouseTrackingZoomLevelSource</c>" attached property.
+    /// </summary>
+    /// <param name="obj">
+    /// Object onto which to set the value of the attached property.
+    /// </param>
+    /// <param name="value">Value of the attached property.</param>
+    public static void SetMouseTrackingZoomLevelSource(DependencyObject obj, double value)
+    {
+        obj.SetValue(MouseTrackingZoomLevelSourceProperty, value);
+    }
+
+    /// <summary>
+    /// Gets the value of the "<c>BetaIndicator</c>" attached property.
+    /// </summary>
+    /// <param name="obj">
+    /// Object for which to get the value of the attached property.
+    /// </param>
+    /// <returns>The value of the "<c>BetaIndicator</c>" attached property.
     /// </returns>
     public static bool GetBetaIndicator(DependencyObject obj)
     {
@@ -249,7 +279,7 @@ public static class Form
     }
 
     /// <summary>
-    /// Sets the value of the "<c>FceColorPreview</c>" attached property.
+    /// Sets the value of the "<c>BetaIndicator</c>" attached property.
     /// </summary>
     /// <param name="obj">
     /// Object onto which to set the value of the attached property.

@@ -232,4 +232,34 @@ s tool will print the information of all blobs in the FSH file.</value>
   <data name="Ls_SizeOptionHelp" xml:space="preserve">
     <value>Includes the blob size in the listing.</value>
   </data>
+  <data name="Footer_help" xml:space="preserve">
+    <value>Manages the footer data for a single blob in a FSH/QFS file.</value>
+  </data>
+  <data name="Footer_nameArg" xml:space="preserve">
+    <value>Name of the blob to manage.</value>
+  </data>
+  <data name="Footer_info" xml:space="preserve">
+    <value>Shows information about the footer data for a single blob in a FSH/QFS file.</value>
+  </data>
+  <data name="Footer_print" xml:space="preserve">
+    <value>Prints the raw contents of the footer.</value>
+  </data>
+  <data name="Footer_print_outputArg" xml:space="preserve">
+    <value>Specifies a file to write the footer contents to. If not specified, the contents will be written to stdout.</value>
+  </data>
+  <data name="Footer_new" xml:space="preserve">
+    <value>Creates a new footer for a single blob in a FSH/QFS file. The new data will be attached at the end of the footer data if present.</value>
+  </data>
+  <data name="Footer_new_typeArg" xml:space="preserve">
+    <value>Type of footer to create.</value>
+  </data>
+  <data name="Footer_remove" xml:space="preserve">
+    <value>Removes the footer data for a single blob in a FSH/QFS file.</value>
+  </data>
+  <data name="Footer_new_unkFooterType" xml:space="preserve">
+    <value>Unknown footer type.</value>
+  </data>
+  <data name="BlobIdRequired" xml:space="preserve">
+    <value>A blob ID is required.</value>
+  </data>
 </root>

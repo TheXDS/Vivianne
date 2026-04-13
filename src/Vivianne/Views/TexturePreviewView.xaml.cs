@@ -1,5 +1,4 @@
 ﻿using System.Windows.Controls;
-using TheXDS.Vivianne.Helpers;
 
 namespace TheXDS.Vivianne.Views;
 
@@ -15,6 +14,5 @@ public partial class TexturePreviewView : UserControl
     public TexturePreviewView()
     {
         InitializeComponent();
-        _ = new ScrollHookHelper(brdContent, scvContent, sldZoom);
     }
 }

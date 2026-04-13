@@ -2,48 +2,40 @@
     x:Class="TheXDS.Vivianne.Views.Specialized.CurveEditorDialogView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:models="clr-namespace:TheXDS.Vivianne.Models;assembly=Vivianne.Common"
-    xmlns:controls="clr-namespace:TheXDS.Vivianne.Controls"
     xmlns:carp="clr-namespace:TheXDS.Vivianne.ViewModels.Carp;assembly=Vivianne.Common"
+    xmlns:controls="clr-namespace:TheXDS.Vivianne.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="clr-namespace:TheXDS.Vivianne.Models;assembly=Vivianne.Common"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     d:DataContext="{d:DesignInstance carp:CurveEditorDialogViewModel}"
     mc:Ignorable="d">
-    <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
         <DockPanel>
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="36"/>
-                    <RowDefinition Height="600"/>
+                    <RowDefinition Height="36" />
+                    <RowDefinition Height="600" />
                 </Grid.RowDefinitions>
                 <UniformGrid Rows="1">
-                    <ui:Button
-                        Command="{Binding AddValueCommand, Mode=OneWay}"
-                        Icon="{ui:SymbolIcon Symbol=Add24}"/>
-                    <ui:Button
-                        Command="{Binding CopyToStringCommand, Mode=OneWay}"
-                        Icon="{ui:SymbolIcon Symbol=Copy24}"/>
-                    <ui:Button
-                        Command="{Binding CreateFromStringCommand, Mode=oneway}"
-                        Icon="{ui:SymbolIcon Symbol=ClipboardPaste24}"/>
+                    <ui:Button Command="{Binding AddValueCommand, Mode=OneWay}" Icon="{ui:SymbolIcon Symbol=Add24}" />
+                    <ui:Button Command="{Binding CopyToStringCommand, Mode=OneWay}" Icon="{ui:SymbolIcon Symbol=Copy24}" />
+                    <ui:Button Command="{Binding CreateFromStringCommand, Mode=oneway}" Icon="{ui:SymbolIcon Symbol=ClipboardPaste24}" />
                 </UniformGrid>
                 <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                    <controls:DoubleCollectionEditor
-                        ItemsSource="{Binding State.Collection}"
-                        Width="200"/>
+                    <controls:DoubleCollectionEditor Width="200" ItemsSource="{Binding State.Collection}" />
                 </ScrollViewer>
             </Grid>
             <controls:DraggableLineGraph
-                Style="{StaticResource DraggableLineGraphBig}"
-                ItemsSource="{Binding State.Collection}"
+                Width="700"
+                Margin="5,0"
+                Background="{ui:ThemeResource ControlSolidFillColorDefaultBrush}"
                 BorderThickness="1"
                 CornerRadius="5"
-                Margin="5,0"
-                Width="700"                
-                Background="{ui:ThemeResource ControlSolidFillColorDefaultBrush}"
+                ItemsSource="{Binding State.Collection}"
+                MaxValue="{Binding State.Maximum}"
                 MinValue="{Binding State.Minimum}"
-                MaxValue="{Binding State.Maximum}"/>
+                Style="{StaticResource DraggableLineGraphBig}" />
         </DockPanel>
     </ScrollViewer>
 </UserControl>

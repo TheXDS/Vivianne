@@ -21,6 +21,7 @@ public partial class FceCommand() : FileCommandBase(
         BuildLsCommand,
         BuildConvertCommand,
         BuildRenameCommand,
+        BuildCenterCommand,
     ])
 {
     [Flags]

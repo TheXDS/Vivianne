@@ -19,7 +19,7 @@ namespace TheXDS.Vivianne.Resources.Strings {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class FshCommand {
@@ -75,6 +75,15 @@ namespace TheXDS.Vivianne.Resources.Strings {
         internal static string Arg1Description {
             get {
                 return ResourceManager.GetString("Arg1Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A blob ID is required..
+        /// </summary>
+        internal static string BlobIdRequired {
+            get {
+                return ResourceManager.GetString("BlobIdRequired", resourceCulture);
             }
         }
         
@@ -296,6 +305,87 @@ namespace TheXDS.Vivianne.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Manages the footer data for a single blob in a FSH/QFS file..
+        /// </summary>
+        internal static string Footer_help {
+            get {
+                return ResourceManager.GetString("Footer_help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shows information about the footer data for a single blob in a FSH/QFS file..
+        /// </summary>
+        internal static string Footer_info {
+            get {
+                return ResourceManager.GetString("Footer_info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name of the blob to manage..
+        /// </summary>
+        internal static string Footer_nameArg {
+            get {
+                return ResourceManager.GetString("Footer_nameArg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creates a new footer for a single blob in a FSH/QFS file. The new data will be attached at the end of the footer data if present..
+        /// </summary>
+        internal static string Footer_new {
+            get {
+                return ResourceManager.GetString("Footer_new", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type of footer to create..
+        /// </summary>
+        internal static string Footer_new_typeArg {
+            get {
+                return ResourceManager.GetString("Footer_new_typeArg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown footer type..
+        /// </summary>
+        internal static string Footer_new_unkFooterType {
+            get {
+                return ResourceManager.GetString("Footer_new_unkFooterType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Prints the raw contents of the footer..
+        /// </summary>
+        internal static string Footer_print {
+            get {
+                return ResourceManager.GetString("Footer_print", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Specifies a file to write the footer contents to. If not specified, the contents will be written to stdout..
+        /// </summary>
+        internal static string Footer_print_outputArg {
+            get {
+                return ResourceManager.GetString("Footer_print_outputArg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removes the footer data for a single blob in a FSH/QFS file..
+        /// </summary>
+        internal static string Footer_remove {
+            get {
+                return ResourceManager.GetString("Footer_remove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Displays general information about the FSH/QFS file..
         /// </summary>
         internal static string Info_Help {
@@ -350,7 +440,7 @@ namespace TheXDS.Vivianne.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CompressionMethod ratio: {0:f2}:1.
+        ///   Looks up a localized string similar to Compression ratio: {0:f2}:1.
         /// </summary>
         internal static string Info_Info6 {
             get {

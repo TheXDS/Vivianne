@@ -4,6 +4,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using TheXDS.MCART.Math;
+using TheXDS.Vivianne.Helpers;
 
 namespace TheXDS.Vivianne.Controls;
 
@@ -45,7 +46,8 @@ public class MouseTrackingAdorner : Adorner
     {
         base.OnRender(drawingContext);
         if (!_control.IsVisible || _mousePosition is null) return;
-        var textGeometry = new FormattedText($"X: {_mousePosition.Value.X} Y: {_mousePosition.Value.Y}", CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI"), 12, Application.Current.TryFindResource("TextFillColorSecondaryBrush") as Brush ?? Brushes.Gray, 1);
+        var div = Form.GetMouseTrackingZoomLevelSource(AdornedElement) is { } value ? value : 1.0;
+        var textGeometry = new FormattedText($"X: {(int)(_mousePosition.Value.X / div)} Y: {(int)(_mousePosition.Value.Y / div)}", CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI"), 12, Application.Current.TryFindResource("TextFillColorSecondaryBrush") as Brush ?? Brushes.Gray, 1);
         var point = _control.TranslatePoint(new Point(5, (((double[])[_control.Height.OrIfInvalid(0), _control.ActualHeight.OrIfInvalid(0), 24]).Max() - 14)), _control);
         drawingContext.DrawText(textGeometry, point);
     }

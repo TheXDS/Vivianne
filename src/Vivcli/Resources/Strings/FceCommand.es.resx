@@ -177,4 +177,7 @@
   <data name="DoRename_InvalidTypeSpecified" xml:space="preserve">
     <value>Tipo de parte inválido.</value>
   </data>
+  <data name="Center_Help" xml:space="preserve">
+    <value>Centra un model FCE en su caja de colisión.</value>
+  </data>
 </root>

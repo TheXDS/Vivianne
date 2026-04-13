@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 using TheXDS.MCART.ValueConverters.Base;
-using TheXDS.Vivianne.Info.Bnk;
+using TheXDS.Vivianne.Info.Audio;
 using TheXDS.Vivianne.Models.Audio.Bnk;
 using St = TheXDS.Vivianne.Resources.Strings.ViewModels.BnkEditorViewModel;
 

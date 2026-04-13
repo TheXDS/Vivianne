@@ -2,43 +2,43 @@
     x:Class="TheXDS.Vivianne.Views.Specialized.FileErrorView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:TheXDS.Vivianne.Views.Specialized"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings.Views"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
     d:DataContext="{d:DesignInstance Type=vm:FileErrorViewModel}"
     mc:Ignorable="d">
     <Border
-        VerticalAlignment="Center"
-        HorizontalAlignment="Center"
         Margin="50"
-        CornerRadius="10"
-        Background="{ui:ThemeResource ControlSolidFillColorDefaultBrush}">
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center"
+        Background="{ui:ThemeResource ControlSolidFillColorDefaultBrush}"
+        CornerRadius="10">
         <Border.Effect>
-            <DropShadowEffect/>
+            <DropShadowEffect />
         </Border.Effect>
         <Grid Margin="10">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition />
+                <ColumnDefinition Width="2*" />
             </Grid.ColumnDefinitions>
             <Border Background="{ui:ThemeResource SystemFillColorCautionBackgroundBrush}">
-                <ui:FontIcon 
-                    VerticalAlignment="Top"
+                <ui:FontIcon
                     Margin="0,0,0,10"
-                    Glyph="⚠️"
+                    VerticalAlignment="Top"
+                    FontSize="48"
                     Foreground="{ui:ThemeResource SystemFillColorCautionBrush}"
-                    FontSize="48"/>
+                    Glyph="⚠️" />
             </Border>
             <TextBlock
-                TextWrapping="Wrap"
+                Grid.Column="1"
+                Margin="20,0,10,0"
                 VerticalAlignment="Center"
                 Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"
-                Margin="20,0,10,0"
-                Grid.Column="1"
-                Text="{Binding ErrorMessage, Mode=OneWay}"/>
+                Text="{Binding ErrorMessage, Mode=OneWay}"
+                TextWrapping="Wrap" />
         </Grid>
     </Border>
 </UserControl>

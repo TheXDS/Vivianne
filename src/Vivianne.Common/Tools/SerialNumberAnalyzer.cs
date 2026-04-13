@@ -140,7 +140,7 @@ public class SerialNumberAnalyzer : IVivianneTool
         List<ushort> serials = [];
         List<SnEntry> entries = [];
 
-        await foreach (var entry in LoadEntries(files.ToArray(), progress, cancel))
+        await foreach (var entry in LoadEntries([.. files], progress, cancel))
         {
             if (entry.SerialNumber is not null && !serials.Contains(entry.SerialNumber.Value))
             {
@@ -195,7 +195,7 @@ public class SerialNumberAnalyzer : IVivianneTool
         var dirSelection = await dlg.GetDirectoryPath(CommonDialogTemplates.DirectorySelect with { Title = St.CarModelPath, Text = St.SelectTheCarModelDirectoryInsideNFS3GamedataFolder });
         if (!dirSelection.Success) return;
 
-        var operation = await dlg.RunOperation(ToolName, (c, p) => RunSnAnalysis(p, dirSelection.Result!, c));
+        var operation = await dlg.RunOperation(ToolName, (p, c) => RunSnAnalysis(p, dirSelection.Result, c));
         if (!operation.Success) return;
         if (operation.Result.Length == 0)
         {

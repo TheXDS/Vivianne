@@ -22,7 +22,7 @@ public partial class VivCommand
         cmd.SetHandler(AddCommand, vivFile, fileArg, forceOption, altName);
         return cmd;
     }
-    
+
     private static Task AddCommand(FileInfo vivFile, FileInfo fileToAdd, bool force, string? name)
     {
         return FileTransaction<VivFile, VivSerializer>(vivFile, async viv => {

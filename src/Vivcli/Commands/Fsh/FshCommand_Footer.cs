@@ -11,8 +11,8 @@ public partial class FshCommand
 {
     private static Command BuildFooterCommand(Argument<FileInfo> fileArg)
     {
-        var cmd = new Command("footer", "Manages the footer data for a single blob in a FSH/QFS file.");
-        var blobArg = new Argument<string>(St.BlobInfo_Arg1, "Name of the blob to manage.");
+        var cmd = new Command("footer", St.Footer_help);
+        var blobArg = new Argument<string>(St.BlobInfo_Arg1, St.Footer_nameArg);
         cmd.AddArgument(blobArg);
         cmd.AddCommand(BuildFooterInfoCommand(fileArg, blobArg));
         cmd.AddCommand(BuildFooterPrintCommand(fileArg, blobArg));
@@ -23,7 +23,7 @@ public partial class FshCommand
 
     private static Command BuildFooterInfoCommand(Argument<FileInfo> fileArg, Argument<string> blobArg)
     {
-        var cmd = new Command("info", "Shows information about the footer data for a single blob in a FSH/QFS file.");
+        var cmd = new Command("info", St.Footer_info);
         cmd.AddAlias("show");
         cmd.AddAlias("details");
         cmd.SetHandler(FooterInfoCommand, fileArg, blobArg);
@@ -32,8 +32,8 @@ public partial class FshCommand
 
     private static Command BuildFooterPrintCommand(Argument<FileInfo> fileArg, Argument<string> blobArg)
     {
-        var cmd = new Command("print", "Prints the raw contents of the footer.");
-        var outputOption = new Option<FileInfo?>(["--output", "-o"], () => null,"Specifies a file to write the footer contents to. If not specified, the contents will be written to stdout.");
+        var cmd = new Command("print", St.Footer_print);
+        var outputOption = new Option<FileInfo?>(["--output", "-o"], () => null, St.Footer_print_outputArg);
         cmd.AddAlias("cat");
         cmd.AddAlias("dump");
         cmd.AddOption(outputOption);
@@ -43,8 +43,8 @@ public partial class FshCommand
 
     private static Command BuildFooterNewCommand(Argument<FileInfo> fileArg, Argument<string> blobArg)
     {
-        var cmd = new Command("new", "Creates a new footer for a single blob in a FSH/QFS file. The new data will be attached at the end of the footer data if present.");
-        var footerTypeArg = new Argument<FshBlobFooterType>("footer type", "Type of footer to create.");
+        var cmd = new Command("new", St.Footer_new);
+        var footerTypeArg = new Argument<FshBlobFooterType>("footer type", St.Footer_new_typeArg);
         cmd.AddAlias("add");
         cmd.AddArgument(footerTypeArg);
         cmd.SetHandler(FooterNewCommand, fileArg, blobArg, footerTypeArg);
@@ -53,7 +53,7 @@ public partial class FshCommand
 
     private static Command BuildFooterRmCommand(Argument<FileInfo> fileArg, Argument<string> blobArg)
     {
-        var cmd = new Command("remove", "Removes the footer data for a single blob in a FSH/QFS file.");
+        var cmd = new Command("remove", St.Footer_remove);
         cmd.AddAlias("rm");
         cmd.AddAlias("del");
         cmd.SetHandler(FooterRemoveCommand, fileArg, blobArg);
@@ -67,7 +67,7 @@ public partial class FshCommand
 
     private static void FooterNewCommand(FileInfo file, string blob, FshBlobFooterType footerType) => FshBlobOp(file, blob, (f, b) =>
     {
-        if (!Mappings.FshFooterBuilder.TryGetValue(footerType, out var footerFactory)) Fail("Unknown footer type");
+        if (!Mappings.FshFooterBuilder.TryGetValue(footerType, out var footerFactory)) Fail(St.Footer_new_unkFooterType);
         b.Footer = [.. b.Footer, .. footerFactory.Invoke()];
     });
 
@@ -94,7 +94,7 @@ public partial class FshCommand
     }
 
     private static Task FshBlobOp(FileInfo file, string blob, Action<FshFile, FshBlob> op) => FshBlobOp(blob, file, FileTransaction<FshFile, FshSerializer>, (f, b) =>
-    { 
+    {
         op.Invoke(f, b);
         return Task.CompletedTask;
     });
@@ -107,7 +107,7 @@ public partial class FshCommand
 
     private static Task FshBlobOp(string blob, FileInfo file, Func<FileInfo, Func<FshFile, Task>, Task> transactionRunner, Func<FshFile, FshBlob, Task> op)
     {
-        if (blob.IsEmpty()) Fail("A blob ID is required.");
+        if (blob.IsEmpty()) Fail(St.BlobIdRequired);
         return transactionRunner.Invoke(file, async fsh =>
         {
             if (fsh.Entries.TryGetValue(blob, out var b))
