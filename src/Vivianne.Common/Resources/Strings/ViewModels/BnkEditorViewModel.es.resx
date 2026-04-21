@@ -168,4 +168,28 @@
   <data name="RemoveUnusedDataQuestion" xml:space="preserve">
     <value>Remover los datos no utilizados de un BNK reducirá su tamaño, pero también removerá los datos fuera del rango del ciclo de audio. Esta acción no se puede deshacer. ¿Está seguro que desea optimizar el BNK y remover los datos no utilizados?</value>
   </data>
+  <data name="AddAudioPadding" xml:space="preserve">
+    <value>Añadir padding</value>
+  </data>
+  <data name="AddAudioPaddingText" xml:space="preserve">
+    <value>Por favor, ingrese el número de muestras de silencio a agregar al inicio y el final del flujo de audio.</value>
+  </data>
+  <data name="InjectPadding" xml:space="preserve">
+    <value>Inyectar espaciado</value>
+  </data>
+  <data name="InjectPaddingText" xml:space="preserve">
+    <value>Por favor, ingrese la cantidad de bytes de interespaciado entre este flujo de audio y el siguiente. Esto debería aliviar problemas donde los datos de un flujo y otro se superponen en el juego.</value>
+  </data>
+  <data name="GoToSettings" xml:space="preserve">
+    <value>Ir a configuración</value>
+  </data>
+  <data name="InjectPaddingCleanupError" xml:space="preserve">
+    <value>La limpieza de BNK está habilitada en la configuración. Por favor, deshabilítela para utilizar esta función.</value>
+  </data>
+  <data name="Normalize" xml:space="preserve">
+    <value>Normalizar</value>
+  </data>
+  <data name="NormalizeText" xml:space="preserve">
+    <value>Por favor ingrese un nivel de volumen máximo deseado relativo a 1.0</value>
+  </data>
 </root>

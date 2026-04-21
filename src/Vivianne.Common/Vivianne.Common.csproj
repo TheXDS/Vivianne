@@ -51,6 +51,11 @@
 			<AutoGen>True</AutoGen>
 			<DependentUpon>CarpEditorViewModel.resx</DependentUpon>
 		</Compile>
+		<Compile Update="Resources\Strings\ViewModels\CurveEditorViewModel.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>CurveEditorViewModel.resx</DependentUpon>
+		</Compile>
 		<Compile Update="Resources\Strings\ViewModels\FceEditorView.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
@@ -119,6 +124,10 @@
 		<EmbeddedResource Update="Resources\Strings\ViewModels\CarpEditorViewModel.resx">
 			<Generator>ResXFileCodeGenerator</Generator>
 			<LastGenOutput>CarpEditorViewModel.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Strings\ViewModels\CurveEditorViewModel.resx">
+		  <Generator>ResXFileCodeGenerator</Generator>
+		  <LastGenOutput>CurveEditorViewModel.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Strings\ViewModels\FceEditorView.resx">
 			<Generator>ResXFileCodeGenerator</Generator>

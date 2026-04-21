@@ -61,7 +61,7 @@ public class LoopingWaveFileReader(Stream inputStream) : WaveFileReader(inputStr
         {
             return base.Read(array, offset, count);
         }
-        long position = Position;
+        long position = Position + loopStartSample!.Value;
         if (position < _loopEndBytePosition)
         {
             return base.Read(array, offset, count);

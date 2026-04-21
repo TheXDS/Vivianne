@@ -1,10 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Media;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using NAudio.Wave;
 using TheXDS.Ganymede.Helpers;
 using TheXDS.Ganymede.Models;
 using TheXDS.Ganymede.Resources;
@@ -13,6 +13,7 @@ using TheXDS.Ganymede.Types.Extensions;
 using TheXDS.MCART.Component;
 using TheXDS.MCART.Types.Base;
 using TheXDS.MCART.Types.Extensions;
+using TheXDS.Vivianne.Component;
 using TheXDS.Vivianne.Models.Audio.Bnk;
 using TheXDS.Vivianne.Models.Bnk;
 using TheXDS.Vivianne.Properties;
@@ -31,7 +32,8 @@ namespace TheXDS.Vivianne.ViewModels.Bnk;
 /// </summary>
 public class BnkEditorViewModel : StatefulFileEditorViewModelBase<BnkEditorState, BnkFile>, IViewModel
 {
-    private readonly SoundPlayer _snd = new();
+    private WaveOutEvent? _outputDevice;
+    private LoopingWaveFileReader? _audioFile;
     private bool _isPlaying;
 
     /// <summary>
@@ -158,8 +160,7 @@ public class BnkEditorViewModel : StatefulFileEditorViewModelBase<BnkEditorState
     private void OnPlaySample()
     {
         if (State.SelectedStream is not { } sample) return;
-        SetSound(AudioRender.RenderBnk(sample));
-        _snd.Play();
+        InitAudioStream(AudioRender.RenderBnk(sample));
     }
 
     private async Task OnPlayLoopingSample()
@@ -167,19 +168,47 @@ public class BnkEditorViewModel : StatefulFileEditorViewModelBase<BnkEditorState
         if (State.SelectedStream is not { } sample) return;
         if (State.SelectedStream.LoopEnd == 0)
         {
-            _snd.Stop();
+            OnStopPlayback();
             await DialogService!.Message(St.BNKStream, St.NoLoop);
             return;
         }
-        SetSound(AudioRender.RenderBnkLoop(sample));
+        InitAudioStream(AudioRender.RenderBnkLoop(sample), sample.LoopStart, sample.LoopEnd);
         _isPlaying = true;
-        _snd.PlayLooping();
     }
 
     private void OnStopPlayback()
     {
         _isPlaying = false;
-        _snd.Stop();
+        if (_outputDevice is not null)
+        {
+            _outputDevice.Stop();
+            _outputDevice.Dispose();
+            _outputDevice = null;
+        }
+        _audioFile?.Dispose();
+        _audioFile = null;
+    }
+
+    private void InitAudioStream(byte[] data, int? loopStart = null, int? loopEnd = null)
+    {
+        if (_outputDevice is not null)
+        {
+            _outputDevice.Stop();
+            _outputDevice.Dispose();
+            _outputDevice = null;
+        }
+        _audioFile?.Dispose();
+        _audioFile = null;
+        var memoryStream = new MemoryStream(data);
+        _audioFile = new LoopingWaveFileReader(memoryStream);
+        if (loopStart.HasValue && loopEnd.HasValue)
+        {
+            _audioFile.LoopStartSample = loopStart.Value/2;
+            _audioFile.LoopEndSample = loopEnd.Value/2;
+        }
+        _outputDevice = new WaveOutEvent();
+        _outputDevice.Init(_audioFile);
+        _outputDevice.Play();
     }
 
     private async Task OnImportWav()
@@ -271,8 +300,8 @@ public class BnkEditorViewModel : StatefulFileEditorViewModelBase<BnkEditorState
             CommonDialogTemplates.Input with
             {
                 Icon = "🔊",
-                Title = "Normalize",
-                Text = "Please enter a desired max volume level relative to 1.0"
+                Title = St.Normalize,
+                Text = St.NormalizeText
             }, 0.0, 1.0, Settings.Current.Bnk_DefaultNormalization);
         if (!result.Success) return;
         OnStopPlayback();
@@ -286,12 +315,12 @@ public class BnkEditorViewModel : StatefulFileEditorViewModelBase<BnkEditorState
         {
             await (await DialogService!.Show(CommonDialogTemplates.Message with
             {
-                Title = "Inject padding",
-                Text = "BNK cleanup upon save is enabled in the settings. Please disable it before using this feature."
+                Title = St.InjectPadding,
+                Text = St.InjectPaddingCleanupError
             },
             [
                 (() => Task.CompletedTask, Stc.Ok),
-                (() => DialogService!.Show<SettingsViewModel>(new DialogTemplate() { Title = Sts.Settings }), "Go to settings")
+                (() => DialogService!.Show<SettingsViewModel>(new DialogTemplate() { Title = Sts.Settings }), St.GoToSettings)
             ])).Invoke();
             return;
         }
@@ -299,8 +328,8 @@ public class BnkEditorViewModel : StatefulFileEditorViewModelBase<BnkEditorState
             CommonDialogTemplates.Input with
             {
                 Icon = "_",
-                Title = "Inject padding",
-                Text = "Please enter the number of padding bytes to add in between this audio stream and the next. This should help alleviate audio stream data to overlap each other in game."
+                Title = St.InjectPadding,
+                Text = St.InjectPaddingText
             }, 0, 1048576, State.SelectedStream!.SampleData.Length);
         if (!result.Success) return;
         State.SelectedStream.PostAudioStreamData = new byte[result.Result];
@@ -313,8 +342,8 @@ public class BnkEditorViewModel : StatefulFileEditorViewModelBase<BnkEditorState
             CommonDialogTemplates.Input with
             {
                 Icon = "_",
-                Title = "Add audio padding",
-                Text = "Please enter the number of samples of silence to add to the beginning and the end of the audio stream."
+                Title = St.AddAudioPadding,
+                Text = St.AddAudioPaddingText
             }, 0, int.MaxValue, 500);
         if (!result.Success) return;
         var padding = new byte[result.Result * State.SelectedStream!.BytesPerSample];
@@ -332,14 +361,6 @@ public class BnkEditorViewModel : StatefulFileEditorViewModelBase<BnkEditorState
         if (State.SelectedStream?.AltStream is null) return;
         State.SelectedStream.AltStream = null;
         State.Refresh();
-    }
-
-    private void SetSound(byte[] data)
-    {
-        _isPlaying = false;
-        _snd.Stop();
-        _snd.Stream?.Dispose();
-        _snd.Stream = new MemoryStream(data);
     }
 
     Task IViewModel.OnNavigateAway(CancelFlag navigation)

@@ -11,7 +11,7 @@ using TheXDS.Vivianne.Component;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Resources;
 using TheXDS.Vivianne.ViewModels.Base;
-
+using St = TheXDS.Vivianne.Resources.Strings.ViewModels.CurveEditorViewModel;
 namespace TheXDS.Vivianne.ViewModels.Carp;
 
 /// <summary>
@@ -92,7 +92,7 @@ public class CurveEditorDialogViewModel : EditorViewModelBase<CurveEditorState>
             .Select(p => double.TryParse(p, out var r) ? r : 0.0).ToArray();
         if (!AllowCollectionGrow && State.Collection.Count != newCollection.Length)
         {
-            await DialogService!.Error(string.Format("A collection of {0} elements was expected, but received {1}.", State.Collection.Count, newCollection.Length));
+            await DialogService!.Error(string.Format(St.CreateFromStringError, State.Collection.Count, newCollection.Length));
             return;
         }
         State.Collection.Clear();

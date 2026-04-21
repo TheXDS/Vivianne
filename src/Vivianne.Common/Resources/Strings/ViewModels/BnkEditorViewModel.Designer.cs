@@ -19,7 +19,7 @@ namespace TheXDS.Vivianne.Resources.Strings.ViewModels {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class BnkEditorViewModel {
@@ -57,6 +57,24 @@ namespace TheXDS.Vivianne.Resources.Strings.ViewModels {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add audio padding.
+        /// </summary>
+        public static string AddAudioPadding {
+            get {
+                return ResourceManager.GetString("AddAudioPadding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter the number of samples of silence to add to the beginning and the end of the audio stream..
+        /// </summary>
+        public static string AddAudioPaddingText {
+            get {
+                return ResourceManager.GetString("AddAudioPaddingText", resourceCulture);
             }
         }
         
@@ -106,6 +124,15 @@ namespace TheXDS.Vivianne.Resources.Strings.ViewModels {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Got to settings.
+        /// </summary>
+        public static string GoToSettings {
+            get {
+                return ResourceManager.GetString("GoToSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Import.
         /// </summary>
         public static string Import {
@@ -120,6 +147,33 @@ namespace TheXDS.Vivianne.Resources.Strings.ViewModels {
         public static string ImportAltStream {
             get {
                 return ResourceManager.GetString("ImportAltStream", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inject padding.
+        /// </summary>
+        public static string InjectPadding {
+            get {
+                return ResourceManager.GetString("InjectPadding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BNK cleanup upon save is enabled in the settings. Please disable it before using this feature..
+        /// </summary>
+        public static string InjectPaddingCleanupError {
+            get {
+                return ResourceManager.GetString("InjectPaddingCleanupError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter the number of padding bytes to add in between this audio stream and the next. This should help alleviate audio stream data to overlap each other in game..
+        /// </summary>
+        public static string InjectPaddingText {
+            get {
+                return ResourceManager.GetString("InjectPaddingText", resourceCulture);
             }
         }
         
@@ -165,6 +219,24 @@ namespace TheXDS.Vivianne.Resources.Strings.ViewModels {
         public static string NoLoop {
             get {
                 return ResourceManager.GetString("NoLoop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Normalize.
+        /// </summary>
+        public static string Normalize {
+            get {
+                return ResourceManager.GetString("Normalize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter a desired max volume level relative to 1.0.
+        /// </summary>
+        public static string NormalizeText {
+            get {
+                return ResourceManager.GetString("NormalizeText", resourceCulture);
             }
         }
         

@@ -1,5 +1,4 @@
 ﻿using System.CommandLine;
-using TheXDS.Vivianne.Models.Fce.Common;
 using static TheXDS.Vivianne.Tools.Fce.FceCenter;
 using St = TheXDS.Vivianne.Resources.Strings.FceCommand;
 
@@ -16,6 +15,6 @@ public partial class FceCommand
 
     private static Task CenterCommand(FileInfo fceFile)
     {
-        return FceTransaction(fceFile, Center, Center<FcePart>);
+        return FceTransaction(fceFile, Center, Center);
     }
 }
