@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using TheXDS.MCART.Exceptions;
 using TheXDS.Vivianne.Serializers;
@@ -14,27 +13,35 @@ namespace TheXDS.Vivianne.Component;
 /// <typeparam name="TSerializer">
 /// Concrete type of serializer to use.
 /// </typeparam>
-/// <param name="backingStore">
-/// Underlying physical raw backing store tu use when reading or writing
-/// entities.
-/// </param>
-public class BackingStore<TFile, TSerializer>(IBackingStore backingStore) : IBackingStore<TFile>
+public class BackingStore<TFile, TSerializer> : IBackingStore<TFile>
     where TFile : notnull
     where TSerializer : notnull, ISerializer<TFile>, new()
 {
-    private static readonly TSerializer Serializer = new();
-    private readonly IBackingStore backingStore = backingStore;
+    private readonly TSerializer Serializer;
+    private readonly IBackingStore _backingStore;
+
+    /// <param name="backingStore">
+    /// Underlying physical raw backing store tu use when reading or writing
+    /// entities.
+    /// </param>
+    /// <param name="serializerConfigCallback"></param>
+    public BackingStore(IBackingStore backingStore, Action<TSerializer>? serializerConfigCallback)
+    {
+        _backingStore = backingStore;
+        Serializer = new TSerializer();
+        serializerConfigCallback?.Invoke(Serializer);
+    }
 
     /// <inheritdoc/>
     public string? FileName { get; set; }
 
     /// <inheritdoc/>
-    public IBackingStore Store => backingStore;
+    public IBackingStore Store => _backingStore;
 
     /// <inheritdoc/>
     public async Task<TFile?> ReadAsync()
     {
-        return (await backingStore.ReadAsync(FileName ?? throw new InvalidOperationException())) is { } contents
+        return (await _backingStore.ReadAsync(FileName ?? throw new InvalidOperationException())) is { } contents
             ? await Serializer.DeserializeAsync(contents)
             : default;
     }
@@ -48,7 +55,7 @@ public class BackingStore<TFile, TSerializer>(IBackingStore backingStore) : IBac
     /// <inheritdoc/>
     public async Task<bool> WriteNewAsync(TFile file)
     {
-        var result = await backingStore.GetNewFileName(FileName);
+        var result = await _backingStore.GetNewFileName(FileName);
         if (!result.Success) return false;
         FileName = result.Result;
         return await PerformSave(file);
@@ -56,6 +63,6 @@ public class BackingStore<TFile, TSerializer>(IBackingStore backingStore) : IBac
 
     private async Task<bool> PerformSave(TFile file)
     {
-        return await backingStore.WriteAsync(FileName ?? throw new TamperException(), await Serializer.SerializeAsync(file));
+        return await _backingStore.WriteAsync(FileName ?? throw new TamperException(), await Serializer.SerializeAsync(file));
     }
 }

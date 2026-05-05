@@ -117,20 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AreYouSureYouWantToRemoveX" xml:space="preserve">
-    <value>¿Está seguro que quiere remover '{0}'?</value>
-  </data>
   <data name="ImportFile" xml:space="preserve">
     <value>Importar archivo</value>
   </data>
-  <data name="NewFromTemplate" xml:space="preserve">
-    <value>Nuevo desde plantilla</value>
-  </data>
-  <data name="RemoveX" xml:space="preserve">
-    <value>Remover '{0}'</value>
-  </data>
   <data name="ReplaceFile" xml:space="preserve">
     <value>Reemplazar archivo</value>
+  </data>
+  <data name="TheFileXAlreadyExist" xml:space="preserve">
+    <value>El archivo '{0}' ya existe. ¿Desea reemplazarlo?</value>
   </data>
   <data name="ReplaceX" xml:space="preserve">
     <value>Reemplazar '{0}'</value>
@@ -138,16 +132,37 @@
   <data name="SelectAFileToRepaceXWith" xml:space="preserve">
     <value>Seleccione un archivo por el cual reemplazar a '{0}'</value>
   </data>
+  <data name="RemoveX" xml:space="preserve">
+    <value>Remover '{0}'</value>
+  </data>
+  <data name="AreYouSureYouWantToRemoveX" xml:space="preserve">
+    <value>¿Está seguro que quiere remover '{0}'?</value>
+  </data>
+  <data name="NewFromTemplate" xml:space="preserve">
+    <value>Nuevo desde plantilla</value>
+  </data>
   <data name="SelectATemplate" xml:space="preserve">
     <value>Seleccione una plantilla para crear un nuevo archivo en el directorio del VIV.</value>
-  </data>
-  <data name="TheFileXAlreadyExist" xml:space="preserve">
-    <value>El archivo '{0}' ya existe. ¿Desea reemplazarlo?</value>
   </data>
   <data name="RenameHelp" xml:space="preserve">
     <value>Escriba el nuevo nombre del archivo</value>
   </data>
   <data name="Rename" xml:space="preserve">
     <value>Renombrar archivo</value>
+  </data>
+  <data name="SaveVivFile" xml:space="preserve">
+    <value>Guardar archivo VIV</value>
+  </data>
+  <data name="SaveVivFileAs" xml:space="preserve">
+    <value>Guardar archivo VIV como...</value>
+  </data>
+  <data name="OpenExternally" xml:space="preserve">
+    <value>Alt+clic para abrir externamente</value>
+  </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Eliminar</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Exportar</value>
   </data>
 </root>

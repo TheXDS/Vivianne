@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TheXDS.Vivianne.Resources.Strings.ViewModels {
+namespace TheXDS.Vivianne.Resources.Strings.Controls {
     using System;
     
     
@@ -22,24 +22,24 @@ namespace TheXDS.Vivianne.Resources.Strings.ViewModels {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class SettingsViewModel {
+    public class FileEditorCommandBar {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal SettingsViewModel() {
+        internal FileEditorCommandBar() {
         }
         
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("TheXDS.Vivianne.Resources.Strings.ViewModels.SettingsViewModel", typeof(SettingsViewModel).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("TheXDS.Vivianne.Resources.Strings.Controls.FileEditorCommandBar", typeof(FileEditorCommandBar).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,7 +51,7 @@ namespace TheXDS.Vivianne.Resources.Strings.ViewModels {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,29 +61,38 @@ namespace TheXDS.Vivianne.Resources.Strings.ViewModels {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Root NFS 2/2SE game path.
+        ///   Looks up a localized string similar to Discard and close.
         /// </summary>
-        internal static string RootNFS2GamePath {
+        public static string DiscardAndClose {
             get {
-                return ResourceManager.GetString("RootNFS2GamePath", resourceCulture);
+                return ResourceManager.GetString("DiscardAndClose", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Root NFS 3 game path.
+        ///   Looks up a localized string similar to Save.
         /// </summary>
-        internal static string RootNFS3GamePath {
+        public static string Save {
             get {
-                return ResourceManager.GetString("RootNFS3GamePath", resourceCulture);
+                return ResourceManager.GetString("Save", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Root to NFS 4 game path.
+        ///   Looks up a localized string similar to Save and close.
         /// </summary>
-        internal static string RootToNFS4GamePath {
+        public static string SaveAndClose {
             get {
-                return ResourceManager.GetString("RootToNFS4GamePath", resourceCulture);
+                return ResourceManager.GetString("SaveAndClose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save as....
+        /// </summary>
+        public static string SaveAs {
+            get {
+                return ResourceManager.GetString("SaveAs", resourceCulture);
             }
         }
     }

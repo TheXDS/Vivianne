@@ -93,9 +93,9 @@ public class SettingsViewModel : EditorViewModelBase<SettingsState>
         {
             IsBusy = true;
             var result = await DialogService!.GetFileOpenPath(
-                CommonDialogTemplates.DirectorySelect with { Title = St.RootNFS3GamePath },
+                CommonDialogTemplates.DirectorySelect with { Title = St.RootNFS2GamePath },
                 [new FileFilterItem("nfs2 / nfs2se", ["nfs2.exe", "nfs2se.exe"])],
-                Path.Combine(State.Nfs3Path ?? Environment.CurrentDirectory, "nfs2.exe"));
+                Path.Combine(State.Nfs2Path ?? Environment.CurrentDirectory, "nfs2.exe"));
             if (result.Success)
             {
                 State.Nfs2Path = Path.GetDirectoryName(result.Result);

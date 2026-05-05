@@ -22,24 +22,28 @@
                             VerticalAlignment="Stretch"
                             Command="{Binding Editor.SaveCommand, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
                             Icon="{ui:SymbolIcon Symbol=Save24}"
+                            ToolTip="{x:Static st:FileEditorCommandBar.Save}"
                             Visibility="{Binding IsReadOnly, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource Bool2InvVisConv}}" />
                         <ui:Button
                             Margin="5"
                             VerticalAlignment="Stretch"
                             Command="{Binding Editor.SaveAsCommand, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
                             Icon="{ui:SymbolIcon Symbol=DocumentSave24}"
+                            ToolTip="{x:Static st:FileEditorCommandBar.SaveAs}"
                             Visibility="{Binding IsReadOnly, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource Bool2InvVisConv}}" />
                         <ui:Button
                             Margin="5"
                             VerticalAlignment="Stretch"
                             Command="{Binding Editor.SaveAndCloseCommand, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
                             Icon="{ui:SymbolIcon Symbol=ArrowLeft24}"
+                            ToolTip="{x:Static st:FileEditorCommandBar.SaveAndClose}"
                             Visibility="{Binding ShowClose, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource Bool2VisConv}}" />
                         <ui:Button
                             Margin="5"
                             VerticalAlignment="Stretch"
                             Command="{Binding Editor.DiscardAndCloseCommand, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
                             Icon="{ui:SymbolIcon Symbol=Backspace24}"
+                            ToolTip="{x:Static st:FileEditorCommandBar.DiscardAndClose}"
                             Visibility="{Binding ShowClose, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource Bool2VisConv}}" />
                         <ContentPresenter VerticalAlignment="Center" Content="{TemplateBinding Content}" />
                     </DockPanel>

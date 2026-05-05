@@ -29,8 +29,8 @@ public class NullOperatingSystemProxy : IOperatingSystemProxy
     }
 
     /// <inheritdoc/>
-    public Task InvokeCommand(string command, string[] args, bool elevate)
+    public Task<int> InvokeCommand(string command, string[] args, bool elevate)
     {
-        return Task.CompletedTask;
+        return Task.FromResult(0);
     }
 }

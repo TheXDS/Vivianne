@@ -14,15 +14,8 @@ namespace TheXDS.Vivianne.ViewModels.Viv;
 /// <summary>
 /// Implements a launcher to create and/or edit VIV files.
 /// </summary>
-public class VivFileEditorLauncher : FileEditorViewModelLauncher<VivEditorState, VivFile, VivSerializer, VivEditorViewModel>
+public class VivFileEditorLauncher(Func<IDialogService> dialogSvc) : FileEditorViewModelLauncher<VivEditorState, VivFile, VivSerializer, VivEditorViewModel>(dialogSvc, "VIV", FileFilters.VivFileFilter, serializerConfigCallback: s => s.Sort = Settings.Current.Viv_FileSorting)
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="VivFileEditorLauncher"/> class.
-    /// </summary>
-    public VivFileEditorLauncher(Func<IDialogService> dialogSvc) : base(dialogSvc, "VIV", FileFilters.VivFileFilter)
-    {
-        Serializer.Sort = () => Settings.Current.Viv_FileSorting;
-    }
 
     /// <inheritdoc/>
     public override RecentFileInfo[] RecentFiles

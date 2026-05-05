@@ -46,7 +46,7 @@ public interface IOperatingSystemProxy
     /// <returns>
     /// A Task that can be used to await for the completion of the process.
     /// </returns>
-    Task InvokeCommand(string command, string[] args, bool elevate = false);
+    Task<int> InvokeCommand(string command, string[] args, bool elevate = false);
 
     /// <summary>
     /// Invokes an internal Vivianne callback through the operating system,

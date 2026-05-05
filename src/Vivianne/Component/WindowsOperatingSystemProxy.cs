@@ -21,8 +21,10 @@ internal class WindowsOperatingSystemProxy : IOperatingSystemProxy
         MessageBox.Show(text, caption, MessageBoxButtons.OK, MessageBoxIcon.Error);
     }
 
-    public Task InvokeCommand(string command, string[] args, bool elevate)
+    public async Task<int> InvokeCommand(string command, string[] args, bool elevate)
     {
-        return Process.Start(new ProcessStartInfo(command, args) { UseShellExecute = true, Verb = elevate ? "runas" : string.Empty })?.WaitForExitAsync() ?? Task.CompletedTask;
+        var process = Process.Start(new ProcessStartInfo(command, args) { UseShellExecute = true, Verb = elevate ? "runas" : string.Empty });
+        await (process?.WaitForExitAsync() ?? Task.CompletedTask);
+        return process?.ExitCode ?? -1;
     }
 }

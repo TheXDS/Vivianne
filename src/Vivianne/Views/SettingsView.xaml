@@ -359,7 +359,7 @@
                             SmallChange="0.01"
                             Value="{Binding State.Bnk_DefaultNormalization, StringFormat={}{0:0.00}}" />
                     </ui:CardControl>
-                    <ui:CardControl hlp:Form.BetaIndicator="True" Icon="{ui:SymbolIcon Symbol=Delete24}">
+                    <ui:CardControl hlp:Form.BetaIndicator="True" Icon="{ui:SymbolIcon Symbol=Copy24}">
                         <ui:CardControl.Header>
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -369,15 +369,15 @@
                                 <ui:TextBlock
                                     Grid.Row="0"
                                     FontTypography="BodyStrong"
-                                    Text="Keep trash outside of sample data" />
+                                    Text="Enable BNK stream deduplication" />
                                 <ui:TextBlock
                                     Grid.Row="1"
                                     Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                                    Text="When enabled, forces the BNK editor to keep any unreferenced trash data that might exist outside of the sample data of all audio streams."
+                                    Text="When enabled, checks the BNK data pool to link streams with the same audio data to the same contents."
                                     TextWrapping="Wrap" />
                             </Grid>
                         </ui:CardControl.Header>
-                        <ui:ToggleSwitch IsChecked="{Binding State.Bnk_KeepTrash}" />
+                        <ui:ToggleSwitch IsChecked="{Binding State.Bnk_EnableStreamDeduplication}" />
                     </ui:CardControl>
                     <ui:CardControl hlp:Form.BetaIndicator="True" Icon="{ui:SymbolIcon Symbol=Broom24}">
                         <ui:CardControl.Header>

@@ -108,7 +108,7 @@ public class FceFileEditorLauncher : ViewModel, IFileEditorViewModelLauncher
         {
             Title = recentFile.FriendlyName,
             State = new TState { File = file },
-            BackingStore = new BackingStore<TFile, TSerializer>(new FileSystemBackingStore(_dialogSvc.Invoke(), FileFilters.FceFileFilter, Path.GetDirectoryName(filePath) ?? Environment.CurrentDirectory)) { FileName = filePath },
+            BackingStore = new BackingStore<TFile, TSerializer>(new FileSystemBackingStore(_dialogSvc.Invoke(), FileFilters.FceFileFilter, Path.GetDirectoryName(filePath) ?? Environment.CurrentDirectory), null) { FileName = filePath },
         };
         await NavigationService!.Navigate(vm);
     }

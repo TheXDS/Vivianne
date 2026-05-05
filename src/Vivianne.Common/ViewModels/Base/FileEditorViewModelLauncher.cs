@@ -26,6 +26,7 @@ public abstract class FileEditorViewModelLauncher<TState, TFile, TSerializer, TE
     where TEditor : IFileEditorViewModel<TState, TFile>, new()
 {
     private readonly IEnumerable<FileFilterItem> _saveFilter;
+    private readonly Action<TSerializer>? _serializerConfigCallback;
     private readonly Func<IDialogService> _dialogSvc;
 
     /// <inheritdoc/>
@@ -48,12 +49,14 @@ public abstract class FileEditorViewModelLauncher<TState, TFile, TSerializer, TE
     /// enabled and available. If set to <see langword="false"/>, the "New"
     /// command will be disabled.
     /// </param>
-    protected FileEditorViewModelLauncher(Func<IDialogService> dialogSvc, string pageName, IEnumerable<FileFilterItem> openFilter, IEnumerable<FileFilterItem> saveFilter, bool canCreateNew = true)
+    /// <param name="serializerConfigCallback"></param>
+    protected FileEditorViewModelLauncher(Func<IDialogService> dialogSvc, string pageName, IEnumerable<FileFilterItem> openFilter, IEnumerable<FileFilterItem> saveFilter, bool canCreateNew = true, Action<TSerializer>? serializerConfigCallback = null)
         : base(pageName, openFilter)
     {
         _dialogSvc = dialogSvc;
         _saveFilter = saveFilter;
         CanCreateNew = canCreateNew;
+        _serializerConfigCallback = serializerConfigCallback;
         NewFileCommand = new SimpleCommand(OnNew, canCreateNew);
     }
 
@@ -72,7 +75,8 @@ public abstract class FileEditorViewModelLauncher<TState, TFile, TSerializer, TE
     /// enabled and available. If set to <see langword="false"/>, the "New"
     /// command will be disabled.
     /// </param>
-    protected FileEditorViewModelLauncher(Func<IDialogService> dialogSvc, string pageName, IEnumerable<FileFilterItem> filter, bool canCreateNew = true) : this(dialogSvc, pageName, filter, filter, canCreateNew)
+    /// <param name="serializerConfigCallback"></param>
+    protected FileEditorViewModelLauncher(Func<IDialogService> dialogSvc, string pageName, IEnumerable<FileFilterItem> filter, bool canCreateNew = true, Action<TSerializer>? serializerConfigCallback = null) : this(dialogSvc, pageName, filter, filter, canCreateNew, serializerConfigCallback)
     {
     }
 
@@ -83,7 +87,7 @@ public abstract class FileEditorViewModelLauncher<TState, TFile, TSerializer, TE
         {
             Title = friendlyName,
             State = new TState { File = file },
-            BackingStore = new BackingStore<TFile, TSerializer>(new FileSystemBackingStore(_dialogSvc.Invoke(), _saveFilter, Path.GetDirectoryName(filePath) ?? Environment.CurrentDirectory)) { FileName = filePath },
+            BackingStore = new BackingStore<TFile, TSerializer>(new FileSystemBackingStore(_dialogSvc.Invoke(), _saveFilter, Path.GetDirectoryName(filePath) ?? Environment.CurrentDirectory), _serializerConfigCallback) { FileName = filePath },
         };
     }
 
@@ -96,7 +100,7 @@ public abstract class FileEditorViewModelLauncher<TState, TFile, TSerializer, TE
             {
                 File = new TFile()
             },
-            BackingStore = new BackingStore<TFile, TSerializer>(new FileSystemBackingStore(_dialogSvc.Invoke(), _saveFilter, Environment.CurrentDirectory)),
+            BackingStore = new BackingStore<TFile, TSerializer>(new FileSystemBackingStore(_dialogSvc.Invoke(), _saveFilter, Environment.CurrentDirectory), _serializerConfigCallback),
         };
         NavigationService!.Navigate(vm);
     }

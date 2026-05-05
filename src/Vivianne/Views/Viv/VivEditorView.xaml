@@ -11,14 +11,16 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mcart="http://schemas.thexds.local/mcart"
     xmlns:st="clr-namespace:TheXDS.Vivianne.Resources.Strings.Views"
+    xmlns:st2="clr-namespace:TheXDS.Vivianne.Resources.Strings.ViewModels;assembly=Vivianne.Common"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:vc2="clr-namespace:TheXDS.Vivianne.ValueConverters"
     xmlns:vcarp="clr-namespace:TheXDS.Vivianne.Views.Carp"
     xmlns:views="clr-namespace:TheXDS.Vivianne.Views"
     xmlns:viewsSpec="clr-namespace:TheXDS.Vivianne.Views.Specialized"
+    xmlns:viv="clr-namespace:TheXDS.Vivianne.ViewModels.Viv;assembly=Vivianne.Common"
     xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
     x:Name="ucRoot"
-    d:DataContext="{d:DesignInstance Type=vm:VivEditorViewModel}"
+    d:DataContext="{d:DesignInstance Type=viv:VivEditorViewModel}"
     d:DesignHeight="450"
     d:DesignWidth="400"
     mc:Ignorable="d">
@@ -68,22 +70,26 @@
                     Margin="5"
                     HorizontalAlignment="Stretch"
                     Command="{Binding ImportFileCommand}"
-                    Icon="{ui:SymbolIcon Symbol=Add24}" />
+                    Icon="{ui:SymbolIcon Symbol=Add24}"
+                    ToolTip="{x:Static st2:VivEditorViewModel.ImportFile}" />
                 <ui:Button
                     Margin="5"
                     HorizontalAlignment="Stretch"
                     Command="{Binding NewFromTemplateCommand}"
-                    Icon="{ui:SymbolIcon Symbol=New24}" />
+                    Icon="{ui:SymbolIcon Symbol=New24}"
+                    ToolTip="{x:Static st2:VivEditorViewModel.NewFromTemplate}" />
                 <ui:Button
                     Margin="5"
                     HorizontalAlignment="Stretch"
                     Command="{Binding SaveCommand}"
-                    Icon="{ui:SymbolIcon Symbol=Save24}" />
+                    Icon="{ui:SymbolIcon Symbol=Save24}"
+                    ToolTip="{x:Static st2:VivEditorViewModel.SaveVivFile}" />
                 <ui:Button
                     Margin="5"
                     HorizontalAlignment="Stretch"
                     Command="{Binding SaveAsCommand}"
-                    Icon="{ui:SymbolIcon Symbol=SaveArrowRight24}" />
+                    Icon="{ui:SymbolIcon Symbol=SaveArrowRight24}"
+                    ToolTip="{x:Static st2:VivEditorViewModel.SaveVivFileAs}" />
             </mcart:StretchyWrapPanel>
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <ItemsControl MinWidth="150" ItemsSource="{Binding State.Directory}">
@@ -100,7 +106,7 @@
                                         <Border
                                             x:Name="PART_SelectionBg"
                                             CornerRadius="10,0,0,10"
-                                            ToolTip="Alt+click to open externally">
+                                            ToolTip="{x:Static st2:VivEditorViewModel.OpenExternally}">
                                             <DockPanel Margin="10,5">
                                                 <ui:Button
                                                     x:Name="PART_btnRemove"
@@ -109,14 +115,14 @@
                                                     DockPanel.Dock="Right"
                                                     Icon="{ui:SymbolIcon Symbol=Delete16}"
                                                     Style="{StaticResource SmallUiEditButton}"
-                                                    ToolTip="Remove" />
+                                                    ToolTip="{x:Static st2:VivEditorViewModel.Remove}" />
                                                 <ui:Button
                                                     x:Name="PART_btnRename"
                                                     Command="{Binding DataContext.RenameFileCommand, ElementName=ucRoot, Mode=OneWay}"
                                                     CommandParameter="{Binding Mode=OneWay}"
                                                     DockPanel.Dock="Right"
                                                     Style="{StaticResource SmallUiEditButton}"
-                                                    ToolTip="Rename..." />
+                                                    ToolTip="{x:Static st2:VivEditorViewModel.Rename}" />
                                                 <ui:Button
                                                     x:Name="PART_btnExport"
                                                     Command="{Binding DataContext.ExportFileCommand, ElementName=ucRoot, Mode=OneWay}"
@@ -124,7 +130,7 @@
                                                     DockPanel.Dock="Right"
                                                     Icon="{ui:SymbolIcon Symbol=Save16}"
                                                     Style="{StaticResource SmallUiEditButton}"
-                                                    ToolTip="Export..." />
+                                                    ToolTip="{x:Static st2:VivEditorViewModel.Export}" />
                                                 <ui:SymbolIcon
                                                     Margin="0,0,5,0"
                                                     Filled="True"
@@ -145,11 +151,6 @@
                                         <ControlTemplate.Triggers>
                                             <Trigger Property="IsChecked" Value="true">
                                                 <Setter TargetName="PART_SelectionBg" Property="Background" Value="{ui:ThemeResource ControlSolidFillColorDefaultBrush}" />
-                                                <!--<Setter TargetName="PART_btnRemove" Property="Foreground" Value="{StaticResource DarkAreaForeground}"/>
-                                                <Setter TargetName="PART_btnRename" Property="Foreground" Value="{StaticResource DarkAreaForeground}"/>
-                                                <Setter TargetName="PART_btnExport" Property="Foreground" Value="{StaticResource DarkAreaForeground}"/>
-                                                <Setter TargetName="PART_filename" Property="Foreground" Value="{StaticResource DarkAreaForeground}"/>
-                                                <Setter TargetName="PART_filesize" Property="Foreground" Value="{StaticResource DarkAreaForeground}"/>-->
                                             </Trigger>
                                             <Trigger Property="IsEnabled" Value="False">
                                                 <Setter TargetName="PART_btnRemove" Property="Visibility" Value="Hidden" />

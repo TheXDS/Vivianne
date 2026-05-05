@@ -25,4 +25,10 @@ public partial class Settings
     /// trim any loops of audio to just the looping sections.
     /// </summary>
     public bool Bnk_TrimLoopsOnCleanup { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value that indicates if the BNK serializer should
+    /// attempt to deduplicate stream data when saving BNK files.
+    /// </summary>
+    public bool Bnk_EnableStreamDeduplication { get; set; }
 }

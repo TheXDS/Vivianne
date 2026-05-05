@@ -117,13 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="RootNFS2GamePath" xml:space="preserve">
-    <value>Root NFS 2/2SE game path</value>
+  <data name="DiscardAndClose" xml:space="preserve">
+    <value>Discard and close</value>
   </data>
-  <data name="RootNFS3GamePath" xml:space="preserve">
-    <value>Root NFS 3 game path</value>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
   </data>
-  <data name="RootToNFS4GamePath" xml:space="preserve">
-    <value>Root to NFS 4 game path</value>
+  <data name="SaveAndClose" xml:space="preserve">
+    <value>Save and close</value>
+  </data>
+  <data name="SaveAs" xml:space="preserve">
+    <value>Save as...</value>
   </data>
 </root>

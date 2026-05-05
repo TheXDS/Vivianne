@@ -17,6 +17,7 @@ using TheXDS.Vivianne.Models.Fe;
 using TheXDS.Vivianne.Models.Fsh;
 using TheXDS.Vivianne.Models.Geo;
 using TheXDS.Vivianne.Models.Viv;
+using TheXDS.Vivianne.Properties;
 using TheXDS.Vivianne.Resources;
 using TheXDS.Vivianne.Serializers;
 using TheXDS.Vivianne.Serializers.Audio.Bnk;
@@ -215,7 +216,7 @@ public static class FileTypes
 
     private static Task<IViewModel?> CreateVivEditorViewModel(Func<IBackingStore> backingStoreFactory, string fileName)
     {
-        return CreateEditorViewModel<VivEditorViewModel, VivEditorState, VivFile, VivSerializer>(backingStoreFactory, fileName);
+        return CreateEditorViewModel<VivEditorViewModel, VivEditorState, VivFile, VivSerializer>(backingStoreFactory, fileName, s => s.Sort = Settings.Current.Viv_FileSorting);
     }
 
     private static Task<IViewModel?>  CreateComingSoonViewModel(Func<IBackingStore> _, string __) => Task.FromResult<IViewModel?>(new ComingSoonViewModel());
@@ -278,7 +279,7 @@ public static class FileTypes
 
     private static Task<IViewModel?> CreateBnkEditorViewModel(Func<IBackingStore> backingStoreFactory, string name)
     {
-        return CreateEditorViewModel<BnkEditorViewModel, BnkEditorState, BnkFile, BnkSerializer>(backingStoreFactory, name);
+        return CreateEditorViewModel<BnkEditorViewModel, BnkEditorState, BnkFile, BnkSerializer>(backingStoreFactory, name, s => s.EnableStreamDedup = Settings.Current.Bnk_EnableStreamDeduplication);
     }
 
     private static Task<IViewModel?> CreateMusPlayerViewModel(Func<IBackingStore> backingStoreFactory, string name)
@@ -292,25 +293,32 @@ public static class FileTypes
         });
     }
 
-    private static Task<IViewModel?> CreateEditorViewModel<TViewModel, TState, TFile, TSerializer>(Func<IBackingStore> backingStoreFactory, string name)
+    private static Task<IViewModel?> CreateEditorViewModel<TViewModel, TState, TFile, TSerializer>(Func<IBackingStore> backingStoreFactory, string name, Action<TSerializer>? serializerConfigCallback = null)
         where TFile : notnull
         where TViewModel : notnull, IFileEditorViewModel<TState, TFile>, new()
         where TState : notnull, IFileState<TFile>, new()
         where TSerializer : notnull, ISerializer<TFile>, new()
     {
-        return TryCreateViewModel(backingStoreFactory, name, (data, store) => CreateEditorViewModel<TViewModel, TState, TFile, TSerializer>(data, store, name));
+        return TryCreateViewModel(backingStoreFactory, name, (data, store) => CreateEditorViewModel<TViewModel, TState, TFile, TSerializer>(data, store, name, serializerConfigCallback));
     }
 
-    private static async Task<IViewModel?> CreateEditorViewModel<TViewModel, TState, TFile, TSerializer>(byte[] data, IBackingStore store, string name)
+    private static async Task<IViewModel?> CreateEditorViewModel<TViewModel, TState, TFile, TSerializer>(byte[] data, IBackingStore store, string name, Action<TSerializer>? serializerConfigCallback = null)
         where TFile : notnull
         where TViewModel : notnull, IFileEditorViewModel<TState, TFile>, new()
         where TState : notnull, IFileState<TFile>, new()
         where TSerializer : notnull, ISerializer<TFile>, new() => new TViewModel()
         {
             Title = name,
-            State = new TState() { File = await new TSerializer().DeserializeAsync(data) },
-            BackingStore = new BackingStore<TFile, TSerializer>(store) { FileName = name },
+            State = new TState() { File = await CreateSerializer<TSerializer, TFile>(serializerConfigCallback).DeserializeAsync(data) },
+            BackingStore = new BackingStore<TFile, TSerializer>(store, serializerConfigCallback) { FileName = name },
         };
+
+    private static TSerializer CreateSerializer<TSerializer, TFile>(Action<TSerializer>? configCallback = null) where TSerializer : notnull, ISerializer<TFile>, new()
+    {
+        TSerializer serializer = new();
+        configCallback?.Invoke(serializer);
+        return serializer;
+    }
 
     private static async Task<IViewModel?> TryCreateViewModel(Func<IBackingStore> backingStoreFactory, string name, Func<byte[], IBackingStore, Task<IViewModel?>> viewModelFactory)
     {

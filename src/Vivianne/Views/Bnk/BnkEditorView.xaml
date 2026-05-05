@@ -62,7 +62,7 @@
                         VerticalAlignment="Stretch"
                         Command="{Binding RemoveUnusedDataCommand, Mode=OneWay}"
                         Icon="{ui:SymbolIcon Symbol=Broom24}"
-                        ToolTip="Remove unused data" />
+                        ToolTip="{x:Static st:BnkEditorViewModel.RemoveUnusedData}" />
                 </StackPanel>
                 <CheckBox
                     Grid.Column="1"

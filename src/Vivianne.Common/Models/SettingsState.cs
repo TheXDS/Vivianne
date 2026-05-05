@@ -32,6 +32,7 @@ public class SettingsState : EditorViewModelStateBase
     private bool _carp_SyncChanges;
     private bool _fe_SyncChanges;
     private FeDataLang _preferredFeDataLang;
+    private bool _bnk_EnableStreamDeduplication;
 
     /// <summary>
     /// Gets or sets the path to the NFS2 main directory.
@@ -184,6 +185,16 @@ public class SettingsState : EditorViewModelStateBase
     }
 
     /// <summary>
+    /// Gets or sets a value that indicates if the BNK serializer should
+    /// attempt to deduplicate stream data when saving BNK files.
+    /// </summary>
+    public bool Bnk_EnableStreamDeduplication
+    {
+        get => _bnk_EnableStreamDeduplication;
+        set => Change(ref _bnk_EnableStreamDeduplication, value);
+    }
+
+    /// <summary>
     /// Gets or sets a value that indicates whether data sync to FeData files
     /// is enabled when editing a Carp file.
     /// </summary>
@@ -265,6 +276,7 @@ public class SettingsState : EditorViewModelStateBase
             Bnk_DefaultNormalization = settings.Bnk_DefaultNormalization,
             Bnk_KeepTrash = settings.Bnk_KeepTrash,
             Bnk_TrimLoopsOnCleanup = settings.Bnk_TrimLoopsOnCleanup,
+            Bnk_EnableStreamDeduplication = settings.Bnk_EnableStreamDeduplication,
             Carp_SyncChanges = settings.Carp_SyncChanges,
             Fce_CleanupOnSave = settings.Fce_CleanupOnSave,
             Fce_CenterModel = settings.Fce_CenterModel,
@@ -299,6 +311,7 @@ public class SettingsState : EditorViewModelStateBase
             Bnk_DefaultNormalization = settings.Bnk_DefaultNormalization,
             Bnk_KeepTrash = settings.Bnk_KeepTrash,
             Bnk_TrimLoopsOnCleanup = settings.Bnk_TrimLoopsOnCleanup,
+            Bnk_EnableStreamDeduplication = settings.Bnk_EnableStreamDeduplication,
             Carp_SyncChanges = settings.Carp_SyncChanges,
             Fce_CleanupOnSave = settings.Fce_CleanupOnSave,
             Fce_CenterModel = settings.Fce_CenterModel,

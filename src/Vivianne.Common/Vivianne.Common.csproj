@@ -3,9 +3,12 @@
 		<TargetFrameworks>net10.0;net8.0</TargetFrameworks>
 	</PropertyGroup>
 	<ItemGroup>
+	  <EmbeddedResource Include="..\..\LICENSE" />
+	</ItemGroup>
+	<ItemGroup>
 		<PackageReference Include="NAudio" Version="2.3.0" />
-		<PackageReference Include="System.Windows.Extensions" Version="10.0.5" />
-		<PackageReference Include="TheXDS.Ganymede" Version="0.5.1-beta.1" />
+		<PackageReference Include="System.Windows.Extensions" Version="10.0.7" />
+		<PackageReference Include="TheXDS.Ganymede" Version="0.5.1-beta.2" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\..\lib\VivLib\src\VivLib\VivLib.csproj" />
@@ -150,7 +153,7 @@
 			<LastGenOutput>StartupViewModel.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Strings\ViewModels\VivEditorViewModel.resx">
-			<Generator>ResXFileCodeGenerator</Generator>
+			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>VivEditorViewModel.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Strings\ViewModels\VivInfoViewModel.resx">
