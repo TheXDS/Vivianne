@@ -7,7 +7,6 @@
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="NAudio" Version="2.3.0" />
-		<PackageReference Include="System.Windows.Extensions" Version="10.0.7" />
 		<PackageReference Include="TheXDS.Ganymede" Version="0.5.1-beta.2" />
 	</ItemGroup>
 	<ItemGroup>
@@ -160,8 +159,5 @@
 			<Generator>ResXFileCodeGenerator</Generator>
 			<LastGenOutput>VivInfoViewModel.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-	</ItemGroup>
-	<ItemGroup>
-	  <PackageReference Update="Microsoft.SourceLink.GitHub" Version="10.0.201" />
 	</ItemGroup>
 </Project>

@@ -220,26 +220,47 @@ public class MusPlayerViewModel : ViewModel, IViewModel
     private AsfFile GetPreRenderStream()
     {
         (var streams, var loopOffset) = GetSubStreams();
-        var asf = AudioRender.JoinStreams(streams);
+
+
+        int[] indices = GetIndices();
+
+        var asf = AudioRender.JoinStreams(SelectIndices([.. streams], indices));
         asf.LoopStart = PlayLooping ? loopOffset: 0;
         asf.LoopEnd = PlayLooping ? asf.TotalSamples / asf.BytesPerSample : 0;
         return asf;
     }
 
+    private int[] GetIndices()
+    {
+        List<int> sequence = [];
+        int current = LinearMap.FirstItem;
+        while (!sequence.Contains(current))
+        {
+            sequence.Add(current);
+            current = LinearMap.Items[current].Jumps.FirstOrDefault()?.NextItem ?? 0;
+        }
+        return [.. sequence];
+    }
+
+    private static IEnumerable<AsfFile> SelectIndices(AsfFile[] files, int[] indices)
+    {
+        return indices.Select(i => files[i]);
+    }
+
     private (AsfFile[] streams, int loopOffset) GetSubStreams()
     {
-        if (LinearMap is not null)
-        {
-            List<int> sequence = [];
-            int current = LinearMap.FirstItem;
-            while (!sequence.Contains(current))
-            {
-                sequence.Add(current);
-                current = LinearMap.Items[current].Jumps.FirstOrDefault()?.NextItem ?? 0;
-            }
+        //if (LinearMap is not null)
+        //{
+        //    List<int> sequence = [];
+        //    int current = LinearMap.FirstItem;
+        //    while (!sequence.Contains(current))
+        //    {
+        //        sequence.Add(current);
+        //        current = LinearMap.Items[current].Jumps.FirstOrDefault()?.NextItem ?? 0;
+        //    }
 
-            return (sequence.Select(p => Mus.AsfSubStreams.Values.ElementAt(p)).ToArray(), Mus.AsfSubStreams.Keys.ElementAt(current));
-        }
+        //    return (sequence.Select(p => Mus.AsfSubStreams.Values.ElementAt(p)).ToArray(), Mus.AsfSubStreams.Keys.ElementAt(current));
+        //}
         return (Mus.AsfSubStreams.Values.ToArray(), 0);
     }
 
