@@ -42,7 +42,7 @@ public class BnkVisualizerConverter : IOneWayValueConverter<BnkStream?, ImageSou
             var loopStart = value.LoopStart / value.Channels;
             var loopEnd = value.LoopEnd / value.Channels;
             var slicedChannels = normalizedSamples.Slice(value.Channels).ToArray();
-            var sampleResolution = double.Floor(value.TotalSamples / width);
+            var sampleResolution = double.Floor(value.TotalSamples / width) + 1;
 
             graphics.DrawLine(gridPen, 0, height / 2, width, height / 2);
             foreach ((var currentChannelIndex, var currentChannelData) in Enumerable.Range(0, value.Channels).Select(p => slicedChannels[p].Where((p, i) => i % sampleResolution == 0).ToArray()).WithIndex())

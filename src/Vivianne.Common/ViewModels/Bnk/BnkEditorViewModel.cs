@@ -1,10 +1,10 @@
-﻿using System;
+﻿using NAudio.Wave;
+using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using NAudio.Wave;
 using TheXDS.Ganymede.Helpers;
 using TheXDS.Ganymede.Models;
 using TheXDS.Ganymede.Resources;
@@ -22,8 +22,6 @@ using TheXDS.Vivianne.Tools.Audio;
 using TheXDS.Vivianne.Tools.Audio.Bnk;
 using TheXDS.Vivianne.ViewModels.Base;
 using St = TheXDS.Vivianne.Resources.Strings.ViewModels.BnkEditorViewModel;
-using Stc = TheXDS.Vivianne.Resources.Strings.Common;
-using Sts = TheXDS.Vivianne.Resources.Strings.ViewModels.StartupViewModel;
 
 namespace TheXDS.Vivianne.ViewModels.Bnk;
 
@@ -33,7 +31,7 @@ namespace TheXDS.Vivianne.ViewModels.Bnk;
 public class BnkEditorViewModel : StatefulFileEditorViewModelBase<BnkEditorState, BnkFile>, IViewModel
 {
     private WaveOutEvent? _outputDevice;
-    private LoopingWaveFileReader? _audioFile;
+    private BnkWaveStream? _audioFile;
     private bool _isPlaying;
 
     /// <summary>
@@ -84,28 +82,10 @@ public class BnkEditorViewModel : StatefulFileEditorViewModelBase<BnkEditorState
     public ICommand RemoveAltStreamCommand { get; }
 
     /// <summary>
-    /// Gets a reference to the command used to remove all unused data from the
-    /// BNK file.
-    /// </summary>
-    public ICommand RemoveUnusedDataCommand { get; }
-
-    /// <summary>
     /// Gets a reference to the command used to normalize the selected stream's
     /// volume.
     /// </summary>
     public ICommand NormalizeVolumeCommand { get; }
-
-    /// <summary>
-    /// Gets a reference to the command used to inject padding bytes in between
-    /// audio stream data.
-    /// </summary>
-    public ICommand InjectPaddingCommand { get; }
-
-    /// <summary>
-    /// Gets a reference to the command used to add padding silence audio
-    /// samples to the audio stream.
-    /// </summary>
-    public ICommand AddAudioPaddingCommand { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="BnkEditorViewModel"/>
@@ -120,11 +100,8 @@ public class BnkEditorViewModel : StatefulFileEditorViewModelBase<BnkEditorState
         ExportLoopCommand = new SimpleCommand(OnExportLoop);
         ImportWavCommand = new SimpleCommand(OnImportWav);
         ImportAsAltStreamCommand = new SimpleCommand(OnImportAsAltStream);
-        RemoveUnusedDataCommand = new SimpleCommand(OnRemoveUnusedData);
         NormalizeVolumeCommand = new SimpleCommand(OnNormalizeVolume);
         RemoveAltStreamCommand = new SimpleCommand(OnRemoveAltStream);
-        InjectPaddingCommand = new SimpleCommand(OnInjectPadding);
-        AddAudioPaddingCommand = new SimpleCommand(OnAddAudioPadding);
     }
 
     /// <inheritdoc/>
@@ -160,7 +137,7 @@ public class BnkEditorViewModel : StatefulFileEditorViewModelBase<BnkEditorState
     private void OnPlaySample()
     {
         if (State.SelectedStream is not { } sample) return;
-        InitAudioStream(AudioRender.RenderBnk(sample));
+        InitAudioStream(sample, false);
     }
 
     private async Task OnPlayLoopingSample()
@@ -172,7 +149,7 @@ public class BnkEditorViewModel : StatefulFileEditorViewModelBase<BnkEditorState
             await DialogService!.Message(St.BNKStream, St.NoLoop);
             return;
         }
-        InitAudioStream(AudioRender.RenderBnkLoop(sample), sample.LoopStart, sample.LoopEnd);
+        InitAudioStream(sample, true);
         _isPlaying = true;
     }
 
@@ -185,26 +162,16 @@ public class BnkEditorViewModel : StatefulFileEditorViewModelBase<BnkEditorState
             _outputDevice.Dispose();
             _outputDevice = null;
         }
-        _audioFile?.Dispose();
         _audioFile = null;
     }
 
-    private void InitAudioStream(byte[] data, int? loopStart = null, int? loopEnd = null)
+    private void InitAudioStream(BnkStream sample, bool looping)
     {
-        if (_outputDevice is not null)
+        OnStopPlayback();
+        _audioFile = new BnkWaveStream(sample) { PlayLooping = looping };
+        if (looping)
         {
-            _outputDevice.Stop();
-            _outputDevice.Dispose();
-            _outputDevice = null;
-        }
-        _audioFile?.Dispose();
-        _audioFile = null;
-        var memoryStream = new MemoryStream(data);
-        _audioFile = new LoopingWaveFileReader(memoryStream);
-        if (loopStart.HasValue && loopEnd.HasValue)
-        {
-            _audioFile.LoopStartSample = loopStart.Value/2;
-            _audioFile.LoopEndSample = loopEnd.Value/2;
+            _audioFile.ResetToLoopStart();
         }
         _outputDevice = new WaveOutEvent();
         _outputDevice.Init(_audioFile);
@@ -275,25 +242,6 @@ public class BnkEditorViewModel : StatefulFileEditorViewModelBase<BnkEditorState
         }
     }
 
-    private async Task OnRemoveUnusedData()
-    {
-        if (Settings.Current.Bnk_TrimLoopsOnCleanup && !await (DialogService?.AskYn(St.RemoveUnusedData, St.RemoveUnusedDataQuestion) ?? Task.FromResult(true))) return;
-        OnStopPlayback();
-        foreach (var stream in State.AllStreams)
-        {
-            if (Settings.Current.Bnk_TrimLoopsOnCleanup && stream.LoopEnd > stream.LoopStart)
-            {
-                stream.SampleData = [.. stream.SampleData
-                    .Skip(stream.LoopStart * stream.BytesPerSample)
-                    .Take((stream.LoopEnd - stream.LoopStart) * stream.BytesPerSample)];
-                stream.LoopStart = 0;
-                stream.LoopEnd = stream.TotalSamples;
-            }
-            stream.PostAudioStreamData = [];
-        }
-        State.Refresh();
-    }
-
     private async Task OnNormalizeVolume()
     {
         var result = await DialogService!.GetInputValue(
@@ -306,53 +254,6 @@ public class BnkEditorViewModel : StatefulFileEditorViewModelBase<BnkEditorState
         if (!result.Success) return;
         OnStopPlayback();
         UiThread.Invoke(() => State.SelectedStream!.SampleData = BnkNormalizer.NormalizeVolume(State.SelectedStream, result.Result));
-        State.Refresh();
-    }
-
-    private async Task OnInjectPadding()
-    {
-        if (!Settings.Current.Bnk_KeepTrash)
-        {
-            await (await DialogService!.Show(CommonDialogTemplates.Message with
-            {
-                Title = St.InjectPadding,
-                Text = St.InjectPaddingCleanupError
-            },
-            [
-                (() => Task.CompletedTask, Stc.Ok),
-                (() => DialogService!.Show<SettingsViewModel>(new DialogTemplate() { Title = Sts.Settings }), St.GoToSettings)
-            ])).Invoke();
-            return;
-        }
-        var result = await DialogService!.GetInputValue(
-            CommonDialogTemplates.Input with
-            {
-                Icon = "_",
-                Title = St.InjectPadding,
-                Text = St.InjectPaddingText
-            }, 0, 1048576, State.SelectedStream!.SampleData.Length);
-        if (!result.Success) return;
-        State.SelectedStream.PostAudioStreamData = new byte[result.Result];
-        State.Refresh();
-    }
-
-    private async Task OnAddAudioPadding()
-    {
-        var result = await DialogService!.GetInputValue(
-            CommonDialogTemplates.Input with
-            {
-                Icon = "_",
-                Title = St.AddAudioPadding,
-                Text = St.AddAudioPaddingText
-            }, 0, int.MaxValue, 500);
-        if (!result.Success) return;
-        var padding = new byte[result.Result * State.SelectedStream!.BytesPerSample];
-        State.SelectedStream.SampleData = [.. padding, ..State.SelectedStream.SampleData, ..padding];
-        if (State.LoopStart < State.LoopEnd)
-        {
-            State.LoopStart += result.Result;
-            State.LoopEnd += result.Result;
-        }
         State.Refresh();
     }
 

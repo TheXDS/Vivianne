@@ -57,21 +57,7 @@
                         DisplayMemberPath="Id"
                         ItemsSource="{Binding State.AllStreams, Mode=OneWay}"
                         SelectedValue="{Binding State.SelectedStream}" />
-                    <ui:Button
-                        Margin="5"
-                        VerticalAlignment="Stretch"
-                        Command="{Binding RemoveUnusedDataCommand, Mode=OneWay}"
-                        Icon="{ui:SymbolIcon Symbol=Broom24}"
-                        ToolTip="{x:Static st:BnkEditorViewModel.RemoveUnusedData}" />
                 </StackPanel>
-                <CheckBox
-                    Grid.Column="1"
-                    Grid.ColumnSpan="2"
-                    Margin="5"
-                    Content="{x:Static st:BnkEditorViewModel.ShowInfo}"
-                    IsChecked="{Binding State.ShowInfo}"
-                    Style="{StaticResource ToggleSwitch}"
-                    TextBlock.Foreground="White" />
             </Grid>
         </ct:FileEditorCommandBar>
         <Grid Grid.Row="1" Background="{ui:ThemeResource ControlSolidFillColorDefaultBrush}">
@@ -104,15 +90,18 @@
                 <ui:Button
                     Margin="5"
                     Command="{Binding PlaySampleCommand, Mode=OneWay}"
-                    Icon="{ui:SymbolIcon Symbol=Play24}" />
+                    Icon="{ui:SymbolIcon Symbol=Play24}"
+                    ToolTip="{x:Static st:BnkEditorViewModel.Play}" />
                 <ui:Button
                     Margin="5"
                     Command="{Binding PlayLoopingSampleCommand, Mode=OneWay}"
-                    Icon="{ui:SymbolIcon Symbol=PlayMultiple16}" />
+                    Icon="{ui:SymbolIcon Symbol=PlayMultiple16}"
+                    ToolTip="{x:Static st:BnkEditorViewModel.PlayLooping}" />
                 <ui:Button
                     Margin="5"
                     Command="{Binding StopPlaybackCommand, Mode=OneWay}"
-                    Icon="{ui:SymbolIcon Symbol=Stop24}" />
+                    Icon="{ui:SymbolIcon Symbol=Stop24}"
+                    ToolTip="{x:Static st:BnkEditorViewModel.Stop}" />
             </StackPanel>
         </Grid>
         <Grid
@@ -133,27 +122,37 @@
                 RenderOptions.BitmapScalingMode="Fant"
                 Source="{Binding State.SelectedStream, Converter={StaticResource bnkvis}}"
                 Stretch="Fill" />
-            <TextBlock
-                Margin="10"
-                Padding="10"
+            <Expander
+                Margin="5"
+                Padding="0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                Background="{ui:ThemeResource ControlFillColorTertiaryBrush}"
-                Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"
-                Text="{Binding State.SelectedStream, Converter={StaticResource bnkNfo}}"
-                Visibility="{Binding State.ShowInfo, Mode=OneWay, Converter={StaticResource b2vc}}" />
+                IsExpanded="{Binding State.ShowInfo, Mode=TwoWay}">
+                <Expander.Header>
+                    <TextBlock Margin="5,2,10,2">BNK stream info</TextBlock>
+                </Expander.Header>
+                <TextBlock
+                    Padding="10"
+                    Background="{ui:ThemeResource ControlFillColorTertiaryBrush}"
+                    Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"
+                    Text="{Binding State.SelectedStream, Converter={StaticResource bnkNfo}}" />
+            </Expander>
         </Grid>
         <Border
             Grid.Row="3"
             Grid.ColumnSpan="2"
             Padding="5"
             Background="{ui:ThemeResource ControlSolidFillColorDefaultBrush}">
-            <mcart:StretchyWrapPanel VerticalAlignment="Center" IsEnabled="{Binding Source, ElementName=imgPreview, Converter={StaticResource nn2bc}}">
+            <mcart:StretchyWrapPanel
+                VerticalAlignment="Center"
+                IsEnabled="{Binding Source, ElementName=imgPreview, Converter={StaticResource nn2bc}}"
+                StretchProportionally="False">
                 <mcart:StretchyWrapPanel.Resources>
                     <Style BasedOn="{StaticResource {x:Type ui:Button}}" TargetType="ui:Button">
                         <Setter Property="VerticalAlignment" Value="Center" />
                         <Setter Property="HorizontalAlignment" Value="Stretch" />
                         <Setter Property="Margin" Value="5" />
+                        <Setter Property="MinWidth" Value="160" />
                     </Style>
                 </mcart:StretchyWrapPanel.Resources>
                 <ui:Button
@@ -170,16 +169,6 @@
                     Icon="{ui:SymbolIcon Symbol=Broom24}"
                     IsEnabled="{Binding State.SelectedStream.AltStream, Converter={StaticResource nn2bc}}" />
                 <ui:Button
-                    Command="{Binding AddAudioPaddingCommand, Mode=OneWay}"
-                    Content="Add audio padding"
-                    Icon="{ui:SymbolIcon Symbol=Speaker024}"
-                    IsEnabled="{Binding State.SelectedStream, Converter={StaticResource nn2bc}}" />
-                <ui:Button
-                    Command="{Binding InjectPaddingCommand, Mode=OneWay}"
-                    Content="Inject padding bytes"
-                    Icon="{ui:SymbolIcon Symbol=Board24}"
-                    IsEnabled="{Binding State.SelectedStream, Converter={StaticResource nn2bc}}" />
-                <ui:Button
                     Command="{Binding NormalizeVolumeCommand, Mode=OneWay}"
                     Content="Normalize"
                     Icon="{ui:SymbolIcon Symbol=Speaker224}"
@@ -192,7 +181,7 @@
                 <ui:Button
                     Command="{Binding ExportLoopCommand, Mode=OneWay}"
                     Content="{x:Static st:BnkEditorViewModel.ExportLoop}"
-                    Icon="{ui:SymbolIcon Symbol=Save24}"
+                    Icon="{ui:SymbolIcon Symbol=SaveSync20}"
                     IsEnabled="{Binding State.SelectedStream, Converter={StaticResource nn2bc}}" />
             </mcart:StretchyWrapPanel>
         </Border>

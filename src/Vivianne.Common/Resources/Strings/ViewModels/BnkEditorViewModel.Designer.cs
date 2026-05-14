@@ -241,6 +241,24 @@ namespace TheXDS.Vivianne.Resources.Strings.ViewModels {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Play.
+        /// </summary>
+        public static string Play {
+            get {
+                return ResourceManager.GetString("Play", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Play looping.
+        /// </summary>
+        public static string PlayLooping {
+            get {
+                return ResourceManager.GetString("PlayLooping", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remove unused data.
         /// </summary>
         public static string RemoveUnusedData {
@@ -264,6 +282,15 @@ namespace TheXDS.Vivianne.Resources.Strings.ViewModels {
         public static string ShowInfo {
             get {
                 return ResourceManager.GetString("ShowInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop.
+        /// </summary>
+        public static string Stop {
+            get {
+                return ResourceManager.GetString("Stop", resourceCulture);
             }
         }
         

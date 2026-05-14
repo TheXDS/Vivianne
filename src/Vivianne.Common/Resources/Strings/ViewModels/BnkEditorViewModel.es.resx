@@ -192,4 +192,13 @@
   <data name="NormalizeText" xml:space="preserve">
     <value>Por favor ingrese un nivel de volumen máximo deseado relativo a 1.0</value>
   </data>
+  <data name="Play" xml:space="preserve">
+    <value>Reproducir</value>
+  </data>
+  <data name="PlayLooping" xml:space="preserve">
+    <value>Reproducir en bucle</value>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>Detener reproducción</value>
+  </data>
 </root>
