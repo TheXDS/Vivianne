@@ -168,7 +168,7 @@ public class BnkEditorViewModel : StatefulFileEditorViewModelBase<BnkEditorState
     private void InitAudioStream(BnkStream sample, bool looping)
     {
         OnStopPlayback();
-        _audioFile = new BnkWaveStream(sample) { PlayLooping = looping };
+        _audioFile = new BnkWaveStream(sample, State.PlaybackSpeed) { PlayLooping = looping };
         if (looping)
         {
             _audioFile.ResetToLoopStart();

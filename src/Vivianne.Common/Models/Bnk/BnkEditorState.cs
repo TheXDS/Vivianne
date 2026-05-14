@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using TheXDS.MCART.Types;
 using TheXDS.MCART.Types.Extensions;
@@ -18,6 +19,7 @@ public class BnkEditorState : FileStateBase<BnkFile>
     private bool _showInfo = true;
     private int _loopStart;
     private int _loopEnd;
+    private double playbackSpeed = 1;
 
     /// <summary>
     /// Gets a reference to the collection of streams available in the BNK file
@@ -45,6 +47,20 @@ public class BnkEditorState : FileStateBase<BnkFile>
                 LoopEnd = le;
                 Refresh();
             }
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets the playback speed multiplier for the audio stream being
+    /// played back.
+    /// </summary>
+    public double PlaybackSpeed
+    {
+        get => playbackSpeed;
+        set
+        {
+            ArgumentOutOfRangeException.ThrowIfNegativeOrZero(value, nameof(PlaybackSpeed));
+            Change(ref playbackSpeed, value);
         }
     }
 

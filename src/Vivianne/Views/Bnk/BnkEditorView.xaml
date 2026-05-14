@@ -60,12 +60,16 @@
                 </StackPanel>
             </Grid>
         </ct:FileEditorCommandBar>
-        <Grid Grid.Row="1" Background="{ui:ThemeResource ControlSolidFillColorDefaultBrush}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            <mcart:StretchyWrapPanel Margin="5" HorizontalAlignment="Stretch">
+        <Border Grid.Row="1" Background="{ui:ThemeResource ControlSolidFillColorDefaultBrush}">
+            <Grid Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
                 <ui:NumberBox
                     MinWidth="210"
                     Margin="5"
@@ -74,36 +78,50 @@
                     Minimum="0"
                     Value="{Binding State.LoopStart, UpdateSourceTrigger=PropertyChanged}" />
                 <ui:NumberBox
+                    Grid.Row="1"
                     MinWidth="210"
                     Margin="5"
                     hlp:Form.Label="Loop end"
                     Maximum="{Binding State.SelectedStream.TotalSamples, Mode=OneWay}"
                     Minimum="{Binding State.LoopStart}"
                     Value="{Binding State.LoopEnd, UpdateSourceTrigger=PropertyChanged}" />
-            </mcart:StretchyWrapPanel>
-            <StackPanel
-                Grid.Row="1"
-                Grid.Column="1"
-                Margin="5"
-                IsEnabled="{Binding Source, ElementName=imgPreview, Converter={StaticResource nn2bc}}"
-                Orientation="Horizontal">
-                <ui:Button
+                <Slider
+                    Grid.Column="1"
+                    SmallChange="0.1"
+                    IsSnapToTickEnabled="True"
+                    TickPlacement="BottomRight"
+                    TickFrequency="0.1"
+                    LargeChange="0.5"
                     Margin="5"
-                    Command="{Binding PlaySampleCommand, Mode=OneWay}"
-                    Icon="{ui:SymbolIcon Symbol=Play24}"
-                    ToolTip="{x:Static st:BnkEditorViewModel.Play}" />
-                <ui:Button
+                    VerticalAlignment="Center"
+                    Maximum="1.6"
+                    Minimum="0.5"
+                    Value="{Binding State.PlaybackSpeed, UpdateSourceTrigger=PropertyChanged}" />
+                <StackPanel
+                    Grid.Row="1"
+                    Grid.Column="1"
                     Margin="5"
-                    Command="{Binding PlayLoopingSampleCommand, Mode=OneWay}"
-                    Icon="{ui:SymbolIcon Symbol=PlayMultiple16}"
-                    ToolTip="{x:Static st:BnkEditorViewModel.PlayLooping}" />
-                <ui:Button
-                    Margin="5"
-                    Command="{Binding StopPlaybackCommand, Mode=OneWay}"
-                    Icon="{ui:SymbolIcon Symbol=Stop24}"
-                    ToolTip="{x:Static st:BnkEditorViewModel.Stop}" />
-            </StackPanel>
-        </Grid>
+                    VerticalAlignment="Center"
+                    IsEnabled="{Binding Source, ElementName=imgPreview, Converter={StaticResource nn2bc}}"
+                    Orientation="Horizontal">
+                    <ui:Button
+                        Margin="5"
+                        Command="{Binding PlaySampleCommand, Mode=OneWay}"
+                        Icon="{ui:SymbolIcon Symbol=Play24}"
+                        ToolTip="{x:Static st:BnkEditorViewModel.Play}" />
+                    <ui:Button
+                        Margin="5"
+                        Command="{Binding PlayLoopingSampleCommand, Mode=OneWay}"
+                        Icon="{ui:SymbolIcon Symbol=PlayMultiple16}"
+                        ToolTip="{x:Static st:BnkEditorViewModel.PlayLooping}" />
+                    <ui:Button
+                        Margin="5"
+                        Command="{Binding StopPlaybackCommand, Mode=OneWay}"
+                        Icon="{ui:SymbolIcon Symbol=Stop24}"
+                        ToolTip="{x:Static st:BnkEditorViewModel.Stop}" />
+                </StackPanel>
+            </Grid>
+        </Border>
         <Grid
             Grid.Row="2"
             Grid.ColumnSpan="2"

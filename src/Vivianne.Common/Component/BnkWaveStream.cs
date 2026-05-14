@@ -18,7 +18,11 @@ namespace TheXDS.Vivianne.Component;
 /// <param name="bnk">
 /// The BNK stream to be used as the source of audio data.
 /// </param>
-public class BnkWaveStream(BnkStream bnk) : IWaveProvider
+/// <param name="playingSpeed">
+/// The speed at which the audio should be played back. A value of <c>1.0</c>
+/// represents normal speed.
+/// </param>
+public class BnkWaveStream(BnkStream bnk, double playingSpeed = 1.0) : IWaveProvider
 {
     private int currentAbsolutePosition;
 
@@ -28,7 +32,7 @@ public class BnkWaveStream(BnkStream bnk) : IWaveProvider
     /// </summary>
     public bool PlayLooping { get; set; }
 
-    WaveFormat IWaveProvider.WaveFormat { get; } = new WaveFormat(bnk.SampleRate, bnk.BytesPerSample * 8, bnk.Channels);
+    WaveFormat IWaveProvider.WaveFormat { get; } = new WaveFormat((int)(bnk.SampleRate * playingSpeed), bnk.BytesPerSample * 8, bnk.Channels);
 
     /// <summary>
     /// Resets the stream to the beginning, allowing for replaying from the start.
