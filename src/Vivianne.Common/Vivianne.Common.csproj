@@ -18,6 +18,11 @@
 			<AutoGen>True</AutoGen>
 			<DependentUpon>Common.resx</DependentUpon>
 		</Compile>
+		<Compile Update="Resources\Strings\Component\MusWaveStream.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>MusWaveStream.resx</DependentUpon>
+		</Compile>
 		<Compile Update="Resources\Strings\FileFilters.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
@@ -98,6 +103,10 @@
 		<EmbeddedResource Update="Resources\Strings\Common.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>Common.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Strings\Component\MusWaveStream.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>MusWaveStream.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Strings\FileFilters.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>

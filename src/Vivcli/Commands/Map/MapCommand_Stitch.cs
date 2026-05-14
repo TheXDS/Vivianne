@@ -1,6 +1,7 @@
 ﻿using System.CommandLine;
 using TheXDS.Vivianne.Models.Audio.Mus;
 using TheXDS.Vivianne.Serializers.Audio.Mus;
+using TheXDS.Vivianne.Tools.Audio.Mus;
 
 namespace TheXDS.Vivianne.Commands.Map;
 
@@ -15,18 +16,11 @@ public partial class MapCommand
 
     private static Task StitchCommand(FileInfo fileArg) => ReadOnlyFileTransaction<MapFile, MapSerializer>(fileArg, map =>
     {
-        List<int> sequence = [];
-        int current = map.FirstItem;
-        while (!sequence.Contains(current))
-        {
-            sequence.Add(current);
-            current = map.Items[current].Jumps.FirstOrDefault()?.NextItem ?? 0;
-        }
-
-        foreach (var item in sequence)
+        (var indices, var loopStart) = MapStitcher.Stitch(map);
+        foreach (var item in indices)
         {
             Console.Write($"{item}, ");
         }
-        Console.WriteLine($"🔁 Loop to {current}");
+        Console.WriteLine($"🔁 Loop to {loopStart}");
     });
 }

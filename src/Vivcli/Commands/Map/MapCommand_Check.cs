@@ -10,7 +10,7 @@ file record struct MapMusCheck(string CheckName, Func<MapFile, MusFile, bool> Ch
     public static readonly MapMusCheck[] Checks =
     [
         new("Section/stream count", CheckStreamCount, CheckStreamCountFail, true),
-        new("Section/stream offsets", CheckOffsets,CheckOffsetsFail)
+        new("Section/stream offsets", CheckOffsets, CheckOffsetsFail)
     ];
 
     private static bool CheckStreamCount(MapFile map, MusFile mus)

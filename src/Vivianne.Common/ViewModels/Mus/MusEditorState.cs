@@ -16,7 +16,12 @@ public class MusEditorState : EditorViewModelStateBase
 
 
 
-
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MusEditorState"/> class with the
+    /// specified MUS file and MAP file.
+    /// </summary>
+    /// <param name="mus">The MUS file to be edited.</param>
+    /// <param name="map">The MAP file associated with the MUS file.</param>
     public MusEditorState(MusFile mus, MapFile map)
     {
         _mus = mus;

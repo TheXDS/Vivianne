@@ -36,13 +36,23 @@ public partial class CreateCommand
             var c = selector.Invoke();
             for (var j = 0; j < asf.AudioBlocks.Count; j++)
             {
-                asf.AudioBlocks[j] = c.Encode(asf.AudioBlocks[j], new PtHeader());
+                asf.AudioBlocks[j] = c.Encode(asf.AudioBlocks[j], BuildPtHeader(asf));
+                asf.Compression = codec;
             }
-            asf.Compression = codec;
         }
         ISerializer<AsfFile> serializer = new MusSerializer();
         using var outputStream = outputFile.OpenWrite();
         await serializer.SerializeToAsync(asf, outputStream);
+    }
+
+    private static PtHeader BuildPtHeader(AsfFile asf)
+    {
+        var header = new PtHeader();
+        header.AudioValues[PtAudioHeaderField.Channels] = asf.Channels;
+        header.AudioValues[PtAudioHeaderField.SampleRate] = asf.SampleRate;
+        header.AudioValues[PtAudioHeaderField.NumSamples] = asf.TotalSamples;
+        header.AudioValues[PtAudioHeaderField.BytesPerSample] = asf.BytesPerSample;
+        return header;
     }
 
     private static int InferChunkCount(AsfFile asf)
