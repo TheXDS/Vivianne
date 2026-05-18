@@ -130,6 +130,11 @@
                                 HorizontalAlignment="Stretch"
                                 Command="{Binding FceCenterCommand, Mode=OneWay}"
                                 Content="Fce Center" />
+                            <Button
+                                Margin="5"
+                                HorizontalAlignment="Stretch"
+                                Command="{Binding PushGlassDownCommand, Mode=OneWay}"
+                                Content="Fix glass" />
                         </StackPanel>
                     </Expander>
                     <Expander

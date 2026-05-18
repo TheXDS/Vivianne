@@ -28,8 +28,10 @@
             Title="{Binding Navigator.CurrentViewModel.Title, Mode=OneWay, ElementName=vmHost, StringFormat='{}{0} - Vivianne'}"
             Height="30"
             HorizontalContentAlignment="Stretch"
-            CloseWindowByDoubleClickOnIcon="True"
-            Icon="/vivianne.png">
+            CloseWindowByDoubleClickOnIcon="True">
+            <ui:TitleBar.Icon>
+                <ui:ImageIcon Source="/Resources/Images/vivianne.png" />
+            </ui:TitleBar.Icon>
             <ui:TitleBar.TrailingContent>
                 <DockPanel Margin="0,0,5,0" HorizontalAlignment="Stretch">
                     <ui:Button
@@ -43,7 +45,7 @@
                         IsTabStop="False"
                         ToolTip="{x:Static st:MainWindow.SaveAndClose}"
                         WindowChrome.IsHitTestVisibleInChrome="True" />
-                    <ui:Button Click="Button_Click" Icon="{ui:SymbolIcon Symbol=DarkTheme24}" />
+                    <!--<ui:Button Click="Button_Click" Icon="{ui:SymbolIcon Symbol=DarkTheme24}" />-->
                 </DockPanel>
             </ui:TitleBar.TrailingContent>
         </ui:TitleBar>

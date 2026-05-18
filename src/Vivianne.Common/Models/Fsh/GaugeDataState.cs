@@ -104,8 +104,8 @@ public class GaugeDataState : EditorViewModelStateBase
             GearXPosition = Gears[0].XPosition;
             GearYPosition = Gears[0].YPosition;
         }
-        _data = Cabin.FooterType() == FshBlobFooterType.CarDashboard 
-            ? ((ISerializer<GaugeData>)new GaugeDataSerializer()).Deserialize(Cabin.Footer) 
+        _data = Cabin.FooterType() == FshBlobFooterType.CarDashboard
+            ? ((ISerializer<GaugeData>)new GaugeDataSerializer()).Deserialize(Cabin.Footer)
             : default;
     }
 

@@ -14,6 +14,7 @@ using TheXDS.MCART.Component;
 using TheXDS.MCART.Types.Base;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Component;
+using TheXDS.Vivianne.Models.Audio.Base;
 using TheXDS.Vivianne.Models.Audio.Bnk;
 using TheXDS.Vivianne.Models.Bnk;
 using TheXDS.Vivianne.Properties;
@@ -88,6 +89,12 @@ public class BnkEditorViewModel : StatefulFileEditorViewModelBase<BnkEditorState
     public ICommand NormalizeVolumeCommand { get; }
 
     /// <summary>
+    /// Gets a reference to the command used to edit the custom PT headers of
+    /// the selected BNK stream.
+    /// </summary>
+    public ICommand EditCustomPtHeadersCommand { get; }
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="BnkEditorViewModel"/>
     /// class.
     /// </summary>
@@ -102,6 +109,7 @@ public class BnkEditorViewModel : StatefulFileEditorViewModelBase<BnkEditorState
         ImportAsAltStreamCommand = new SimpleCommand(OnImportAsAltStream);
         NormalizeVolumeCommand = new SimpleCommand(OnNormalizeVolume);
         RemoveAltStreamCommand = new SimpleCommand(OnRemoveAltStream);
+        EditCustomPtHeadersCommand = new SimpleCommand(OnEditCustomPtHeaders);
     }
 
     /// <inheritdoc/>
@@ -111,19 +119,6 @@ public class BnkEditorViewModel : StatefulFileEditorViewModelBase<BnkEditorState
         State.ShowInfo = Settings.Current.Bnk_InfoOpenByDefault;
         State.Subscribe(OnStateChanged);
         return Task.CompletedTask;
-    }
-
-    /// <inheritdoc/>
-    protected override bool BeforeSave()
-    {
-        if (!Settings.Current.Bnk_KeepTrash)
-        {
-            foreach (var stream in State.AllStreams)
-            {
-                stream.PostAudioStreamData = [];
-            }
-        }
-        return base.BeforeSave();
     }
 
     private async void OnStateChanged(object instance, PropertyInfo property, PropertyChangeNotificationType notificationType)
@@ -222,6 +217,17 @@ public class BnkEditorViewModel : StatefulFileEditorViewModelBase<BnkEditorState
             State.SelectedStream.AltStream = AudioRender.BnkFromWav(await File.ReadAllBytesAsync(path));
             State.Refresh();
         }
+    }
+
+    private async Task OnEditCustomPtHeaders()
+    {
+        void Vm_StateSaved(object? sender, EventArgs e) => State.UnsavedChanges = true;
+        if (State.SelectedStream is not { } stream) return;
+        var state = new BnkPtHeaderEditorState { File = stream };
+        var vm = new BnkPtHeaderEditorViewModel(state);
+        vm.StateSaved += Vm_StateSaved;
+        await DialogService!.Show(vm);
+        vm.StateSaved -= Vm_StateSaved;
     }
 
     private async Task OnExportSample()

@@ -12,7 +12,6 @@
     xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels;assembly=Vivianne.Common"
     d:DataContext="{d:DesignInstance Type=vm:TexturePreviewViewModel}"
     d:DesignHeight="300"
-    d:DesignWidth="600"
     TextBlock.Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"
     mc:Ignorable="d">
     <UserControl.Resources>
@@ -39,6 +38,7 @@
                         Minimum="1.0"
                         SmallChange="0.5"
                         TickFrequency="0.5"
+                        TickPlacement="BottomRight"
                         Value="{Binding ZoomLevel}" />
                     <CheckBox
                         Padding="10,0"

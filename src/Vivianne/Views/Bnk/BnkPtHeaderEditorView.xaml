@@ -1,0 +1,53 @@
+﻿<UserControl
+    x:Class="TheXDS.Vivianne.Views.Bnk.BnkPtHeaderEditorView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:bnk="clr-namespace:TheXDS.Vivianne.ViewModels.Bnk;assembly=Vivianne.Common"
+    xmlns:ct="clr-namespace:TheXDS.Vivianne.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:hlp="clr-namespace:TheXDS.Vivianne.Helpers"
+    xmlns:local="clr-namespace:TheXDS.Vivianne.Views.Bnk"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    Width="500"
+    Height="267"
+    d:DataContext="{d:DesignInstance bnk:BnkPtHeaderEditorViewModel}"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <ct:HexInt32NumberFormatter x:Key="hex32num" />
+    </UserControl.Resources>
+    <TabControl>
+        <TabItem Header="Custom PT headers">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{Binding State.Properties}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <ui:NumberBox
+                                Margin="5"
+                                hlp:Form.Label="{Binding Key, Mode=OneWay, StringFormat='X2'}"
+                                ClearButtonEnabled="False"
+                                NumberFormatter="{StaticResource hex32num}"
+                                Value="{Binding Value, UpdateSourceTrigger=PropertyChanged, StringFormat='X8'}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </TabItem>
+        <TabItem Header="Custom audio PT headers">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{Binding State.CustomAudioProperties}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <ui:NumberBox
+                                Margin="5"
+                                hlp:Form.Label="{Binding Key, Mode=OneWay, StringFormat='X2'}"
+                                ClearButtonEnabled="False"
+                                NumberFormatter="{StaticResource hex32num}"
+                                Value="{Binding Value, UpdateSourceTrigger=PropertyChanged, StringFormat='X8'}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </TabItem>
+    </TabControl>
+</UserControl>

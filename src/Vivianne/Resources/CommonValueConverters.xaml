@@ -4,4 +4,5 @@
     xmlns:mcart="http://schemas.thexds.local/mcart">
     <BooleanToVisibilityConverter x:Key="Bool2VisConv" />
     <mcart:BooleanToInvVisibilityConverter x:Key="Bool2InvVisConv" />
+    <mcart:NotNullToVisibilityConverter x:Key="NotNull2VisConv" />
 </ResourceDictionary>

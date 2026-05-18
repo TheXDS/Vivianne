@@ -14,7 +14,6 @@
     xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels.Bnk;assembly=Vivianne.Common"
     d:DataContext="{d:DesignInstance Type=vm:BnkEditorViewModel}"
     d:DesignWidth="700"
-    hlp:Form.BetaIndicator="True"
     mc:Ignorable="d">
     <UserControl.Resources>
         <vc:BnkVisualizerConverter x:Key="bnkvis" />
@@ -57,6 +56,14 @@
                         DisplayMemberPath="Id"
                         ItemsSource="{Binding State.AllStreams, Mode=OneWay}"
                         SelectedValue="{Binding State.SelectedStream}" />
+                    <ui:Button
+                        Margin="5"
+                        VerticalAlignment="Stretch"
+                        Command="{Binding EditCustomPtHeadersCommand, Mode=OneWay}"
+                        Icon="{ui:SymbolIcon Symbol=Edit16}"
+                        ToolTip="Edit custom PT headers...">
+                        <TextBlock FontFamily="Cascadia Code">0x</TextBlock>
+                    </ui:Button>
                 </StackPanel>
             </Grid>
         </ct:FileEditorCommandBar>
@@ -87,15 +94,15 @@
                     Value="{Binding State.LoopEnd, UpdateSourceTrigger=PropertyChanged}" />
                 <Slider
                     Grid.Column="1"
-                    SmallChange="0.1"
-                    IsSnapToTickEnabled="True"
-                    TickPlacement="BottomRight"
-                    TickFrequency="0.1"
-                    LargeChange="0.5"
                     Margin="5"
                     VerticalAlignment="Center"
+                    IsSnapToTickEnabled="True"
+                    LargeChange="0.5"
                     Maximum="1.6"
                     Minimum="0.5"
+                    SmallChange="0.1"
+                    TickFrequency="0.1"
+                    TickPlacement="BottomRight"
                     Value="{Binding State.PlaybackSpeed, UpdateSourceTrigger=PropertyChanged}" />
                 <StackPanel
                     Grid.Row="1"

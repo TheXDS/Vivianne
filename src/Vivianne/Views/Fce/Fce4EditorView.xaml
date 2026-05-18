@@ -158,6 +158,11 @@
                             <Button
                                 Margin="5"
                                 HorizontalAlignment="Stretch"
+                                Command="{Binding PushGlassDownCommand, Mode=OneWay}"
+                                Content="Fix glass" />
+                            <Button
+                                Margin="5"
+                                HorizontalAlignment="Stretch"
                                 Command="{Binding RegenerateDamagedModelCommand, Mode=OneWay}"
                                 Content="Damage model" />
                             <Button

@@ -255,6 +255,27 @@
                             Icon="{ui:SymbolIcon Symbol=Shield24}" />
                     </ui:CardControl>
 
+                    <ui:CardControl Icon="{ui:SymbolIcon Symbol=DarkTheme24}">
+                        <ui:CardControl.Header>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <ui:TextBlock
+                                    Grid.Row="0"
+                                    FontTypography="BodyStrong"
+                                    Text="Application theme" />
+                                <ui:TextBlock
+                                    Grid.Row="1"
+                                    Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                                    Text="Specifies the theme to use for the application."
+                                    TextWrapping="Wrap" />
+                            </Grid>
+                        </ui:CardControl.Header>
+
+                    </ui:CardControl>
+
                 </StackPanel>
             </ScrollViewer>
         </TabItem>
