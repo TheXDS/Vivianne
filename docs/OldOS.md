@@ -8,14 +8,14 @@ The earliest operating system that Vivianne is technically capable of running in
 ## Windows 10
 > WinSDK 19041 is the minimum officially supported target SDK version for Vivianne.
 
-If you keep your Windows 10 installation up to date, Vivianne should run without any issues. However, just like Windows 11 and up, you'll need to install either .NET 8 or .NET 9, depending on which version of Vivianne you got.
+If you keep your Windows 10 installation up to date, Vivianne should run without any issues. However, just like Windows 11 and up, you'll need to install either .NET 8, .NET 9 or .NET 10, depending on which version of Vivianne you got.
 
 The system will prompt you automatically to install the required .NET runtime if it is not already installed.
 
 > Tested with Windows 10 21H1 (build 19041). Any newer builds will work as well.
 
 ## Windows 8.1
-To enhance your odds at getting Vivianne running in Windows 8.1, please keep your OS up to date. If you don't, it's very likely that nothing will work, not even installing Microsoft's own redistributable packages.
+To enhance your odds at getting Vivianne running in Windows 8.1, please keep your OS up to date. If you don't, it's very likely that nothing will work, not even installing Microsoft's own redistributable packages. You'll be limited to Vivianne for .NET 8, which is currently 1:1 in feature parity with the .NET 10 build (except for very minor FMA optimizations)
 
 You'll need to install the following:
 - [.NET 8.0 Runtime](https://builds.dotnet.microsoft.com/dotnet/Runtime/8.0.17/dotnet-runtime-8.0.17-win-x64.exe)
@@ -39,7 +39,7 @@ You'll need to install the following:
 ## Windows 7
 This one is more complicated. While there's reports of people launching Vivianne in it, preparing the system to properly execute is more involved.
 
-- [Follow this guide](https://learn.microsoft.com/en-us/dotnet/core/install/windows#windows-7--81--server-2012) in order to get the system to a state where it can run .NET 8 apps without crashing.
+- [Follow this guide](https://learn.microsoft.com/en-us/dotnet/core/install/windows#windows-7--81--server-2012) in order to get the system to a state where it can run .NET 8 apps without crashing. THe guide says that .NET 6 is the latest supported version, but ignore that; .NET 8 works fine.
 - [Microsoft Visual C++ 2015 Redistributable 14.0.24215 (also known as KB2999226)](https://www.microsoft.com/en-gb/download/details.aspx?id=48145)
 - [Windows 7 KB306858](https://www.microsoft.com/download/details.aspx?id=47442)
 - [.NET 8.0 Runtime](https://builds.dotnet.microsoft.com/dotnet/Runtime/8.0.17/dotnet-runtime-8.0.17-win-x64.exe)
@@ -47,3 +47,6 @@ This one is more complicated. While there's reports of people launching Vivianne
 ### Tests without Aero:
 Yes, the app works well, and themes seem properly supported.
 
+Couldn't quite test with Aero, but I'll try and get that going and update this document with the results.
+
+Note that if you have Shell customizations or some custom Windows Theme that touches how DWM draws windows, then Vivianne will probably look all messed up.
