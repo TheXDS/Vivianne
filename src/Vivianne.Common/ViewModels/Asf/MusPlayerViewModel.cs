@@ -1,6 +1,5 @@
 ﻿using NAudio.Wave;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -12,12 +11,11 @@ using TheXDS.Ganymede.Types.Base;
 using TheXDS.Ganymede.Types.Extensions;
 using TheXDS.MCART.Component;
 using TheXDS.Vivianne.Component;
-using TheXDS.Vivianne.Models.Audio.Base;
 using TheXDS.Vivianne.Models.Audio.Mus;
 using TheXDS.Vivianne.Resources;
 using TheXDS.Vivianne.Serializers;
 using TheXDS.Vivianne.Serializers.Audio.Mus;
-using TheXDS.Vivianne.Tools.Audio;
+using TheXDS.Vivianne.Tools.Audio.Mus;
 
 namespace TheXDS.Vivianne.ViewModels.Asf;
 
@@ -28,11 +26,12 @@ namespace TheXDS.Vivianne.ViewModels.Asf;
 public class MusPlayerViewModel : ViewModel, IViewModel
 {
     private WaveOutEvent? outputDevice;
-    private MusWaveStream? audioFile;
     private MapFile? linearMap;
     private MapFile? interactiveMap;
     private Timer? playbackTimer;
     private bool _playLooping;
+    private TimeSpan _duration;
+    private MusWaveStream? _audioFile;
 
     /// <summary>
     /// Gets a reference to the command used to start playing an audio stream.
@@ -84,7 +83,6 @@ public class MusPlayerViewModel : ViewModel, IViewModel
         }
     }
 
-
     /// <summary>
     /// Represents a file that contains an interactive playback map for the MUS file.
     /// </summary>
@@ -112,25 +110,14 @@ public class MusPlayerViewModel : ViewModel, IViewModel
     /// </summary>
     public required IBackingStore BackingStore { get; init; }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     /// <summary>
     /// Calculates the total duration of all audio streams in the MUS file.
     /// </summary>
-    public TimeSpan Duration => TimeSpan.Zero;
+    public TimeSpan Duration
+    {
+        get => _duration;
+        private set => Change(ref _duration, value);
+    }
 
     /// <summary>
     /// Gets the current playback position of the audio stream.
@@ -145,6 +132,17 @@ public class MusPlayerViewModel : ViewModel, IViewModel
     {
         get => _playLooping;
         set => Change(ref _playLooping, value);
+    }
+
+    /// <summary>
+    /// Gets a reference to the audio stream being played, which is represented
+    /// as a <see cref="MusWaveStream"/> that wraps the MUS file and its
+    /// associated map files.
+    /// </summary>
+    public MusWaveStream? AudioFile
+    {
+        get => _audioFile;
+        private set => Change (ref _audioFile, value);
     }
 
     /// <summary>
@@ -165,6 +163,7 @@ public class MusPlayerViewModel : ViewModel, IViewModel
             try
             {
                 LinearMap = await ((ISerializer<MapFile>)new MapSerializer()).DeserializeAsync(rawLin);
+                Duration = CalculateDuration();
             }
             catch
             {
@@ -186,15 +185,23 @@ public class MusPlayerViewModel : ViewModel, IViewModel
 
 
 
-
+    private TimeSpan CalculateDuration()
+    {
+        TimeSpan duration = TimeSpan.Zero;
+        (var indices, _) = MapStitcher.Stitch(LinearMap!);
+        foreach (var substream in indices.Select(p => Mus.AsfSubStreams.Values.ElementAt(p)))
+        {
+            duration += TimeSpan.FromSeconds((double)substream.TotalSamples / substream.BytesPerSample / substream.SampleRate);
+        }
+        return duration;
+    }
 
     private void OnPlaySample()
     {
         if (outputDevice is { PlaybackState: PlaybackState.Playing }) return;
-        //InitAudioStream();
         outputDevice = new WaveOutEvent();
         outputDevice.PlaybackStopped += OnPlaybackEndReached;
-        outputDevice.Init(audioFile = new MusWaveStream(Mus, linearMap));
+        outputDevice.Init(AudioFile = new MusWaveStream(Mus, linearMap));
         outputDevice.Play();
         //playbackTimer = new Timer(OnUpdatePlaybackPosition, null, 0, 1000);
     }
@@ -217,7 +224,7 @@ public class MusPlayerViewModel : ViewModel, IViewModel
         //audioFile?.Dispose();
         outputDevice?.Dispose();
         //playbackTimer = null;
-        audioFile = null;
+        AudioFile = null;
         outputDevice = null;
         GC.Collect();
         Notify(nameof(CurrentPosition));

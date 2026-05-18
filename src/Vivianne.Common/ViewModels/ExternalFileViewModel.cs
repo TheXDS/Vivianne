@@ -48,7 +48,7 @@ public class ExternalFileViewModel(IBackingStore store, string name) : ViewModel
                 await (NavigationService?.NavigateAndReset(new FileErrorViewModel($"Could not extract {name}")) ?? Task.CompletedTask);
             }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             await (NavigationService?.NavigateAndReset(new FileErrorViewModel(ex)) ?? Task.CompletedTask);
         }
@@ -56,7 +56,7 @@ public class ExternalFileViewModel(IBackingStore store, string name) : ViewModel
 
     private async Task<string?> CreateTempFile()
     {
-        if (await store.ReadAsync(name) is not { } contents) return null;        
+        if (await store.ReadAsync(name) is not { } contents) return null;
         var dir = Directory.CreateTempSubdirectory();
         var file = Path.Combine(dir.FullName, name);
         await File.WriteAllBytesAsync(file, contents);

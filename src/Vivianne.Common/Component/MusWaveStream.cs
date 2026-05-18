@@ -1,5 +1,6 @@
 ﻿using NAudio.Wave;
 using System;
+using System.ComponentModel;
 using System.Linq;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Models.Audio.Mus;
@@ -21,17 +22,28 @@ namespace TheXDS.Vivianne.Component;
 /// between the defined loop start and end positions, given that a
 /// <see cref="MapFile"/> is provided.
 /// </remarks>
-public class MusWaveStream : IWaveProvider
+public class MusWaveStream : INotifyPropertyChanged, IWaveProvider
 {
+    /* The full NotifyPropertyChanged implementation was not used in this class
+     * because WAV playback could be very latency-sensitive. I'd rather have a
+     * very lightweight implementation that only notifies when the
+     * CurrentAsfSubStreamIndex changes, which is the only property that is
+     * likely to be observed during playback. This way, we avoid unnecessary
+     * overhead of the full base class, which has support for many (useful)
+     * features we're not gonna use here.
+     */
     private readonly MusFile mus;
     private readonly MapFile? map;
     private readonly int[]? mapIndices;
     private readonly int? loopStart;
 
-    private int currentAsfSubStreamIndex;
-    private int currentAudioBlock;
-    private int currentPosition;
-    private bool playLooping;
+    private int _currentAsfSubStreamIndex;
+    private int _currentAudioBlock;
+    private int _currentPosition;
+    private bool _playLooping;
+
+    /// <inheritdoc/>
+    public event PropertyChangedEventHandler? PropertyChanged;
 
     /// <summary>
     /// Gets or sets a value indicating whether playback repeats continuously
@@ -39,19 +51,35 @@ public class MusWaveStream : IWaveProvider
     /// </summary>
     public bool PlayLooping
     {
-        get => playLooping;
+        get => _playLooping;
         set
         {
             if (map is null)
             {
                 throw new InvalidOperationException(St.MapFileRequiredForLooping);
             }
-            playLooping = value;
+            _playLooping = value;
         }
     }
 
     /// <inheritdoc/>
     public WaveFormat WaveFormat { get; }
+
+    private int CurrentAsfSubStreamIndex
+    {
+        get => _currentAsfSubStreamIndex;
+        set
+        {
+            _currentAsfSubStreamIndex = value;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentAsfSubStreamIndexForMap)));
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets the index of the current ASF substream being played within
+    /// the current MUS file.
+    /// </summary>
+    public int CurrentAsfSubStreamIndexForMap => mapIndices is null ? CurrentAsfSubStreamIndex : mapIndices[CurrentAsfSubStreamIndex];
 
     /// <summary>
     /// Initializes a new instance of the <see cref="MusWaveStream"/> class.
@@ -72,7 +100,7 @@ public class MusWaveStream : IWaveProvider
         this.mus = mus;
         if ((this.map = map) is not null)
         {
-            playLooping = true;
+            _playLooping = true;
             (mapIndices, loopStart) = MapStitcher.Stitch(map!);
         }
     }
@@ -82,9 +110,9 @@ public class MusWaveStream : IWaveProvider
     /// </summary>
     public void Reset()
     {
-        currentAsfSubStreamIndex = 0;
-        currentAudioBlock = 0;
-        currentPosition = 0;
+        CurrentAsfSubStreamIndex = 0;
+        _currentAudioBlock = 0;
+        _currentPosition = 0;
     }
 
     /// <summary>
@@ -102,9 +130,9 @@ public class MusWaveStream : IWaveProvider
         {
             throw new InvalidOperationException(St.MapFileRequiredForReset);
         }
-        currentAsfSubStreamIndex = loopStart!.Value;
-        currentAudioBlock = 0;
-        currentPosition = 0;
+        CurrentAsfSubStreamIndex = loopStart!.Value;
+        _currentAudioBlock = 0;
+        _currentPosition = 0;
     }
 
     private static T GetAudioProp<T>(MusFile mus, Func<AsfFile, T> propSelector)
@@ -122,24 +150,24 @@ public class MusWaveStream : IWaveProvider
         int bytesRead = 0;
         while (count-- > 0)
         {
-            var currentSubStream = mus.AsfSubStreams.Values.ElementAt(mapIndices is null ? currentAsfSubStreamIndex : mapIndices[currentAsfSubStreamIndex]);
-            if (currentAudioBlock >= currentSubStream.AudioBlocks.Count)
+            var currentSubStream = mus.AsfSubStreams.Values.ElementAt(mapIndices is null ? CurrentAsfSubStreamIndex : mapIndices[CurrentAsfSubStreamIndex]);
+            if (_currentAudioBlock >= currentSubStream.AudioBlocks.Count)
             {
                 break;
             }
-            var chunk = currentSubStream.AudioBlocks[currentAudioBlock];
-            buffer[offset++] = chunk[currentPosition++];
+            var chunk = currentSubStream.AudioBlocks[_currentAudioBlock];
+            buffer[offset++] = chunk[_currentPosition++];
             bytesRead++;
-            if (currentPosition >= chunk.Length)
+            if (_currentPosition >= chunk.Length)
             {
-                currentPosition = 0;
-                currentAudioBlock++;
+                _currentPosition = 0;
+                _currentAudioBlock++;
             }
-            if (currentAudioBlock >= currentSubStream.AudioBlocks.Count)
+            if (_currentAudioBlock >= currentSubStream.AudioBlocks.Count)
             {
-                currentAsfSubStreamIndex++;
-                currentAudioBlock = 0;
-                if (currentAsfSubStreamIndex >= (mapIndices is null ? mus.AsfSubStreams.Count : mapIndices.Length))
+                CurrentAsfSubStreamIndex++;
+                _currentAudioBlock = 0;
+                if (CurrentAsfSubStreamIndex >= (mapIndices is null ? mus.AsfSubStreams.Count : mapIndices.Length))
                 {
                     if (PlayLooping && map is not null)
                     {
@@ -163,7 +191,7 @@ public class MusWaveStream : IWaveProvider
     {
         if (PlayLooping && mapIndices is not null)
         {
-            if (currentAsfSubStreamIndex == mapIndices.Length)
+            if (CurrentAsfSubStreamIndex == mapIndices.Length)
             {
                 ResetToLoopStart();
             }

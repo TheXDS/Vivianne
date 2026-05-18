@@ -43,7 +43,7 @@
                     Icon="{ui:SymbolIcon Symbol=Save24}" />
                 <TextBlock Margin="10,0" VerticalAlignment="Center">
                     <Run Text="{Binding CurrentPosition, Mode=OneWay, StringFormat='mm\\:ss'}" />
-                    -<Run Text="{Binding Duration, Mode=OneWay, StringFormat='mm\\:ss'}" />
+                    |&#160;<Run Text="{Binding Duration, Mode=OneWay, StringFormat='mm\\:ss'}" />
                 </TextBlock>
             </DockPanel>
             <ui:ToggleSwitch
@@ -51,6 +51,9 @@
                 Content="Play looping"
                 IsChecked="{Binding PlayLooping}"
                 IsEnabled="{Binding CanPlayLooping, Mode=OneWay}" />
+            <TextBlock Visibility="{Binding AudioFile, Converter={StaticResource NotNull2VisConv}}">
+                Current substream block:&#160;<Run Text="{Binding AudioFile.CurrentAsfSubStreamIndexForMap, Mode=OneWay}" />
+            </TextBlock>
         </StackPanel>
         <TextBlock
             Grid.Column="1"
