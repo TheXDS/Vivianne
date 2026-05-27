@@ -23,7 +23,7 @@ public class FshImageConverter : IMultiValueConverter, IOneWayValueConverter<Fsh
     public object? Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
     {
         if (values.Length < 1 || values[0] is not FshBlob blob) return null;
-        
+
         var p = (values.ElementAtOrDefault(1) as IEnumerable<SixLabors.ImageSharp.Color>)?.ToArray() ?? blob.ReadLocalPalette() ?? (parameter as FshFile)?.GetPalette();
         var image = blob.ToImage(p);
         var alpha = values.ElementAtOrDefault(2) as bool? ?? true;
@@ -97,11 +97,9 @@ public class FshImageConverter : IMultiValueConverter, IOneWayValueConverter<Fsh
             FshBlobFormat.Argb32 => PixelFormats.Bgra32,
             FshBlobFormat.Rgb24 => PixelFormats.Bgr24,
             FshBlobFormat.Rgb565 => PixelFormats.Bgr565,
-            //FshBlobFormat.Indexed8 => PixelFormats.Indexed8,
-
             /* Formats that do not have a pixel format directly supported by
              * WPF need to be converted to BGRA32 */
-            _ => PixelFormats.Bgra32 
+            _ => PixelFormats.Bgra32
         };
     }
 

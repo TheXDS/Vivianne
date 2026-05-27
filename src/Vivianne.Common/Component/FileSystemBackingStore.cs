@@ -42,14 +42,14 @@ public class FileSystemBackingStore(IDialogService dialogSvc, IEnumerable<FileFi
 
     byte[] IDictionary<string, byte[]>.this[string key]
     {
-        get => File.ReadAllBytes(Path.Combine(Path.GetDirectoryName(path) ?? "", key));
-        set => File.WriteAllBytes(Path.Combine(Path.GetDirectoryName(path) ?? "", key), value);
+        get => File.ReadAllBytes(Path.Combine(Path.GetDirectoryName(path) ?? string.Empty, key));
+        set => File.WriteAllBytes(Path.Combine(Path.GetDirectoryName(path) ?? string.Empty, key), value);
     }
 
     /// <inheritdoc/>
     public async Task<byte[]?> ReadAsync(string fileName)
     {
-        var filePath = Path.Combine(Path.GetDirectoryName(path) ?? "", fileName);
+        var filePath = Path.Combine(Path.GetDirectoryName(path) ?? string.Empty, fileName);
         return File.Exists(filePath) ? await File.ReadAllBytesAsync(filePath) : null;
     }
 
@@ -59,7 +59,7 @@ public class FileSystemBackingStore(IDialogService dialogSvc, IEnumerable<FileFi
         try
         {
             if (Settings.Current.AutoBackup) FileBackup.Create(fileName);
-            await File.WriteAllBytesAsync(Path.Combine(Path.GetDirectoryName(path) ?? "", fileName), content);
+            await File.WriteAllBytesAsync(Path.Combine(Path.GetDirectoryName(path) ?? string.Empty, fileName), content);
             return true;
         }
         catch (System.Exception ex)
@@ -72,7 +72,7 @@ public class FileSystemBackingStore(IDialogService dialogSvc, IEnumerable<FileFi
     /// <inheritdoc/>
     public Task<DialogResult<string?>> GetNewFileName(string? oldFileName)
     {
-        return _dialogSvc.GetFileSavePath(CommonDialogTemplates.FileSave, _saveFilters, Path.Combine(path, oldFileName ?? ""));
+        return _dialogSvc.GetFileSavePath(CommonDialogTemplates.FileSave, _saveFilters, Path.Combine(path, oldFileName ?? string.Empty));
     }
 
     /// <inheritdoc/>

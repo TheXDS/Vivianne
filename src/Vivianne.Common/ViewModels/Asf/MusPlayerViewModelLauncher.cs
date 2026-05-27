@@ -14,7 +14,7 @@ namespace TheXDS.Vivianne.ViewModels.Asf;
 /// <summary>
 /// Implements a launcher to play ASF/MUS files in a read-only file ViewModel.
 /// </summary>
-public class MusPlayerViewModelLauncher() : FileViewModelLauncherBase<MusFile, MusSerializer, MusPlayerViewModel>("ASF/MUS", FileFilters.AsfMusOpenFilter)
+public class MusPlayerViewModelLauncher() : FileViewModelLauncherBase<MusFile, MusSerializer, MusPlayerViewModel>("ASF/MUS", FileFilters.AsfMusOpenFilter), IFileEditorViewModelLauncher
 {
     /// <inheritdoc/>
     public override RecentFileInfo[] RecentFiles

@@ -15,6 +15,7 @@ using TheXDS.Vivianne.Models.Audio.Mus;
 using TheXDS.Vivianne.Resources;
 using TheXDS.Vivianne.Serializers;
 using TheXDS.Vivianne.Serializers.Audio.Mus;
+using TheXDS.Vivianne.Tools.Audio;
 using TheXDS.Vivianne.Tools.Audio.Mus;
 
 namespace TheXDS.Vivianne.ViewModels.Asf;
@@ -31,7 +32,7 @@ public class MusPlayerViewModel : ViewModel, IViewModel
     private Timer? playbackTimer;
     private bool _playLooping;
     private TimeSpan _duration;
-    private MusWaveStream? _audioFile;
+    private EaAudioWaveStream? _audioFile;
 
     /// <summary>
     /// Gets a reference to the command used to start playing an audio stream.
@@ -122,7 +123,7 @@ public class MusPlayerViewModel : ViewModel, IViewModel
     /// <summary>
     /// Gets the current playback position of the audio stream.
     /// </summary>
-    public TimeSpan CurrentPosition => TimeSpan.Zero;
+    public TimeSpan CurrentPosition => TimeSpan.FromSeconds(_audioFile?.CurrentPositionInSeconds ?? 0);
 
     /// <summary>
     /// Gets or sets a value that indicates whether the audio stream should
@@ -139,10 +140,10 @@ public class MusPlayerViewModel : ViewModel, IViewModel
     /// as a <see cref="MusWaveStream"/> that wraps the MUS file and its
     /// associated map files.
     /// </summary>
-    public MusWaveStream? AudioFile
+    public EaAudioWaveStream? AudioFile
     {
         get => _audioFile;
-        private set => Change (ref _audioFile, value);
+        private set => Change(ref _audioFile, value);
     }
 
     /// <summary>
@@ -158,40 +159,50 @@ public class MusPlayerViewModel : ViewModel, IViewModel
     /// <inheritdoc/>
     protected override async Task OnCreated()
     {
-        if (await BackingStore.ReadAsync($"{Path.GetFileNameWithoutExtension(FileName)}.lin") is byte[] rawLin)
+        switch (Mus.AsfSubStreams.Count)
         {
-            try
-            {
-                LinearMap = await ((ISerializer<MapFile>)new MapSerializer()).DeserializeAsync(rawLin);
-                Duration = CalculateDuration();
-            }
-            catch
-            {
-                Debug.Print("Error loading linear map file for the current MUS file. Ignoring...");
-            }
+            case 0:
+                await DialogService!.Error("No audio streams found in the MUS file. Playback will be unavailable.");
+                break;
+            case 1:
+                var asf = Mus.AsfSubStreams.Values.Single();
+                Duration = asf.CalculatedDuration;
+                break;
+            default:
+                await Task.WhenAll([
+                    TryLoadMap("lin", map => LinearMap = map),
+                    TryLoadMap("map", map => InteractiveMap = map)]);
+                Duration = CalculateLinearDuration();
+                break;
         }
-        else if (await BackingStore.ReadAsync($"{Path.GetFileNameWithoutExtension(FileName)}.map") is byte[] rawMap)
+    }
+
+    private async Task TryLoadMap(string extension, Action<MapFile> setMap)
+    {
+        if (await BackingStore.ReadAsync($"{Path.GetFileNameWithoutExtension(FileName)}.{extension}") is byte[] rawData)
         {
             try
             {
-                LinearMap = await ((ISerializer<MapFile>)new MapSerializer()).DeserializeAsync(rawMap);
+                var map = await ((ISerializer<MapFile>)new MapSerializer()).DeserializeAsync(rawData);
+                setMap(map);
             }
             catch
             {
-                Debug.Print("Error loading interactive map file for the current MUS file. Ignoring...");
+                Debug.Print($"Error loading .{extension} file for the current .mus file. Ignoring...");
             }
         }
     }
 
-
-
-    private TimeSpan CalculateDuration()
+    private TimeSpan CalculateLinearDuration()
     {
         TimeSpan duration = TimeSpan.Zero;
-        (var indices, _) = MapStitcher.Stitch(LinearMap!);
-        foreach (var substream in indices.Select(p => Mus.AsfSubStreams.Values.ElementAt(p)))
+        if (LinearMap is not null)
         {
-            duration += TimeSpan.FromSeconds((double)substream.TotalSamples / substream.BytesPerSample / substream.SampleRate);
+            (var indices, _) = MapStitcher.Stitch(LinearMap);
+            foreach (var substream in indices.Select(p => Mus.AsfSubStreams.Values.ElementAt(p)))
+            {
+                duration += substream.CalculatedDuration;
+            }
         }
         return duration;
     }
@@ -201,17 +212,33 @@ public class MusPlayerViewModel : ViewModel, IViewModel
         if (outputDevice is { PlaybackState: PlaybackState.Playing }) return;
         outputDevice = new WaveOutEvent();
         outputDevice.PlaybackStopped += OnPlaybackEndReached;
-        outputDevice.Init(AudioFile = new MusWaveStream(Mus, linearMap));
+        outputDevice.Init(AudioFile = CreateWaveStream());
         outputDevice.Play();
-        //playbackTimer = new Timer(OnUpdatePlaybackPosition, null, 0, 1000);
+        playbackTimer = new Timer(OnUpdatePlaybackPosition, null, 0, 1000);
+    }
+
+    private EaAudioWaveStream CreateWaveStream()
+    {
+        if (PlayLooping && LinearMap is not null)
+        {
+            return new MusWaveStream(Mus, LinearMap);
+        }
+        else if (InteractiveMap is not null)
+        {
+            return new MusWaveStream(Mus, InteractiveMap);
+        }
+        else
+        {
+            return new AsfWaveStream(Mus.AsfSubStreams.Single().Value) { PlayLooping = true };
+        }
     }
 
     private void OnPlaybackEndReached(object? _, StoppedEventArgs __) => OnStopPlayback();
 
-    //private void OnUpdatePlaybackPosition(object? state)
-    //{
-    //    Notify(nameof(CurrentPosition));
-    //}
+    private void OnUpdatePlaybackPosition(object? state)
+    {
+        Notify(nameof(CurrentPosition));
+    }
 
     private void OnStopPlayback()
     {
@@ -221,9 +248,8 @@ public class MusPlayerViewModel : ViewModel, IViewModel
             outputDevice.PlaybackStopped -= OnPlaybackEndReached;
             outputDevice.Stop();
         }
-        //audioFile?.Dispose();
         outputDevice?.Dispose();
-        //playbackTimer = null;
+        playbackTimer = null;
         AudioFile = null;
         outputDevice = null;
         GC.Collect();
@@ -232,9 +258,10 @@ public class MusPlayerViewModel : ViewModel, IViewModel
 
     private async Task OnExportAudio()
     {
-        if (await DialogService!.GetFileSavePath(FileFilters.AudioFileFilter) is { Success: true, Result: string path })
+        if (LinearMap is not null && await DialogService!.GetFileSavePath(FileFilters.AudioFileFilter) is { Success: true, Result: string path })
         {
-            //await File.WriteAllBytesAsync(path, GetRawWav(GetPreRenderStream()));
+            (var header, var data) = AudioRender.JoinAllStreams(Mus, LinearMap);
+            await File.WriteAllBytesAsync(path, AudioRender.RenderData(header, data));
         }
     }
 

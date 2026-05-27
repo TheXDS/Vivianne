@@ -64,7 +64,7 @@ public class GeoRendererConverter : IOneWayValueConverter<RenderState?, Model3DG
     {
         /* GEO 3D models use a very old rendering technique based on quads and
          * per-face texturing.
-         * 
+         *
          * This is a WPF app, and WPF itself includes a simple yet easy to use
          * 3D rendering engine, but it's limited to use triangles and
          * per-vertex UV. This means that in order to properly render GEO
@@ -137,7 +137,7 @@ public class GeoRendererConverter : IOneWayValueConverter<RenderState?, Model3DG
         return new Point3D(SizeFactor * vertex.Y, SizeFactor * -vertex.Z, SizeFactor * vertex.X);
     }
 
-    private static Material ToMaterial(FshBlob? fsh, FshFile fshFile)
+    private static DiffuseMaterial ToMaterial(FshBlob? fsh, FshFile fshFile)
     {
         return fsh is not null ? new DiffuseMaterial(new ImageBrush(_fsh2Brush.Convert(fsh, fshFile, CultureInfo.InvariantCulture))
         {

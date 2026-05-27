@@ -18,7 +18,7 @@ namespace TheXDS.Vivianne.Component;
 /// <param name="asf">
 /// The ASF file to be used as the source of audio data.
 /// </param>
-public class AsfWaveStream(AsfFile asf) : IWaveProvider
+public class AsfWaveStream(AsfFile asf) : EaAudioWaveStream(asf.SampleRate, asf.BytesPerSample, asf.Channels)
 {
     private int currentAbsolutePosition;
     private int currentPosition;
@@ -30,12 +30,10 @@ public class AsfWaveStream(AsfFile asf) : IWaveProvider
     /// </summary>
     public bool PlayLooping { get; set; }
 
-    WaveFormat IWaveProvider.WaveFormat { get; } = new WaveFormat(asf.SampleRate, asf.BytesPerSample * 8, asf.Channels);
-
     /// <summary>
     /// Resets the stream to the beginning, allowing for replaying from the start.
     /// </summary>
-    public void Reset()
+    public override void Reset()
     {
         currentAbsolutePosition = 0;
         currentPosition = 0;
@@ -51,12 +49,13 @@ public class AsfWaveStream(AsfFile asf) : IWaveProvider
     /// typically used in scenarios where repeated playback or processing of a
     /// specific segment is required.
     /// </remarks>
-    public void ResetToLoopStart()
+    public override void ResetToLoopStart()
     {
         GoToAbsolutePosition(asf.LoopStart);
     }
 
-    int IWaveProvider.Read(byte[] buffer, int offset, int count)
+    /// <inheritdoc/>
+    protected override int Read(byte[] buffer, int offset, int count)
     {
         int bytesRead = 0;
         while (count-- > 0)

@@ -134,7 +134,7 @@ public class FceRendererConverter : IOneWayValueConverter<RenderState?, Model3DG
          * from that, and while they could still support it, this usually
          * requires some more direct manipulation of the 3D api in use
          * (DirectX).
-         * 
+         *
          * This is a WPF app, and WPF itself includes a simple yet easy to use
          * 3D rendering engine, but it's limited to use per-vertex UV. This
          * means that in order to properly render FCE models that utilize
@@ -142,7 +142,7 @@ public class FceRendererConverter : IOneWayValueConverter<RenderState?, Model3DG
          * per-vertex UV format. This implies duplicating vertices and normals
          * just so we can pair that new vertex with its own UV data, and then
          * we remap the triangle to use the copy.
-         * 
+         *
          * This is not a problem if the FCE file was created in such a way that
          * any triangle sharing vertices was made to use the exact same UV
          * coordinates for whichever shared vertices they have; in other words,

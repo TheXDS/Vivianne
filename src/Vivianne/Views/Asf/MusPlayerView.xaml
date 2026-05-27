@@ -51,7 +51,7 @@
                 Content="Play looping"
                 IsChecked="{Binding PlayLooping}"
                 IsEnabled="{Binding CanPlayLooping, Mode=OneWay}" />
-            <TextBlock Visibility="{Binding AudioFile, Converter={StaticResource NotNull2VisConv}}">
+            <TextBlock Margin="5" Visibility="{Binding AudioFile, Converter={StaticResource NotNull2VisConv}}">
                 Current substream block:&#160;<Run Text="{Binding AudioFile.CurrentAsfSubStreamIndexForMap, Mode=OneWay}" />
             </TextBlock>
         </StackPanel>
