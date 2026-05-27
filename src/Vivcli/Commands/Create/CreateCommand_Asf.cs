@@ -3,7 +3,6 @@ using TheXDS.Vivianne.Models.Audio.Base;
 using TheXDS.Vivianne.Models.Audio.Mus;
 using TheXDS.Vivianne.Resources;
 using TheXDS.Vivianne.Serializers;
-using TheXDS.Vivianne.Serializers.Audio;
 using TheXDS.Vivianne.Serializers.Audio.Mus;
 using TheXDS.Vivianne.Tools.Audio;
 
@@ -27,32 +26,17 @@ public partial class CreateCommand
 
     private static async Task AsfCommand(FileInfo outputFile, FileInfo inputFile, CompressionMethod codec, int? chunks)
     {
-        if (!Mappings.AudioCodecSelector.TryGetValue(codec, out var selector)) throw new Exception("");
+        if (!Mappings.AudioCodecSelector.ContainsKey(codec)) throw new Exception("");
         using var inputStream = inputFile.OpenRead();
         var asf = AudioRender.AsfFromWav(inputStream);
         AudioRender.ReSliceAsf(asf, chunks ?? InferChunkCount(asf));
         if (codec != CompressionMethod.None)
         {
-            var c = selector.Invoke();
-            for (var j = 0; j < asf.AudioBlocks.Count; j++)
-            {
-                asf.AudioBlocks[j] = c.Encode(asf.AudioBlocks[j], BuildPtHeader(asf));
-                asf.Compression = codec;
-            }
+            asf.Compression = codec;
         }
         ISerializer<AsfFile> serializer = new MusSerializer();
         using var outputStream = outputFile.OpenWrite();
         await serializer.SerializeToAsync(asf, outputStream);
-    }
-
-    private static PtHeader BuildPtHeader(AsfFile asf)
-    {
-        var header = new PtHeader();
-        header.AudioValues[PtAudioHeaderField.Channels] = asf.Channels;
-        header.AudioValues[PtAudioHeaderField.SampleRate] = asf.SampleRate;
-        header.AudioValues[PtAudioHeaderField.NumSamples] = asf.TotalSamples;
-        header.AudioValues[PtAudioHeaderField.BytesPerSample] = asf.BytesPerSample;
-        return header;
     }
 
     private static int InferChunkCount(AsfFile asf)
