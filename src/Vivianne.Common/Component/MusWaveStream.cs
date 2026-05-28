@@ -148,34 +148,46 @@ public class MusWaveStream : EaAudioWaveStream, INotifyPropertyChanged
             var chunk = currentSubStream.AudioBlocks[_currentAudioBlock];
             buffer[offset++] = chunk[_currentPosition++];
             bytesRead++;
-            CurrentPositionInSeconds += SecondsPerSample;
-            if (_currentPosition >= chunk.Length)
+            if (UpdateState(chunk.Length, currentSubStream)) break;
+        }
+        return bytesRead;
+    }
+
+    private bool UpdateState(int chunkLength, AsfFile currentSubStream)
+    {
+        CurrentPositionInSeconds += SecondsPerSample;
+        if (_currentPosition >= chunkLength)
+        {
+            _currentPosition = 0;
+            _currentAudioBlock++;
+        }
+        if (_currentAudioBlock >= currentSubStream.AudioBlocks.Count)
+        {
+            CurrentAsfSubStreamIndex++;
+            _currentAudioBlock = 0;
+            if (CheckEndOfStream()) return true;
+        }
+        else
+        {
+            CheckLooping();
+        }
+        return false;
+    }
+
+    private bool CheckEndOfStream()
+    {
+        if (CurrentAsfSubStreamIndex >= (_mapIndices is null ? _mus.AsfSubStreams.Count : _mapIndices.Length))
+        {
+            if (_map is not null)
             {
-                _currentPosition = 0;
-                _currentAudioBlock++;
-            }
-            if (_currentAudioBlock >= currentSubStream.AudioBlocks.Count)
-            {
-                CurrentAsfSubStreamIndex++;
-                _currentAudioBlock = 0;
-                if (CurrentAsfSubStreamIndex >= (_mapIndices is null ? _mus.AsfSubStreams.Count : _mapIndices.Length))
-                {
-                    if (_map is not null)
-                    {
-                        ResetToLoopStart();
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
+                ResetToLoopStart();
             }
             else
             {
-                CheckLooping();
+                return true;
             }
         }
-        return bytesRead;
+        return false;
     }
 
     private void CheckLooping()

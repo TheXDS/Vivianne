@@ -20,6 +20,7 @@ namespace TheXDS.Vivianne.Component;
 /// </param>
 public class AsfWaveStream(AsfFile asf) : EaAudioWaveStream(asf.SampleRate, asf.BytesPerSample, asf.Channels)
 {
+    private readonly byte byteToSampleMultiplier = (byte)(asf.BytesPerSample * asf.Channels);
     private int currentAbsolutePosition;
     private int currentPosition;
     private int currentAudioBlock;
@@ -51,7 +52,7 @@ public class AsfWaveStream(AsfFile asf) : EaAudioWaveStream(asf.SampleRate, asf.
     /// </remarks>
     public override void ResetToLoopStart()
     {
-        GoToAbsolutePosition(asf.LoopStart);
+        GoToAbsolutePosition(asf.LoopStart * byteToSampleMultiplier);
     }
 
     /// <inheritdoc/>
@@ -80,7 +81,7 @@ public class AsfWaveStream(AsfFile asf) : EaAudioWaveStream(asf.SampleRate, asf.
 
     private void CheckLooping()
     {
-        if (PlayLooping && currentAbsolutePosition == asf.LoopEnd)
+        if (PlayLooping && (currentAbsolutePosition / byteToSampleMultiplier) >= asf.LoopEnd)
         {
             ResetToLoopStart();
         }
