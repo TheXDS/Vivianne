@@ -1,4 +1,5 @@
-﻿using NAudio.Wave;
+﻿using CommunityToolkit.HighPerformance;
+using NAudio.Wave;
 using System;
 using System.ComponentModel;
 using System.Linq;
@@ -52,6 +53,12 @@ public class MusWaveStream : EaAudioWaveStream, INotifyPropertyChanged
     public int CurrentAsfSubStreamIndexForMap => _mapIndices is null ? CurrentAsfSubStreamIndex : _mapIndices[CurrentAsfSubStreamIndex];
 
     /// <summary>
+    /// Gets the total number of ASF substreams available in the current MUS file,
+    /// taking into account any map file that may be applied.
+    /// </summary>
+    public int TotalSubStreams => _mapIndices is null ? _mus.AsfSubStreams.Count : _mapIndices.Length;
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="MusWaveStream"/> class.
     /// </summary>
     /// <param name="mus">The MUS file to be played.</param>
@@ -101,7 +108,11 @@ public class MusWaveStream : EaAudioWaveStream, INotifyPropertyChanged
         {
             throw new InvalidOperationException(St.MapFileRequiredForReset);
         }
-        CurrentAsfSubStreamIndex = _loopStart!.Value;
+#if NET10_0_OR_GREATER
+        CurrentAsfSubStreamIndex = _mapIndices!.IndexOf(_loopStart!.Value);
+#else
+        CurrentAsfSubStreamIndex = _mapIndices!.FindIndexOf(_loopStart!.Value);
+#endif
         _currentAudioBlock = _loopBlock;
         _currentPosition = 0;
     }
@@ -112,7 +123,10 @@ public class MusWaveStream : EaAudioWaveStream, INotifyPropertyChanged
         set
         {
             _currentAsfSubStreamIndex = value;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentAsfSubStreamIndexForMap)));
+            if (_mapIndices is null || _currentAsfSubStreamIndex < _mapIndices.Length)
+            {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentAsfSubStreamIndexForMap)));
+            }
         }
     }
 

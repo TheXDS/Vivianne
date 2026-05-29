@@ -7,6 +7,7 @@
     xmlns:hlp="clr-namespace:TheXDS.Vivianne.Helpers"
     xmlns:local="clr-namespace:TheXDS.Vivianne.Views.Asf"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mcart="http://schemas.thexds.local/mcart"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:vc="clr-namespace:TheXDS.Vivianne.ValueConverters"
     xmlns:vm="clr-namespace:TheXDS.Vivianne.ViewModels.Bnk;assembly=Vivianne.Common"
@@ -17,6 +18,7 @@
     mc:Ignorable="d">
     <UserControl.Resources>
         <vc:MusStreamInformationConverter x:Key="mus2nfo" />
+        <mcart:NullToBooleanConverter x:Key="n2bc" />
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -46,14 +48,25 @@
                     |&#160;<Run Text="{Binding Duration, Mode=OneWay, StringFormat='mm\\:ss'}" />
                 </TextBlock>
             </DockPanel>
-            <ui:ToggleSwitch
-                Margin="5"
-                Content="Play looping"
-                IsChecked="{Binding PlayLooping}"
-                IsEnabled="{Binding CanPlayLooping, Mode=OneWay}" />
-            <TextBlock Margin="5" Visibility="{Binding AudioFile, Converter={StaticResource NotNull2VisConv}}">
-                Current substream block:&#160;<Run Text="{Binding AudioFile.CurrentAsfSubStreamIndexForMap, Mode=OneWay}" />
-            </TextBlock>
+            <mcart:SelectorPanel SelectedIndex="{Binding PlaybackTypeSelector, Mode=OneWay}">
+                <StackPanel>
+                    <ui:ToggleSwitch
+                        Margin="5"
+                        Content="Play looping"
+                        IsChecked="{Binding PlayLooping}" />
+                </StackPanel>
+                <StackPanel IsEnabled="{Binding AudioFile, Converter={StaticResource n2bc}, Mode=OneWay}">
+                    <RadioButton Content="Linear playback" IsChecked="{Binding PlayLooping}" />
+                    <RadioButton Content="Interactive playback" />
+                    <TextBlock
+                        Margin="5"
+                        d:Visibility="Visible"
+                        Foreground="{DynamicResource MidBackground}"
+                        Visibility="{Binding AudioFile, Converter={StaticResource NotNull2VisConv}}">
+                        Current substream block:&#160;<Run Text="{Binding AudioFile.CurrentAsfSubStreamIndexForMap, Mode=OneWay}" />
+                    </TextBlock>
+                </StackPanel>
+            </mcart:SelectorPanel>
         </StackPanel>
         <TextBlock
             Grid.Column="1"
