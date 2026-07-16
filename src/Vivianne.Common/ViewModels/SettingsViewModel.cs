@@ -9,7 +9,7 @@ using TheXDS.Ganymede.Helpers;
 using TheXDS.Ganymede.Models;
 using TheXDS.Ganymede.Resources;
 using TheXDS.MCART.Types.Extensions;
-using TheXDS.Vivianne.Component;
+using TheXDS.Vivianne.Component.Application;
 using TheXDS.Vivianne.Models;
 using TheXDS.Vivianne.Properties;
 using TheXDS.Vivianne.ViewModels.Base;

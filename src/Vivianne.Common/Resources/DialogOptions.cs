@@ -1,7 +1,7 @@
 ﻿using System;
 using TheXDS.MCART.Resources.Strings;
 using TheXDS.MCART.Types;
-using TheXDS.Vivianne.Component;
+using TheXDS.Vivianne.Component.Application;
 using static TheXDS.MCART.Resources.Strings.Composition;
 
 namespace TheXDS.Vivianne.Resources;

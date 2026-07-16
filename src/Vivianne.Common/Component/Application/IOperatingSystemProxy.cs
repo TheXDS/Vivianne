@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace TheXDS.Vivianne.Component;
+namespace TheXDS.Vivianne.Component.Application;
 
 /// <summary>
 /// Defines a set of members to be implemented by a type that exposes operating
@@ -33,6 +33,16 @@ public interface IOperatingSystemProxy
     /// <param name="text">Text on the native message box.</param>
     /// <param name="caption">Title of the native message box.</param>
     void ShowNativeErrorBox(string text, string caption);
+
+    /// <summary>
+    /// Turns the running instance into a window-less process.
+    /// </summary>
+    /// <remarks>
+    /// This is useful in cases where the current process needs to run in the
+    /// background, or execute an operation and then exit, like when processing
+    /// elevated command-line callbacks.
+    /// </remarks>
+    void GoWindowless();
 
     /// <summary>
     /// Invokes a command through the operating system and awaits for the

@@ -1,5 +1,5 @@
 ﻿using System.Windows.Input;
-using TheXDS.Vivianne.Component;
+using TheXDS.Vivianne.Component.Application;
 
 internal class WpfKeyboardProxy : IKeyboardProxy
 {
