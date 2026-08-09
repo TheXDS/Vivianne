@@ -8,56 +8,12 @@ using TheXDS.Ganymede.Types.Base;
 using TheXDS.MCART.Types;
 using TheXDS.MCART.Types.Extensions;
 using TheXDS.Vivianne.Component;
-using TheXDS.Vivianne.Info;
-using TheXDS.Vivianne.Models;
-using TheXDS.Vivianne.Models.Audio.Bnk;
-using TheXDS.Vivianne.Models.Audio.Mus;
-using TheXDS.Vivianne.Models.Bnk;
-using TheXDS.Vivianne.Models.Fe;
-using TheXDS.Vivianne.Models.Fsh;
-using TheXDS.Vivianne.Models.Geo;
-using TheXDS.Vivianne.Models.Viv;
-using TheXDS.Vivianne.Properties;
+using TheXDS.Vivianne.Component.Application;
 using TheXDS.Vivianne.Resources;
 using TheXDS.Vivianne.Serializers;
-using TheXDS.Vivianne.Serializers.Audio.Bnk;
-using TheXDS.Vivianne.Serializers.Audio.Mus;
-using TheXDS.Vivianne.Serializers.Fsh;
-using TheXDS.Vivianne.Serializers.Geo;
-using TheXDS.Vivianne.Serializers.Viv;
 using TheXDS.Vivianne.ViewModels;
-using TheXDS.Vivianne.ViewModels.Asf;
 using TheXDS.Vivianne.ViewModels.Base;
-using TheXDS.Vivianne.ViewModels.Bnk;
-using TheXDS.Vivianne.ViewModels.Fce.Nfs3;
-using TheXDS.Vivianne.ViewModels.Fce.Nfs4;
-using TheXDS.Vivianne.ViewModels.Fe;
-using TheXDS.Vivianne.ViewModels.Fsh;
-using TheXDS.Vivianne.ViewModels.Geo;
-using TheXDS.Vivianne.ViewModels.Viv;
-using Cp2 = TheXDS.Vivianne.Models.Carp.Nfs2.CarPerf;
-using Cp3 = TheXDS.Vivianne.Models.Carp.Nfs3.CarPerf;
-using Cp4 = TheXDS.Vivianne.Models.Carp.Nfs4.CarPerf;
-using Fe3 = TheXDS.Vivianne.Models.Fe.Nfs3.FeData;
-using Fe4 = TheXDS.Vivianne.Models.Fe.Nfs4.FeData;
-using MFce3 = TheXDS.Vivianne.Models.Fce.Nfs3;
-using MFce4 = TheXDS.Vivianne.Models.Fce.Nfs4;
-using SCp2 = TheXDS.Vivianne.Serializers.Carp.Nfs2.CarpSerializer;
-using SCp3 = TheXDS.Vivianne.Serializers.Carp.Nfs3.CarpSerializer;
-using SCp4 = TheXDS.Vivianne.Serializers.Carp.Nfs4.CarpSerializer;
-using SFe3 = TheXDS.Vivianne.Serializers.Fe.Nfs3.FeDataSerializer;
-using SFe4 = TheXDS.Vivianne.Serializers.Fe.Nfs4.FeDataSerializer;
-using SNfs3 = TheXDS.Vivianne.Serializers.Fce.Nfs3.FceSerializer;
-using SNfs4 = TheXDS.Vivianne.Serializers.Fce.Nfs4.FceSerializer;
 using St = TheXDS.Vivianne.Resources.Strings.FileFilters;
-using VCp2 = TheXDS.Vivianne.ViewModels.Carp.Nfs2.CarpEditorViewModel;
-using VCp3 = TheXDS.Vivianne.ViewModels.Carp.Nfs3.CarpEditorViewModel;
-using VCp4 = TheXDS.Vivianne.ViewModels.Carp.Nfs4.CarpEditorViewModel;
-using VmFce3 = TheXDS.Vivianne.ViewModels.Fce.Nfs3.Fce3EditorViewModel;
-using VmFce4 = TheXDS.Vivianne.ViewModels.Fce.Nfs4.Fce4EditorViewModel;
-using VsCp2 = TheXDS.Vivianne.Models.Carp.Nfs2.CarpEditorState;
-using VsCp3 = TheXDS.Vivianne.Models.Carp.Nfs3.CarpEditorState;
-using VsCp4 = TheXDS.Vivianne.Models.Carp.Nfs4.CarpEditorState;
 
 namespace TheXDS.Vivianne.Data;
 
@@ -78,7 +34,7 @@ public delegate Task<IViewModel?> ContentVisualizerViewModelFactory(Func<IBackin
 /// <summary>
 /// Represents a file type configration registry of all file types supported by Vivianne.
 /// </summary>
-public static class FileTypes
+public static partial class FileTypes
 {
     /// <summary>
     /// Contains a collection of all file types recognized by Vivianne.
@@ -213,12 +169,6 @@ public static class FileTypes
         return vm;
     }
 
-
-    private static Task<IViewModel?> CreateVivEditorViewModel(Func<IBackingStore> backingStoreFactory, string fileName)
-    {
-        return CreateEditorViewModel<VivEditorViewModel, VivEditorState, VivFile, VivSerializer>(backingStoreFactory, fileName, s => s.Sort = Settings.Current.Viv_FileSorting);
-    }
-
     private static Task<IViewModel?>  CreateComingSoonViewModel(Func<IBackingStore> _, string __) => Task.FromResult<IViewModel?>(new ComingSoonViewModel());
 
     private static Task<IViewModel?> CreateRawReadOnlyViewModel(Func<IBackingStore> backingStoreFactory, string name)
@@ -229,68 +179,6 @@ public static class FileTypes
     private static Task<IViewModel?> CreateExternalEditorViewModel(Func<IBackingStore> backingStoreFactory, string name)
     {
         return Task.FromResult<IViewModel?>(new ExternalFileViewModel(backingStoreFactory.Invoke(), name));
-    }
-
-    private static Task<IViewModel?> CreateFeDataEditorViewModel(Func<IBackingStore> backingStoreFactory, string name)
-    {
-        return TryCreateViewModel(backingStoreFactory, name, (data, store) => VersionIdentifier.FeDataVersion(data) switch
-        {
-            NfsVersion.Nfs3 => CreateEditorViewModel<FeData3EditorViewModel, FeData3EditorState, Fe3, SFe3>(data, store, name),
-            NfsVersion.Nfs4 => CreateEditorViewModel<FeData4EditorViewModel, FeData4EditorState, Fe4, SFe4>(data, store, name),
-            _ => Task.FromResult<IViewModel?>(null)
-        });
-    }
-
-    private static Task<IViewModel?> CreateCarpEditorViewModel(Func<IBackingStore> backingStoreFactory, string name)
-    {
-        return TryCreateViewModel(backingStoreFactory, name, (data, store) => VersionIdentifier.CarpVersion(data) switch
-        {
-            NfsVersion.Nfs2 => CreateEditorViewModel<VCp2, VsCp2, Cp2, SCp2>(data, store, name),
-            NfsVersion.Nfs3 => CreateEditorViewModel<VCp3, VsCp3, Cp3, SCp3>(data, store, name),
-            NfsVersion.Nfs4 => CreateEditorViewModel<VCp4, VsCp4, Cp4, SCp4>(data, store, name),
-            _ => Task.FromResult<IViewModel?>(null)
-        });
-    }
-
-    private static Task<IViewModel?> CreateTexturePreviewViewModel(Func<IBackingStore> backingStoreFactory, string name)
-    {
-        return CreateEditorViewModel<TexturePreviewViewModel, RawFileEditorState, RawFile, RawFileSerializer>(backingStoreFactory, name);
-    }
-
-    private static Task<IViewModel?> CreateFceEditorViewModel(Func<IBackingStore> backingStoreFactory, string name)
-    {
-        return TryCreateViewModel(backingStoreFactory, name, (data, store) =>  VersionIdentifier.FceVersion(data) switch
-        {
-            NfsVersion.Nfs3 => CreateEditorViewModel<VmFce3, Fce3EditorState, MFce3.FceFile, SNfs3>(data, store, name),
-            NfsVersion.Nfs4 or NfsVersion.Mco => CreateEditorViewModel<VmFce4, Fce4EditorState, MFce4.FceFile, SNfs4>(data, store, name),
-            _ => Task.FromResult<IViewModel?>(null)
-        });
-    }
-
-    private static Task<IViewModel?> CreateGeoEditorViewModel(Func<IBackingStore> backingStoreFactory, string name)
-    {
-        return CreateEditorViewModel<GeoEditorViewModel, GeoEditorState, GeoFile, GeoSerializer>(backingStoreFactory, name);
-    }
-
-    private static Task<IViewModel?> CreateFshEditorViewModel(Func<IBackingStore> backingStoreFactory, string name)
-    {
-        return CreateEditorViewModel<FshEditorViewModel, FshEditorState, FshFile, FshSerializer>(backingStoreFactory, name);
-    }
-
-    private static Task<IViewModel?> CreateBnkEditorViewModel(Func<IBackingStore> backingStoreFactory, string name)
-    {
-        return CreateEditorViewModel<BnkEditorViewModel, BnkEditorState, BnkFile, BnkSerializer>(backingStoreFactory, name, s => s.EnableStreamDedup = Settings.Current.Bnk_EnableStreamDeduplication);
-    }
-
-    private static Task<IViewModel?> CreateMusPlayerViewModel(Func<IBackingStore> backingStoreFactory, string name)
-    {
-        return TryCreateViewModel(backingStoreFactory, name, async (data, store) => new MusPlayerViewModel()
-        {
-            Title = name,
-            Mus = await ((ISerializer<MusFile>)new MusSerializer()).DeserializeAsync(data),
-            FileName = name,
-            BackingStore = store
-        });
     }
 
     private static Task<IViewModel?> CreateEditorViewModel<TViewModel, TState, TFile, TSerializer>(Func<IBackingStore> backingStoreFactory, string name, Action<TSerializer>? serializerConfigCallback = null)

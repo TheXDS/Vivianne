@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TheXDS.Vivianne.Component;
+namespace TheXDS.Vivianne.Component.Application;
 
 /// <summary>
 /// Represents modifier keys that can be used in combination with other keys.

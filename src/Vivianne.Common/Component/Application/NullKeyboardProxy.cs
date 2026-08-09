@@ -1,4 +1,4 @@
-namespace TheXDS.Vivianne.Component;
+namespace TheXDS.Vivianne.Component.Application;
 
 /// <summary>
 /// Implements a dummy, null keyboard proxy for when the proxy is not

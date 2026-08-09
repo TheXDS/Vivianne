@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
+using St = TheXDS.Vivianne.Resources.Strings.Component.Application.CommandLineStartup;
 
-namespace TheXDS.Vivianne.Component;
+namespace TheXDS.Vivianne.Component.Application;
 
 /// <summary>
 /// Static class that provides command line startup services and helper methods.
@@ -22,7 +23,7 @@ public static class CommandLineStartup
     {
         if (!PlatformServices.OperatingSystem.IsElevated)
         {
-            PlatformServices.OperatingSystem.ShowNativeErrorBox("This operation requires elevated privileges.", "Operation not permitted");
+            PlatformServices.OperatingSystem.ShowNativeErrorBox(St.OperationRequiresElevation, St.OperationNotPermitted);
             unchecked { Environment.Exit((int)0x80070005); }
         }
     }

@@ -1,6 +1,6 @@
-﻿using TheXDS.Vivianne.Component;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using System.Diagnostics;
+using TheXDS.Vivianne.Component.Application;
 
 internal class WindowsOperatingSystemProxy : IOperatingSystemProxy
 {
@@ -26,5 +26,10 @@ internal class WindowsOperatingSystemProxy : IOperatingSystemProxy
         var process = Process.Start(new ProcessStartInfo(command, args) { UseShellExecute = true, Verb = elevate ? "runas" : string.Empty });
         await (process?.WaitForExitAsync() ?? Task.CompletedTask);
         return process?.ExitCode ?? -1;
+    }
+
+    public void GoWindowless()
+    {
+        System.Windows.Application.Current.MainWindow = null;
     }
 }

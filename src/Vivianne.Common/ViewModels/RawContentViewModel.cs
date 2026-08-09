@@ -2,7 +2,7 @@
 using System.Windows.Input;
 using TheXDS.Ganymede.Types.Base;
 using TheXDS.MCART.Component;
-using TheXDS.Vivianne.Component;
+using TheXDS.Vivianne.Component.Application;
 
 namespace TheXDS.Vivianne.ViewModels;
 

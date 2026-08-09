@@ -1,4 +1,4 @@
-﻿namespace TheXDS.Vivianne.Component;
+﻿namespace TheXDS.Vivianne.Component.Application;
 
 /// <summary>
 /// Static class that provides keyboard data in a platform agnostic way.
@@ -6,7 +6,6 @@
 public static class PlatformServices
 {
     static IKeyboardProxy? _keyboardProxy;
-    static IStaticFceRender? _staticFceRender;
     static IOperatingSystemProxy? _operatingSystemProxy;
 
     /// <summary>
@@ -32,11 +31,6 @@ public static class PlatformServices
     public static IKeyboardProxy Keyboard => _keyboardProxy ??= new NullKeyboardProxy();
 
     /// <summary>
-    /// Exposes an instance that provides FCE rendering services.
-    /// </summary>
-    public static IStaticFceRender FceRender => _staticFceRender ??= new NullFceRender();
-
-    /// <summary>
     /// Exposes an instance that provides operating system information and
     ///  services.
     /// </summary>
@@ -58,15 +52,5 @@ public static class PlatformServices
     public static void SetOperatingSystemProxy(IOperatingSystemProxy proxy)
     {
         _operatingSystemProxy = proxy;
-    }
-
-    /// <summary>
-    /// Sets the FCE render service instance to use when a request to render a
-    /// specific model is made.
-    /// </summary>
-    /// <param name="render">FCE render service to expose.</param>
-    public static void SetFceRender(IStaticFceRender render)
-    {
-        _staticFceRender = render;
     }
 }

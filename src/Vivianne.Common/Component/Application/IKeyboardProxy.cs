@@ -1,4 +1,4 @@
-﻿namespace TheXDS.Vivianne.Component;
+﻿namespace TheXDS.Vivianne.Component.Application;
 
 /// <summary>
 /// Defines a set of members to be implemented by a type that exposes keyboard
