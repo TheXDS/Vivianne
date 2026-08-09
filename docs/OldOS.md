@@ -18,7 +18,7 @@ The system will prompt you automatically to install the required .NET runtime if
 To enhance your odds at getting Vivianne running in Windows 8.1, please keep your OS up to date. If you don't, it's very likely that nothing will work, not even installing Microsoft's own redistributable packages. You'll be limited to Vivianne for .NET 8, which is currently 1:1 in feature parity with the .NET 10 build (except for very minor FMA optimizations)
 
 You'll need to install the following:
-- [.NET 8.0 Runtime](https://builds.dotnet.microsoft.com/dotnet/Runtime/8.0.17/dotnet-runtime-8.0.17-win-x64.exe)
+- [.NET 8.0 Runtime](https://builds.dotnet.microsoft.com/dotnet/Runtime/8.0.14/windowsdesktop-runtime-8.0.14-win-x64.exe)
 - [Microsoft Visual C++ 2015 Redistributable 14.0.24215 (also known as KB2999226)](https://www.microsoft.com/en-gb/download/details.aspx?id=48145)
 
 > **IMPORTANT**: If you find issues installing KB2999226, you may need to either troubleshoot the installation yourself, or extract all the required `.dll` files from the `.msu` package and copy them directly to the Vivianne folder. I don't have a good way to show you how, and it kinda goes outside the scope of this document, so just know that it's preferrable to have a seasoned installation instead of trying it out on a fresh copy. Sadly, this is just how Microsoft managed to mangle this OS with updates.
@@ -29,7 +29,7 @@ You'll need to install the following:
 As with Windows 8.1, You should keep your system up to date.
 
 You'll need to install the following:
-- [.NET 8.0 Runtime](https://builds.dotnet.microsoft.com/dotnet/Runtime/8.0.17/dotnet-runtime-8.0.17-win-x64.exe)
+- [.NET 8.0 Runtime](https://builds.dotnet.microsoft.com/dotnet/Runtime/8.0.14/windowsdesktop-runtime-8.0.14-win-x64.exe)
 - [Microsoft Visual C++ 2015 Redistributable 14.0.24215 (also known as KB2999226)](https://www.microsoft.com/en-gb/download/details.aspx?id=48145)
 
 > **IMPORTANT**: If you find issues installing KB2999226, you may need to either troubleshoot the installation yourself, or extract all the required `.dll` files from the `.msu` package and copy them directly to the Vivianne folder. I don't have a good way to show you how, and it kinda goes outside the scope of this document, so just know that it's preferrable to have a seasoned installation instead of trying it out on a fresh copy. Sadly, this is just how Microsoft managed to mangle this OS with updates.
@@ -37,16 +37,13 @@ You'll need to install the following:
 > Tested with Windows 8 6.2.9200 64-bit.
 
 ## Windows 7
-This one is more complicated. While there's reports of people launching Vivianne in it, preparing the system to properly execute is more involved.
+This one is more complicated. While there are reports of people launching Vivianne in it, preparing the system to properly execute is more involved.
 
-- [Follow this guide](https://learn.microsoft.com/en-us/dotnet/core/install/windows#windows-7--81--server-2012) in order to get the system to a state where it can run .NET 8 apps without crashing. THe guide says that .NET 6 is the latest supported version, but ignore that; .NET 8 works fine.
+- [Follow this guide](https://learn.microsoft.com/en-us/dotnet/core/install/windows#windows-7--81--server-2012) in order to get the system to a state where it can run .NET 8 apps without crashing. The guide says that .NET 6 is the latest supported version, but ignore that; .NET 8 works fine.
 - [Microsoft Visual C++ 2015 Redistributable 14.0.24215 (also known as KB2999226)](https://www.microsoft.com/en-gb/download/details.aspx?id=48145)
 - [Windows 7 KB306858](https://www.microsoft.com/download/details.aspx?id=47442)
-- [.NET 8.0 Runtime](https://builds.dotnet.microsoft.com/dotnet/Runtime/8.0.17/dotnet-runtime-8.0.17-win-x64.exe)
+- [.NET 8.0 Runtime](https://builds.dotnet.microsoft.com/dotnet/Runtime/8.0.14/windowsdesktop-runtime-8.0.14-win-x64.exe)
 
-### Tests without Aero:
+### Tests Aero:
 Yes, the app works well, and themes seem properly supported.
-
-Couldn't quite test with Aero, but I'll try and get that going and update this document with the results.
-
-Note that if you have Shell customizations or some custom Windows Theme that touches how DWM draws windows, then Vivianne will probably look all messed up.
+> Note: if you have Shell customizations or some custom Windows Theme that touches how DWM draws windows, then Vivianne will probably look all messed up.
