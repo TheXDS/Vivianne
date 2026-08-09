@@ -15,6 +15,7 @@ public partial class MapCommand() : FileCommandBase(
         BuildInfoCommand,
         BuildCheckCommand,
         BuildStitchCommand,
+        BuildExportWavCommand,
     ])
 {
     /// <inheritdoc/>
