@@ -58,7 +58,7 @@ public static class Initialization
     /// </remarks>
     private static void ProcessSpecialCommandLineStartupCallbacks(string[] args)
     {
-        if (args.Length >= 1 && args[0].StartsWith("--Callback-") && CommandLineStartup.Handlers.TryGetValue(Guid.Parse(args[0][11..]), out var handler))
+        if (args.Length >= 2 && args[1].StartsWith("--Callback-") && CommandLineStartup.Handlers.TryGetValue(Guid.Parse(args[0][11..]), out var handler))
         {
             try
             {
