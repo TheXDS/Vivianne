@@ -2,6 +2,14 @@
 
 namespace TheXDS.Vivianne.Component;
 
+/// <summary>
+/// Provides abstract audio wave stream functionality for EA audio formats,
+/// implementing the <see cref="IWaveProvider"/> interface with support for
+/// sample rate, bits per sample, and channel configuration.
+/// </summary>
+/// <param name="sampleRate">The sample rate of the audio stream in samples per second.</param>
+/// <param name="bytesPerSample">The number of bytes per sample (bits depth).</param>
+/// <param name="channels">The number of audio channels.</param>
 public abstract class EaAudioWaveStream(ushort sampleRate, byte bytesPerSample, byte channels) : IWaveProvider
 {
     /// <summary>
@@ -39,5 +47,20 @@ public abstract class EaAudioWaveStream(ushort sampleRate, byte bytesPerSample, 
         return Read(buffer, offset, count);
     }
 
+    /// <summary>
+    /// When overridden in a derived class, reads a sequence of bytes from the
+    /// stream and advances the position within the stream by the number of bytes
+    /// read.
+    /// </summary>
+    /// <param name="buffer">An array of bytes. When this method returns, the buffer
+    /// contains the specified byte array with the values between <paramref name="offset"/>
+    /// and (<paramref name="offset"/> + <paramref name="count"/> - 1) replaced by the bytes
+    /// read from the current source.</param>
+    /// <param name="offset">The byte offset in <paramref name="buffer"/> at which to begin
+    /// writing data from the stream.</param>
+    /// <param name="count">The maximum number of bytes to be read from the current source.</param>
+    /// <returns>The total number of bytes read into the buffer. This can be less than the
+    /// number of bytes requested if that many bytes are not currently available, or zero
+    /// (0) if the end of the stream has been reached.</returns>
     protected abstract int Read(byte[] buffer, int offset, int count);
 }

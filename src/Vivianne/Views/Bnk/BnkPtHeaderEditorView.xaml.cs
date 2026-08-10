@@ -20,6 +20,9 @@ namespace TheXDS.Vivianne.Views.Bnk
     /// </summary>
     public partial class BnkPtHeaderEditorView : UserControl
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BnkPtHeaderEditorView"/> class.
+        /// </summary>
         public BnkPtHeaderEditorView()
         {
             InitializeComponent();
